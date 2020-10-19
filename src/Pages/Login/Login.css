@@ -1,0 +1,23 @@
+.pageLogin{
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(#290043, #B11734);
+}
+
+
+.bloco{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 80px auto;
+    padding: 15px;
+    background-color: rgba(28, 1, 43, 0.7);
+    border-radius: 8px;
+    color: white;
+}
+
+.googleButton{
+    width: 100%;
+    border-radius: 8px;
+}
