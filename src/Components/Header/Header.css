@@ -1,0 +1,18 @@
+.headerContainer {
+  height: 10%;
+  width: 100%;
+  background-color: #612984;
+  text-align: right;
+}
+
+.headerContainer img {
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  border-radius: 200;
+}
+
+.HeaderElementsContainer {
+  margin: auto;
+  vertical-align: middle;
+}
