@@ -15,15 +15,17 @@ const Login = () => {
         <header>Placeholder</header>
         <div className="bloco">
           <forms>
-            <h1>Entrar</h1>
+            <h1 className="entrarLogin">Entrar</h1>
             <GoogleLogin
               clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
               render={(renderProps) => (
                 <button
+                  className="googleButton"
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
                 >
-                    <FcGoogle value={{ size: "5em" }} />
+                  <FcGoogle value={{ size: "5em" }} />
+                  <p className="googleText">Inicie sessão com o google</p>
                 </button>
               )}
               buttonText="Login"
@@ -31,9 +33,11 @@ const Login = () => {
               onFailure={responseGoogle}
               cookiePolicy={"single_host_origin"}
             />
-            <h3>Ou insira:</h3>
+            <h3 className="insiraLogin">Ou insira:</h3>
             <div className="form-group">
-              <label for="exampleFormControlInput1">Email</label>
+              <label for="exampleFormControlInput1" className="emaiLogin">
+                Email
+              </label>
               <input
                 type="email"
                 className="form-control"
@@ -42,15 +46,25 @@ const Login = () => {
               />
             </div>
             <div className="form-group">
-              <label for="exampleInputPassword1">Senha</label>
+              <label for="exampleInputPassword1" className="senhaLogin">
+                Senha
+              </label>
               <input
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"
               />
-              <a>Esqueceu a senha?</a>
-              <h5>Não tem conta?</h5>
-              <a href="https://www.google.com.br" target="blank">
+              <button className="entrarButtonLogin">Entrar</button>
+            </div>
+
+            <a className="esqueceuLogin">Esqueceu a senha?</a>
+            <div className="resgateLogin">
+              <h5 className="naotemLogin">Não tem conta?</h5>
+              <a
+                className="cadastreLogin"
+                href="https://www.google.com.br"
+                target="blank"
+              >
                 Cadastre-se
               </a>
             </div>
