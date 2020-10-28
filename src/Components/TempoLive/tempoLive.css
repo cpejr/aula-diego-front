@@ -1,4 +1,4 @@
-.Live{
+.tempoLive{
     display: flex;
     width: 100%;
     height: 100%;
@@ -6,12 +6,12 @@
 
 }
 
-.paginaLive{
+.paginaTempoLive{
     width: 100%;
     height: 100%;
 }
 
-.blocoLive{
+.blocoTempoLive{
     width: 85%;
     height: 65%;
     position: relative;
@@ -24,14 +24,14 @@
     flex-direction: column;
 }
 
-.tituloLive{
+.tituloTempoLive{
     font-size: xx-large;
     color: white;
     padding-top: 2%;
     font-weight: 600;
 }
 
-.acessarLive{
+.acessarTempoLive{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,16 +39,16 @@
     margin-top: 5%;
 }
 
-.buttonLive{
-    background-color: #44AF72;  
+.buttonTempoLive{
+    background-color: #c63756;  
     border: none;
-    border-radius: 25px;
-    font-size: 21pt;
+    border-radius: 10px;
+    font-size: 16pt;
     font-weight: 600;
     margin-top: 10%;
-    padding: 2%;
-    padding-left: 8%;
-    padding-right: 8%;
+    padding: 1%;
+    padding-left: 3%;
+    padding-right: 3%;
     color: white;
 
 }
