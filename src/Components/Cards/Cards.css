@@ -20,3 +20,12 @@
 
     
 }
+
+@media (max-width:800px) {
+    .DashboardCardContainer{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin:0;
+    }
+}

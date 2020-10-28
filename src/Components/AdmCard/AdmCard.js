@@ -1,14 +1,14 @@
 import React from 'react'
 import './AdmCard.css'
-import AddIcon from '@material-ui/icons/Add';
+
 
 export default function AdmCard() {
     return (
-        <div className='AdmCardsContainer' >
-            <p style = {{fontSize: 24}}>
+        <div className='AdmCardsContainer' onClick={()=>alert('Especifique os dados')}>
+            <p style = {{fontSize: 24,marginBottom:0}}>
                 Adicionar Nova Live
             </p>
-            <AddIcon style={{fontSize:150}}/>
+            <h1 style = {{fontSize: 120,fontWeight:700,paddingTop:-5}} > + </h1>
         </div>
     )
 }
