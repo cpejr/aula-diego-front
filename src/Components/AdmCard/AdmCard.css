@@ -1,0 +1,15 @@
+.AdmCardsContainer{
+    width: 300px;
+    height: 200px;
+    display: flex;
+    flex-direction: column; 
+    margin-top: 12%;
+    border-radius: 13px;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2%;
+    font-weight: 600;
+    background-image: linear-gradient(to right,#BABABB,grey);
+    
+}

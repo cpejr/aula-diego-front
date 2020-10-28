@@ -11,11 +11,12 @@
     padding: 30px 10px 10px 25px;
     font-weight: 600;
 }
-.Teste2{
+.DashboardCardContainer{
     height: 100%;
     display: flex;
     justify-content: space-between;
     margin-right: 50px;
     margin-left: 50px;
+
     
 }
