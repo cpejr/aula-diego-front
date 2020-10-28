@@ -10,9 +10,6 @@ const Header = () => {
                 <label>Nome</label>
                 <img src={Foto}></img>
             </div>
-            <div className = 'Teste2'>
-                
-            </div>
         </div>
     )
 }
