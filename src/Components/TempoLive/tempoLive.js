@@ -1,9 +1,12 @@
 import React from "react";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
-import "./tempoLive.css";
+import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Header/Header";
+import './TempoLive.css'
 
-const tempoLive = () => {
+const TempoLive = (props) => {
+
+
+
   return (
     <div className="tempoLive">
       <div className="paginaTempoLive">
@@ -13,7 +16,7 @@ const tempoLive = () => {
             <p style={{marginTop: "5%" }}>Tempo que você está em Live: </p>
           </div>
           <div className="acessarTempoLive">
-            <button className="buttonTempoLive">Certificar Live</button>
+            <button className="buttonTempoLive" onClick={props.handleToggle}>Certificar Live</button>
           </div>
         </div>
       </div>
@@ -21,4 +24,4 @@ const tempoLive = () => {
   );
 };
 
-export default tempoLive;
+export default TempoLive;

@@ -1,9 +1,9 @@
 import React from "react";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
-import "./confirmacaoLive.css";
+import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Header/Header";
+import "./ConfirmacaoLive.css";
 
-const confirmacaoLive = () => {
+const ConfirmacaoLive = () => {
   return (
     <div className="confirmacaoLive">
       <div className="paginaConfirmacaoLive">
@@ -27,4 +27,4 @@ const confirmacaoLive = () => {
   );
 };
 
-export default confirmacaoLive;
+export default ConfirmacaoLive;
