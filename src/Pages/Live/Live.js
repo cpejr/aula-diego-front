@@ -3,6 +3,7 @@ import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
 import TempoLive from "../../Components/TempoLive/TempoLive";
 import ConfirmacaoLive from "../../Components/ConfirmacaoLive/ConfirmacaoLive"
+import LiveFinal from '../../Components/LiveFinal/LiveFinal'
 import "./Live.css";
 
 const Live = () => {
@@ -35,6 +36,7 @@ const Live = () => {
         </div>}
         {!toggleView && toggleView2 && <TempoLive handleToggle={handleToggle2}/>}
         {!toggleView2 &&<ConfirmacaoLive/>}
+        <LiveFinal/>
       </div>
     </div>
   );
