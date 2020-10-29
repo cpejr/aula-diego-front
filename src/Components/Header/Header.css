@@ -1,8 +1,11 @@
 .headerContainer {
   height: 10%;
   width: 100%;
-  background-color: #612984;
+  background-color: #25003c;
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .headerContainer img {
@@ -10,9 +13,40 @@
   height: 55px;
   border-radius: 100%;
   border-radius: 200;
+  margin-left: 5%;
+  margin-right: 3%;
+  
 }
 
 .HeaderElementsContainer {
   margin: auto;
-  vertical-align: middle;
+  display: flex;
+  color: #d2cbcb;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.LabelContainer{
+
+  display: flex;
+  flex: 0.2;
+  justify-content: space-between;
+
+}
+
+
+
+
+
+@media (max-width:1025px){
+
+    .LabelContainer{
+
+      display: none;
+
+    }
+
+
 }

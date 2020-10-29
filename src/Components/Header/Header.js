@@ -7,7 +7,10 @@ const Header = () => {
     return (
         <div className="headerContainer">
             <div className="HeaderElementsContainer">
-                <label>Nome</label>
+                <div className="LabelContainer">
+                <label>Minha Conta</label>
+                <label>Configurações</label>
+                </div>
                 <img src={Foto}></img>
             </div>
         </div>
