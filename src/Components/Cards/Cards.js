@@ -1,17 +1,17 @@
 import React from 'react';
 import "./Cards.css"
 
-const Cards = ({cardColor,title,hour,date}) => {
+const Cards = (props) => {
     return (
-        <div className='cardsContainer' style = {{backgroundColor: cardColor}} >
+        <div className='cardsContainer' style = {{backgroundColor: props.cardColor}} >
             <p style = {{fontSize: 14}}>
-                Live {date}
+                Live {props.date}
             </p>
             <p style = {{fontSize: 34}}>
-                {title}
+                {props.title}
             </p>
             <p style = {{fontSize: 16}}>
-                Às {hour}
+                Às {props.hour}
             </p>
         </div>
     )
