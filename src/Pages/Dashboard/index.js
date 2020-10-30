@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar"
 import Header from "../../Components/Header/Header"
+import Cards from "../../Components/Cards/Cards"
 import "./index.css"
 
 
@@ -9,9 +10,6 @@ const Dashboard = () => {
         <div className = 'Teste' style={{display: "flex"}}>
            
             <Sidebar />
-<<<<<<< HEAD
-            <Header />
-=======
             <div style={{flex:1}}>
             <Header /> 
              <div className = 'DashboardCardContainer'>
@@ -21,7 +19,6 @@ const Dashboard = () => {
             </div> 
             </div >
 
->>>>>>> 785a501085ddcfdc0dedfed7fc393ff171d26842
         </div>
         
     )
