@@ -10,3 +10,11 @@
     height: 100%;
 
 }
+
+@media (max-width:1025px){
+
+    .AdminSideBar{
+        display: none;
+    }
+
+}

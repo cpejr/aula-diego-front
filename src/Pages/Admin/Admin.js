@@ -10,9 +10,12 @@ import AdmCard from "../../Components/AdmCard/AdmCard";
 export default function Admin() {
   return (
       <div className="Admincontainer">
+        <div className='AdminSideBar'>
         <Sidebar />
+        </div>
+        
 
-        <div style={{flex:1}}>
+        <div style={{flex:1,backgroundColor:'#fafafa'}}>
             <Header /> 
              <div className = 'DashboardCardContainer' >
                 <AdmCard  />
