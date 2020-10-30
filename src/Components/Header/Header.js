@@ -11,7 +11,7 @@ const Header = () => {
                 <label>Minha Conta</label>
                 <label>Configurações</label>
                 </div>
-                <img src={Foto}></img>
+                <img className='HeaderImg'src={Foto}></img>
             </div>
         </div>
     )

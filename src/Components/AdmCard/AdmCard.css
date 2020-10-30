@@ -12,3 +12,12 @@
     font-weight: 600;
     background-color: #bababb;
 }
+
+@media (max-width:800px) {
+ 
+
+    .AdmCardsContainer{
+        width: 91%;
+        height: 30%;
+    }
+}

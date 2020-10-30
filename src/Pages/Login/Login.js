@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <div className="pageLogin">
       <div className="content">
-        <img src={logo}></img>
+        <img className='LoginImg'src={logo}></img>
         <div className="bloco">
           <forms>
             <h1 className="entrarLogin">Entrar</h1>

@@ -31,7 +31,7 @@
 .LabelContainer{
 
   display: flex;
-  flex: 0.2;
+  flex: 0.25;
   justify-content: space-between;
 
 }
@@ -47,6 +47,8 @@
       display: none;
 
     }
-
+    .HeaderImg{
+      display: flex;
+    }
 
 }

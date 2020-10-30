@@ -1,8 +1,8 @@
 import React,{useState} from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
-import TempoLive from "../../Components/TempoLive/tempoLive.js";
-import ConfirmacaoLive from "../../Components/ConfirmacaoLive/confirmacaoLive.css"
+import TempoLive from "../../Components/TempoLive/TempoLive.js";
+import ConfirmacaoLive from "../../Components/ConfirmacaoLive/ConfirmacaoLive.css"
 import LiveFinal from '../../Components/LiveFinal/LiveFinal'
 import "./Live.css";
 

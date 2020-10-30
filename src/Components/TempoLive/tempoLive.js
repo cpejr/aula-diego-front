@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
-import './tempoLive.css'
+import './TempoLive.css'
 
 const TempoLive = (props) => {
 

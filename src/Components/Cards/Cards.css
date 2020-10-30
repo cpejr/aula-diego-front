@@ -17,6 +17,7 @@
     justify-content: space-between;
     margin-right: 50px;
     margin-left: 50px;
+    background-color: #fafafa;
 
     
 }
@@ -27,5 +28,12 @@
         flex-direction: column;
         position: relative;
         margin:0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cardsContainer{
+        width: 91%;
+        height: 30%;
     }
 }
