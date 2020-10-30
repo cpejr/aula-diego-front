@@ -1,48 +1,66 @@
 .pageLogin{
+    display: flex;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(#290043, #B11734);
+    background: rgb(41,0,67);
+    background: linear-gradient(180deg, rgba(41,0,67,1) 0%, rgba(177,23,52,1) 200%);
+    align-items: center;
+    justify-content: center;
 }
 
 
 .bloco{
-    width: 22%;
+    width: 400px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin: 80px auto;
-    padding: 15px;
-    background-color: rgba(13, 10, 14, 0.729);
-    border-radius: 8px;
+    background-color: rgba(13, 10, 14, 0.6);
+    border-radius: 20px;
     color: white;
+    padding: 15px;
 }
 
 .entrarLogin{
     font-size: xx-large;
+    color : rgb(244, 232, 242);
+    margin-top: 5%;
+    margin-bottom: 7%;
 }
 
 .insiraLogin{
-    font-size: large;
-    margin-top: 10px;
+    font-size: medium;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: 	rgb(244, 232, 242)
 }
 
 .googleButton{
     width: 100%;
+    height: 50px;
     border-radius: 4px;
     display: flex;
     align-items: center;
-    background-color: rgba(97, 54, 123, 0.3);
-    border: 2px solid black;
+    background-color: rgb(48, 33, 54);
+    border: 1px solid rgb(63, 55, 73);
+    border-radius: 10px;
 }
  
 .entrarButtonLogin{
     margin-top: 15px; 
     border-radius: 8px;
+    height: 50px;
     width: 100%;
-    background-color: #B11734;  
+    background-color: rgb(198, 53, 84);
     border: 2px solid #B11734;
+    color : rgb(244, 232, 242);
+    outline:none;
+    border:none;
 
+}
 
+.entrarButtonLogin :focus {
+    outline: none;
+    border:none;
 }
 
 .googleText{
@@ -52,13 +70,11 @@
 
 .esqueceuLogin{
     font-size: small;
-    margin-top: 2px;
 }
 
 .naotemLogin{
-    font-size: small;
+    font-size: medium;
     margin-top: 2px;
-    margin-right: auto;
 }
 
 .resgateLogin{
@@ -70,5 +86,53 @@
 
 .cadastreLogin{
     margin-top: 1px;
-    font-size: small;
+    font-size: medium;
+    margin-left: 10px;
+}
+
+.form-group input {
+    background-color: rgb(48, 33, 54);
+    border: 1.5px solid rgb(63, 55, 73);
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 0.3rem;
+}
+
+img {
+    width: 400px;
+    margin-bottom: 40px;
+}
+
+input:focus, input:active{
+    border-color: #FF0000;
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+  }
+
+
+@media (max-width: 600px) {
+    dis
+    .pageLogin{
+        display: block;
+    }
+    .bloco {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(13, 10, 14, 0.3);
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        max-width: 90%
+    }
+
+    img {
+        padding: 5%;
+        width: 100%;
+        margin-bottom: 0rem;
+        max-width: 400px
+    }
+
+    
+
 }

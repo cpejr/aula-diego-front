@@ -10,7 +10,6 @@ const routes = () => {
             <Route component = {Dashboard} exat path="/dashboard"/>
             <Route component = {Login} exact path = "/"/>
             <Route component = {Live} exact path = "/live"/>
-
         </BrowserRouter>
     )   
 }

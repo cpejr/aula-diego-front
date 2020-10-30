@@ -1,8 +1,8 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
+import logo from "../../images/Logo2.png"
 
 const responseGoogle = (response) => {
   console.log(response);
@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <div className="pageLogin">
       <div className="content">
-        <header>Placeholder</header>
+        <img src={logo}></img>
         <div className="bloco">
           <forms>
             <h1 className="entrarLogin">Entrar</h1>
@@ -24,8 +24,8 @@ const Login = () => {
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
                 >
-                  <FcGoogle value={{ size: "5em" }} />
-                  <p className="googleText">Inicie sessão com o google</p>
+                  <FcGoogle size="1.75em" />
+                  <p className="googleText">Entrar com o Google</p>
                 </button>
               )}
               buttonText="Login"
@@ -35,24 +35,21 @@ const Login = () => {
             />
             <h3 className="insiraLogin">Ou insira:</h3>
             <div className="form-group">
-              <label for="exampleFormControlInput1" className="emaiLogin">
-                Email
-              </label>
               <input
                 type="email"
                 className="form-control"
                 id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                placeholder="Email"
+                spellCheck="false"
               />
             </div>
             <div className="form-group">
-              <label for="exampleInputPassword1" className="senhaLogin">
-                Senha
-              </label>
               <input
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"
+                placeholder="Senha"
+                spellCheck="false"
               />
               <button className="entrarButtonLogin">Entrar</button>
             </div>

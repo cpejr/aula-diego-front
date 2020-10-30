@@ -11,7 +11,7 @@ const Header = () => {
                 <img src={Foto}></img>
             </div>
             <div className = 'Teste2'>
-                
+                <Cards title='Bombeiros' cardColor = '#DC6F85' date = '20/10/2020' hour = '20:00' />
             </div>
         </div>
     )
