@@ -21,6 +21,7 @@
   border-radius: 8px;
   padding: 2%;
   flex-direction: column;
+ 
 }
 
 .tituloFinalLive {
@@ -37,7 +38,7 @@
   flex: 1;
   margin-top: 5%;
   color: #ffffff;
-  font-size: 300pt;
+  font-size: 225pt;
   animation-name: example;
   animation-duration: 3s;
   animation-iteration-count: 2;

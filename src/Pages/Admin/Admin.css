@@ -11,10 +11,18 @@
 
 }
 
+.DashBoardTitleFont{
+    font-weight: 600;
+    font-size: 34px;
+}
+
 @media (max-width:1025px){
 
     .AdminSideBar{
         display: none;
+    }
+    .DashBoardTitleFont{
+        font-size: 24;
     }
 
 }
