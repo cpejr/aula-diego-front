@@ -8,25 +8,25 @@ const TabelaAtividades = (props) => {
       <h1>Atividades</h1>
       <div className="TabelaAtividades">
         <LinhaTabelaAtividades
-          type="Lista 1"
-          module="3"
-          name="SAMU"
-          date="22/11/2020"
-          status="Pedente"
+          type={props.type}
+          module={props.module}
+          name={props.name}
+          date={props.date}
+          status={props.status}
         />
         <LinhaTabelaAtividades
-          type="Lista 1"
-          module="3"
-          name="SAMU"
-          date="22/11/2020"
-          status="Pedente"
+          type={props.type}
+          module={props.module}
+          name={props.name}
+          date={props.date}
+          status={props.status}
         />
         <LinhaTabelaAtividades
-          type="Lista 1"
-          module="3"
-          name="SAMU"
-          date="22/11/2020"
-          status="Pedente"
+          type={props.type}
+          module={props.module}
+          name={props.name}
+          date={props.date}
+          status={props.status}
         />
       </div>
     </div>

@@ -41,7 +41,6 @@ const Dashboard = () => {
             />
           </div>
           <TabelaAtividades type="Lista 1" module="3" name="SAMU" date="22/11/2020" status="Pendente"/>
-          
         </div>
       </div>
     </div>
