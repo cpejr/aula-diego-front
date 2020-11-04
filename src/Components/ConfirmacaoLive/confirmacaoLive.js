@@ -3,22 +3,20 @@ import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
 import "./ConfirmacaoLive.css";
 
+const data = "Hermon";
 
-const data = "YourMae"
-
-const ConfirmacaoLive = () => {
-  const[input,setInput] = useState("");
-  const[codigo,setCodigo] = useState("YourMae");
-  const handleChange =(event)=> {
-      setInput(event.target.value);
-  } 
-  function jose(input,codigo){
-      if(input!=codigo){
-
-        alert("Mae errada irmao");}
-      else{
-        alert("Sua mae foi validada");
-      }
+const ConfirmacaoLive = (props) => {
+  const [input, setInput] = useState("");
+  const [codigo, setCodigo] = useState(data);
+  const handleChange = (event) => {
+    setInput(event.target.value);
+  };
+  function jose(input, codigo) {
+    if (input != codigo) {
+      alert("Código inválido! Tente Novamente");
+    } else {
+      props.handleToggle()
+    }
   }
   return (
     <div className="confirmacaoLive">
@@ -30,24 +28,22 @@ const ConfirmacaoLive = () => {
 
             <div className="divInputConfirmacaoLive">
               <input
-                onChange= {handleChange}
+                onChange={handleChange}
                 className="inputConfirmacaoLive"
                 placeholder="Insira o código"
-                ></input>
+              ></input>
             </div>
           </div>
           <div className="acessarConfirmacaoLive">
-            <button onClick = {()=>jose(input,codigo)} className="buttonConfirmacaoLive">Certificar Live</button>
+            <button
+              onClick={() => jose(input, codigo)}
+              className="buttonConfirmacaoLive"
+            >
+              Certificar Live
+            </button>
           </div>
         </div>
       </div>
-            <div>
-              {input};
-              {codigo}
-            </div>
-
-
-
     </div>
   );
 };

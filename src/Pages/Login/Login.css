@@ -102,7 +102,7 @@
     margin-bottom: 0.3rem;
 }
 
-img {
+.LoginImg {
     width: 400px;
     margin-bottom: 40px;
 }
@@ -130,7 +130,7 @@ input:focus, input:active{
         max-width: 90%
     }
 
-    img {
+    .LoginImg {
         padding: 5%;
         width: 100%;
         margin-bottom: 0rem;

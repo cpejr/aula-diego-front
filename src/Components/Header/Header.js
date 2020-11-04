@@ -10,7 +10,7 @@ const Header = () => {
                     <label className="LabelHeader">Minha Conta</label>
                     <label classNmae= "LabelHeader">Configurações</label>
                 </div>
-                <img src={Foto}></img>
+                <img className='HeaderImg'src={Foto}></img>
             </div>
         </div>
     )

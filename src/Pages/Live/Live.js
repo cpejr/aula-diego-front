@@ -1,8 +1,8 @@
 import React,{useState} from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
-import TempoLive from "../../Components/TempoLive/tempoLive.js";
-import ConfirmacaoLive from "../../Components/ConfirmacaoLive/confirmacaoLive.css"
+import TempoLive from "../../Components/TempoLive/TempoLive.js";
+import ConfirmacaoLive from "../../Components/ConfirmacaoLive/ConfirmacaoLive"
 import LiveFinal from '../../Components/LiveFinal/LiveFinal'
 import "./Live.css";
 
@@ -10,6 +10,7 @@ const Live = () => {
 
   const [toggleView,setToggleView]=useState(true)
   const [toggleView2,setToggleView2]=useState(true)
+  const [toggleView3,setToggleView3]=useState(true)
 
 
   function handleToggle(){
@@ -19,6 +20,11 @@ const Live = () => {
   function handleToggle2(){
     setToggleView2(!toggleView2)
   }
+
+  function handleToggle3(){
+    setToggleView3(!toggleView3)
+  }
+
 
   return (
     <div className="Live">
@@ -35,8 +41,8 @@ const Live = () => {
           </div> 
         </div>}
         {!toggleView && toggleView2 && <TempoLive handleToggle={handleToggle2}/>}
-        {!toggleView2 &&<ConfirmacaoLive/>}
-        <LiveFinal/>
+        {!toggleView2 && toggleView3 &&<ConfirmacaoLive handleToggle={handleToggle3}/>}
+       {!toggleView3 && <LiveFinal/>}
       </div>
     </div>
   );

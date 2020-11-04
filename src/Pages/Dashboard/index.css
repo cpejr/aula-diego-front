@@ -13,3 +13,34 @@
   justify-content: center;
 }
 
+.DashboardTitle{
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 5%;
+  color: #707070;
+  margin-bottom: -5%;
+  
+}
+
+.TitleImg{
+  display: flex;
+  width: 65px;
+  height: 65px;
+  border-radius: 100%;
+  border-radius: 200;
+  margin-left: 5%;
+  margin-right: 3%;
+  
+}
+
+@media (max-width:600px){
+  .TitleImg{
+    width: 45px;
+    height: 45px;
+  }
+  .DashboardTitle{
+    margin-bottom:0
+  }
+}
