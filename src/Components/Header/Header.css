@@ -29,17 +29,12 @@
 }
 
 
-<<<<<<< HEAD
-label {
-  margin-left: 30px;
-=======
 .LabelContainer{
 
   display: flex;
   flex: 0.25;
   justify-content: space-between;
 
->>>>>>> 8622007062f7fe7698fb560a203b73f3610be442
 }
 
 

@@ -1,42 +1,51 @@
 import React, { useState } from "react";
-import Sidebar from "../../Components/Sidebar/Sidebar"
-import Header from "../../Components/Header/Header"
-import Cards from "../../Components/Cards/Cards"
-import "./index.css"
-import Foto from "../../images/samu.svg"
-
+import Sidebar from "../../Components/Sidebar/Sidebar";
+import Header from "../../Components/Header/Header";
+import Cards from "../../Components/Cards/Cards";
+import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
+import "./index.css";
+import Foto from "../../images/samu.svg";
 
 const Dashboard = () => {
-    
-    return (
-<<<<<<< HEAD
-    
-        <div className = 'Teste' style={{display: "flex"}}>
-=======
-        <div className = 'Teste' style={{display: "flex",backgroundColor:'#fafafa'}}>
-           
->>>>>>> 8622007062f7fe7698fb560a203b73f3610be442
-            <Sidebar />
-            <div style={{flex: 1}}>
-            <Header /> 
-<<<<<<< HEAD
-            <h1>Próximas Lives:</h1>
-=======
-            <div className='DashboardTitle'>
-            <img src={Foto} className='TitleImg'/>
-            <h1 style={{fontWeight:600}}>Próximas Lives</h1>
-            </div>
->>>>>>> 8622007062f7fe7698fb560a203b73f3610be442
-             <div className = 'DashboardCardContainer'>
-                <Cards title='SAMU' cardColor = '#A564E5' date = '20/10/2020' hour = '20:00'/>
-                <Cards title='UPA' cardColor = '#6AA5E3' date = '20/10/2020' hour = '20:00' />
-                <Cards title='Bombeiros' cardColor = '#F97091' date = '20/10/2020' hour = '20:00' />
-            </div> 
-            </div >
-
+  return (
+    <div
+      className="Teste"
+      style={{ display: "flex", backgroundColor: "#fafafa" }}
+    >
+      <Sidebar />
+      <div style={{ flex: 1 }}>
+        <Header />
+        <div className="DashboardTitle">
+          <img src={Foto} className="TitleImg" />
+          <h1 style={{ fontWeight: 600 }}>Próximas Lives</h1>
         </div>
-        
-    )
-}
+        <div>
+          <div className="DashboardCardContainer">
+            <Cards
+              title="SAMU"
+              cardColor="#A564E5"
+              date="20/10/2020"
+              hour="20:00"
+            />
+            <Cards
+              title="UPA"
+              cardColor="#6AA5E3"
+              date="20/10/2020"
+              hour="20:00"
+            />
+            <Cards
+              title="Bombeiros"
+              cardColor="#F97091"
+              date="20/10/2020"
+              hour="20:00"
+            />
+          </div>
+          <TabelaAtividades type="Lista 1" module="3" name="SAMU" date="22/11/2020" status="Pendente"/>
+          
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Dashboard;

@@ -13,16 +13,12 @@
 }
 .DashboardCardContainer{
     display: flex;
-<<<<<<< HEAD
-    justify-content: center;
-=======
     justify-content: space-between;
     margin-right: 50px;
     margin-left: 50px;
     background-color: #fafafa;
 
     
->>>>>>> 8622007062f7fe7698fb560a203b73f3610be442
 }
 
 @media (max-width:800px) {

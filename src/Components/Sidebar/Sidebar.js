@@ -6,9 +6,6 @@ import {Link,useHistory} from 'react-router-dom'
 
 
 
-<<<<<<< HEAD
-const Sidebar = (props) => {
-=======
 const Sidebar = () => {
 
     const history = useHistory();
@@ -18,7 +15,6 @@ const Sidebar = () => {
       history.push(path);
     }
 
->>>>>>> 8622007062f7fe7698fb560a203b73f3610be442
 
     return (
         <div className="sidebarContainer">
