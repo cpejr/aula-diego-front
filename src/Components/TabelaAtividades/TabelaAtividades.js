@@ -3,31 +3,44 @@ import "./TabelaAtividades.css";
 import LinhaTabelaAtividades from "./LinhaTabelaAtividades.js";
 
 const TabelaAtividades = (props) => {
+  const elementos = [
+    {
+      type:props.type,
+      module:props.module,
+      name:props.name,
+      date:props.date,
+      status:props.status,
+    },
+    {
+      type:"Prova 1",
+      module:"3",
+      name:"Bombeiros",
+      date:"30/11/2020",
+      status:"Finalizado",
+    },
+    {
+      type:"Lista 3",
+      module:"5",
+      name:"Pronto Socorro",
+      date:"23/11/2020",
+      status:"Pendente",
+    },
+    {
+      type:"Lista 6",
+      module:"1",
+      name:"Samu",
+      date:"28/11/2020",
+      status:"Pendente",
+    },
+
+  ]
   return (
     <div className="ContainerAtividades">
       <h1>Atividades</h1>
       <div className="TabelaAtividades">
-        <LinhaTabelaAtividades
-          type={props.type}
-          module={props.module}
-          name={props.name}
-          date={props.date}
-          status={props.status}
-        />
-        <LinhaTabelaAtividades
-          type={props.type}
-          module={props.module}
-          name={props.name}
-          date={props.date}
-          status={props.status}
-        />
-        <LinhaTabelaAtividades
-          type={props.type}
-          module={props.module}
-          name={props.name}
-          date={props.date}
-          status={props.status}
-        />
+        {elementos.map(item =>(
+          <LinhaTabelaAtividades key = {item.name} type={item.type} module={item.module} name={item.name} date={item.date} status={item.status} />
+        ))}
       </div>
     </div>
   );
