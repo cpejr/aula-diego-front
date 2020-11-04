@@ -5,11 +5,11 @@
 }
 
 .dashboardCardContainer{
-  height: 100%;
   display: flex;
-  justify-content: space-between;
   margin-right: 50px;
   margin-left: 50px;
   vertical-align: middle;
+  align-items: center;
+  justify-content: center;
 }
 

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Sidebar.css"
 import Logo from "../../images/logo.png"
 import Foto from "../../images/foto.jpg"
 
-const Sidebar = () => {
+const Sidebar = (props) => {
+
     return (
         <div className="sidebarContainer">
             <div className = "logoContainer">

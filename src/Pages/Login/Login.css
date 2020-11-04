@@ -72,6 +72,10 @@
     font-size: small;
 }
 
+.esqueceuLoginDiv {
+    width: 100%;
+}
+
 .naotemLogin{
     font-size: medium;
     margin-top: 2px;

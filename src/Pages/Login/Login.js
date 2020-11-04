@@ -53,8 +53,7 @@ const Login = () => {
               />
               <button className="entrarButtonLogin">Entrar</button>
             </div>
-
-            <a className="esqueceuLogin">Esqueceu a senha?</a>
+            <div className="esqueceuLoginDiv"><a className="esqueceuLogin">Esqueceu a senha?</a></div>
             <div className="resgateLogin">
               <h5 className="naotemLogin">Não tem conta?</h5>
               <a

@@ -1,6 +1,5 @@
 import React from 'react';
 import "./Header.css"
-import Cards from "../Cards/Cards"
 import Foto from "../../images/foto.jpg"
 
 const Header = () => {
@@ -8,8 +7,8 @@ const Header = () => {
         <div className="headerContainer">
             <div className="HeaderElementsContainer">
                 <div className="LabelContainer">
-                <label>Minha Conta</label>
-                <label>Configurações</label>
+                    <label className="LabelHeader">Minha Conta</label>
+                    <label classNmae= "LabelHeader">Configurações</label>
                 </div>
                 <img src={Foto}></img>
             </div>
