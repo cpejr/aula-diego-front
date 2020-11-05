@@ -40,7 +40,7 @@ const Dashboard = () => {
               hour="20:00"
             />
           </div>
-          <TabelaAtividades type="Lista 1" module="3" name="SAMU" date="22/11/2020" status="Pendente"/>
+          <TabelaAtividades type="Lista 1" module="3" name="SAMU" date="22/11/2020" status={true}/>
         </div>
       </div>
     </div>

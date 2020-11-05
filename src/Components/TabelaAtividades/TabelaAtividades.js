@@ -16,27 +16,27 @@ const TabelaAtividades = (props) => {
       module:"3",
       name:"Bombeiros",
       date:"30/11/2020",
-      status:"Finalizado",
+      status: true,
     },
     {
       type:"Lista 3",
       module:"5",
       name:"Pronto Socorro",
       date:"23/11/2020",
-      status:"Pendente",
+      status: false,
     },
     {
       type:"Lista 6",
       module:"1",
       name:"Samu",
       date:"28/11/2020",
-      status:"Pendente",
+      status: false,
     },
 
   ]
   return (
     <div className="ContainerAtividades">
-      <h1>Atividades</h1>
+      <h1 className="tableTitle">ATIVIDADES</h1>
       <div className="TabelaAtividades">
         {elementos.map(item =>(
           <LinhaTabelaAtividades key = {item.name} type={item.type} module={item.module} name={item.name} date={item.date} status={item.status} />
