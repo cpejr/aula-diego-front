@@ -4,6 +4,7 @@ import Login from "./Pages/Login/Login"
 import Dashboard from "./Pages/Dashboard/index"
 import Live from "./Pages/Live/Live"
 import Admin from "./Pages/Admin/Admin";
+import Newlive from './Pages/NewLive/NewLive'
 
 
 const routes = () => {
@@ -13,6 +14,7 @@ const routes = () => {
             <Route component = {Login} exact path = "/"/>
             <Route component = {Live} exact path = "/live"/>
             <Route component={Admin} exact path='/admin'/> 
+            <Route component={Newlive} exact path='/newlive'/> 
         </BrowserRouter>
     )   
 }

@@ -1,9 +1,9 @@
 .AdmCardsContainer{
-    width: 300px;
+    width: 28%;
     height: 200px;
     display: flex;
     flex-direction: column; 
-    margin-top: 12%;
+    margin-top: 10%;
     border-radius: 13px;
     color: white;
     align-items: center;
