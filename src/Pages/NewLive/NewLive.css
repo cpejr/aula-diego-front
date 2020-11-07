@@ -1,0 +1,43 @@
+.NewLiveContainer{
+    display: flex;
+    flex: 1;
+    height: 100%;
+}
+
+.NewLiveContent{
+    flex:1;
+}
+
+.NewLiveFormContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: hotpink;
+}
+.NewLiveFormBox{
+    display: grid;
+    grid-column-gap: 2vw;
+    height: 65%;
+    width: 84%;
+    background-color: white;
+    border-radius: 7px;
+    
+}
+
+.NewLiveInputLine{
+    background-color: lawngreen;
+    display: flex;
+   flex-direction: row;
+   align-items: center;
+
+  
+}
+
+.NewLiveLabel{
+    color: #9F9F9F;
+    font-weight: bold;
+    font-size: 25px;
+  
+}
