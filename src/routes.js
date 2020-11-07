@@ -5,16 +5,18 @@ import Dashboard from "./Pages/Dashboard/index"
 import Live from "./Pages/Live/Live"
 import Admin from "./Pages/Admin/Admin";
 import Newlive from './Pages/NewLive/NewLive'
+import Cadastro from './Pages/Cadastro/Cadastro'
 
 
 const routes = () => {
     return(
         <BrowserRouter>
-            <Route component = {Dashboard} exat path="/dashboard"/>
+            <Route component = {Dashboard} exact path="/dashboard"/>
             <Route component = {Login} exact path = "/"/>
             <Route component = {Live} exact path = "/live"/>
             <Route component={Admin} exact path='/admin'/> 
             <Route component={Newlive} exact path='/newlive'/> 
+            <Route component={Cadastro} exact path='/cadastro'/>
         </BrowserRouter>
     )   
 }
