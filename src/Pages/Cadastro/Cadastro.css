@@ -5,6 +5,7 @@
     background: linear-gradient(180deg, rgba(41,0,67,1) 0%, rgba(177,23,52,1) 200%);
     align-items: center;
     justify-content: center;
+    height: 100vh;
 }
 
 

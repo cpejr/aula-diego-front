@@ -15,25 +15,7 @@ const Cadastro = () => {
         <img className="CadastroImg" src={logo}></img>
         <div className="blocoCadastro">
           <forms>
-            <h1 className="entrarCadastro">Entrar</h1>
-            <GoogleLogin
-              clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
-              render={(renderProps) => (
-                <button
-                  className="googleButton"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FcGoogle size="1.75em" />
-                  <p className="googleText">Entrar com o Google</p>
-                </button>
-              )}
-              buttonText="Cadastro"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-            />
-            <h3 className="insiraCadastro">Ou insira:</h3>
+            <h1 className="entrarCadastro">Cadastre-se</h1>
             <div className="form-group">
               <input
                 type="text"
