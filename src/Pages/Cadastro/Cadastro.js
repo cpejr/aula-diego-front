@@ -11,7 +11,7 @@ const responseGoogle = (response) => {
 const Cadastro = () => {
   return (
     <div className="pageCadastro">
-      <div className="content">
+      <div className="CadastroContent">
         <img className="CadastroImg" src={logo}></img>
         <div className="blocoCadastro">
           <forms>
