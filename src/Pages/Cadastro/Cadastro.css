@@ -1,11 +1,11 @@
 .pageCadastro{
     display: flex;
-    width: 100%;
+    width: 100%;    
     background: rgb(41,0,67);
     background: linear-gradient(180deg, rgba(41,0,67,1) 0%, rgba(177,23,52,1) 200%);
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 170%;
 }
 
 
@@ -90,6 +90,16 @@
     height: 50px;
     border-radius: 10px;
     margin-bottom: 0.3rem;
+    color: white;
+}
+
+.form-group select {
+    background-color: rgb(48, 33, 54);
+    border: 1.5px solid rgb(63, 55, 73);
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 0.3rem;
+    color: white;
 }
 
 .CadastroImg {
