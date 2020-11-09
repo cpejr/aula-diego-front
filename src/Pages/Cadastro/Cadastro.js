@@ -4,10 +4,6 @@ import { GoogleLogin } from "react-google-login";
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
 
-const responseGoogle = (response) => {
-  console.log(response);
-};
-
 const Cadastro = () => {
   return (
     <div className="pageCadastro">
