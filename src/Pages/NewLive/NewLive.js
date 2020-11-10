@@ -14,9 +14,12 @@ export default function NewLive() {
             </div>
             <div className='NewLiveContent'>
             <Header/>
-           
             <div className='NewLiveFormContainer'>
+            <div style={{width:'80%',marginBottom:'5vh'}}>
+            <h1 className='NewLiveTitle'>Nova Live</h1>
+            </div>
             <div className='NewLiveFormBox'>
+                <form className='NewLiveForm'>
                <div className='NewLiveInputLine'>
                     <label className='NewLiveLabel'>Título:</label>
                     <input className='NewLiveTitleInput'type='text' placeholder='Digite o título da Live'/>
@@ -38,8 +41,9 @@ export default function NewLive() {
                     <textarea placeholder='Digite a descrição da live, com informações e assuntos a serem abordados' className='NewLiveLabelDescriptionInput'/>
                </div>
                <div className='NewLiveButtonContainer'>
-                   <button className='NewLiveButton'>Concluir</button>
+                   <input type='button'className='NewLiveButton' value='CONCLUIR' onClick={()=>alert('Dados Enviados Com Sucesso!')}/>
                </div>
+               </form>
             </div>
                 </div>
                     </div>

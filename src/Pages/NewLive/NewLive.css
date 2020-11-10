@@ -10,6 +10,7 @@
 
 .NewLiveFormContainer{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -102,7 +103,23 @@ input:focus{
     border:none;
     color:white;
     font-weight: 600;
-    font-size: 28px;
+    font-size: 24px;
     height: 6vh;
     border-radius: 7px;
+}
+
+.NewLiveForm{
+    flex:1;
+    display: grid;
+}
+
+.NewLiveTitle{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #fafafa;
+    font-weight: 600;
+    color: #25003C;
+    font-size: 50px;
+    
 }
