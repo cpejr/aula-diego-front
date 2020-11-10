@@ -14,7 +14,7 @@
     align-items: center;
     height: 100%;
     width: 100%;
-    background-color: hotpink;
+    background-color: #fafafa;
 }
 .NewLiveFormBox{
     display: grid;
@@ -27,7 +27,8 @@
 }
 
 .NewLiveInputLine{
-    background-color: lawngreen;
+    background-color: #FFFF;
+    border-radius: 7px;
     display: flex;
    flex-direction: row;
    align-items: center;
@@ -39,5 +40,69 @@
     color: #9F9F9F;
     font-weight: bold;
     font-size: 25px;
-  
+    margin-right: 3vw;
+    margin-left: 2vw;
+}
+
+.NewLiveTitleInput{
+    width:70%;
+    height: 35%;
+    border-radius: 7px;
+    border: 1px solid black;
+    color: #b3b3b3;
+}
+
+input:focus{
+    border:1px solid grey;
+}
+
+.NewLiveLabelDataInput{
+    width:14.5%;
+    height: 35%;
+    border-radius: 7px;
+    border: 1px solid black;
+    color:#b3b3b3
+}
+
+.NewLiveLabelTimeInput{
+    width:11%;
+    height: 35%;
+    border-radius: 7px;
+    border: 1px solid black;
+    color:#b3b3b3
+
+}
+
+
+.NewLiveLabelLinkInput{
+    width:38%;
+    height: 35%;
+    border-radius: 7px;
+    border: 1px solid black;
+    color:#b3b3b3
+}
+
+.NewLiveLabelDescriptionInput{
+    width:67%;
+    height: 80%;
+    border-radius: 7px;
+    border: 1px solid black;
+    color:#b3b3b3
+}
+
+.NewLiveButtonContainer{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.NewLiveButton{
+    background-color: #44AF72;
+    border:none;
+    color:white;
+    font-weight: 600;
+    font-size: 28px;
+    height: 6vh;
+    border-radius: 7px;
 }
