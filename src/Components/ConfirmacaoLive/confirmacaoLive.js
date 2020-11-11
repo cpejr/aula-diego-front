@@ -11,7 +11,7 @@ const ConfirmacaoLive = (props) => {
   const handleChange = (event) => {
     setInput(event.target.value);
   };
-  function jose(input, codigo) {
+  function handleSubmit(input, codigo) {
     if (input != codigo) {
       alert("Código inválido! Tente Novamente");
     } else {
@@ -36,7 +36,7 @@ const ConfirmacaoLive = (props) => {
           </div>
           <div className="acessarConfirmacaoLive">
             <button
-              onClick={() => jose(input, codigo)}
+              onClick={() => handleSubmit(input, codigo)}
               className="buttonConfirmacaoLive"
             >
               Certificar Live
