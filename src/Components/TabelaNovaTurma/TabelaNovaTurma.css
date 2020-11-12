@@ -1,0 +1,17 @@
+
+.TabelaNovaTurma {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-right: 4%;
+}
+.ContainerNovaTurma {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 5%;
+    background-color: white;
+    margin-right: 5%;
+    border-radius: 10px;
+  }
