@@ -7,7 +7,7 @@ import Admin from "./Pages/Admin/Admin";
 import Newlive from './Pages/NewLive/NewLive'
 import Cadastro from './Pages/Cadastro/Cadastro'
 import NovaTurma from './Pages/NovaTurma/NovaTurma'
-
+import ConfigAluno from './Pages/ConfiguracaoAluno/ConfiguracaoAluno'
 
 const routes = () => {
     return(
@@ -19,6 +19,7 @@ const routes = () => {
             <Route component={Newlive} exact path='/newlive'/> 
             <Route component={Cadastro} exact path='/cadastro'/>
             <Route component={NovaTurma} exact path='/novaturma'/>
+            <Route component={ConfigAluno} exact path='/config-aluno'/>
         </BrowserRouter>
     )   
 }

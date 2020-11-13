@@ -15,7 +15,7 @@ const TempoLive = (props) => {
   }, []);
 
   return (
-    <div className="tempoLive">
+    <div className="TempoLive">
       <div className="paginaTempoLive">
         <div className="blocoTempoLive">
           <div className="tituloTempoLive">
