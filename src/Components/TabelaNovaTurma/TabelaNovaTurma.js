@@ -27,6 +27,9 @@ const TabelaNovaTurma = (props) => {
   ];
   return (
     <div className="ContainerNovaTurma">
+      <div className="TitulosDaTabela">
+          <p>Nome</p><p>Matrícula</p><p>Ocupação</p>
+      </div>
       <div className="TabelaNovaTurma">
         {elementos.map((item) => (
           <LinhaTabelaNovaTurma
