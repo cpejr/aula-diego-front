@@ -45,22 +45,22 @@ const DATA = [
     },
     {
         name:"Ângela França",
-        matricula:"007",
+        matricula:"008",
         curso:"Engenharia"
     },
     {
         name:"Ângela França",
-        matricula:"007",
+        matricula:"009",
         curso:"Engenharia"
     },
     {
         name:"Ângela França",
-        matricula:"007",
+        matricula:"010",
         curso:"Engenharia"
     },
     {
         name:"Ângela França",
-        matricula:"007",
+        matricula:"011",
         curso:"Engenharia"
     }
 ]

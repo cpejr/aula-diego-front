@@ -8,6 +8,8 @@ import Newlive from './Pages/NewLive/NewLive'
 import Cadastro from './Pages/Cadastro/Cadastro'
 import ListaAlunos from "./Pages/ListaAlunos";
 
+import NovaTurma from './Pages/NovaTurma/NovaTurma'
+import ConfigAluno from './Pages/ConfiguracaoAluno/ConfiguracaoAluno'
 
 const routes = () => {
     return(
@@ -19,6 +21,8 @@ const routes = () => {
             <Route component={Newlive} exact path='/newlive'/> 
             <Route component={Cadastro} exact path='/cadastro'/>
             <Route component={ListaAlunos} exact path = '/listaAlunos'></Route>
+            <Route component={NovaTurma} exact path='/novaturma'/>
+            <Route component={ConfigAluno} exact path='/config-aluno'/>
         </BrowserRouter>
     )   
 }

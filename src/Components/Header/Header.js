@@ -8,7 +8,7 @@ const Header = () => {
             <div className="HeaderElementsContainer">
                 <div className="LabelContainer">
                     <label className="LabelHeader">Minha Conta</label>
-                    <label classNmae= "LabelHeader">Configurações</label>
+                    <a classNmae= "aHeader color-white" href='/config-aluno'>Configurações</a>
                 </div>
                 <img className='HeaderImg'src={Foto}></img>
             </div>
