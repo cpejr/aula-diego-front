@@ -6,6 +6,7 @@ import Live from "./Pages/Live/Live"
 import Admin from "./Pages/Admin/Admin";
 import Newlive from './Pages/NewLive/NewLive'
 import Cadastro from './Pages/Cadastro/Cadastro'
+import ListaAlunos from "./Pages/ListaAlunos";
 
 
 const routes = () => {
@@ -17,6 +18,7 @@ const routes = () => {
             <Route component={Admin} exact path='/admin'/> 
             <Route component={Newlive} exact path='/newlive'/> 
             <Route component={Cadastro} exact path='/cadastro'/>
+            <Route component={ListaAlunos} exact path = '/listaAlunos'></Route>
         </BrowserRouter>
     )   
 }
