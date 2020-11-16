@@ -32,8 +32,7 @@ function LinhaListaTurmas(props){
               <p>{props.ocupacao}</p>
               <p>{props.codigo}</p>
               <p>{props.number}</p>
-              <p style={{paddingLeft:'6vw'}}>ICONE1</p>
-              <p style={{paddingRight:'4vw'}}>ICONE2</p>
+          
         </div>
     )
 }
@@ -52,9 +51,9 @@ export default function ListaTurmas() {
             </div>
             <div className='ListaTurmasLabel'>
                 <p style={{}}>Ocupação</p>
-                <p style={{marginLeft:'8%',marginRight:'8%',fontWeight:400}}>|</p>
+                <p style={{marginLeft:'6%',marginRight:'6%',fontWeight:400}}>|</p>
                 <p style={{}}>Código</p>
-                <p style={{marginLeft:'8%',marginRight:'8%',fontWeight:400}}>|</p>
+                <p style={{marginLeft:'6%',marginRight:'6%',fontWeight:400}}>|</p>
                 <p style={{}}>Nº de Alunos</p>
             </div>
 
