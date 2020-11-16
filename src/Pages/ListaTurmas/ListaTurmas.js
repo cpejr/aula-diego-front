@@ -2,8 +2,8 @@ import React from 'react'
 import './ListaTurmas.css'
 import Sidebar from '../../Components/Sidebar/Sidebar'
 import Header from '../../Components/Header/Header'
-
-
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 
 const data =[
@@ -21,6 +21,11 @@ const data =[
         ocupacao: 'UPA',
         codigo: '72483',
         number: 88
+    },
+    {
+        ocupacao: 'Pronto Socorro',
+        codigo: '585855',
+        number: 75
     }
 ]
 
@@ -32,7 +37,10 @@ function LinhaListaTurmas(props){
               <p>{props.ocupacao}</p>
               <p>{props.codigo}</p>
               <p>{props.number}</p>
-          
+              <div className='LinhaListaTurmasIcons'>
+              <EditIcon style={{marginRight:20,fontSize:40,color:'#9F9F9F'}} onClick={()=>alert('fdsfds')}/>
+              <DeleteForeverIcon  style={{marginRight:20,fontSize:40,color:'#9F9F9F'}} onClick={()=>alert('fdsfds')}/>
+              </div>
         </div>
     )
 }
@@ -49,12 +57,10 @@ export default function ListaTurmas() {
             <div style={{display:'flex',flex:1,alignItems:'center',height:'30vh'}}>
             <h1 className='ListaTurmasTtitle'>Turmas</h1>
             </div>
-            <div className='ListaTurmasLabel'>
-                <p style={{}}>Ocupação</p>
-                <p style={{marginLeft:'6%',marginRight:'6%',fontWeight:400}}>|</p>
-                <p style={{}}>Código</p>
-                <p style={{marginLeft:'6%',marginRight:'6%',fontWeight:400}}>|</p>
-                <p style={{}}>Nº de Alunos</p>
+            <div className='ListaTurmasLabelContainer'>
+                <p className='ListaTurmasLabel'>Ocupação</p>
+                <p className='ListaTurmasLabel'>Código</p>
+                <p className='ListaTurmasLabel'>Nº de Alunos</p>
             </div>
 
             <div className='ListaTurmasDataContainer'>
