@@ -36,6 +36,7 @@ const TabelaAtividades = (props) => {
   ]
   return (
     <div className="ContainerAtividades">
+      <h1 className='tableTitle'>Atividades</h1>
       <div className="TabelaAtividades">
         {elementos.map(item =>(
           <LinhaTabelaAtividades key = {item.name} type={item.type} module={item.module} name={item.name} date={item.date} status={item.status} />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Sidebar.css"
-import Logo from "../../images/logo.png"
+import Logo from "../../images/logoTeste.png"
+
 import Foto from "../../images/foto.jpg"
 import {Link,useHistory} from 'react-router-dom'
 

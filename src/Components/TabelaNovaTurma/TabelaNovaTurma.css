@@ -10,7 +10,7 @@
   border-width: 2px;
   border-color: #efefef;
 }
-.LinhaTabelaAtividades{
+.LinhaTabelaNovaTurma{
   display: grid;
   grid-template-columns: repeat(3, 15vw);
   margin-left: 3vw;
