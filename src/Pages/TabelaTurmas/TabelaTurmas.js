@@ -27,7 +27,7 @@ export default function TabelaTurmas() {
         <h1 className="TabelaTurmasTitle">Turma {data.name}</h1>
         <div className="TabelaTurmasSearchBarContainer">
           <input placeholder="Busque pelo nome, Matrícula ou Curso" onChange={e => setSearch(e.target.value)}/>
-          <button onClick={()=>console.log(search)}>BUSCAR</button>
+          
         </div>
          <Tabela search={search}/> 
       </div>

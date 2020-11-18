@@ -55,5 +55,20 @@
     color: #9F9F9F;
     font-size: 25px;
     font-weight: 700;
-    border-right: thin solid black;
+     border-right: thin solid black; 
+}
+
+.LinhaTabelaTurmas{
+    display: flex;
+    border-top: thin solid #707070;
+}
+
+.LinhaTabelaTurmas p{
+    margin-left: 40px;
+    width: 300px;
+    text-align: center;
+  
+    margin: 0%;
+   
+    padding: 20px;
 }
