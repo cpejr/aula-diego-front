@@ -13,9 +13,21 @@ export default function NovaTurma() {
         <div>
           <p className="tituloNovaTurma">Criar Nova Turma</p>
           <p className="subTituloNovaTurma">Nome da Turma:</p>
+          <input
+            placeholder="Digite o nome da turma"
+            className="NovaTurmaInput"
+          />
+          <p className="subTituloNovaTurma"> Adicionar Alunos:</p>
+          <input
+            placeholder="Busque pelo nome, matrícula ou curso"
+            className="NovaTurmaInput"
+          />
         </div>
         <div>
           <TabelaNovaTurma />
+          <div className="ContainerButão">
+            <button>Criar</button>
+          </div>
         </div>
       </div>
     </div>
