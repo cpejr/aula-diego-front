@@ -60,21 +60,21 @@ const Tabela = ({search}) => {
         return (
             user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 
             || user.matricula.indexOf(search) !== -1 
-            || user.curso.toLowerCase().indexOf(search.toLowerCase()) !== -1
+            || user.ocupacao.toLowerCase().indexOf(search.toLowerCase()) !== -1
         )
     })
 
     const Lista = filtered.map(item => { return (
-        <LinhaBoard key={item.matricula} nomeAluno={item.name} matricula={item.matricula} cursos={item.curso}/>
+        <LinhaTabelaTurmas key={item.matricula} name={item.name} matricula={item.matricula} ocupacao={item.ocupacao}/>
     )})
 
     return (
         <div>
-            <div className="BoardContainer">
+            <div className="TabelaTurmasBox">
                 <div className="LinhaBoard">
-                    <p style={{borderWidth: "0px", fontSize: "25px", color:"#25003c"}}>Nome</p>
-                    <p style={{borderWidth: "0px", fontSize: "25px", color:"#25003c"}}>Matrícula</p>
-                    <p style={{borderWidth: "0px", fontSize: "25px", color:"#25003c"}}>Cursos</p>
+                    <p className='TabelaTurmasLabel'>Nome</p>
+                    <p className='TabelaTurmasLabel'>Matrícula</p>
+                    <p className='TabelaTurmasLabel'style={{borderRight:'none'}}>Ocupação</p>
                 </div>
                 {Lista}
             </div>
