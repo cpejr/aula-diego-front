@@ -1,7 +1,10 @@
-import React, { useState } from "react"
+import React, { useState,useContext,useEffect } from "react"
 import "./TabelaTurmas.css"
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
+
+import Context from '../../Store/context'
+import { CallToActionSharp } from "@material-ui/icons";
 
 
 
@@ -53,6 +56,9 @@ function LinhaTabelaTurmas(props) {
 
   const [dados,setDados]=useState(props.listaDeAlunos)
 
+  const {state} = useContext(Context)
+
+
 
   function removeLine(matricula){
 
@@ -68,13 +74,18 @@ function LinhaTabelaTurmas(props) {
   } 
     
 
+
+
+
+
+
   return (
     <div className='LinhaTabelaTurmas'>
-      <p>{props.name}</p>
-      <p>{props.matricula}</p>
+      <p>{props.item.name}</p>
+      <p>{props.item.matricula}</p>
       <div style={{display:'flex',alignItems:'center',maxWidth:'100%'}}>
-      <p>{props.ocupacao} </p>
-      <HighlightOffIcon style={{marginLeft:'-50px'}} onClick={()=>removeLine(props.matricula)} />
+      <p>{props.item.ocupacao} </p>
+      <HighlightOffIcon style={{marginLeft:'-50px'}} onClick={()=>props.excluirLinha(props.item.matricula)} />
       </div>
       
 
@@ -85,20 +96,51 @@ function LinhaTabelaTurmas(props) {
 
 const Tabela = ({search}) => {
 
+    const [tempData,setTempData] = useState(DATA)
+    const [teste,setTeste] = useState(tempData)
+    
+
+
+
+
+    useEffect(()=>{
+        const filtered = users.filter(user => {
+            
+            return (
+                user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 
+                || user.matricula.indexOf(search) !== -1 
+                || user.ocupacao.toLowerCase().indexOf(search.toLowerCase()) !== -1
+            )
+            
+        }) 
+        setTeste(filtered)
+     },[search,tempData])
+    
+
+     function excluirLinha(matricula){
+        
+        
+    
+        const filtrado = tempData.filter(item=>{return(
+          matricula != item.matricula 
+        )})
+    
+          console.log(filtrado)
+          setTempData(filtrado)
+     }
+
+
+
+    const {state} = useContext(Context)
+
+    
+    
     const [users, setUsers] = useState(DATA)
 
-    const filtered = users.filter(user => {
-        return (
-            user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 
-            || user.matricula.indexOf(search) !== -1 
-            || user.ocupacao.toLowerCase().indexOf(search.toLowerCase()) !== -1
-        )
-    })
+    
 
-    const Lista = filtered.map(item => { return (
-        <LinhaTabelaTurmas key={item.matricula} name={item.name} matricula={item.matricula} ocupacao={item.ocupacao} listaDeAlunos={filtered}/>
-    )})
-
+     
+     console.log('renderizei')
     return (
         <div>
             <div className="TabelaTurmasBox">
@@ -107,7 +149,9 @@ const Tabela = ({search}) => {
                     <p className='TabelaTurmasLabel'style={{borderBottom:'none'}}>Matrícula</p>
                     <p className='TabelaTurmasLabel'style={{borderRight:'none',borderBottom:'none'}}>Ocupação</p>
                 </div>
-                {Lista}
+                {tempData.map(item => { return (
+        <LinhaTabelaTurmas key={item.matricula}  item ={item} excluirLinha={excluirLinha}/>
+    )})}
             </div>
         </div>
     )

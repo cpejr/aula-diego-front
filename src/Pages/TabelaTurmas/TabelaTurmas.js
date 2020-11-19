@@ -4,7 +4,8 @@ import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
 import Tabela from './Tabela'
 
-
+import useGlobalState from '../../Store/useGlobalState'
+import Context from '../../Store/context'
 
 
 
@@ -15,11 +16,15 @@ const data = {
 
 export default function TabelaTurmas() {
 
+
+  const store = useGlobalState();
+
   const [search,setSearch]=useState(' ')
 
 
 
   return (
+    <Context.Provider value={store}>
     <div className="TabelaTurmasContainer">
       <Sidebar />
       <div className="TabelaTurmasContent">
@@ -32,5 +37,6 @@ export default function TabelaTurmas() {
          <Tabela search={search}/> 
       </div>
     </div>
+    </Context.Provider>
   );
 }
