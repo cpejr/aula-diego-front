@@ -10,6 +10,7 @@ import ListaAlunos from "./Pages/ListaAlunos";
 import ListaTurma from './Pages/ListaTurmas/ListaTurmas'
 import NovaTurma from './Pages/NovaTurma/NovaTurma'
 import ConfigAluno from './Pages/ConfiguracaoAluno/ConfiguracaoAluno'
+import EditProfile from './Components/EditProfile/EditProfile'
 
 const routes = () => {
     return(
