@@ -10,7 +10,7 @@ import ListaAlunos from "./Pages/ListaAlunos";
 import ListaTurma from './Pages/ListaTurmas/ListaTurmas'
 import NovaTurma from './Pages/NovaTurma/NovaTurma'
 import ConfigAluno from './Pages/ConfiguracaoAluno/ConfiguracaoAluno'
-import EditProfile from './Components/EditProfile/EditProfile'
+import TurmasAdmin from './Pages/TurmasAdmin/TurmasAdmin'
 
 const routes = () => {
     return(
@@ -25,6 +25,7 @@ const routes = () => {
             <Route component={NovaTurma} exact path='/novaturma'/>
             <Route component={ConfigAluno} exact path='/config-aluno'/>
             <Route component={ListaTurma} exact path='/listaturma'/>
+            <Route component={TurmasAdmin} exact path='/turmasadmin'/>
         </BrowserRouter>
     )   
 }

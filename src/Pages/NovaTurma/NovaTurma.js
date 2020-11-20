@@ -1,10 +1,17 @@
-import React from "react";
+import React,{useState} from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
 import TabelaNovaTurma from "../../Components/TabelaNovaTurma/TabelaNovaTurma";
 import "./NovaTurma.css";
 
 export default function NovaTurma() {
+ 
+ 
+  const [search,setSearch] = useState("");
+
+
+
+
   return (
     <div className="NovaTurma">
       <Sidebar />
@@ -21,10 +28,11 @@ export default function NovaTurma() {
           <input
             placeholder="Busque pelo nome, matrícula ou curso"
             className="NovaTurmaInput"
+            onChange={e => setSearch(e.target.value)}
           />
         </div>
         <div>
-          <TabelaNovaTurma />
+          <TabelaNovaTurma search ={search} />
           <div className="ContainerButão">
             <button>Criar</button>
           </div>
