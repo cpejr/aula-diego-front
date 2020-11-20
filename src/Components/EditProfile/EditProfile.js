@@ -1,7 +1,4 @@
-import React, {useState} from "react";
-import "./ConfiguracaoAluno.css";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import React from "react";
 import InputMask from "react-input-mask";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -12,23 +9,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
 import { InputAdornment } from "@material-ui/core";
+import "./EditProfile.css";
 
-const ConfiguracaoAluno = (props) => {
-  const dataAluno = {
-    Nome: "Ana",
-    Empresa: "CPE Jr",
-    DataDeNascimento: "05/02/2000",
-    Email: "anacampana@cpejr.com.br",
-    Endereço: "Rua Padre Hermon",
-    Estado: "MG",
-    Sobrenome: "Campana",
-    Ocupacao: "Samu",
-    Sexo: "Feminino",
-    Telefone: "(99) 99999-9999",
-    Cidade: "Belo Horizonte",
-    Cep: "99999-9999",
-  };
-
+const FormDialog = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -62,9 +45,11 @@ const ConfiguracaoAluno = (props) => {
       });
   }
 
-
   return (
-    <div className="ConfigAluno">
+    <div>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        Open form dialog
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -255,74 +240,8 @@ const ConfiguracaoAluno = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Sidebar />
-      <div className="paginaConfigAluno">
-        <Header />
-        <div className="tituloConfigAluno">
-          <p>Suas Informações:</p>
-        </div>
-        <div className="blocoConfigAluno">
-          <div className="Listas">
-            <div className="Lista1">
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Nome:</p>
-                <p className="configAlunoOutput">{dataAluno.Nome}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Empresa:</p>
-                <p className="configAlunoOutput">{dataAluno.Empresa}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Data de Nascimento:</p>
-                <p className="configAlunoOutput">{dataAluno.DataDeNascimento}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Email:</p>
-                <p className="configAlunoOutput">{dataAluno.Email}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Endereço:</p>
-                <p className="configAlunoOutput">{dataAluno.Endereço}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Estado:</p>
-                <p className="configAlunoOutput">{dataAluno.Estado}</p>
-              </div>
-            </div>
-            <div className="Lista1">
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Sobrenome:</p>
-                <p className="configAlunoOutput">{dataAluno.Sobrenome}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Ocupação:</p>
-                <p className="configAlunoOutput">{dataAluno.Ocupacao}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Sexo:</p>
-                <p className="configAlunoOutput">{dataAluno.Sexo}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Telefone:</p>
-                <p className="configAlunoOutput">{dataAluno.Telefone}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Cidade:</p>
-                <p className="configAlunoOutput">{dataAluno.Cidade}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">CEP:</p>
-                <p className="configAlunoOutput">{dataAluno.Cep}</p>
-              </div>
-            </div>
-          </div>
-          <div className="acessarConfigAluno">
-            <button className="buttonConfigAluno" onClick={handleClickOpen}>Editar</button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default ConfiguracaoAluno;
+export default FormDialog;

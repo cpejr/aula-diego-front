@@ -1,0 +1,22 @@
+.ContainerTurmasAdmin{
+    display: flex;
+}
+.TurmasAdmin{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.ContainerCardsTurmasAdmin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #25003c;
+    margin-top: 50px;
+    flex-direction: column;
+}
+.CardsTurmasAdmin{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}

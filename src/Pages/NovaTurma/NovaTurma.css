@@ -20,3 +20,29 @@
     color: #25003c;
     font-size: 22px;
 }
+.NovaTurmaInput{
+    width: 50vw;
+    height: 5vh;
+    margin-left: 7%;
+    border: thin solid #707070;
+    border-radius: 5px;
+    color: #707070;
+}
+.ContainerButão{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin-top: 20px;
+    background-color: #fafafa;
+}
+.ContainerButão button{
+    background-color: #c63756;
+    border: none;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    color: white;
+    font-size: x-large;
+    font-weight: 500;
+}

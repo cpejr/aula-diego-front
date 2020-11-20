@@ -37,7 +37,6 @@
     justify-content: center;
     align-items: center;
     flex: 1;
-    margin-top: 5%;
 }
 
 .buttonConfigAluno{
@@ -65,20 +64,59 @@
     color: white;
     width: 50%;
     height: 100%;
+    margin: 1%;
 }
 
 .linhasConfigAluno{
     display: flex;
+    overflow: auto;
+    text-overflow: clip;
+    white-space: nowrap;
 }
 
 .configAlunoInput{
     color: grey;
-    font-size: 150%;
+    font-size: x-large;
 
 }
 
 .configAlunoOutput{
     color:#a7a7a7;
     margin-left: 1%;
-    font-size: 150%;
+    font-size: x-large;
+}
+
+
+@media (max-width: 1024px){
+    .configAlunoInput{
+        font-size: small;
+    }
+    .configAlunoOutput{
+        font-size: small;
+    }
+    .Listas{
+        flex-direction: column;
+        overflow: auto;
+    }
+    .Lista1{
+        width: 100%;
+    }  
+    .tituloConfigAluno{
+        font-size: large;
+    }
+}
+
+.formEditProfile{
+    display: flex;
+    flex-direction: column;
+}
+
+.fieldEditProfile{
+    border: none;
+    border-bottom: solid;
+    border-width: thin;
+    color: rgb(134, 134, 134);
+    background-color: white;
+    padding: 2px;
+    margin-bottom: 3px;
 }

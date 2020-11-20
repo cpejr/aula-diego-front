@@ -1,10 +1,11 @@
-import React from "react";
-import { FcGoogle } from "react-icons/fc";
-import { GoogleLogin } from "react-google-login";
+import React, {useState} from "react";
+import InputMask from 'react-input-mask'
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
+import { Input } from "@material-ui/core";
 
-const Cadastro = () => {
+const Cadastro = (props) => {
+
   return (
     <div className="pageCadastro">
       <div className="CadastroContent">
@@ -63,6 +64,20 @@ const Cadastro = () => {
               />
             </div>
             <div className="form-group">
+              <InputMask
+                type="date"
+                className="form-control"
+                id="exampleInputAddress"
+                placeholder="Data de Nascimento"
+                mask="99/99/9999"
+                spellCheck="false"
+                value={props.value}
+                onChange={props.onChange}
+                required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
+                required
+              />
+            </div>
+            <div className="form-group">
               <input
                 type="text"
                 className="form-control"
@@ -73,28 +88,30 @@ const Cadastro = () => {
               />
             </div>
             <div className="form-group">
-              <input
-                type="number"
+              <InputMask
+                mask="999999"
                 className="form-control"
                 id="exampleInputNumber"
                 placeholder="Número"
-                spellCheck="false"
+                value={props.value}
+                onChange={props.onChange}
                 required
               />
             </div>
             <div className="form-group">
-              <input
-                type="text"
+              <InputMask
                 className="form-control"
                 id="exampleInputCEP"
                 placeholder="CEP"
-                spellCheck="false"
+                mask="99999-999"
+                value={props.value}
+                onChange={props.onChange}
                 required
               />
             </div>
             <div className="form-group">
               <select className="form-control" required>
-                <option value="UF"></option>
+                <option value="UF">Selecione um Estado</option>
                 <option value="AC">Acre</option>
                 <option value="AL">Alagoas</option>
                 <option value="AP">Amapá</option>
@@ -135,13 +152,15 @@ const Cadastro = () => {
               />
             </div>
             <div className="form-group">
-              <input
-                type="tel"
+              <InputMask
+                mask="(99) 99999-9999"
                 className="form-control"
                 id="exampleInputTelefone"
                 placeholder="Telefone"
                 spellCheck="false"
                 required
+                value={props.value}
+                onChange={props.onChange}
               />
             </div>
            

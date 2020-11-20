@@ -50,7 +50,7 @@ function LinhaListaTurmas(props) {
       <div className="LinhaListaTurmasIcons">
         <EditIcon
           style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}
-          onClick={() => alert("fdsfds")}
+          onClick={() => alert("editado")}
         />
         <DeleteForeverIcon
           style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}

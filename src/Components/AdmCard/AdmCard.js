@@ -1,25 +1,24 @@
 import React from 'react'
 import './AdmCard.css'
 import {useHistory} from 'react-router-dom'
+import AddIcon from '@material-ui/icons/Add';
 
 
-export default function AdmCard() {
+export default function AdmCard({Icon, title, route}) {
 
     const history = useHistory();
 
     const routeChange = () =>{ 
-      let path = '/newlive'; 
+      let path = `${route}`; 
       history.push(path);
     }
 
-
-
     return (
         <div className='AdmCardsContainer' onClick={routeChange}>
-            <p style = {{fontSize: 24,marginBottom:0}}>
-                Adicionar Nova Live
+            <p style = {{fontSize: 24,marginBottom:30}}>
+                {title}
             </p>
-            <h1 style = {{fontSize: 120,fontWeight:700,paddingTop:-5}} > + </h1>
+            <Icon style = {{fontSize: 70,fontWeight:700,paddingTop:-5}} />
         </div>
     )
 }
