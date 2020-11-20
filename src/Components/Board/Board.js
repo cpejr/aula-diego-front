@@ -69,7 +69,7 @@ const DATA = [
 
 const LinhaBoard = ({nomeAluno, matricula, cursos}) =>  {
         return (
-            <div className='LinhaBoard'>
+                <div onClick={()=>alert(nomeAluno)} className='LinhaBoard'>
                 <p>{nomeAluno}</p>
                 <p>{matricula}</p>
                 <p>{cursos}</p>
@@ -81,6 +81,7 @@ const LinhaBoard = ({nomeAluno, matricula, cursos}) =>  {
 const Board = ({search}) => {
 
     const [users, setUsers] = useState(DATA)
+    const [open, setOpen] = useState(false)
 
     const filtered = users.filter(user => {
         return (
@@ -91,7 +92,7 @@ const Board = ({search}) => {
     })
 
     const Lista = filtered.map(item => { return (
-        <LinhaBoard key={item.matricula} nomeAluno={item.name} matricula={item.matricula} cursos={item.curso}/>
+        <LinhaBoard  key={item.matricula} nomeAluno={item.name} matricula={item.matricula} cursos={item.curso}/>
     )})
 
     return (
