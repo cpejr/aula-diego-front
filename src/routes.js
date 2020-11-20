@@ -11,6 +11,7 @@ import ListaTurma from './Pages/ListaTurmas/ListaTurmas'
 import NovaTurma from './Pages/NovaTurma/NovaTurma'
 import ConfigAluno from './Pages/ConfiguracaoAluno/ConfiguracaoAluno'
 import TabelaTurmas from './Pages/TabelaTurmas/TabelaTurmas'
+import TurmasAdmin from './Pages/TurmasAdmin/TurmasAdmin'
 
 const routes = () => {
     return(

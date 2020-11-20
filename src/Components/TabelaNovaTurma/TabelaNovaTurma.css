@@ -34,3 +34,8 @@
   font-weight: 600;
   font-size: x-large;
 }
+.IconeNovaTurma{
+  display: flex;
+  width: 250px;
+  margin: 0%;
+}
