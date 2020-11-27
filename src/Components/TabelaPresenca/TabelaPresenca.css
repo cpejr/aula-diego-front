@@ -1,0 +1,42 @@
+.LinhaTabelaPresenca{
+    display: grid;
+  grid-template-columns: repeat(4, 14vw);
+  margin-left: 3vw;
+  grid-column-gap: 120px;
+  margin-bottom: 1vh;
+  color: grey;
+  font-weight: 500;
+}
+
+
+
+
+.TitulosLiveInfo{
+    display: grid;
+    grid-template-columns: repeat(4, 13vw);
+    margin-left: 3vw;
+    margin-top: 2%;
+    grid-column-gap: 118px;
+    color: grey;
+    font-weight: 600;
+    font-size: x-large;
+  }
+
+
+  .ContainerLiveInfo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 7%;
+    background-color: white;
+    margin-right: 15%;
+    border-radius: 10px;
+    border: solid;
+    border-width: 2px;
+    border-color: #efefef;
+  }
+  .IconeLiveInfo{
+    display: flex;
+    width: 250px;
+    margin: 0%;
+  }
