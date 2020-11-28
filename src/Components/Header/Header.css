@@ -37,6 +37,15 @@
 
 }
 
+.aHeader{
+  color: white;
+
+}
+.aHeader:hover{
+  cursor: pointer;
+  color: white;
+}
+
 
 @media (max-width:1025px){
 

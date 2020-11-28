@@ -94,6 +94,10 @@
     margin-left: 10px;
 }
 
+.cadastreLogin:hover{
+    cursor: pointer;
+}
+
 .form-group input {
     background-color: rgb(48, 33, 54);
     border: 1.5px solid rgb(63, 55, 73);

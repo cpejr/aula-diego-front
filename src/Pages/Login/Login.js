@@ -3,12 +3,22 @@ import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
 import logo from "../../images/Logo2.png"
+import {useHistory} from 'react-router-dom'
 
 const responseGoogle = (response) => {
   console.log(response);
 };
 
 const Login = () => {
+
+
+  let history = useHistory();
+
+
+  function redirect(path){
+    history.push(path)
+  }
+
   return (
     <div className="pageLogin">
       <div className="content">
@@ -51,14 +61,14 @@ const Login = () => {
                 placeholder="Senha"
                 spellCheck="false"
               />
-              <button className="entrarButtonLogin">Entrar</button>
+              <button className="entrarButtonLogin" onClick={()=>redirect('/dashboard')}>Entrar</button>
             </div>
             <div className="esqueceuLoginDiv"><a className="esqueceuLogin">Esqueceu a senha?</a></div>
             <div className="resgateLogin">
               <h5 className="naotemLogin">Não tem conta?</h5>
               <a
                 className="cadastreLogin"
-                href="https://www.google.com.br"
+                onClick={()=>redirect('/cadastro')}
                 target="blank"
               >
                 Cadastre-se

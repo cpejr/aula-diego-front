@@ -4,6 +4,7 @@ import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import {useHistory} from 'react-router-dom'
 
 const data = [
   {
@@ -32,11 +33,17 @@ const data = [
 
 function LinhaListaTurmas(props) {
    
+
+    let history = useHistory();
     const [pin,setPin]=useState(true);
 
     function removeLine(id){
         setPin(!pin)
         
+    }
+
+    function redirect(path){
+      history.push(path)
     }
 
   return (
@@ -50,7 +57,7 @@ function LinhaListaTurmas(props) {
       <div className="LinhaListaTurmasIcons">
         <EditIcon
           style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}
-          onClick={() => alert("editado")}
+          onClick={() => redirect('/tabelaturmas')}
         />
         <DeleteForeverIcon
           style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}
