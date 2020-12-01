@@ -1,5 +1,5 @@
 import React from "react";
-import { GoVerified } from "react-icons/go";
+import { FaCheckCircle } from "react-icons/fa";
 import "./LiveFinal.css";
 export default function LiveFinal() {
   return (
@@ -11,7 +11,7 @@ export default function LiveFinal() {
               <p>Live Marketing Digital 20/10</p>
             </div>
             <div className="acessarFinalLive">
-              <GoVerified />
+              <FaCheckCircle />
             </div>
           </div>
         </div>

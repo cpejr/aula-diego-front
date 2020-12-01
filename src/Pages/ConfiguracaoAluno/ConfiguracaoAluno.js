@@ -70,11 +70,10 @@ const ConfiguracaoAluno = (props) => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edite suas Informações</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            Complete os campos e clique em "Concluir Edição", para alterar os dados do seu perfil
           </DialogContentText>
           <TextField
             autoFocus
@@ -317,7 +316,7 @@ const ConfiguracaoAluno = (props) => {
             </div>
           </div>
           <div className="acessarConfigAluno">
-            <button className="buttonConfigAluno" onClick={handleClickOpen}>Editar</button>
+            <button className="buttonConfigAluno" onClick={handleClickOpen}>Confirmar Edição</button>
           </div>
         </div>
       </div>
