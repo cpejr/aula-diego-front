@@ -247,10 +247,10 @@ const ConfiguracaoAluno = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={handleClose} color="primary">
-            Subscribe
+            Confirmar Edição
           </Button>
         </DialogActions>
       </Dialog>
@@ -316,7 +316,7 @@ const ConfiguracaoAluno = (props) => {
             </div>
           </div>
           <div className="acessarConfigAluno">
-            <button className="buttonConfigAluno" onClick={handleClickOpen}>Confirmar Edição</button>
+            <button className="buttonConfigAluno" onClick={handleClickOpen}>Editar</button>
           </div>
         </div>
       </div>
