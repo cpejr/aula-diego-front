@@ -14,6 +14,7 @@ import TabelaTurmas from './Pages/TabelaTurmas/TabelaTurmas'
 import TurmasAdmin from './Pages/TurmasAdmin/TurmasAdmin'
 import Infolive from './Pages/Infolive/Infolive'
 import ListaAlunosLive from './Pages/ListaAlunosLive/ListaAlunosLive'
+import AdicionarAdmin from './Pages/AddAdmin/AdicionarAdmin'
 const routes = () => {
     return(
         <BrowserRouter>
@@ -31,6 +32,7 @@ const routes = () => {
             <Route component={TabelaTurmas} exact path='/tabelaturmas'/>
             <Route component={Infolive} exact path='/infolive'/>
             <Route component={ListaAlunosLive} exact path='/listalive'/>
+            <Route component={AdicionarAdmin} exact path='/AdicionarAdmin'/>
         </BrowserRouter>
     )   
 }
