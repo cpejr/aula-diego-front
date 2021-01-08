@@ -10,7 +10,11 @@ const Dashboard = () => {
   return (
     <div
       className="pageWrapper"
-      style={{ display: "flex", backgroundColor: "#fafafa" }}
+      style={{
+        display: "flex",
+        backgroundColor: "#fafafa",
+        overflowX: "hidden",
+      }}
     >
       <Sidebar />
       <div style={{ flex: 1 }}>
