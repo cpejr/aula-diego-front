@@ -9,7 +9,7 @@ import Foto from "../../images/samu.svg";
 const Dashboard = () => {
   return (
     <div
-      className="Teste"
+      className="pageWrapper"
       style={{ display: "flex", backgroundColor: "#fafafa" }}
     >
       <Sidebar />
@@ -19,7 +19,7 @@ const Dashboard = () => {
           <img src={Foto} className="TitleImg" />
           <h1 style={{ fontWeight: 600 }}>PRÓXIMAS LIVES</h1>
         </div>
-        <div style={{ flex: 1 ,backgroundColor: "#fafafa"}}>
+        <div style={{ flex: 1, backgroundColor: "#fafafa" }}>
           <div className="DashboardCardContainer">
             <Cards
               title="SAMU"
@@ -43,7 +43,13 @@ const Dashboard = () => {
               hour="20:00"
             />
           </div>
-          <TabelaAtividades type="Lista 1" module="3" name="SAMU" date="22/11/2020" status={true}/>
+          <TabelaAtividades
+            type="Lista 1"
+            module="3"
+            name="SAMU"
+            date="22/11/2020"
+            status={true}
+          />
         </div>
       </div>
     </div>
