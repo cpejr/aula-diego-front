@@ -13,8 +13,14 @@ function SessionProvider({ children }) {
     window.localStorage.setItem("id", user.user_id);
   }
 
+  function handleLogout() {
+    window.localStorage.clear();
+    setSession(null);
+    return;
+  }
+
   return (
-    <SessionContext.Provider value={{ session, handleLogin }}>
+    <SessionContext.Provider value={{ session, handleLogin, handleLogout }}>
       {children}
     </SessionContext.Provider>
   );
