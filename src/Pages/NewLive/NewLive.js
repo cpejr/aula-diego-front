@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./NewLive.css";
 import Header from "../../Components/Header/Header";
 import SideBar from "../../Components/Sidebar/Sidebar";
+import api from "../../services/api";
 
 export default function NewLive() {
   const [state, setState] = useState({});
@@ -31,7 +32,10 @@ export default function NewLive() {
     data["start_date"] = start_date;
     delete data["time"];
 
-    //data is ready to be sent to the backend
+    api
+      .post("/newlive", data)
+      .then(() => setState({}))
+      .catch((err) => alert(`Não foi possível criar live \n ${err}`));
   }
 
   return (
