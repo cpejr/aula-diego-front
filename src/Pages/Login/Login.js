@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
 import logo from "../../images/Logo2.png";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
+import { useSession } from "../../Context/SessionContext";
 
 const responseGoogle = (response) => {
   console.log(response);
@@ -13,6 +14,7 @@ const responseGoogle = (response) => {
 export default function Login() {
   const history = useHistory();
   const [state, setState] = useState({});
+  const { handleLogin } = useSession();
 
   function validateForm() {
     const inputs = document.querySelectorAll("input");
@@ -34,7 +36,13 @@ export default function Login() {
       return alert("Preencha todos os campos para fazer login");
 
     api
-      .post("/login", state["email"], state["password"])
+      .post("/login", { ...state })
+      .then((response) => {
+        handleLogin({
+          accessToken: response.data.accessToken,
+          user: response.data.user,
+        });
+      })
       .then(redirect("/dashboard"));
   }
 

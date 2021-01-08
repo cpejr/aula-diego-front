@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
 import Cards from "../../Components/Cards/Cards";
@@ -6,7 +6,7 @@ import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades
 import "./index.css";
 import Foto from "../../images/samu.svg";
 
-const Dashboard = () => {
+export default function Dashboard() {
   return (
     <div
       className="pageWrapper"
@@ -58,6 +58,4 @@ const Dashboard = () => {
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}
