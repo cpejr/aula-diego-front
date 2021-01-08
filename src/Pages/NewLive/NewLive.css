@@ -1,125 +1,126 @@
-.NewLiveContainer{
-    display: flex;
-    flex: 1;
-    height: 100%;
+.NewLiveContainer {
+  display: flex;
+  flex: 1;
+  height: 100%;
 }
 
-.NewLiveContent{
-    flex:1;
+.NewLiveContent {
+  flex: 1;
 }
 
-.NewLiveFormContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: #fafafa;
+.NewLiveFormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: #fafafa;
 }
-.NewLiveFormBox{
-    display: grid;
-    grid-column-gap: 2vw;
-    height: 65%;
-    width: 84%;
-    background-color: white;
-    border-radius: 7px;
-    
-}
-
-.NewLiveInputLine{
-    background-color: #FFFF;
-    border-radius: 7px;
-    display: flex;
-   flex-direction: row;
-   align-items: center;
-
-  
+.NewLiveFormBox {
+  display: grid;
+  grid-column-gap: 2vw;
+  height: 65%;
+  width: 84%;
+  background-color: white;
+  border-radius: 7px;
 }
 
-.NewLiveLabel{
-    color: #9F9F9F;
-    font-weight: bold;
-    font-size: 25px;
-    margin-right: 3vw;
-    margin-left: 2vw;
+.NewLiveInputLine {
+  background-color: #ffff;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.NewLiveTitleInput{
-    width:70%;
-    height: 35%;
-    border-radius: 7px;
-    border: 1px solid black;
-    color: #b3b3b3;
+.NewLiveLabel {
+  color: #9f9f9f;
+  font-weight: bold;
+  font-size: 25px;
+  margin-right: 3vw;
+  margin-left: 2vw;
 }
 
-input:focus{
-    border:1px solid grey;
+.NewLiveTitleInput {
+  width: 70%;
+  height: 35%;
+  border-radius: 7px;
+  border: 1px solid black;
+  color: #b3b3b3;
 }
 
-.NewLiveLabelDataInput{
-    width:14.5%;
-    height: 35%;
-    border-radius: 7px;
-    border: 1px solid black;
-    color:#b3b3b3
+input:focus {
+  border: 1px solid grey;
 }
 
-.NewLiveLabelTimeInput{
-    width:11%;
-    height: 35%;
-    border-radius: 7px;
-    border: 1px solid black;
-    color:#b3b3b3
-
+.NewLiveLabelDataInput {
+  width: 14.5%;
+  height: 35%;
+  border-radius: 7px;
+  border: 1px solid black;
+  color: #b3b3b3;
 }
 
-
-.NewLiveLabelLinkInput{
-    width:38%;
-    height: 35%;
-    border-radius: 7px;
-    border: 1px solid black;
-    color:#b3b3b3
+.NewLiveLabelTimeInput {
+  width: 11%;
+  height: 35%;
+  border-radius: 7px;
+  border: 1px solid black;
+  color: #b3b3b3;
 }
 
-.NewLiveLabelDescriptionInput{
-    width:67%;
-    height: 80%;
-    border-radius: 7px;
-    border: 1px solid black;
-    color:#b3b3b3
+.NewLiveLabelLinkInput {
+  width: 38%;
+  height: 35%;
+  border-radius: 7px;
+  border: 1px solid black;
+  color: #b3b3b3;
 }
 
-.NewLiveButtonContainer{
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
+.NewLiveLabelDescriptionInput {
+  width: 67%;
+  height: 80%;
+  border-radius: 7px;
+  border: 1px solid black;
+  color: #b3b3b3;
 }
 
-.NewLiveButton{
-    background-color: #44AF72;
-    border:none;
-    color:white;
-    font-weight: 600;
-    font-size: 24px;
-    height: 6vh;
-    border-radius: 7px;
+.NewLiveLabelCodeInput {
+  border-radius: 7px;
+  height: 35%;
+  border: 1px solid black;
+  color: #b3b3b3;
 }
 
-.NewLiveForm{
-    flex:1;
-    display: grid;
+.NewLiveButtonContainer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 }
 
-.NewLiveTitle{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #fafafa;
-    font-weight: 600;
-    color: #25003C;
-    font-size: 50px;
-    
+.NewLiveButton {
+  background-color: #44af72;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 24px;
+  height: 6vh;
+  border-radius: 7px;
+}
+
+.NewLiveForm {
+  flex: 1;
+  display: grid;
+}
+
+.NewLiveTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #25003c;
+  font-size: 50px;
 }
