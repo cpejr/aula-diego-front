@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext } from "react";
+import api from "../services/api";
 
 const SessionContext = createContext();
 
@@ -13,6 +14,26 @@ function SessionProvider({ children }) {
     window.localStorage.setItem("id", user.user_id);
   }
 
+  function loadSession() {
+    const accessToken =
+      session && session.accessToken
+        ? session.accessToken
+        : window.localStorage.getItem("accessToken");
+
+    const config = {
+      headers: {
+        authorization: "BEARER " + accessToken,
+      },
+    };
+
+    api.get("/verify", config).then((response) => {
+      response.data.verified === true
+        ? handleLogin({ accessToken, user: response.data.user })
+        : setSession(null);
+    });
+    return;
+  }
+
   function handleLogout() {
     window.localStorage.clear();
     setSession(null);
@@ -20,7 +41,9 @@ function SessionProvider({ children }) {
   }
 
   return (
-    <SessionContext.Provider value={{ session, handleLogin, handleLogout }}>
+    <SessionContext.Provider
+      value={{ session, handleLogin, handleLogout, loadSession }}
+    >
       {children}
     </SessionContext.Provider>
   );

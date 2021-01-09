@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Login from "./Pages/Login/Login";
 import Dashboard from "./Pages/Dashboard/index";
@@ -18,20 +18,22 @@ import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
 const routes = () => {
   return (
     <BrowserRouter>
-      <PrivateRoute component={Dashboard} exact path="/dashboard" />
-      <Route component={Login} exact path="/" />
-      <Route component={Live} exact path="/live" />
-      <Route component={Admin} exact path="/admin" />
-      <Route component={Newlive} exact path="/newlive" />
-      <Route component={Cadastro} exact path="/cadastro" />
-      <Route component={ListaAlunos} exact path="/listaAlunos"></Route>
-      <Route component={NovaTurma} exact path="/novaturma" />
-      <Route component={ConfigAluno} exact path="/config-aluno" />
-      <Route component={ListaTurma} exact path="/listaturma" />
-      <Route component={TurmasAdmin} exact path="/turmasadmin" />
-      <Route component={TabelaTurmas} exact path="/tabelaturmas" />
-      <Route component={Infolive} exact path="/infolive" />
-      <Route component={ListaAlunosLive} exact path="/listalive" />
+      <Switch>
+        <Route component={Login} exact path="/" />
+        <PrivateRoute component={Dashboard} exact path="/dashboard" />
+        <Route component={Live} exact path="/live" />
+        <Route component={Admin} exact path="/admin" />
+        <Route component={Newlive} exact path="/newlive" />
+        <Route component={Cadastro} exact path="/cadastro" />
+        <Route component={ListaAlunos} exact path="/listaAlunos"></Route>
+        <Route component={NovaTurma} exact path="/novaturma" />
+        <Route component={ConfigAluno} exact path="/config-aluno" />
+        <Route component={ListaTurma} exact path="/listaturma" />
+        <Route component={TurmasAdmin} exact path="/turmasadmin" />
+        <Route component={TabelaTurmas} exact path="/tabelaturmas" />
+        <Route component={Infolive} exact path="/infolive" />
+        <Route component={ListaAlunosLive} exact path="/listalive" />
+      </Switch>
     </BrowserRouter>
   );
 };

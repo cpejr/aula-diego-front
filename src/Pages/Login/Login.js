@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
@@ -55,7 +55,7 @@ export default function Login() {
       <div className="content">
         <img className="LoginImg" src={logo}></img>
         <div className="bloco">
-          <forms>
+          <form>
             <h1 className="entrarLogin">Entrar</h1>
             <GoogleLogin
               clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
@@ -113,7 +113,7 @@ export default function Login() {
                 Cadastre-se
               </a>
             </div>
-          </forms>
+          </form>
         </div>
       </div>
     </div>
