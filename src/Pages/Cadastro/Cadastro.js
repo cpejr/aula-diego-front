@@ -1,17 +1,16 @@
-import React, {useState} from "react";
-import InputMask from 'react-input-mask'
+import React, { useState } from "react";
+import InputMask from "react-input-mask";
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
 import { Input } from "@material-ui/core";
 
 const Cadastro = (props) => {
-
   return (
     <div className="pageCadastro">
       <div className="CadastroContent">
         <img className="CadastroImg" src={logo}></img>
         <div className="blocoCadastro">
-          <forms>
+          <form>
             <h1 className="entrarCadastro">Cadastre-se</h1>
             <div className="form-group">
               <input
@@ -73,7 +72,8 @@ const Cadastro = (props) => {
                 spellCheck="false"
                 value={props.value}
                 onChange={props.onChange}
-                required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
+                required
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
                 required
               />
             </div>
@@ -163,9 +163,9 @@ const Cadastro = (props) => {
                 onChange={props.onChange}
               />
             </div>
-           
+
             <button className="entrarButtonCadastro">Cadastrar</button>
-          </forms>
+          </form>
         </div>
       </div>
     </div>
