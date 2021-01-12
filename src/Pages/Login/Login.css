@@ -1,146 +1,148 @@
-.pageLogin{
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background: rgb(41,0,67);
-    background: linear-gradient(180deg, rgba(41,0,67,1) 0%, rgba(177,23,52,1) 200%);
-    align-items: center;
-    justify-content: center;
+.pageLogin {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: rgb(41, 0, 67);
+  background: linear-gradient(
+    180deg,
+    rgba(41, 0, 67, 1) 0%,
+    rgba(177, 23, 52, 1) 200%
+  );
+  align-items: center;
+  justify-content: center;
 }
 
-
-.bloco{
-    width: 400px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(13, 10, 14, 0.6);
-    border-radius: 20px;
-    color: white;
-    padding: 15px;
+.bloco {
+  width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(13, 10, 14, 0.6);
+  border-radius: 20px;
+  color: white;
+  padding: 15px;
 }
 
-.entrarLogin{
-    font-size: xx-large;
-    color : rgb(244, 232, 242);
-    margin-top: 5%;
-    margin-bottom: 7%;
+.loginForm {
+  width: 100%;
 }
 
-.insiraLogin{
-    font-size: medium;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: 	rgb(244, 232, 242)
+.entrarLogin {
+  font-size: xx-large;
+  color: rgb(244, 232, 242);
+  margin-top: 5%;
+  margin-bottom: 7%;
 }
 
-.googleButton{
-    width: 100%;
-    height: 50px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    background-color: rgb(48, 33, 54);
-    border: 1px solid rgb(63, 55, 73);
-    border-radius: 10px;
+.insiraLogin {
+  font-size: medium;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: rgb(244, 232, 242);
 }
- 
-.entrarButtonLogin{
-    margin-top: 15px; 
-    border-radius: 8px;
-    height: 50px;
-    width: 100%;
-    background-color: rgb(198, 53, 84);
-    border: 2px solid #B11734;
-    color : rgb(244, 232, 242);
-    outline:none;
-    border:none;
 
+.googleButton {
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(48, 33, 54);
+  border: 1px solid rgb(63, 55, 73);
+  border-radius: 10px;
+}
+
+.entrarButtonLogin {
+  margin-top: 15px;
+  border-radius: 8px;
+  height: 50px;
+  width: 100%;
+  background-color: rgb(198, 53, 84);
+  border: 2px solid #b11734;
+  color: rgb(244, 232, 242);
+  outline: none;
+  border: none;
 }
 
 .entrarButtonLogin :focus {
-    outline: none;
-    border:none;
+  outline: none;
+  border: none;
 }
 
-.googleText{
-    margin: auto auto auto auto;
-    color: grey;
+.googleText {
+  margin: auto auto auto auto;
+  color: grey;
 }
 
-.esqueceuLogin{
-    font-size: small;
+.esqueceuLogin {
+  font-size: small;
 }
 
 .esqueceuLoginDiv {
-    width: 100%;
+  width: 100%;
 }
 
-.naotemLogin{
-    font-size: medium;
-    margin-top: 2px;
+.naotemLogin {
+  font-size: medium;
+  margin-top: 2px;
 }
 
-.resgateLogin{
-    margin-top: 3px;
-    display: flex;
-    margin-left: 2px;
-    margin-bottom: 2px;
+.resgateLogin {
+  margin-top: 3px;
+  display: flex;
+  margin-left: 2px;
+  margin-bottom: 2px;
 }
 
-.cadastreLogin{
-    margin-top: 1px;
-    font-size: medium;
-    margin-left: 10px;
+.cadastreLogin {
+  margin-top: 1px;
+  font-size: medium;
+  margin-left: 10px;
 }
 
-.cadastreLogin:hover{
-    cursor: pointer;
+.cadastreLogin:hover {
+  cursor: pointer;
 }
 
 .form-group input {
-    background-color: rgb(48, 33, 54);
-    border: 1.5px solid rgb(63, 55, 73);
-    height: 50px;
-    border-radius: 10px;
-    margin-bottom: 0.3rem;
+  background-color: rgb(48, 33, 54);
+  border: 1.5px solid rgb(63, 55, 73);
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 0.3rem;
 }
 
 .LoginImg {
-    width: 400px;
-    margin-bottom: 40px;
+  width: 400px;
+  margin-bottom: 40px;
 }
 
-input:focus, input:active{
-    border-color: #FF0000;
-    outline:0px !important;
-    -webkit-appearance:none;
-    box-shadow: none !important;
-  }
-
+input:focus,
+input:active {
+  border-color: #ff0000;
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+}
 
 @media (max-width: 600px) {
-    dis
-    .pageLogin{
-        display: block;
-    }
-    .bloco {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(13, 10, 14, 0.3);
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-        max-width: 90%
-    }
+  dis .pageLogin {
+    display: block;
+  }
+  .bloco {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 10, 14, 0.3);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    max-width: 90%;
+  }
 
-    .LoginImg {
-        padding: 5%;
-        width: 100%;
-        margin-bottom: 0rem;
-        max-width: 400px
-    }
-
-    
-
+  .LoginImg {
+    padding: 5%;
+    width: 100%;
+    margin-bottom: 0rem;
+    max-width: 400px;
+  }
 }
