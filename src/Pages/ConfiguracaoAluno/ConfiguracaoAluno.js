@@ -1,4 +1,6 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
+import { useSession } from "../../Context/SessionContext";
+import api from "../../services/api";
 import "./ConfiguracaoAluno.css";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
@@ -13,8 +15,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
 import { InputAdornment } from "@material-ui/core";
 
-const ConfiguracaoAluno = (props) => {
-  const dataAluno = {
+export default function ConfiguracaoAluno(props) {
+  const dataAlunoHardCoded = {
     Nome: "Ana",
     Empresa: "CPE Jr",
     DataDeNascimento: "05/02/2000",
@@ -28,6 +30,20 @@ const ConfiguracaoAluno = (props) => {
     Cidade: "Belo Horizonte",
     Cep: "99999-9999",
   };
+
+  const [dataAluno, setDataAluno] = useState("");
+  const { session } = useSession();
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        authorization: session.accessToken,
+      },
+    };
+    api.get(`/user/${session.user.user_id}`, config).then((response) => {
+      setDataAluno(response.data.user); //acho que os dados estão vindo em inglês, mas os nomes aqui estão em português. Conferir isso e alterar mais tarde
+    });
+  }, []);
 
   const [open, setOpen] = React.useState(false);
 
@@ -62,7 +78,6 @@ const ConfiguracaoAluno = (props) => {
       });
   }
 
-
   return (
     <div className="ConfigAluno">
       <Dialog
@@ -73,7 +88,8 @@ const ConfiguracaoAluno = (props) => {
         <DialogTitle id="form-dialog-title">Edite suas Informações</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Complete os campos e clique em "Concluir Edição", para alterar os dados do seu perfil
+            Complete os campos e clique em "Concluir Edição", para alterar os
+            dados do seu perfil
           </DialogContentText>
           <TextField
             autoFocus
@@ -273,7 +289,9 @@ const ConfiguracaoAluno = (props) => {
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Data de Nascimento:</p>
-                <p className="configAlunoOutput">{dataAluno.DataDeNascimento}</p>
+                <p className="configAlunoOutput">
+                  {dataAluno.DataDeNascimento}
+                </p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Email:</p>
@@ -316,12 +334,12 @@ const ConfiguracaoAluno = (props) => {
             </div>
           </div>
           <div className="acessarConfigAluno">
-            <button className="buttonConfigAluno" onClick={handleClickOpen}>Editar</button>
+            <button className="buttonConfigAluno" onClick={handleClickOpen}>
+              Editar
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default ConfiguracaoAluno;
+}
