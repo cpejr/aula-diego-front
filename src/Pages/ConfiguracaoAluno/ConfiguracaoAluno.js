@@ -33,19 +33,30 @@ export default function ConfiguracaoAluno(props) {
 
   const [dataAluno, setDataAluno] = useState("");
   const { session } = useSession();
+  const [editInputs, setEditInputs] = useState({});
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const config = {
       headers: {
-        authorization: session.accessToken,
+        authorization: "BEARER " + session.accessToken,
       },
     };
-    api.get(`/user/${session.user.user_id}`, config).then((response) => {
-      setDataAluno(response.data.user); //acho que os dados estão vindo em inglês, mas os nomes aqui estão em português. Conferir isso e alterar mais tarde
-    });
+    console.log(session.user.user_id);
+    api
+      .get(`/user/${session.user.user_id}`, config)
+      .then((response) => {
+        console.log(response.data);
+        setDataAluno(response.data); //acho que os dados estão vindo em inglês, mas os nomes aqui estão em português. Conferir isso e alterar mais tarde
+      })
+      .catch((error) => {
+        console.log("error");
+      });
   }, []);
 
-  const [open, setOpen] = React.useState(false);
+  function handleChange(e) {
+    setEditInputs({ ...editInputs, [e.target.name]: e.target.value });
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -91,18 +102,20 @@ export default function ConfiguracaoAluno(props) {
             Complete os campos e clique em "Concluir Edição", para alterar os
             dados do seu perfil
           </DialogContentText>
-          <TextField
+          {/* <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="email"
+            name='email'
             placeholder="Email"
             type="email"
             fullWidth
-          />
+          /> */}
           <TextField
             type="text"
             className="form-control"
-            id="exampleInputName"
+            id="name"
+            name="name"
             placeholder="Nome"
             spellCheck="false"
             required
@@ -110,7 +123,8 @@ export default function ConfiguracaoAluno(props) {
           <TextField
             type="email"
             className="form-control"
-            id="exampleFormControlInput1"
+            id="email"
+            name="email"
             placeholder="Email"
             spellCheck="false"
             required
@@ -118,7 +132,8 @@ export default function ConfiguracaoAluno(props) {
           <TextField
             type="password"
             className="form-control"
-            id="exampleInputPassword1"
+            id="password"
+            name="password"
             placeholder="Senha"
             spellCheck="false"
             required
@@ -127,7 +142,8 @@ export default function ConfiguracaoAluno(props) {
           <TextField
             type="password"
             className="form-control"
-            id="exampleInputPassword1"
+            id="password-confirmation"
+            name="password-confirmation"
             placeholder="Confirme sua Senha"
             spellCheck="false"
             required
@@ -138,12 +154,12 @@ export default function ConfiguracaoAluno(props) {
             validateOnMount
             initialValues={{
               cep: "",
-              logradouro: "",
-              numero: "",
+              street: "",
+              number: "",
               complemento: "",
               bairro: "",
-              cidade: "",
-              uf: "",
+              city: "",
+              state: "",
             }}
             render={({ isValid, setFieldValue }) => (
               <Form className="formEditProfile">
@@ -156,13 +172,13 @@ export default function ConfiguracaoAluno(props) {
                 />
                 <Field
                   className="fieldEditProfile"
-                  name="logradouro"
+                  name="street"
                   type="text"
                   placeholder="Logradouro"
                 />
                 <Field
                   className="fieldEditProfile"
-                  name="numero"
+                  name="number"
                   type="text"
                   placeholder="Número"
                 />
@@ -171,23 +187,25 @@ export default function ConfiguracaoAluno(props) {
                   name="complemento"
                   type="text"
                   placeholder="Complemento"
+                  // não tem isso no db
                 />
                 <Field
                   className="fieldEditProfile"
                   name="bairro"
                   type="text"
                   placeholder="Bairro"
+                  // não tem isso no db
                 />
                 <Field
                   className="fieldEditProfile"
-                  name="cidade"
+                  name="city"
                   type="text"
                   placeholder="Cidade"
                 />
                 <Field
                   className="fieldEditProfile"
                   component="select"
-                  name="uf"
+                  name="state"
                 >
                   <option value={null}>Selecione o Estado</option>
                   <option value="AC">Acre</option>
@@ -281,55 +299,54 @@ export default function ConfiguracaoAluno(props) {
             <div className="Lista1">
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Nome:</p>
-                <p className="configAlunoOutput">{dataAluno.Nome}</p>
+                <p className="configAlunoOutput">{dataAluno.name}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Empresa:</p>
-                <p className="configAlunoOutput">{dataAluno.Empresa}</p>
+                <p className="configAlunoOutput">{dataAluno.company}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Data de Nascimento:</p>
-                <p className="configAlunoOutput">
-                  {dataAluno.DataDeNascimento}
-                </p>
+                <p className="configAlunoOutput">{dataAluno.birthdate}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Email:</p>
-                <p className="configAlunoOutput">{dataAluno.Email}</p>
+                <p className="configAlunoOutput">{dataAluno.email}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Endereço:</p>
-                <p className="configAlunoOutput">{dataAluno.Endereço}</p>
+                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>{" "}
+                {/* MEXER AQUI */}
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Estado:</p>
-                <p className="configAlunoOutput">{dataAluno.Estado}</p>
+                <p className="configAlunoOutput">{dataAluno.state}</p>
               </div>
             </div>
             <div className="Lista1">
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Sobrenome:</p>
-                <p className="configAlunoOutput">{dataAluno.Sobrenome}</p>
+                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Ocupação:</p>
-                <p className="configAlunoOutput">{dataAluno.Ocupacao}</p>
+                <p className="configAlunoOutput">{dataAluno.occupation}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Sexo:</p>
-                <p className="configAlunoOutput">{dataAluno.Sexo}</p>
+                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Telefone:</p>
-                <p className="configAlunoOutput">{dataAluno.Telefone}</p>
+                <p className="configAlunoOutput">{dataAluno.phone}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Cidade:</p>
-                <p className="configAlunoOutput">{dataAluno.Cidade}</p>
+                <p className="configAlunoOutput">{dataAluno.city}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">CEP:</p>
-                <p className="configAlunoOutput">{dataAluno.Cep}</p>
+                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>
               </div>
             </div>
           </div>
