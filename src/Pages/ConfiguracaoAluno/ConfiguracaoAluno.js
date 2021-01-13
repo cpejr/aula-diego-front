@@ -1,4 +1,6 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
+import { useSession } from "../../Context/SessionContext";
+import api from "../../services/api";
 import "./ConfiguracaoAluno.css";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
@@ -13,55 +15,71 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
 import { InputAdornment } from "@material-ui/core";
 
-const ConfiguracaoAluno = (props) => {
-  const dataAluno = {
-    Nome: "Ana",
-    Empresa: "CPE Jr",
-    DataDeNascimento: "05/02/2000",
-    Email: "anacampana@cpejr.com.br",
-    Endereço: "Rua Padre Hermon",
-    Estado: "MG",
-    Sobrenome: "Campana",
-    Ocupacao: "Samu",
-    Sexo: "Feminino",
-    Telefone: "(99) 99999-9999",
-    Cidade: "Belo Horizonte",
-    Cep: "99999-9999",
-  };
-
+export default function ConfiguracaoAluno(props) {
+  const [dataAluno, setDataAluno] = useState("");
+  const { session } = useSession();
+  const [editInputs, setEditInputs] = useState({});
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
+    api
+      .get(`/user/${session.user.user_id}`, config)
+      .then((response) => {
+        const birthday = new Date(
+          response.data.birthdate.split("T")[0].split("-")[0],
+          response.data.birthdate.split("T")[0].split("-")[1],
+          response.data.birthdate.split("T")[0].split("-")[2]
+        );
+        const day = birthday.getDate();
+        console.log(birthday);
+        const month = birthday.getMonth();
+        const year = birthday.getFullYear();
+
+        setDataAluno({
+          ...response.data,
+          birthdate: `${day}/${month}/${year}`,
+        });
+      })
+      .catch((error) => {
+        console.log("error");
+      });
+  }, []);
+
+  function handleChange(e) {
+    setEditInputs({ ...editInputs, [e.target.name]: e.target.value });
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setEditInputs({});
     setOpen(false);
   };
 
-  function onSubmit(values, actions) {
-    console.log("SUBMIT", values);
-  }
-
-  function onBlurCep(ev, setFieldValue) {
-    const { value } = ev.target;
-
-    const cep = value?.replace(/[^0-9]/g, "");
-
-    if (cep?.length !== 8) {
-      return;
-    }
-
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFieldValue("logradouro", data.logradouro);
-        setFieldValue("bairro", data.bairro);
-        setFieldValue("cidade", data.localidade);
-        setFieldValue("uf", data.uf);
+  function handleSubmit() {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
+    const birthdate = new Date(editInputs["birthdate"]);
+    const editedData = editInputs;
+    editedData["birthdate"] = birthdate;
+    api
+      .put(`/user/${session.user.user_id}`, editedData, config)
+      .then(() => alert("dados enviados com sucesso"))
+      .catch((error) => {
+        handleClose();
+        alert("não foi possível alterar informações");
       });
   }
-
 
   return (
     <div className="ConfigAluno">
@@ -73,105 +91,78 @@ const ConfiguracaoAluno = (props) => {
         <DialogTitle id="form-dialog-title">Edite suas Informações</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Complete os campos e clique em "Concluir Edição", para alterar os dados do seu perfil
+            Complete os campos e clique em "Concluir Edição", para alterar os
+            dados do seu perfil
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            placeholder="Email"
-            type="email"
-            fullWidth
-          />
           <TextField
             type="text"
             className="form-control"
-            id="exampleInputName"
+            id="name"
+            name="name"
             placeholder="Nome"
             spellCheck="false"
             required
+            onChange={handleChange}
+            value={editInputs["name"]}
           />
           <TextField
             type="email"
             className="form-control"
-            id="exampleFormControlInput1"
+            id="email"
+            name="email"
             placeholder="Email"
             spellCheck="false"
             required
+            onChange={handleChange}
+            value={editInputs["email"]}
           />
-          <TextField
+          {/* <TextField
             type="password"
             className="form-control"
-            id="exampleInputPassword1"
+            id="password"
+            name="password"
             placeholder="Senha"
             spellCheck="false"
             required
+            onChange={handleChange}
+            value={editInputs["password"]}
           />
 
           <TextField
             type="password"
             className="form-control"
-            id="exampleInputPassword1"
+            id="password-confirmation"
+            name="password-confirmation"
             placeholder="Confirme sua Senha"
             spellCheck="false"
             required
-          />
+            onChange={handleChange}
+            value={editInputs["password-confirmation"]}
+          /> */}
 
           <Formik
-            onSubmit={onSubmit}
+            // onSubmit={onSubmit}
             validateOnMount
             initialValues={{
-              cep: "",
-              logradouro: "",
-              numero: "",
-              complemento: "",
-              bairro: "",
-              cidade: "",
-              uf: "",
+              city: "",
+              state: "",
             }}
             render={({ isValid, setFieldValue }) => (
               <Form className="formEditProfile">
                 <Field
                   className="fieldEditProfile"
-                  name="cep"
-                  type="text"
-                  placeholder="CEP"
-                  onBlur={(ev) => onBlurCep(ev, setFieldValue)}
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="logradouro"
-                  type="text"
-                  placeholder="Logradouro"
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="numero"
-                  type="text"
-                  placeholder="Número"
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="complemento"
-                  type="text"
-                  placeholder="Complemento"
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="bairro"
-                  type="text"
-                  placeholder="Bairro"
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="cidade"
+                  name="city"
                   type="text"
                   placeholder="Cidade"
+                  onChange={handleChange}
+                  value={editInputs["city"]}
                 />
                 <Field
                   className="fieldEditProfile"
                   component="select"
-                  name="uf"
+                  name="state"
+                  onChange={handleChange}
+                  value={editInputs["state"]}
                 >
                   <option value={null}>Selecione o Estado</option>
                   <option value="AC">Acre</option>
@@ -210,6 +201,7 @@ const ConfiguracaoAluno = (props) => {
             type="date"
             className="form-control"
             id="exampleInputAddress"
+            name="birthdate"
             format="dd/mm/yyyy"
             placeholder="Data de Nascimento"
             mask="99/99/9999"
@@ -219,37 +211,26 @@ const ConfiguracaoAluno = (props) => {
             required
             pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
             required
+            onChange={handleChange}
+            value={editInputs["birthdate"]}
           />
           <TextField
             type="text"
             className="form-control"
-            id="exampleInputTrabalho"
+            id="company"
+            name="company"
             placeholder="Empresa"
             spellCheck="false"
             required
-          />
-          <TextField
-            type="text"
-            className="form-control"
-            id="exampleInputAddress"
-            placeholder="Endereço"
-            spellCheck="false"
-            required
-          />
-          <TextField
-            type="text"
-            className="form-control"
-            id="exampleInputSexo"
-            placeholder="Sexo"
-            spellCheck="false"
-            required
+            onChange={handleChange}
+            value={editInputs["company"]}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Confirmar Edição
           </Button>
         </DialogActions>
@@ -265,63 +246,48 @@ const ConfiguracaoAluno = (props) => {
             <div className="Lista1">
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Nome:</p>
-                <p className="configAlunoOutput">{dataAluno.Nome}</p>
+                <p className="configAlunoOutput">{dataAluno.name}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Empresa:</p>
-                <p className="configAlunoOutput">{dataAluno.Empresa}</p>
+                <p className="configAlunoOutput">{dataAluno.company}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Data de Nascimento:</p>
-                <p className="configAlunoOutput">{dataAluno.DataDeNascimento}</p>
+                <p className="configAlunoOutput">{dataAluno.birthdate}</p>{" "}
+                {/* isso precisa ser convertido para uma data real, tá vindo em segundos ou algo assim */}
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Email:</p>
-                <p className="configAlunoOutput">{dataAluno.Email}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Endereço:</p>
-                <p className="configAlunoOutput">{dataAluno.Endereço}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Estado:</p>
-                <p className="configAlunoOutput">{dataAluno.Estado}</p>
+                <p className="configAlunoOutput">{dataAluno.email}</p>
               </div>
             </div>
             <div className="Lista1">
               <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Sobrenome:</p>
-                <p className="configAlunoOutput">{dataAluno.Sobrenome}</p>
-              </div>
-              <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Ocupação:</p>
-                <p className="configAlunoOutput">{dataAluno.Ocupacao}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Sexo:</p>
-                <p className="configAlunoOutput">{dataAluno.Sexo}</p>
+                <p className="configAlunoOutput">{dataAluno.occupation}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Telefone:</p>
-                <p className="configAlunoOutput">{dataAluno.Telefone}</p>
+                <p className="configAlunoOutput">{dataAluno.phone}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Cidade:</p>
-                <p className="configAlunoOutput">{dataAluno.Cidade}</p>
+                <p className="configAlunoOutput">{dataAluno.city}</p>
               </div>
               <div className="linhasConfigAluno">
-                <p className="configAlunoInput">CEP:</p>
-                <p className="configAlunoOutput">{dataAluno.Cep}</p>
+                <p className="configAlunoInput">Estado:</p>
+                <p className="configAlunoOutput">{dataAluno.state}</p>
               </div>
             </div>
           </div>
           <div className="acessarConfigAluno">
-            <button className="buttonConfigAluno" onClick={handleClickOpen}>Editar</button>
+            <button className="buttonConfigAluno" onClick={handleClickOpen}>
+              Editar
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default ConfiguracaoAluno;
+}
