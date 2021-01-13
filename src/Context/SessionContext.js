@@ -26,12 +26,11 @@ function SessionProvider({ children }) {
       },
     };
 
-    api.get("/verify", config).then((response) => {
+    return api.get("/verify", config).then((response) => {
       response.data.verified === true
         ? handleLogin({ accessToken, user: response.data.user })
         : setSession(null);
     });
-    return;
   }
 
   function handleLogout() {

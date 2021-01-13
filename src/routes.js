@@ -27,7 +27,7 @@ const routes = () => {
         <Route component={Cadastro} exact path="/cadastro" />
         <Route component={ListaAlunos} exact path="/listaAlunos"></Route>
         <Route component={NovaTurma} exact path="/novaturma" />
-        <Route component={ConfigAluno} exact path="/config-aluno" />
+        <PrivateRoute component={ConfigAluno} exact path="/config-aluno" />
         <Route component={ListaTurma} exact path="/listaturma" />
         <Route component={TurmasAdmin} exact path="/turmasadmin" />
         <Route component={TabelaTurmas} exact path="/tabelaturmas" />

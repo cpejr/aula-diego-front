@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
 import logo from "../../images/Logo2.png";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 
@@ -42,8 +42,13 @@ export default function Login() {
           accessToken: response.data.accessToken,
           user: response.data.user,
         });
+        redirect("/dashboard");
       })
-      .then(redirect("/dashboard"));
+      .catch((error) =>
+        alert(
+          "não foi possível fazer login, verifique os dados e tente novamente"
+        )
+      );
   }
 
   function redirect(path) {
@@ -55,7 +60,7 @@ export default function Login() {
       <div className="content">
         <img className="LoginImg" src={logo}></img>
         <div className="bloco">
-          <form>
+          <form className="loginForm">
             <h1 className="entrarLogin">Entrar</h1>
             <GoogleLogin
               clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
