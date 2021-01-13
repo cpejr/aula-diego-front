@@ -49,7 +49,7 @@
 
 .LinhaTabelaAtividades {
   display: grid;
-  grid-template-columns: repeat(5, 15vw);
+  grid-template-columns: repeat(5, 12vw);
   margin-left: 3vw;
   grid-column-gap: 10px;
   border-bottom: 1px #efefef;
