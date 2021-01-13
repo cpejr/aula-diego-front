@@ -16,21 +16,6 @@ import { Formik, Field, Form } from "formik";
 import { InputAdornment } from "@material-ui/core";
 
 export default function ConfiguracaoAluno(props) {
-  const dataAlunoHardCoded = {
-    Nome: "Ana",
-    Empresa: "CPE Jr",
-    DataDeNascimento: "05/02/2000",
-    Email: "anacampana@cpejr.com.br",
-    Endereço: "Rua Padre Hermon",
-    Estado: "MG",
-    Sobrenome: "Campana",
-    Ocupacao: "Samu",
-    Sexo: "Feminino",
-    Telefone: "(99) 99999-9999",
-    Cidade: "Belo Horizonte",
-    Cep: "99999-9999",
-  };
-
   const [dataAluno, setDataAluno] = useState("");
   const { session } = useSession();
   const [editInputs, setEditInputs] = useState({});
@@ -42,12 +27,23 @@ export default function ConfiguracaoAluno(props) {
         authorization: "BEARER " + session.accessToken,
       },
     };
-    console.log(session.user.user_id);
     api
       .get(`/user/${session.user.user_id}`, config)
       .then((response) => {
-        console.log(response.data);
-        setDataAluno(response.data); //acho que os dados estão vindo em inglês, mas os nomes aqui estão em português. Conferir isso e alterar mais tarde
+        const birthday = new Date(
+          response.data.birthdate.split("T")[0].split("-")[0],
+          response.data.birthdate.split("T")[0].split("-")[1],
+          response.data.birthdate.split("T")[0].split("-")[2]
+        );
+        const day = birthday.getDate();
+        console.log(birthday);
+        const month = birthday.getMonth();
+        const year = birthday.getFullYear();
+
+        setDataAluno({
+          ...response.data,
+          birthdate: `${day}/${month}/${year}`,
+        });
       })
       .catch((error) => {
         console.log("error");
@@ -63,29 +59,25 @@ export default function ConfiguracaoAluno(props) {
   };
 
   const handleClose = () => {
+    setEditInputs({});
     setOpen(false);
   };
 
-  function onSubmit(values, actions) {
-    console.log("SUBMIT", values);
-  }
-
-  function onBlurCep(ev, setFieldValue) {
-    const { value } = ev.target;
-
-    const cep = value?.replace(/[^0-9]/g, "");
-
-    if (cep?.length !== 8) {
-      return;
-    }
-
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFieldValue("logradouro", data.logradouro);
-        setFieldValue("bairro", data.bairro);
-        setFieldValue("cidade", data.localidade);
-        setFieldValue("uf", data.uf);
+  function handleSubmit() {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
+    const birthdate = new Date(editInputs["birthdate"]);
+    const editedData = editInputs;
+    editedData["birthdate"] = birthdate;
+    api
+      .put(`/user/${session.user.user_id}`, editedData, config)
+      .then(() => alert("dados enviados com sucesso"))
+      .catch((error) => {
+        handleClose();
+        alert("não foi possível alterar informações");
       });
   }
 
@@ -102,15 +94,6 @@ export default function ConfiguracaoAluno(props) {
             Complete os campos e clique em "Concluir Edição", para alterar os
             dados do seu perfil
           </DialogContentText>
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            name='email'
-            placeholder="Email"
-            type="email"
-            fullWidth
-          /> */}
           <TextField
             type="text"
             className="form-control"
@@ -119,6 +102,8 @@ export default function ConfiguracaoAluno(props) {
             placeholder="Nome"
             spellCheck="false"
             required
+            onChange={handleChange}
+            value={editInputs["name"]}
           />
           <TextField
             type="email"
@@ -128,8 +113,10 @@ export default function ConfiguracaoAluno(props) {
             placeholder="Email"
             spellCheck="false"
             required
+            onChange={handleChange}
+            value={editInputs["email"]}
           />
-          <TextField
+          {/* <TextField
             type="password"
             className="form-control"
             id="password"
@@ -137,6 +124,8 @@ export default function ConfiguracaoAluno(props) {
             placeholder="Senha"
             spellCheck="false"
             required
+            onChange={handleChange}
+            value={editInputs["password"]}
           />
 
           <TextField
@@ -147,17 +136,14 @@ export default function ConfiguracaoAluno(props) {
             placeholder="Confirme sua Senha"
             spellCheck="false"
             required
-          />
+            onChange={handleChange}
+            value={editInputs["password-confirmation"]}
+          /> */}
 
           <Formik
-            onSubmit={onSubmit}
+            // onSubmit={onSubmit}
             validateOnMount
             initialValues={{
-              cep: "",
-              street: "",
-              number: "",
-              complemento: "",
-              bairro: "",
               city: "",
               state: "",
             }}
@@ -165,47 +151,18 @@ export default function ConfiguracaoAluno(props) {
               <Form className="formEditProfile">
                 <Field
                   className="fieldEditProfile"
-                  name="cep"
-                  type="text"
-                  placeholder="CEP"
-                  onBlur={(ev) => onBlurCep(ev, setFieldValue)}
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="street"
-                  type="text"
-                  placeholder="Logradouro"
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="number"
-                  type="text"
-                  placeholder="Número"
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="complemento"
-                  type="text"
-                  placeholder="Complemento"
-                  // não tem isso no db
-                />
-                <Field
-                  className="fieldEditProfile"
-                  name="bairro"
-                  type="text"
-                  placeholder="Bairro"
-                  // não tem isso no db
-                />
-                <Field
-                  className="fieldEditProfile"
                   name="city"
                   type="text"
                   placeholder="Cidade"
+                  onChange={handleChange}
+                  value={editInputs["city"]}
                 />
                 <Field
                   className="fieldEditProfile"
                   component="select"
                   name="state"
+                  onChange={handleChange}
+                  value={editInputs["state"]}
                 >
                   <option value={null}>Selecione o Estado</option>
                   <option value="AC">Acre</option>
@@ -244,6 +201,7 @@ export default function ConfiguracaoAluno(props) {
             type="date"
             className="form-control"
             id="exampleInputAddress"
+            name="birthdate"
             format="dd/mm/yyyy"
             placeholder="Data de Nascimento"
             mask="99/99/9999"
@@ -253,37 +211,26 @@ export default function ConfiguracaoAluno(props) {
             required
             pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
             required
+            onChange={handleChange}
+            value={editInputs["birthdate"]}
           />
           <TextField
             type="text"
             className="form-control"
-            id="exampleInputTrabalho"
+            id="company"
+            name="company"
             placeholder="Empresa"
             spellCheck="false"
             required
-          />
-          <TextField
-            type="text"
-            className="form-control"
-            id="exampleInputAddress"
-            placeholder="Endereço"
-            spellCheck="false"
-            required
-          />
-          <TextField
-            type="text"
-            className="form-control"
-            id="exampleInputSexo"
-            placeholder="Sexo"
-            spellCheck="false"
-            required
+            onChange={handleChange}
+            value={editInputs["company"]}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Confirmar Edição
           </Button>
         </DialogActions>
@@ -307,34 +254,18 @@ export default function ConfiguracaoAluno(props) {
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Data de Nascimento:</p>
-                <p className="configAlunoOutput">{dataAluno.birthdate}</p>
+                <p className="configAlunoOutput">{dataAluno.birthdate}</p>{" "}
+                {/* isso precisa ser convertido para uma data real, tá vindo em segundos ou algo assim */}
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Email:</p>
                 <p className="configAlunoOutput">{dataAluno.email}</p>
               </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Endereço:</p>
-                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>{" "}
-                {/* MEXER AQUI */}
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Estado:</p>
-                <p className="configAlunoOutput">{dataAluno.state}</p>
-              </div>
             </div>
             <div className="Lista1">
               <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Sobrenome:</p>
-                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>
-              </div>
-              <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Ocupação:</p>
                 <p className="configAlunoOutput">{dataAluno.occupation}</p>
-              </div>
-              <div className="linhasConfigAluno">
-                <p className="configAlunoInput">Sexo:</p>
-                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Telefone:</p>
@@ -345,8 +276,8 @@ export default function ConfiguracaoAluno(props) {
                 <p className="configAlunoOutput">{dataAluno.city}</p>
               </div>
               <div className="linhasConfigAluno">
-                <p className="configAlunoInput">CEP:</p>
-                <p className="configAlunoOutput">{"NAO TEM NO DB"}</p>
+                <p className="configAlunoInput">Estado:</p>
+                <p className="configAlunoOutput">{dataAluno.state}</p>
               </div>
             </div>
           </div>
