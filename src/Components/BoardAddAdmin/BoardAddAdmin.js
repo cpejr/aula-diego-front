@@ -144,9 +144,9 @@ const LinhaBoard = ({ nomeAluno, matricula, curso, isAdm }) => {
       setOpen(true);
       isAdm = 0;
     } else {
+      setOpen(true);
       isAdm = 1;
-      return <div>{alert(nomeAluno + " virou administrador")}</div>;
-    }
+          }
   }
   return (
     <div className="LinhaBoard">
