@@ -6,7 +6,6 @@ import logo from "../../images/Logo2.png";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import firebase from "firebase";
 
 const responseGoogle = (response) => {
   console.log(response);
@@ -39,7 +38,6 @@ export default function Login() {
     api
       .post("/login", { ...state })
       .then((response) => {
-        console.log(response);
         handleLogin({
           accessToken: response.data.accessToken,
           user: response.data.user,
