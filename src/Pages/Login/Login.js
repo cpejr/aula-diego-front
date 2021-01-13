@@ -55,7 +55,7 @@ export default function Login() {
       <div className="content">
         <img className="LoginImg" src={logo}></img>
         <div className="bloco">
-          <form>
+          <form className="loginForm">
             <h1 className="entrarLogin">Entrar</h1>
             <GoogleLogin
               clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
