@@ -6,6 +6,7 @@ import logo from "../../images/Logo2.png";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
+import firebase from "firebase";
 
 const responseGoogle = (response) => {
   console.log(response);
@@ -38,6 +39,7 @@ export default function Login() {
     api
       .post("/login", { ...state })
       .then((response) => {
+        console.log(response);
         handleLogin({
           accessToken: response.data.accessToken,
           user: response.data.user,
@@ -55,7 +57,7 @@ export default function Login() {
       <div className="content">
         <img className="LoginImg" src={logo}></img>
         <div className="bloco">
-          <form>
+          <form className="loginForm">
             <h1 className="entrarLogin">Entrar</h1>
             <GoogleLogin
               clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
