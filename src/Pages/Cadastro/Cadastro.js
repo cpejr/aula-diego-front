@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import InputMask from "react-input-mask";
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
+import { useHistory } from "react-router-dom";
 import { Input } from "@material-ui/core";
 
+
 const Cadastro = (props) => {
+  const history = useHistory();
+  function redirect(path) {
+    history.push(path);
+  }
   return (
     <div className="pageCadastro">
       <div className="CadastroContent">
@@ -165,6 +171,16 @@ const Cadastro = (props) => {
             </div>
 
             <button className="entrarButtonCadastro">Cadastrar</button>
+            <div className="irLogin">
+              <h5 className="jatemLogin">Já possui Login?</h5>
+              <a
+                className="logincadastro"
+                onClick={() => redirect("/")}
+                target="blank"
+              >
+                Ir para Login
+              </a>
+            </div>
           </form>
         </div>
       </div>

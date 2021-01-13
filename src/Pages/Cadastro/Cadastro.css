@@ -5,7 +5,7 @@
     background: linear-gradient(180deg, rgba(41,0,67,1) 0%, rgba(177,23,52,1) 200%);
     align-items: center;
     justify-content: center;
-    height: 170%;
+    height: 187%;
 }
 
 
@@ -113,6 +113,19 @@ input:focus, input:active{
     -webkit-appearance:none;
     box-shadow: none !important;
   }
+.jatemLogin {
+    font-size: medium;
+    
+}
+.logincadastro{
+    margin-left: 8px;
+}
+.irLogin{
+    margin-top: 10px;
+    display: flex;
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
 
 @media (max-width: 600px) {
     dis
