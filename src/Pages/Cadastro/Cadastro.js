@@ -178,7 +178,7 @@ const Cadastro = (props) => {
                 onClick={() => redirect("/")}
                 target="blank"
               >
-                Ir para Login
+                Entrar
               </a>
             </div>
           </form>
