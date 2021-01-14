@@ -7,7 +7,7 @@ export default function PrivateRoute({ path, component }) {
   const { session, loadSession } = useSession();
 
   useEffect(() => {
-    loadSession();
+    loadSession().then(() => setLoading(false));
   }, []);
 
   useEffect(() => {

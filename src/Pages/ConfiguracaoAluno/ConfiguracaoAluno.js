@@ -22,6 +22,7 @@ export default function ConfiguracaoAluno(props) {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
+    console.log(session);
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -30,6 +31,7 @@ export default function ConfiguracaoAluno(props) {
     api
       .get(`/user/${session.user.user_id}`, config)
       .then((response) => {
+        console.log(response.data);
         const birthday = new Date(
           response.data.birthdate.split("T")[0].split("-")[0],
           response.data.birthdate.split("T")[0].split("-")[1],
@@ -46,7 +48,7 @@ export default function ConfiguracaoAluno(props) {
         });
       })
       .catch((error) => {
-        console.log("error");
+        console.log(error);
       });
   }, []);
 
