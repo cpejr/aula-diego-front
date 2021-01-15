@@ -31,14 +31,12 @@ export default function ConfiguracaoAluno(props) {
     api
       .get(`/user/${session.user.user_id}`, config)
       .then((response) => {
-        console.log(response.data);
         const birthday = new Date(
           response.data.birthdate.split("T")[0].split("-")[0],
           response.data.birthdate.split("T")[0].split("-")[1],
           response.data.birthdate.split("T")[0].split("-")[2]
         );
         const day = birthday.getDate();
-        console.log(birthday);
         const month = birthday.getMonth();
         const year = birthday.getFullYear();
 

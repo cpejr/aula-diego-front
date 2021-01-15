@@ -7,14 +7,30 @@ import { Redirect, useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 
-const responseGoogle = (response) => {
-  console.log(response);
-};
-
 export default function Login() {
   const history = useHistory();
   const [state, setState] = useState({});
   const { handleLogin } = useSession();
+
+  function responseGoogle(response) {
+    if (response.error) return;
+    const email = response.profileObj.email;
+    const google = true;
+    api
+      .post("/login", { email, google })
+      .then((response) => {
+        handleLogin({
+          accessToken: response.data.accessToken,
+          user: response.data.user,
+        });
+        redirect("/dashboard");
+      })
+      .catch((error) => {
+        alert(
+          "não foi possível encontrar o usuário, cadastre-se para prosseguir"
+        );
+      });
+  }
 
   function validateForm() {
     const inputs = document.querySelectorAll("input");
