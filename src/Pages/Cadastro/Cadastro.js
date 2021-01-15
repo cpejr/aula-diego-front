@@ -6,9 +6,14 @@ import { Link } from "react-router-dom";
 
 const Cadastro = (props) => {
   const [inputValues, setInputValues] = useState({});
+
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
   }, []);
+
+  function handleChange(e) {
+    setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+  }
 
   return (
     <div className="pageCadastro">
