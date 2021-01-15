@@ -29,6 +29,7 @@ const Cadastro = (props) => {
                 id="exampleInputName"
                 name="name"
                 value={inputValues["name"]}
+                onChange={handleChange}
                 placeholder="Nome"
                 spellCheck="false"
                 required
@@ -41,6 +42,7 @@ const Cadastro = (props) => {
                 id="exampleFormControlInput1"
                 name="email"
                 value={inputValues["email"]}
+                onChange={handleChange}
                 placeholder="Email"
                 spellCheck="false"
                 required
@@ -53,6 +55,7 @@ const Cadastro = (props) => {
                 id="exampleInputPassword1"
                 name="password"
                 value={inputValues["password"]}
+                onChange={handleChange}
                 placeholder="Senha"
                 spellCheck="false"
                 required
@@ -65,6 +68,7 @@ const Cadastro = (props) => {
                 id="exampleInputPassword1"
                 name="passwordConfirmation"
                 value={inputValues["passwordConfirmation"]}
+                onChange={handleChange}
                 placeholder="Confirme sua Senha"
                 spellCheck="false"
                 required
@@ -77,6 +81,7 @@ const Cadastro = (props) => {
                 id="exampleInputTrabalho"
                 name="company"
                 value={inputValues["company"]}
+                onChange={handleChange}
                 placeholder="Empresa"
                 spellCheck="false"
                 required
@@ -89,18 +94,23 @@ const Cadastro = (props) => {
                 id="exampleInputAddress"
                 name="birthdate"
                 value={inputValues["birthdate"]}
+                onChange={handleChange}
                 placeholder="Data de Nascimento"
                 mask="99/99/9999"
                 spellCheck="false"
-                value={props.value}
-                onChange={props.onChange}
                 required
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
                 required
               />
             </div>
             <div className="form-group">
-              <select className="form-control" required>
+              <select
+                className="form-control"
+                name="state"
+                value={inputValues["state"]}
+                onChange={(onChange = { handleChange })}
+                required
+              >
                 <option value="UF">Selecione um Estado</option>
                 <option value="AC">Acre</option>
                 <option value="AL">Alagoas</option>
@@ -138,6 +148,7 @@ const Cadastro = (props) => {
                 id="exampleInputTelefone"
                 name="phone"
                 value={inputValues["phone"]}
+                onChange={handleChange}
                 placeholder="Telefone"
                 spellCheck="false"
                 required
