@@ -26,9 +26,7 @@ export default function Login() {
         redirect("/dashboard");
       })
       .catch((error) => {
-        alert(
-          "não foi possível encontrar o usuário, cadastre-se para prosseguir"
-        );
+        history.push("/cadastro");
       });
   }
 
