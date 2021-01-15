@@ -88,27 +88,14 @@ const Cadastro = (props) => {
               />
             </div>
             <div className="form-group">
-              <InputMask
-                type="date"
-                className="form-control"
-                id="exampleInputAddress"
-                name="birthdate"
-                value={inputValues["birthdate"]}
-                onChange={handleChange}
-                placeholder="Data de Nascimento"
-                mask="99/99/9999"
-                spellCheck="false"
-                required
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
-                required
-              />
+              <input type="date" placeholder="Data de Nascimento" className= "w-100" required/>
             </div>
             <div className="form-group">
               <select
                 className="form-control"
                 name="state"
                 value={inputValues["state"]}
-                onChange={(onChange = { handleChange })}
+                onChange={ handleChange }
                 required
               >
                 <option value="UF">Selecione um Estado</option>
