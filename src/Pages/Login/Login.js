@@ -14,6 +14,7 @@ export default function Login() {
 
   function responseGoogle(response) {
     if (response.error) return;
+    console.log(response);
     const email = response.profileObj.email;
     const google = true;
     api
@@ -26,9 +27,13 @@ export default function Login() {
         redirect("/dashboard");
       })
       .catch((error) => {
-        alert(
-          "não foi possível encontrar o usuário, cadastre-se para prosseguir"
-        );
+        history.push({
+          pathname: "/cadastro",
+          state: {
+            email: response.profileObj.email,
+            name: response.profileObj.name,
+          },
+        });
       });
   }
 

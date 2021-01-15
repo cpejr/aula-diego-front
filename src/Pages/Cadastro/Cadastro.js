@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
 import { Link } from "react-router-dom";
 
 const Cadastro = (props) => {
+  const [inputValues, setInputValues] = useState({});
+  useEffect(() => {
+    if (props.location.state) setInputValues(props.location.state);
+  }, []);
+
   return (
     <div className="pageCadastro">
       <div className="CadastroContent">
@@ -17,6 +22,8 @@ const Cadastro = (props) => {
                 type="text"
                 className="form-control"
                 id="exampleInputName"
+                name="name"
+                value={inputValues["name"]}
                 placeholder="Nome"
                 spellCheck="false"
                 required
@@ -27,6 +34,8 @@ const Cadastro = (props) => {
                 type="email"
                 className="form-control"
                 id="exampleFormControlInput1"
+                name="email"
+                value={inputValues["email"]}
                 placeholder="Email"
                 spellCheck="false"
                 required
@@ -37,6 +46,8 @@ const Cadastro = (props) => {
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"
+                name="password"
+                value={inputValues["password"]}
                 placeholder="Senha"
                 spellCheck="false"
                 required
@@ -47,6 +58,8 @@ const Cadastro = (props) => {
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"
+                name="passwordConfirmation"
+                value={inputValues["passwordConfirmation"]}
                 placeholder="Confirme sua Senha"
                 spellCheck="false"
                 required
@@ -57,6 +70,8 @@ const Cadastro = (props) => {
                 type="text"
                 className="form-control"
                 id="exampleInputTrabalho"
+                name="company"
+                value={inputValues["company"]}
                 placeholder="Empresa"
                 spellCheck="false"
                 required
@@ -67,6 +82,8 @@ const Cadastro = (props) => {
                 type="date"
                 className="form-control"
                 id="exampleInputAddress"
+                name="birthdate"
+                value={inputValues["birthdate"]}
                 placeholder="Data de Nascimento"
                 mask="99/99/9999"
                 spellCheck="false"
@@ -74,38 +91,6 @@ const Cadastro = (props) => {
                 onChange={props.onChange}
                 required
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                id="exampleInputAddress"
-                placeholder="Endereço"
-                spellCheck="false"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <InputMask
-                mask="999999"
-                className="form-control"
-                id="exampleInputNumber"
-                placeholder="Número"
-                value={props.value}
-                onChange={props.onChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <InputMask
-                className="form-control"
-                id="exampleInputCEP"
-                placeholder="CEP"
-                mask="99999-999"
-                value={props.value}
-                onChange={props.onChange}
                 required
               />
             </div>
@@ -142,25 +127,15 @@ const Cadastro = (props) => {
               </select>
             </div>
             <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                id="exampleInputSexo"
-                placeholder="Sexo"
-                spellCheck="false"
-                required
-              />
-            </div>
-            <div className="form-group">
               <InputMask
                 mask="(99) 99999-9999"
                 className="form-control"
                 id="exampleInputTelefone"
+                name="phone"
+                value={inputValues["phone"]}
                 placeholder="Telefone"
                 spellCheck="false"
                 required
-                value={props.value}
-                onChange={props.onChange}
               />
             </div>
 
