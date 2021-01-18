@@ -13,7 +13,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
-import { InputAdornment } from "@material-ui/core";
+import { UTCToLocal } from "../../utils/convertDate";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState("");
@@ -22,33 +22,35 @@ export default function ConfiguracaoAluno(props) {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    console.log(session);
+    getAndSetData().catch((error) =>
+      alert("Não foi possível receber os dados do usuário")
+    );
+  }, []);
+
+  function getAndSetData() {
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
     };
-    api
-      .get(`/user/${session.user.user_id}`, config)
-      .then((response) => {
-        const birthday = new Date(
-          response.data.birthdate.split("T")[0].split("-")[0],
-          response.data.birthdate.split("T")[0].split("-")[1],
-          response.data.birthdate.split("T")[0].split("-")[2]
-        );
-        const day = birthday.getDate();
-        const month = birthday.getMonth();
-        const year = birthday.getFullYear();
 
-        setDataAluno({
-          ...response.data,
-          birthdate: `${day}/${month}/${year}`,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+    return api.get(`/user/${session.user.user_id}`, config).then((response) => {
+      const birthdate = new Date(response.data.birthdate).toLocaleDateString(
+        "pt-BR"
+      );
+      const phone = response.data.phone.replace(/[^\w\s]/gi, ""); // essa regex remove todos os caracteres especiais
+      const formattedPhone = `(${phone.slice(0, 2)}) ${phone.slice(
+        2,
+        7
+      )}-${phone.slice(7, 11)}`;
+
+      setDataAluno({
+        ...response.data,
+        birthdate: birthdate,
+        phone: formattedPhone,
       });
-  }, []);
+    });
+  }
 
   function handleChange(e) {
     setEditInputs({ ...editInputs, [e.target.name]: e.target.value });
@@ -69,7 +71,8 @@ export default function ConfiguracaoAluno(props) {
         authorization: "BEARER " + session.accessToken,
       },
     };
-    const birthdate = new Date(editInputs["birthdate"]);
+    let birthdate = new Date(editInputs["birthdate"]);
+    birthdate = UTCToLocal(birthdate).getTime();
     const editedData = editInputs;
     editedData["birthdate"] = birthdate;
     api
@@ -116,32 +119,8 @@ export default function ConfiguracaoAluno(props) {
             onChange={handleChange}
             value={editInputs["email"]}
           />
-          {/* <TextField
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            placeholder="Senha"
-            spellCheck="false"
-            required
-            onChange={handleChange}
-            value={editInputs["password"]}
-          />
-
-          <TextField
-            type="password"
-            className="form-control"
-            id="password-confirmation"
-            name="password-confirmation"
-            placeholder="Confirme sua Senha"
-            spellCheck="false"
-            required
-            onChange={handleChange}
-            value={editInputs["password-confirmation"]}
-          /> */}
 
           <Formik
-            // onSubmit={onSubmit}
             validateOnMount
             initialValues={{
               city: "",
