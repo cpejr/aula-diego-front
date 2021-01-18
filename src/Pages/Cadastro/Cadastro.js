@@ -3,9 +3,14 @@ import InputMask from "react-input-mask";
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
 import { Link } from "react-router-dom";
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ptBR from "date-fns/locale/pt-BR";
 
 const Cadastro = (props) => {
   const [inputValues, setInputValues] = useState({});
+  const [startDate, setStartDate] = useState(null);
+  registerLocale("br", ptBR);
 
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
@@ -88,7 +93,18 @@ const Cadastro = (props) => {
               />
             </div>
             <div className="form-group">
-              <InputMask
+              <DatePicker
+                width="100%"
+                className="form-control"
+                id="exampleInputAddress"
+                name="birthdate"
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                placeholderText="Data de Nascimento"
+                locale="br"
+                required
+              />
+              {/* <InputMask
                 type="date"
                 className="form-control"
                 id="exampleInputAddress"
@@ -101,14 +117,14 @@ const Cadastro = (props) => {
                 required
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
                 required
-              />
+              /> */}
             </div>
             <div className="form-group">
               <select
                 className="form-control"
                 name="state"
                 value={inputValues["state"]}
-                onChange={(onChange = { handleChange })}
+                onChange={handleChange}
                 required
               >
                 <option value="UF">Selecione um Estado</option>
