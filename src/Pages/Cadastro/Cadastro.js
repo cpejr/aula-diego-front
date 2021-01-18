@@ -108,7 +108,7 @@ const Cadastro = (props) => {
                 className="form-control"
                 name="state"
                 value={inputValues["state"]}
-                onChange={(onChange = { handleChange })}
+                onChange={handleChange}
                 required
               >
                 <option value="UF">Selecione um Estado</option>
