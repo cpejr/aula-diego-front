@@ -9,16 +9,18 @@ function SessionProvider({ children }) {
   function handleLogin({ accessToken, user }) {
     setSession({ accessToken, user });
     window.localStorage.clear();
-    window.localStorage.setItem("accessToken", accessToken);
-    window.localStorage.setItem("name", user.name);
-    window.localStorage.setItem("id", user.user_id);
+    window.localStorage.setItem(
+      "session",
+      JSON.stringify({ accessToken, name: user.name })
+    );
   }
 
   function loadSession() {
+    const parsedSession = JSON.parse(window.localStorage.getItem("session"));
     const accessToken =
       session && session.accessToken
         ? session.accessToken
-        : window.localStorage.getItem("accessToken");
+        : parsedSession["accessToken"];
 
     const config = {
       headers: {
