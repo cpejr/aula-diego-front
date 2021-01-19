@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useSession } from "../Context/SessionContext";
 
-export default function PrivateRoute({ path, component }) {
+export default function PrivateRoute({
+  path,
+  studentComponent,
+  adminComponent,
+  masterComponent,
+}) {
   const [loading, setLoading] = useState(true);
+  const [renderComponent, setRenderComponent] = useState();
   const { session, loadSession } = useSession();
 
   useEffect(() => {
@@ -11,14 +18,25 @@ export default function PrivateRoute({ path, component }) {
   }, []);
 
   useEffect(() => {
-    return () => setLoading(false);
-  }, [session]);
+    const userType = session && session.user.type;
+    console.log(userType);
+    switch (userType) {
+      case "student":
+        setRenderComponent(studentComponent);
+        break;
+      case "admin":
+        setRenderComponent(adminComponent);
+        break;
+      case "master":
+        setRenderComponent(masterComponent);
+      default:
+        setRenderComponent(() => <h1>CARREGANDO INFORMAÇÕES</h1>);
+        console.log("default ");
+        break;
+    }
+  }, [loading]);
 
-  return loading ? (
-    <h1>CARREGANDO INFORMAÇÕES</h1> // pagina de loading é carregada se loading == true
-  ) : session && session.accessToken ? ( // se loading == false, olhamos para a sessão
-    <Route to={path} component={component} /> // se houver uma sessão, acessamos a página privada
-  ) : (
-    <Redirect to="/" /> // se não houver sessão, redirecionamos para a página inicial
-  );
+  if (loading) return <h1>CARREGANDO INFORMAÇÕES</h1>;
+  if (session && session.accessToken) return renderComponent;
+  else return <Redirect to="/" />;
 }
