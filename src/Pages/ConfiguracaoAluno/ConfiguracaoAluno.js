@@ -19,10 +19,9 @@ export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState("");
   const { session } = useSession();
   const [editInputs, setEditInputs] = useState({});
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    console.log(session);
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
