@@ -13,7 +13,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
-import { InputAdornment } from "@material-ui/core";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState("");
@@ -115,29 +114,6 @@ export default function ConfiguracaoAluno(props) {
             onChange={handleChange}
             value={editInputs["email"]}
           />
-          {/* <TextField
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            placeholder="Senha"
-            spellCheck="false"
-            required
-            onChange={handleChange}
-            value={editInputs["password"]}
-          />
-
-          <TextField
-            type="password"
-            className="form-control"
-            id="password-confirmation"
-            name="password-confirmation"
-            placeholder="Confirme sua Senha"
-            spellCheck="false"
-            required
-            onChange={handleChange}
-            value={editInputs["password-confirmation"]}
-          /> */}
 
           <Formik
             // onSubmit={onSubmit}
