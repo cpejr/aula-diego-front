@@ -17,10 +17,9 @@ function SessionProvider({ children }) {
 
   function loadSession() {
     const parsedSession = JSON.parse(window.localStorage.getItem("session"));
+    const storageToken = parsedSession && parsedSession["accessToken"];
     const accessToken =
-      session && session.accessToken
-        ? session.accessToken
-        : parsedSession["accessToken"];
+      session && session.accessToken ? session.accessToken : storageToken;
 
     const config = {
       headers: {
