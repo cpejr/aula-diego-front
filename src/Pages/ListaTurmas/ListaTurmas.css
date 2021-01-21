@@ -1,21 +1,23 @@
 .ListaTurmasContainer{
     display: flex;
-    width: 79vw;
     height: 100vh;
     background-color: #fafafa;
     display: flex;
     margin-left: 20%;
 }
 
-.ListaTurmasContent{
-    
-    
+.TitleContainer{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 30vh;
 }
+
 
 .ListaTurmasTtitle{
     font-size: 60px;
     font-weight: 600;
-    margin-left: 10%;
 }
 
 .ListaTurmasLabelContainer{
@@ -75,6 +77,64 @@
 
 @media(max-width:780px){
     .ListaTurmasContainer{
+        display: flex;
+        height: 100vh;
         margin-left: 0%;
+        width: 100vw;
+    }
+    
+    .TitleContainer{
+        height: 10vh;
+        align-items: center;
+    }
+    
+    .ListaTurmasTtitle{
+        font-size: 35px;
+        font-weight: 600;
+        align-items: center;
+    }
+    
+    .ListaTurmasLabelContainer{
+        display: flex;
+        font-size: small;
+        font-weight: 800;
+        margin-left: 5%;
+        width: 60vw;
+    }
+    
+    .ListaTurmasDataContainer{
+        display: flex;
+        flex-direction: column;
+        height: min-content;
+        padding-left: 2%;
+        padding-right: 2%;
+        justify-content: center;
+        width: 100vw;
+    }
+    
+    .ListaTurmasLabel{
+        display: flex;
+        align-items: center;
+        padding: 1%;
+    }
+    
+    .LinhaListaTurmas{
+        display:flex;
+        border-radius: 5px;
+        margin: 3% 3%;
+    }
+    
+    .LinhaListaTurmas p{
+        padding: 1%;
+        font-size: 15px;
+        font-weight: 600;
+        margin-right: 5%;
+    }
+    
+    .LinhaListaTurmasIcons{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex: 1;
     }
   }

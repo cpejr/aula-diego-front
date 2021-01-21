@@ -77,19 +77,10 @@ export default function ListaTurmas() {
 
   return (
     <>
-    <div className="a">
-      <Header />
-    </div>
+    <Header />
     <div className="ListaTurmasContainer">
       <div className="ListaTurmasContent">
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
-            height: "30vh",
-          }}
-        >
+        <div className="TitleContainer">
           <h1 className="ListaTurmasTtitle">Turmas</h1>
         </div>
         <div className="ListaTurmasLabelContainer">
