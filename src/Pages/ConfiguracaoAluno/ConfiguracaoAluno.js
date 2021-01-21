@@ -220,7 +220,6 @@ export default function ConfiguracaoAluno(props) {
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Data de Nascimento:</p>
                 <p className="configAlunoOutput">{dataAluno.birthdate}</p>{" "}
-                {/* isso precisa ser convertido para uma data real, tá vindo em segundos ou algo assim */}
               </div>
               <div className="linhasConfigAluno">
                 <p className="configAlunoInput">Email:</p>
