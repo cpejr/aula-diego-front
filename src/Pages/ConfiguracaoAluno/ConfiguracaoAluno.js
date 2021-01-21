@@ -29,18 +29,8 @@ export default function ConfiguracaoAluno(props) {
     api
       .get(`/user/${session.user.user_id}`, config)
       .then((response) => {
-        const birthday = new Date(
-          response.data.birthdate.split("T")[0].split("-")[0],
-          response.data.birthdate.split("T")[0].split("-")[1],
-          response.data.birthdate.split("T")[0].split("-")[2]
-        );
-        const day = birthday.getDate();
-        const month = birthday.getMonth();
-        const year = birthday.getFullYear();
-
         setDataAluno({
           ...response.data,
-          birthdate: `${day}/${month}/${year}`,
         });
       })
       .catch((error) => {
