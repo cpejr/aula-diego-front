@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useSession } from "../Context/SessionContext";
 
@@ -8,6 +7,7 @@ export default function PrivateRoute({
   studentComponent,
   adminComponent,
   masterComponent,
+  ...rest
 }) {
   const [loading, setLoading] = useState(true);
   const [renderComponent, setRenderComponent] = useState();
@@ -19,22 +19,29 @@ export default function PrivateRoute({
 
   useEffect(() => {
     const userType = session && session.user.type;
-    console.log(userType);
     switch (userType) {
       case "student":
-        setRenderComponent(studentComponent);
+        setRenderComponent(
+          <Route {...rest} to={path} component={studentComponent} />
+        );
         break;
       case "admin":
-        setRenderComponent(adminComponent);
+        setRenderComponent(
+          <Route {...rest} to={path} component={adminComponent} />
+        );
         break;
       case "master":
-        setRenderComponent(masterComponent);
+        setRenderComponent(
+          <Route {...rest} to={path} component={masterComponent} />
+        );
       default:
-        setRenderComponent(() => <h1>CARREGANDO INFORMAÇÕES</h1>);
-        console.log("default ");
+        setRenderComponent(
+          <Route to={path} component={() => <h1>CARREGANDO</h1>} />
+        );
         break;
     }
-  }, [loading]);
+    console.log(renderComponent);
+  }, [session, studentComponent, adminComponent, masterComponent]);
 
   if (loading) return <h1>CARREGANDO INFORMAÇÕES</h1>;
   if (session && session.accessToken) return renderComponent;
