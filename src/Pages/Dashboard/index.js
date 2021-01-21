@@ -10,6 +10,10 @@ import { Directions, MarkunreadMailboxSharp } from "@material-ui/icons";
 
 export default function Dashboard() {
   return (
+    <>
+    <div style={{display: "flex"}}>
+    
+    </div>
     <div
       className="pageWrapper"
       style={{
@@ -17,10 +21,8 @@ export default function Dashboard() {
         backgroundColor: "#fafafa",
       }}
     >
-    
-        <Sidebar />
-        <div style={{ flex: 1 }}>
-          <Header />
+        <Header />
+        <div>
           <div className="DashboardTitle">
             <img src={Foto} className="TitleImg" />
             <h1 style={{ fontWeight: 600 }}>PRÓXIMAS LIVES</h1>
@@ -59,6 +61,7 @@ export default function Dashboard() {
           </div>
         </div>
     </div>
+    </>
   );
 }
 

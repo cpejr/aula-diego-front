@@ -9,11 +9,12 @@ li {
 }
 
 .sidebarContainer {
-  width: 400px;
+  width: 20vw;
   height: 100vh;
   background-color: white;
   font-weight: 500;
   flex-shrink: 0;
+  position: absolute;
 }
 
 .logoSidebar {
@@ -69,4 +70,24 @@ li {
   display: flex;
   margin-top: 10%;
   font-weight: 600;
+}
+
+@media(max-width:780px){
+  .sidebarPerfil{
+      display: none;
+  }
+
+  .logoContainer{
+    display: none;
+  }
+
+  .sidebarBody{
+    width: 50vw;
+    align-items: right;
+  }
+
+  .sidebarContainer{
+    width: 70vw;
+  }
+  
 }

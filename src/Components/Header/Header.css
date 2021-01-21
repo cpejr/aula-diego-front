@@ -1,6 +1,14 @@
+.Sidebar{
+  
+}
+
+.active{
+  display: none;
+}
+
 .headerContainer {
-  height: 10%;
-  width: 100%;
+  height: 10vh;
+  width: 98.9vw;
   background-color: #25003c;
   text-align: right;
   display: flex;
@@ -16,7 +24,6 @@
   margin-left: 3%;
   margin-right: 3%;
   margin-bottom: 0px;
-  
 }
 
 .HeaderElementsContainer {
@@ -46,6 +53,15 @@
   color: white;
 }
 
+@media(max-width:780px){
+  .Sidebar{
+      display: none;
+  }
+  .active{
+    margin-top: 15%;
+    display: block;
+  }
+}
 
 @media (max-width:1025px){
 

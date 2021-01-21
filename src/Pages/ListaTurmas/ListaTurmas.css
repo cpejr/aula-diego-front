@@ -1,14 +1,15 @@
 .ListaTurmasContainer{
-    width: 100%;
-    height: 100%;
+    display: flex;
+    width: 79vw;
+    height: 100vh;
     background-color: #fafafa;
     display: flex;
+    margin-left: 20%;
 }
 
 .ListaTurmasContent{
-    width: 100%;
-    height: 100%;
-
+    
+    
 }
 
 .ListaTurmasTtitle{
@@ -50,7 +51,7 @@
     border: thin solid grey;
     background-color: white;
     margin-bottom: 30px;
-    margin-right: 90px;
+    
 }
 
 .LinhaListaTurmas p{
@@ -71,3 +72,9 @@
     flex: 1;
 
 }
+
+@media(max-width:780px){
+    .ListaTurmasContainer{
+        margin-left: 0%;
+    }
+  }

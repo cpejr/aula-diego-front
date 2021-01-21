@@ -76,10 +76,12 @@ export default function ListaTurmas() {
     
 
   return (
+    <>
+    <div className="a">
+      <Header />
+    </div>
     <div className="ListaTurmasContainer">
-      <Sidebar />
       <div className="ListaTurmasContent">
-        <Header />
         <div
           style={{
             display: "flex",
@@ -110,5 +112,6 @@ export default function ListaTurmas() {
         </div>
       </div>
     </div>
+    </>
   );
 }

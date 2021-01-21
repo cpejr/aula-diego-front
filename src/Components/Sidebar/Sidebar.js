@@ -6,6 +6,7 @@ import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
 
 export default function Sidebar() {
+
   const history = useHistory();
   const { handleLogout } = useSession();
 

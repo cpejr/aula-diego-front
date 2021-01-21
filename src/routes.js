@@ -20,14 +20,14 @@ const routes = () => {
     <BrowserRouter>
       <Switch>
         <Route component={Login} exact path="/" />
-        <PrivateRoute component={Dashboard} exact path="/dashboard" />
+        <Route component={Dashboard} exact path="/dashboard" />
         <Route component={Live} exact path="/live" />
         <Route component={Admin} exact path="/admin" />
         <Route component={Newlive} exact path="/newlive" />
         <Route component={Cadastro} exact path="/cadastro" />
         <Route component={ListaAlunos} exact path="/listaAlunos"></Route>
         <Route component={NovaTurma} exact path="/novaturma" />
-        <PrivateRoute component={ConfigAluno} exact path="/config-aluno" />
+        <Route component={ConfigAluno} exact path="/config-aluno" />
         <Route component={ListaTurma} exact path="/listaturma" />
         <Route component={TurmasAdmin} exact path="/turmasadmin" />
         <Route component={TabelaTurmas} exact path="/tabelaturmas" />
