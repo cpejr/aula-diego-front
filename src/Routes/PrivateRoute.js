@@ -40,7 +40,6 @@ export default function PrivateRoute({
         );
         break;
     }
-    console.log(renderComponent);
   }, [session, studentComponent, adminComponent, masterComponent]);
 
   if (loading) return <h1>CARREGANDO INFORMAÇÕES</h1>;
