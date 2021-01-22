@@ -30,6 +30,7 @@ const Header = () => {
                     <img className='HeaderImg'src={Foto}></img>
                 </div>
             </div>
+            
         </>
     )
 }

@@ -9,9 +9,6 @@
   margin-right: 50px;
 }
 
-.active{
-  display: block;
-}
 
 .dashboardCardContainer{
   display: flex;
@@ -52,4 +49,9 @@
   .DashboardTitle{
     margin-bottom:0
   }
+
+  .pageWrapper{
+    margin-left: 0%;
+  }
+  
 }

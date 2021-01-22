@@ -1,9 +1,10 @@
 .Sidebar{
-  
+
 }
 
 .active{
   display: none;
+  
 }
 
 .headerContainer {
@@ -52,6 +53,7 @@
   cursor: pointer;
   color: white;
 }
+
 
 @media(max-width:780px){
   .Sidebar{

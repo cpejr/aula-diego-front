@@ -27,10 +27,10 @@ const Live = () => {
 
 
   return (
+    <>
+    <Header />
     <div className="Live">
-      <Sidebar />
       <div className="paginaLive">
-        <Header />
       { toggleView && <div className="blocoLive">
           <div className="tituloLive">
             <p>Live Marketing Digital 20/10</p>
@@ -45,6 +45,7 @@ const Live = () => {
        {!toggleView3 && <LiveFinal/>}
       </div>
     </div>
+    </>
   );
 };
 

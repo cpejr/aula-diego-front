@@ -18,7 +18,7 @@
 .menuBurger div.top {
     -webkit-transform: rotate(-45deg) translate(-7px, 6px);
     transform: rotate(-45deg) translate(-7px, 6px);
-    background-color: black;
+    /*background-color: black;*/
 }
 
 .menuBurger div.middle {
@@ -28,7 +28,7 @@
 .menuBurger div.bottom {
     -webkit-transform: rotate(45deg) translate(-8px, -7px);
     transform: rotate(45deg)  translate(-8px, -7px);
-    background-color: black;
+    /*background-color: black;*/
 }
 @media(max-width:780px){
     .menuBurger{
