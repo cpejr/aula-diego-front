@@ -10,45 +10,50 @@ import api from "../../services/api";
 
 export default function Cadastro(props) {
     const [inputValues, setInputValues] = useState({});
+    const [startDate, setStartDate] = useState(null);
+
     const history = useHistory();
     useEffect(() => {
-        if (props.location.state) 
-            setInputValues(props.location.state);
+      if (props.location.state) 
+        setInputValues(props.location.state);
         
     }, []);
 
     function handleChange(e) {
-        setInputValues({
-            ...inputValues,
-            [e.target.name]: e.target.value
-        });
+      setInputValues({
+        ...inputValues,
+        [e.target.name]: e.target.value
+      });
     }
     function validateForm() {
         const inputs = document.querySelectorAll("input");
       
-    for (let i = 0; i < inputs.length; ++ i) {
-        if (! inputs[i].value || inputs[i].value == "") return false;            
-    }
-      
-    if(inputValues["password"] !== inputValues["passwordConfirmation"]){
-           alert("As senhas digitadas não correspondem.")
-              return "pass";
-           } 
+        for (let i = 0; i < inputs.length; ++ i) {
+          if (! inputs[i].value || inputs[i].value == "") 
+            return false;            
+        }
+          
+        if (inputValues["password"] !== inputValues["passwordConfirmation"]) {
+          alert("As senhas digitadas não correspondem.")
+          return "pass";
+        }
+         
         return true;
     }    
   
     function handleSubmit(e) {
-        e.preventDefault();
-        if(validateForm() === "pass") return;
-        if (! validateForm()) 
-            return alert('Preencha todos os campos para se cadastrar');
-        let data = inputValues;
-        data.phone = data.phone.replace(/[^\w]/gi, '');
-        delete data.passwordConfirmation;
-        api.post('/newuser', data).then(() => {
-            history.push("/");
-    })
-    .catch((error) => alert('Não foi possível concluir o cadastro, tente novamente.'))
+      e.preventDefault();
+      if(validateForm() === "pass") return;
+      if (! validateForm()) 
+        return alert('Preencha todos os campos para se cadastrar');
+
+      let data = inputValues;
+      data.phone = data.phone.replace(/[^\w]/gi, '');
+      delete data.passwordConfirmation;
+
+      api.post('/newuser', data).then(() => {history.push("/");}
+      ).catch((error) => alert('Não foi possível concluir o cadastro, tente novamente.'))
+    }
   
     return (
         <div className="pageCadastro">
@@ -134,20 +139,6 @@ export default function Cadastro(props) {
                     locale="br"
                     required
                   />
-                  {/* <InputMask
-                    type="date"
-                    className="form-control"
-                    id="exampleInputAddress"
-                    name="birthdate"
-                    value={inputValues["birthdate"]}
-                    onChange={handleChange}
-                    placeholder="Data de Nascimento"
-                    mask="99/99/9999"
-                    spellCheck="false"
-                    required
-                    pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
-                    required
-                  /> */}
                 </div>
                 <div className="form-group">
                   <select
@@ -188,17 +179,26 @@ export default function Cadastro(props) {
                   </select>
                 </div>
                 <div className="form-group">
-                  <InputMask
-                    mask="(99) 99999-9999"
-                    className="form-control"
-                    id="exampleInputTelefone"
-                    name="phone"
-                    value={inputValues["phone"]}
+                  <InputMask mask="(99) 99999-9999" className="form-control" id="Telefone" name="phone"
+                    value={
+                        inputValues["phone"]
+                    }
                     onChange={handleChange}
                     placeholder="Telefone"
                     spellCheck="false"
-                    required
-              />
+                    required/>
+                  </div>
+
+                  <button className="entrarButtonCadastro" onClick = {handleSubmit}>Cadastrar</button>
+                  <div className="irLogin">
+                    <h5 className="jatemLogin">Já possui Login?</h5>
+                    <Link className="logincadastro" to="/">
+                        Entrar
+                    </Link>
+                </div>
+              </form>
+            </div>
+          </div>
        </div>
     );
 };
