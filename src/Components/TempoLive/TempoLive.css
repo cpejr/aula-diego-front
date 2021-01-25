@@ -1,54 +1,15 @@
-.TempoLive{
+.timer {
     display: flex;
-    width: 100%;
-    height: 100%;
-    background: #f5f5f5;
-
-}
-
-.paginaTempoLive{
-    width: 100%;
-    height: 100%;
-}
-
-.blocoTempoLive{
-    width: 85%;
-    height: 65%;
-    position: relative;
-    display: flex;
-    margin: auto;
-    margin-top: 7%;
-    background-image: linear-gradient(to right,#290043 73%, #B11734);
     border-radius: 8px;
-    padding: 2%;
-    flex-direction: column;
-}
-
-.tituloTempoLive{
-    font-size: xx-large;
-    color: white;
-    padding-top: 2%;
-    font-weight: 600;
-}
-
-.acessarTempoLive{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    margin-top: 5%;
-}
-
-.buttonTempoLive{
-    background-color: #c63756;  
-    border: none;
-    border-radius: 10px;
-    font-size: 16pt;
-    font-weight: 600;
-    margin-top: 10%;
     padding: 1%;
-    padding-left: 3%;
-    padding-right: 3%;
-    color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
+.timer p {
+    font-size: xx-large;
+    color: black;
+    font-weight: 600;
+    padding-top: 1%;
 }
