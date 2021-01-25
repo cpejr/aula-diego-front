@@ -79,7 +79,6 @@ const Tabela = ({ search }) => {
   const [tempData, setTempData] = useState(DATA);
   const [teste, setTeste] = useState(tempData);
 
-  
 
   function excluirLinha(matricula) {
     const filtrado = tempData.filter((item) => {

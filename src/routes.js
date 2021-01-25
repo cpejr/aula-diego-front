@@ -7,7 +7,7 @@ import Live from "./Pages/Live/Live";
 import Admin from "./Pages/Admin/Admin";
 import Newlive from "./Pages/NewLive/NewLive";
 import Cadastro from "./Pages/Cadastro/Cadastro";
-import ListaAlunos from "./Pages/ListaAlunos";
+import ListaAlunos from "./Pages/ListaAlunos/ListaAlunos";
 import ListaTurma from "./Pages/ListaTurmas/ListaTurmas";
 import NovaTurma from "./Pages/NovaTurma/NovaTurma";
 import ConfigAluno from "./Pages/ConfiguracaoAluno/ConfiguracaoAluno";
@@ -25,7 +25,7 @@ const routes = () => {
         <Route component={Admin} exact path="/admin" />
         <Route component={Newlive} exact path="/newlive" />
         <Route component={Cadastro} exact path="/cadastro" />
-        <Route component={ListaAlunos} exact path="/listaAlunos"></Route>
+        <Route component={ListaAlunos} exact path="/listaAlunos" />
         <Route component={NovaTurma} exact path="/novaturma" />
         <PrivateRoute component={ConfigAluno} exact path="/config-aluno" />
         <Route component={ListaTurma} exact path="/listaturma" />

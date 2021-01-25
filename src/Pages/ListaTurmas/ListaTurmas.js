@@ -29,10 +29,7 @@ const data = [
   },
 ];
 
-
-
-function LinhaListaTurmas(props) {
-   
+function LinhaListaTurmas(props) { 
 
     let history = useHistory();
     const [pin,setPin]=useState(true);
@@ -47,7 +44,6 @@ function LinhaListaTurmas(props) {
     }
 
   return (
-
    
     pin ?
    <div className="LinhaListaTurmas">
@@ -71,9 +67,7 @@ function LinhaListaTurmas(props) {
   );
 }
 
-export default function ListaTurmas() {
-  
-    
+export default function ListaTurmas() {   
 
   return (
     <div className="ListaTurmasContainer">
@@ -88,7 +82,7 @@ export default function ListaTurmas() {
             height: "30vh",
           }}
         >
-          <h1 className="ListaTurmasTtitle">Turmas</h1>
+          <h1 className="ListaTurmasTitle">Turmas</h1>
         </div>
         <div className="ListaTurmasLabelContainer">
           <p className="ListaTurmasLabel">Ocupação</p>
