@@ -15,13 +15,8 @@ const TempoLive = (props) => {
   }, []);
 
   return (
-    <div className="blocoTempoLive">
-      <div className="timer">
-        <p style={{marginTop: "5%" }}>Tempo que você está em Live: {seconds} segundos</p>
-      </div>
-      <div className="acessarTempoLive">
-        <button className="buttonTempoLive" onClick={props.handleToggle}>Certificar Live</button>
-      </div>
+    <div className="timer">
+      <p>Tempo que você está em Live: {seconds} segundos</p>
     </div>
   );
 };
