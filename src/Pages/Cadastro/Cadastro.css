@@ -152,6 +152,14 @@ input[type=date]:focus::-webkit-datetime-edit {
 }
 
 
+.react-datepicker {
+    color: yellow;
+    float: right
+}
+.react-datepicker-wrapper {
+    width: 100%
+}
+
 @media (max-width: 600px) {
     dis
     .pageCadastro{
