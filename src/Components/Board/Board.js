@@ -22,11 +22,12 @@ const Board = ({search, data, labels}) => {
     const [open, setOpen] = useState(false)
 
     const filtered = users.filter(user => {
-        return (
+        /* return (
             user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 
             || user.matricula.indexOf(search) !== -1 
             || user.curso.toLowerCase().indexOf(search.toLowerCase()) !== -1
-        )
+        ) */
+        return user;
     })
 
     const Lista = filtered.map(item => {
