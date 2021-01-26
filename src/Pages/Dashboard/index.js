@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import Cards from "../../Components/Cards/Cards";
 import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
 import "./index.css";
@@ -11,7 +10,7 @@ import { Directions, MarkunreadMailboxSharp } from "@material-ui/icons";
 export default function Dashboard() {
   return (
     <>
-    <Header />
+    <Base>
     <div className="pageWrapper">
         <div>
           <div className="DashboardTitle">
@@ -52,6 +51,7 @@ export default function Dashboard() {
           </div>
         </div>
     </div>
+    </Base>
     </>
   );
 }

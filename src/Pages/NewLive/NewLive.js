@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./NewLive.css";
-import Header from "../../Components/Header/Header";
-import SideBar from "../../Components/Sidebar/Sidebar";
+import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 
 export default function NewLive() {
@@ -39,12 +38,9 @@ export default function NewLive() {
   }
 
   return (
+    <Base>
     <div className="NewLiveContainer">
-      <div>
-        <SideBar />
-      </div>
       <div className="NewLiveContent">
-        <Header />
         <div className="NewLiveFormContainer">
           <div style={{ width: "80%", marginBottom: "5vh" }}>
             <h1 className="NewLiveTitle">Nova Live</h1>
@@ -127,5 +123,6 @@ export default function NewLive() {
         </div>
       </div>
     </div>
+    </Base>
   );
 }

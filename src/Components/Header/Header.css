@@ -4,12 +4,12 @@
 
 .active{
   display: none;
-  
+  height: 10vh;
 }
 
 .headerContainer {
   height: 10vh;
-  width: 98.9vw;
+  width: 100vw;
   background-color: #25003c;
   text-align: right;
   display: flex;

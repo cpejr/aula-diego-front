@@ -8,7 +8,6 @@
 .AdminPage{
     width: 100%;
     height: 100%;
-
 }
 
 .DashBoardTitleFont{
@@ -25,4 +24,10 @@
         font-size: 24;
     }
 
+    .Admincontainer{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        margin-left: 0%;
+    }
 }

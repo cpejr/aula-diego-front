@@ -1,14 +1,11 @@
 .pageWrapper{
   display: flex;
   background-color: #fafafa;
-  display: flex;
-  margin-left: 20%;
 }
 
 .Teste {
   margin-right: 50px;
 }
-
 
 .dashboardCardContainer{
   display: flex;

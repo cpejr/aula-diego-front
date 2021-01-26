@@ -1,6 +1,5 @@
 import React,{useState} from "react";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import TempoLive from "../../Components/TempoLive/TempoLive.js";
 import ConfirmacaoLive from "../../Components/ConfirmacaoLive/ConfirmacaoLive"
 import LiveFinal from '../../Components/LiveFinal/LiveFinal'
@@ -28,7 +27,7 @@ const Live = () => {
 
   return (
     <>
-    <Header />
+    <Base>
     <div className="Live">
       <div className="paginaLive">
       { toggleView && <div className="blocoLive">
@@ -45,6 +44,7 @@ const Live = () => {
        {!toggleView3 && <LiveFinal/>}
       </div>
     </div>
+    </Base>
     </>
   );
 };

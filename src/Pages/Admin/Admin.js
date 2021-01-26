@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import "./Admin.css";
 import Cards from '../../Components//Cards/Cards'
@@ -21,14 +22,9 @@ export default function Admin() {
 
 
   return (
+    <Base>
       <div className="Admincontainer">
-        <div className='AdminSideBar'>
-        <Sidebar />
-        </div>
-        
-
         <div style={{flex:1,backgroundColor:'#fafafa'}}>
-            <Header /> 
             <div className='DashboardTitle'>
             <img src={Foto} className='TitleImg'/>
             <h1 className='DashBoardTitleFont' >Próximas Lives</h1>
@@ -40,5 +36,6 @@ export default function Admin() {
             </div> 
             </div >
       </div>
+    </Base>
   );
 }

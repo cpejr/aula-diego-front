@@ -1,0 +1,9 @@
+.Base{
+    margin-left: 20%;
+}
+
+@media(max-width:780px){
+    .Base{
+        margin-left: 0%;
+    }
+  }
