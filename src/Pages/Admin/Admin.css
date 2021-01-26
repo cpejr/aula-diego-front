@@ -1,28 +1,30 @@
-.Admincontainer{
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background-color: #f5f5f5;
+.Admincontainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
 }
 
-.AdminPage{
-    width: 100%;
-    height: 100%;
-
+.AdminPage {
+  width: 100%;
+  height: 100%;
 }
 
-.DashBoardTitleFont{
-    font-weight: 600;
-    font-size: 34px;
+.DashBoardTitleFont {
+  font-weight: 600;
+  font-size: 34px;
 }
 
-@media (max-width:1025px){
-
-    .AdminSideBar{
-        display: none;
-    }
-    .DashBoardTitleFont{
-        font-size: 24;
-    }
-
+@media (max-width: 800px) {
+  .DashboardTitle {
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 1025px) {
+  .AdminSideBar {
+    display: none;
+  }
+  .DashBoardTitleFont {
+    font-size: 24;
+  }
 }
