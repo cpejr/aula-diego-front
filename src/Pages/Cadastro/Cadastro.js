@@ -7,12 +7,14 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ptBR from "date-fns/locale/pt-BR";
 import api from "../../services/api";
+import { useSession } from "../../Context/SessionContext";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
   const [startDate, setStartDate] = useState(null);
-
   const history = useHistory();
+  const { session } = useSession();
+
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
   }, []);
@@ -194,7 +196,21 @@ export default function Cadastro(props) {
                 required
               />
             </div>
-
+            {session && session.accessToken ? (
+              <div className="form-group">
+                <select
+                  className="form-control"
+                  name="type"
+                  value={inputValues["type"]}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="student">student</option>
+                  <option value="admin">admin</option>
+                  <option value="master">master</option>
+                </select>
+              </div>
+            ) : null}
             <button className="entrarButtonCadastro" onClick={handleSubmit}>
               Cadastrar
             </button>
