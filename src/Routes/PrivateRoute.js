@@ -9,14 +9,23 @@ export default function PrivateRoute({
   studentComponent,
   adminComponent,
   masterComponent,
+  component,
   ...rest
 }) {
   const [loading, setLoading] = useState(true);
   const [renderComponent, setRenderComponent] = useState();
+  const [notLoggedComponent, setNotLoggedComponent] = useState(
+    <Redirect to="/" />
+  );
   const { session, loadSession } = useSession();
 
   useEffect(() => {
     loadSession().then(() => setLoading(false));
+    component
+      ? setNotLoggedComponent(
+          <Route {...rest} to={path} component={component} />
+        )
+      : setNotLoggedComponent(<Redirect to="/" />);
   }, []);
 
   useEffect(() => {
@@ -40,9 +49,9 @@ export default function PrivateRoute({
         setRenderComponent(<Route to={path} component={Loader} />);
         break;
     }
-  }, [session, studentComponent, adminComponent, masterComponent]);
+  }, [session, studentComponent, adminComponent, masterComponent, component]);
 
   if (loading) return <Route to={path} component={Loader} />;
   if (session && session.accessToken) return renderComponent;
-  else return <Redirect to="/" />;
+  else return notLoggedComponent;
 }
