@@ -6,6 +6,7 @@ import Foto from "../../images/foto.jpg"
 import {useHistory} from 'react-router-dom'
 
 const Header = () => {
+  let history = useHistory();
 
 
     let history = useHistory();

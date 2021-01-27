@@ -4,8 +4,6 @@ import Cards from "../../Components/Cards/Cards";
 import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
 import "./index.css";
 import Foto from "../../images/samu.svg";
-import { FaSitemap } from "react-icons/fa";
-import { Directions, MarkunreadMailboxSharp } from "@material-ui/icons";
 
 export default function Dashboard() {
   return (
@@ -48,12 +46,32 @@ export default function Dashboard() {
               date="22/11/2020"
               status={true}
             />
+            <Cards
+              title="UPA"
+              cardColor1="#6AA1E4"
+              cardColor2="#686AE9"
+              date="20/10/2020"
+              hour="20:00"
+            />
+            <Cards
+              title="Bombeiros"
+              cardColor1="#FD88A4"
+              cardColor2="#EE3763"
+              date="20/10/2020"
+              hour="20:00"
+            />
           </div>
+          <TabelaAtividades
+            type="Lista 1"
+            module="3"
+            name="SAMU"
+            date="22/11/2020"
+            status={true}
+          />
         </div>
+      </div>
     </div>
     </Base>
     </>
   );
 }
-
-
