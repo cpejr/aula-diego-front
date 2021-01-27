@@ -1,9 +1,7 @@
 .Live{
     display: flex;
     width: 100%;
-    height: 100%;
     background: #f5f5f5;
-
 }
 
 .paginaLive{
@@ -14,7 +12,8 @@
 
 .blocoLive{
     width: 85%;
-    height: 65%;
+    height: auto;
+    position: relative;
     display: flex;
     margin: auto;
     margin-top: 7%;
@@ -24,11 +23,33 @@
     flex-direction: column;
 }
 
+.videoFrame {
+    width: 90%;
+    max-height: max-content;
+    align-self: center;
+    margin: 0;
+    margin-bottom: 1%;
+}
+
+.certificateWrapper {
+    width: 85%;
+    height: auto;
+    position: relative;
+    display: flex;
+    margin: auto;
+    margin-top: 4%;
+    border-radius: 8px;
+    padding: 2%;
+    flex-direction: column;
+    background-image: linear-gradient(to right, #290043 73%, #B11734);
+}
+
 .tituloLive{
     font-size: xx-large;
     color: white;
     padding-top: 2%;
     font-weight: 600;
+    margin-bottom: 4%;
 }
 
 .acessarLive{
@@ -39,22 +60,35 @@
     margin-top: 5%;
 }
 
-.buttonLive{
+.buttonAccessLive{
     background-color: #44AF72;  
     border: none;
     border-radius: 25px;
     font-size: 21pt;
     font-weight: 600;
-    margin-top: 10%;
+    margin-top: 30%;
     padding: 2%;
     padding-left: 8%;
     padding-right: 8%;
     color: white;
-
 }
 
-@media(max-width:780px){
-    .paginaLive{
-        margin-left: 0%;
-    }
-  }
+.buttonCertificateLive {
+    background-color: #c63756;
+    border: none;
+    border-radius: 10px;
+    font-size: 16pt;
+    font-weight: 600;
+    position: relative;
+    display: flex;
+    margin: auto;
+    margin-top: 2%;
+    padding: 1%;
+    padding-left: 3%;
+    padding-right: 3%;
+    color: white;
+}
+
+.timer p {
+    color: white;
+}
