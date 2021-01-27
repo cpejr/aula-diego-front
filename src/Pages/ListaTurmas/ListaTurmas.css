@@ -3,7 +3,6 @@
     height: 100vh;
     background-color: #fafafa;
     display: flex;
-    margin-left: 20%;
 }
 
 .TitleContainer{
@@ -79,7 +78,6 @@
     .ListaTurmasContainer{
         display: flex;
         height: 100vh;
-        margin-left: 0%;
         width: 100vw;
     }
     
@@ -128,7 +126,7 @@
         padding: 1%;
         font-size: 15px;
         font-weight: 600;
-        margin-right: 5%;
+        height: 5vh;
     }
     
     .LinhaListaTurmasIcons{

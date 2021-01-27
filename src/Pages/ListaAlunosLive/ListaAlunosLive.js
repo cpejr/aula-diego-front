@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ListaAlunosLive.css";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import TabelaPresenca from "../../Components/TabelaPresenca/Tabelapresenca"
 
 
@@ -13,10 +12,9 @@ export default function ListaAlunoLIve(props){
     }
 
     return (
+      <Base>
         <div className="ListaTurmasContainer">
-          <Sidebar />
           <div className="ListaTurmasContent">
-            <Header />
             <div
               style={{
                 display: "flex",
@@ -46,5 +44,6 @@ export default function ListaAlunoLIve(props){
             </div>
             </div>
         </div>
+        </Base>
     );
 }

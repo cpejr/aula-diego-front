@@ -8,11 +8,6 @@ import {useHistory} from 'react-router-dom'
 const Header = () => {
   let history = useHistory();
 
-
-    let history = useHistory();
-    
-
-
   function redirect(path){
     history.push(path)
   }
