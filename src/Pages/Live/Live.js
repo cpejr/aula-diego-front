@@ -32,7 +32,7 @@ const Live = () => {
 
   return (
     <div className="Live">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="paginaLive">
         <Header />
         <div className="blocoLive">
