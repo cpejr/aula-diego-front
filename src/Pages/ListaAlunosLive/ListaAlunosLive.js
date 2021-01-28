@@ -14,36 +14,22 @@ export default function ListaAlunoLIve(props){
 
     return (
         <div className="ListaTurmasContainer">
-          <Sidebar />
+             {/* <Sidebar />    */}
           <div className="ListaTurmasContent">
-            <Header />
-            <div
-              style={{
-                display: "flex",
-                flex: 1,
-                alignItems: "center",
-                height: "30vh",
-              }}
-            > <div style={{
-
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                height:"100%"
+               {/* <Header />    */}
+            <div className="InfoContainer" > 
+              <div className = "InfoContent">
+                <h1 className="ListaAlunosLiveTitle">Informações Live</h1>
+                <h2 className="ListaALunoLiveTitle2">Duração Live: {props.duration}h </h2>
+                <div
+                style={{marginTop: "20px" }}>
+                <h2 className="ListaALunoLiveTitle2">Lista de Presença </h2>
+                  </div>
+                  <TabelaPresenca/>
 
 
-                 }}>
-              <h1 className="ListaAlunosLiveTitle">Informações Live</h1>
-              <h2 className="ListaALunoLiveTitle2">Duração Live: {props.duration}h </h2>
-              <div
-              style={{marginTop: "20px" }}>
-              <h2 className="ListaALunoLiveTitle2">Lista de Presença </h2>
                 </div>
-                <TabelaPresenca/>
-
-
               </div>
-            </div>
             </div>
         </div>
     );

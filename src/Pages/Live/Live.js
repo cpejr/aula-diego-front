@@ -31,6 +31,8 @@ const Live = () => {
 
 
   return (
+    <>
+    <Header />
     <div className="Live">
       {/* <Sidebar /> */}
       <div className="paginaLive">
@@ -52,6 +54,7 @@ const Live = () => {
         </div>}
       </div>
     </div>
+    </>
   );
 };
 

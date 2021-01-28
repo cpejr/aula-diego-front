@@ -2,23 +2,57 @@ import React, { useEffect, useState } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useSession } from "../Context/SessionContext";
 
-export default function PrivateRoute({ path, component }) {
+import Loader from "../Pages/Loader";
+
+export default function PrivateRoute({
+  path,
+  studentComponent,
+  adminComponent,
+  masterComponent,
+  component,
+  ...rest
+}) {
   const [loading, setLoading] = useState(true);
+  const [renderComponent, setRenderComponent] = useState();
+  const [notLoggedComponent, setNotLoggedComponent] = useState(
+    <Redirect to="/" />
+  );
   const { session, loadSession } = useSession();
 
   useEffect(() => {
     loadSession().then(() => setLoading(false));
+    component
+      ? setNotLoggedComponent(
+          <Route {...rest} to={path} component={component} />
+        )
+      : setNotLoggedComponent(<Redirect to="/" />);
   }, []);
 
   useEffect(() => {
-    return () => setLoading(false);
-  }, [session]);
+    const userType = session && session.user.type;
+    switch (userType) {
+      case "student":
+        setRenderComponent(
+          <Route {...rest} to={path} component={studentComponent} />
+        );
+        break;
+      case "admin":
+        setRenderComponent(
+          <Route {...rest} to={path} component={adminComponent} />
+        );
+        break;
+      case "master":
+        setRenderComponent(
+          <Route {...rest} to={path} component={masterComponent} />
+        );
+        break;
+      default:
+        setRenderComponent(<Route to={path} component={Loader} />);
+        break;
+    }
+  }, [session, studentComponent, adminComponent, masterComponent, component]);
 
-  return loading ? (
-    <h1>CARREGANDO INFORMAÇÕES</h1> // pagina de loading é carregada se loading == true
-  ) : session && session.accessToken ? ( // se loading == false, olhamos para a sessão
-    <Route to={path} component={component} /> // se houver uma sessão, acessamos a página privada
-  ) : (
-    <Redirect to="/" /> // se não houver sessão, redirecionamos para a página inicial
-  );
+  if (loading) return <Route to={path} component={Loader} />;
+  if (session && session.accessToken) return renderComponent;
+  else return notLoggedComponent;
 }

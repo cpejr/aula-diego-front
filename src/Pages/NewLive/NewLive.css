@@ -124,3 +124,220 @@ input:focus {
   color: #25003c;
   font-size: 50px;
 }
+@media (max-width: 600px) {
+  .NewLiveContainer {
+    display: grid;    
+    height: 139%;
+  }
+  .NewLiveContent{
+    height: 0%;
+  }
+  .NewLiveFormContainer {
+   
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 147%;
+    width: 109%;
+    background-color: #fafafa;
+  }
+  .NewLiveInputLine {
+    background-color: #ffff;
+    border-radius: 7px;
+    display: table-column;
+    flex-direction: row;
+    align-items: center;
+  }
+  .NewLiveFormBox {
+    display: grid;
+    grid-column-gap: 2vw;
+    height: 62%;
+    width: 97%;
+    background-color: white;
+    border-radius: 7px;
+  }
+  input[name=title] {
+    width: 60%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+    height: 55%;
+    position: relative;
+    bottom: 4%;
+  }
+  input[type=date] {
+    width: 61%;
+    margin-bottom: 5%;
+    margin-left: 8%;
+    height: 16%;
+    position: relative;
+    bottom: 3%;
+  }
+  input[name=time] {
+    width: 60%;
+    margin-bottom: 5%;
+    height: 17%;
+    margin-left: 0%;
+    position: relative;
+    bottom: 0%;
+  }
+  input[name=duration] {
+    width: 57%;
+    height: 18%;
+    position: relative;
+    bottom: 0%;
+  }
+  input[name=live_link] {
+    width: 68%;
+    margin-bottom: 5%;
+    height: 43%;
+    margin-left: 3%;
+    position: relative;
+    bottom: 3%;
+  }
+  input[name=confirmation_code] {
+    width: 86%;
+    margin-bottom: 5%;
+    height: 43%;
+    margin-left: 4%;
+    position: relative;
+    bottom: 6%;
+  }
+  textarea[name=description] {
+    width: 86%;
+    margin-bottom: 5%;
+    height: 46%;
+    margin-left: 4%;
+    position: relative;
+    bottom: 4%;
+  }
+  .NewLiveLabelTimeInput {
+    width: 11%;
+    height: 35%;
+    border-radius: 7px;
+    border: 1px solid black;
+    color: #b3b3b3;
+    font-size: 1.5rem;
+}
+  
+
+}
+@media screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) 
+{  
+  .NewLiveContainer {
+    display: flex;
+    flex: 1 1;
+    height: 10%;
+    margin-top: 9%;
+}
+  .NewLiveTitle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #fafafa;
+    font-weight: 600;
+    color: #25003c;
+    font-size: 50px;
+    margin-top: 15%;
+  }
+  .NewLiveLabelCodeInput {
+    border-radius: 7px;
+    height: 47%;
+    border: 1px solid black;
+    color: #b3b3b3;
+    width: 33%;
+} 
+input[name=title] {
+  width: 30%;
+  margin-bottom: 2%;
+  margin-left: 5%;
+  height: 60%;
+}
+input[type=date] {
+  width: 20%;
+  margin-bottom: 0%;
+  margin-left: 8%;
+  height: 35%;
+  position: relative;
+  bottom: 3%;
+}
+input[name=time] {
+  width: 10%;
+  margin-bottom: 0%;
+  height: 40%;
+  margin-left: 0%;
+}
+input[name=duration] {
+  width: 7%;
+  height: 40%;
+  margin-right: 3%;
+  position: relative;
+  bottom: 0%;
+}
+input[name=live_link] {
+  width: 68%;
+  margin-bottom: 1%;
+  height: 47%;
+  margin-left: 3%;
+
+}
+input[name=confirmation_code] {
+  width: 50%;
+  margin-bottom: 1%;
+  height: 47%;
+  margin-left: 0%;
+
+}
+textarea[name=description] {
+  width: 70%;
+  margin-bottom: 5%;
+  height: 50%;
+  margin-top: 4%;
+  margin-left: 4%;
+ 
+}
+}
+
+/* I Pad Landscape */
+@media screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) 
+{ 
+  .NewLiveContainer {
+    display: flex;
+    flex: 1 1;
+    height: 20%;
+    margin-top: 9%;
+}
+  .NewLiveTitle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #fafafa;
+    font-weight: 600;
+    color: #25003c;
+    font-size: 50px;
+    margin-top: 15%;
+} .NewLiveLabelCodeInput {
+  border-radius: 7px;
+  height: 47%;
+  border: 1px solid black;
+  color: #b3b3b3;
+  width: 33%;
+}
+}
+@media only screen 
+  and (min-width: 1024px) 
+  and (max-height: 1366px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 1.5) {
+    .NewLiveContainer {
+      display: flex;
+      flex: 1 1;
+      height: 56%;
+      width: 40%;
+  }
+}

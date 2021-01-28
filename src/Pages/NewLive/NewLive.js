@@ -41,10 +41,10 @@ export default function NewLive() {
   return (
     <div className="NewLiveContainer">
       <div>
-        <SideBar />
+            {/* <SideBar />   */}
       </div>
-      <div className="NewLiveContent">
-        <Header />
+      <div className="NewLiveContent"> 
+            {/* <Header />     */}
         <div className="NewLiveFormContainer">
           <div style={{ width: "80%", marginBottom: "5vh" }}>
             <h1 className="NewLiveTitle">Nova Live</h1>

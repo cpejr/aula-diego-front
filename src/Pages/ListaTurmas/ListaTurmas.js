@@ -70,8 +70,9 @@ function LinhaListaTurmas(props) {
 export default function ListaTurmas() {   
 
   return (
+    <>
+    <Header />
     <div className="ListaTurmasContainer">
-      <Sidebar />
       <div className="ListaTurmasContent">
         <Header />
         <div
@@ -104,5 +105,6 @@ export default function ListaTurmas() {
         </div>
       </div>
     </div>
+    </>
   );
 }

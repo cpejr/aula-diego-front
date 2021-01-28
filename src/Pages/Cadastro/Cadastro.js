@@ -7,34 +7,33 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ptBR from "date-fns/locale/pt-BR";
 import api from "../../services/api";
+import { useSession } from "../../Context/SessionContext";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
   const [startDate, setStartDate] = useState(null);
-
   const history = useHistory();
-  useEffect(() => {
-    if (props.location.state)
-      setInputValues(props.location.state);
+  const { session } = useSession();
 
+  useEffect(() => {
+    if (props.location.state) setInputValues(props.location.state);
   }, []);
 
   function handleChange(e) {
     setInputValues({
       ...inputValues,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
   function validateForm() {
     const inputs = document.querySelectorAll("input");
 
     for (let i = 0; i < inputs.length; ++i) {
-      if (!inputs[i].value || inputs[i].value == "")
-        return false;
+      if (!inputs[i].value || inputs[i].value == "") return false;
     }
 
     if (inputValues["password"] !== inputValues["passwordConfirmation"]) {
-      alert("As senhas digitadas não correspondem.")
+      alert("As senhas digitadas não correspondem.");
       return "pass";
     }
 
@@ -45,14 +44,20 @@ export default function Cadastro(props) {
     e.preventDefault();
     if (validateForm() === "pass") return;
     if (!validateForm())
-      return alert('Preencha todos os campos para se cadastrar');
+      return alert("Preencha todos os campos para se cadastrar");
 
     let data = inputValues;
-    data.phone = data.phone.replace(/[^\w]/gi, '');
+    data.phone = data.phone.replace(/[^\w]/gi, "");
     delete data.passwordConfirmation;
 
-    api.post('/newuser', data).then(() => { history.push("/"); }
-    ).catch((error) => alert('Não foi possível concluir o cadastro, tente novamente.'))
+    api
+      .post("/newuser", data)
+      .then(() => {
+        history.push("/");
+      })
+      .catch((error) =>
+        alert("Não foi possível concluir o cadastro, tente novamente.")
+      );
   }
 
   return (
@@ -134,7 +139,7 @@ export default function Cadastro(props) {
                 id="exampleInputAddress"
                 name="birthdate"
                 selected={startDate}
-                onChange={date => setStartDate(date)}
+                onChange={(date) => setStartDate(date)}
                 placeholderText="Data de Nascimento"
                 locale="br"
                 required
@@ -179,17 +184,36 @@ export default function Cadastro(props) {
               </select>
             </div>
             <div className="form-group">
-              <InputMask mask="(99) 99999-9999" className="form-control" id="Telefone" name="phone"
-                value={
-                  inputValues["phone"]
-                }
+              <InputMask
+                mask="(99) 99999-9999"
+                className="form-control"
+                id="Telefone"
+                name="phone"
+                value={inputValues["phone"]}
                 onChange={handleChange}
                 placeholder="Telefone"
                 spellCheck="false"
-                required />
+                required
+              />
             </div>
-
-            <button className="entrarButtonCadastro" onClick={handleSubmit}>Cadastrar</button>
+            {session && session.accessToken ? (
+              <div className="form-group">
+                <select
+                  className="form-control"
+                  name="type"
+                  value={inputValues["type"]}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="student">student</option>
+                  <option value="admin">admin</option>
+                  <option value="master">master</option>
+                </select>
+              </div>
+            ) : null}
+            <button className="entrarButtonCadastro" onClick={handleSubmit}>
+              Cadastrar
+            </button>
             <div className="irLogin">
               <h5 className="jatemLogin">Já possui Login?</h5>
               <Link className="logincadastro" to="/">
@@ -201,4 +225,4 @@ export default function Cadastro(props) {
       </div>
     </div>
   );
-};
+}

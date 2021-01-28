@@ -23,7 +23,6 @@
     color: #25003c;
     font-size: 50px;
 }
-
 .pageContent input {
     min-width: 60%;
     max-width: 90%;
@@ -33,5 +32,13 @@
 @media (max-width: 600px) {
     .listContainer h1 {
         text-align: center;
+    }
+
+    .inputboard input {
+        width: 280px;
+    }
+
+    .ListaDeAlunosContainer{
+        margin-left: 0%;
     }
 }
