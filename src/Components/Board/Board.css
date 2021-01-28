@@ -4,31 +4,72 @@
 
 .BoardContainer {
     display: flex;
-    margin-top: 40px;
+    margin-top: 7%;
     flex-direction: column;
     background-color: white;
-    max-width: min-content;
+    width: 90%;
     box-shadow: 5px;
     border-radius: 15px;
+    padding-bottom: 2%;
 }
 
+.tableTitle {
+    min-height: "15vh";
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.tableTitle p {
+    border-width: "0px";
+    font-size: "25px";
+    color: "#25003c";
+}
+
+.tableTitleButton {
+    visibility: hidden;
+    margin: 0%;
+    padding: 2%;
+    min-height: 10vh;
+    width: min-content;
+    border-bottom: thin groove;
+    border-width: thin;
+}
+
+.tableCell {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin: 0%;
+    padding: 2%;
+    min-height: 10vh;
+    width: max-content;
+    border-bottom: thin groove;
+    border-width: thin;
+}
+
+.tableButton {
+    margin: 0%;
+    padding: 2%;
+    min-height: 10vh;
+    width: min-content;
+    border-bottom: thin groove;
+    border-width: thin;
+}
 
 .LinhaBoard p {
-    margin-left: 40px;
-    width: 300px;
     text-align: center;
-    border-bottom: thin groove;
-    margin: 0%;
-    border-width: thin;
-    padding: 20px;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: "25px";
+    color: "#25003c"
 }
-
 
 @media (max-width: 600px) {
     .BoardContainer {
         width: 100%;
     }
-
     .LinhaBoard p {
         width: 100%;
     }
