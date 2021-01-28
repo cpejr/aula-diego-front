@@ -14,7 +14,28 @@ const Line = ({ values, button }) => {
                     </div>
                 )
             })}
-            {renderButton && <div className="tableCell">
+            {renderButton && <div className="tableButton">
+                    {button}
+                </div>
+            }
+        </div>
+    )
+}
+
+const Labels = ({ values, button }) => {
+
+    const renderButton = (button !== undefined ? true : false)
+
+    return (
+        <div className='LinhaBoard'>
+            {values.map(item => {
+                return (
+                    <div className="tableTitle">
+                        <p>{item}</p>
+                    </div>
+                )
+            })}
+            {renderButton && <div className="tableTitleButton">
                     {button}
                 </div>
             }
@@ -39,15 +60,7 @@ const Board = ({ search, data, labels, button }) => {
 
     return (
         <div className="BoardContainer">
-            <div className="LinhaBoard">
-                {labels.map(column => {
-                    return (
-                        <div className="tableCell" style={{ minHeight: "15vh" }}>
-                            <p style={{ borderWidth: "0px", fontSize: "25px", color: "#25003c" }}>{column}</p>
-                        </div>
-                    )
-                })}
-            </div>
+            <Labels key={0} values={labels} button={button} />
             {Lista}
         </div>
     )
