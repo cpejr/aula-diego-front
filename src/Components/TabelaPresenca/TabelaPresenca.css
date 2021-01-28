@@ -31,7 +31,6 @@
     background-color: white;
     margin-right: 15%;
     border-radius: 10px;
-    border: solid;
     border-width: 2px;
     border-color: #efefef;
   }
@@ -40,3 +39,35 @@
     width: 250px;
     margin: 0%;
   }
+  .TitulosLiveInfo{
+    width: 100%;
+  }
+@media (max-width: 600px){
+  .IconeLiveInfo {
+    display: flex;
+    width: 130px;
+    margin: 0%;
+  }
+  .LinhaTabelaPresenca {
+    display: grid;
+    grid-template-columns: repeat(4, 14vw);
+    margin-left: 3vw;
+    grid-column-gap: 40%;
+    margin-bottom: 1vh;
+    color: grey;
+    font-weight: 500;
+  }
+  
+  .TitulosLiveInfo {
+    display: grid;
+    grid-template-columns: repeat(4, 13vw);
+    margin-left: 3vw;
+    margin-top: 2%;
+    grid-column-gap: 118px;
+    color: grey;
+    font-weight: 600;
+    font-size: large;
+    grid-column-gap: 40%;
+ }
+  
+}

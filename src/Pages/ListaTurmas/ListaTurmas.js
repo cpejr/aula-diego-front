@@ -76,18 +76,11 @@ export default function ListaTurmas() {
     
 
   return (
+    <>
+    <Header />
     <div className="ListaTurmasContainer">
-      <Sidebar />
       <div className="ListaTurmasContent">
-        <Header />
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
-            height: "30vh",
-          }}
-        >
+        <div className="TitleContainer">
           <h1 className="ListaTurmasTtitle">Turmas</h1>
         </div>
         <div className="ListaTurmasLabelContainer">
@@ -110,5 +103,6 @@ export default function ListaTurmas() {
         </div>
       </div>
     </div>
+    </>
   );
 }

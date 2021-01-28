@@ -18,16 +18,30 @@
   margin-left: 0%;
 }
 
-.ListaDeAlunosContainer h1 {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  margin-left: 0%;
-  color: #25003c;
-  font-size: 50px;
+
+.ListaDeAlunosContainer{
+    margin-left: 20%;
+}
+
+.ListaDeAlunosContainer h1{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: 0%;
+    color: #25003c;
+    font-size: 50px;
 }
 
 @media (max-width: 600px) {
-  .ListaDeAlunosContainer h1 {
-    text-align: center;
-  }
+
+    .ListaDeAlunosContainer h1 {
+        text-align: center;
+    }
+
+    .inputboard input {
+        width: 280px;
+    }
+
+    .ListaDeAlunosContainer{
+        margin-left: 0%;
+    }
 }

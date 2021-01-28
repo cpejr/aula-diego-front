@@ -1,0 +1,42 @@
+.menuBurger {
+    position: absolute;
+    z-index: 1000;
+    cursor: pointer;
+    right: 85vw;
+    top: 2vh;
+    display: none;
+}
+
+.menuBurger div {
+    background-color: white;
+    width: 35px;
+    height: 4px;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.menuBurger div.top {
+    -webkit-transform: rotate(-45deg) translate(-7px, 6px);
+    transform: rotate(-45deg) translate(-7px, 6px);
+    /*background-color: black;*/
+}
+
+.menuBurger div.middle {
+    opacity: 0;
+}
+
+.menuBurger div.bottom {
+    -webkit-transform: rotate(45deg) translate(-8px, -7px);
+    transform: rotate(45deg)  translate(-8px, -7px);
+    /*background-color: black;*/
+}
+@media(max-width:780px){
+    .menuBurger{
+        display: block;
+    }
+}
+@media(max-width:330px){
+    .menuBurger{
+        right: 25px;
+    }
+}

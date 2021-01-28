@@ -7,6 +7,7 @@ import { Link, useHistory } from "react-router-dom";
 import ListaAlunos from "../../Pages/ListaAlunos";
 
 export default function Sidebar() {
+
   const history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
