@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useSession } from "../Context/SessionContext";
 
+import Loader from "../Pages/Loader";
+
 export default function PrivateRoute({
   path,
   studentComponent,
@@ -36,14 +38,12 @@ export default function PrivateRoute({
         );
         break;
       default:
-        setRenderComponent(
-          <Route to={path} component={() => <h1>CARREGANDO</h1>} />
-        );
+        setRenderComponent(<Route to={path} component={Loader} />);
         break;
     }
   }, [session, studentComponent, adminComponent, masterComponent]);
 
-  if (loading) return <h1>CARREGANDO INFORMAÇÕES</h1>;
+  if (loading) return <Route to={path} component={Loader} />;
   if (session && session.accessToken) return renderComponent;
   else return <Redirect to="/" />;
 }

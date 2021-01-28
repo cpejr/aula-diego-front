@@ -16,6 +16,7 @@ import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
+
 const routes = () => {
   return (
     <BrowserRouter>
