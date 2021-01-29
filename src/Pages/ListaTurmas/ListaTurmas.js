@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ListaTurmas.css";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import {useHistory} from 'react-router-dom'
@@ -71,40 +70,33 @@ export default function ListaTurmas() {
 
   return (
     <>
-    <Header />
-    <div className="ListaTurmasContainer">
-      <div className="ListaTurmasContent">
-        <Header />
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
-            height: "30vh",
-          }}
-        >
-          <h1 className="ListaTurmasTitle">Turmas</h1>
-        </div>
-        <div className="ListaTurmasLabelContainer">
-          <p className="ListaTurmasLabel">Ocupação</p>
-          <p className="ListaTurmasLabel">Código</p>
-          <p className="ListaTurmasLabel">Nº de Alunos</p>
-        </div>
+    <Base>
+      <div className="ListaTurmasContainer">
+        <div className="ListaTurmasContent">
+          <div className="TitleContainer">
+            <h1 className="ListaTurmasTtitle">Turmas</h1>
+          </div>
+          <div className="ListaTurmasLabelContainer">
+            <p className="ListaTurmasLabel">Ocupação</p>
+            <p className="ListaTurmasLabel">Código</p>
+            <p className="ListaTurmasLabel">Nº de Alunos</p>
+          </div>
 
-        <div className="ListaTurmasDataContainer">
-          {data.map((item) => {
-            return (
-              <LinhaListaTurmas
-                id={item.codigo}
-                ocupacao={item.ocupacao}
-                codigo={item.codigo}
-                number={item.number}
-              />
-            );
-          })}
+          <div className="ListaTurmasDataContainer">
+            {data.map((item) => {
+              return (
+                <LinhaListaTurmas
+                  id={item.codigo}
+                  ocupacao={item.ocupacao}
+                  codigo={item.codigo}
+                  number={item.number}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </Base> 
     </>
   );
 }

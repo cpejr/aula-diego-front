@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Infolive.css";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import InfoIcon from '@material-ui/icons/Info';
 import { useHistory } from "react-router-dom";
 import Board from "../../Components/Board/Board"
@@ -16,20 +15,51 @@ export default function Infolive() {
     let path = '/listalive'
     history.push(path);
   }
-
-  const button = <InfoIcon className="infoLive" onClick={() => {redirect()}}/>
-
-  return (
-    <div className="pageRoot">
-      {/* <Sidebar /> */}
-      <div className="pageBody">
-        <Header />
-        <div className="pageContent">
-          <h1>Lives</h1>
-          <input placeholder="Pesquisar" onChange={e => setSearch(e.target.value)} />
-          <Board search={search} data={DATA} labels={["Ocupação", "Data", "Pessoas na live"]} button={button} />
+  
+  export default function Infolive() {
+    
+    let history = useHistory()
+    function redirect(){
+        let path = '/listalive'
+        history.push(path);
+    } 
+  
+    return (
+      <Base>
+        <div className="ListaTurmasContainer">
+          <div className="ListaTurmasContent">
+            <div
+              style={{
+                display: "flex",
+                flex: 1,
+                alignItems: "center",
+                height: "30vh",
+              }}
+            >
+              <h1 className="ListaTurmasTtitle">Lives</h1>
+            </div>
+            <div className="ListaTurmasLabelContainer">
+              <p className="ListaTurmasLabel">Curso</p>
+              <p className="ListaTurmasLabel">Data</p>
+              <p className="ListaTurmasLabel">Quantidade de Alunos</p>
+            </div>
+    
+            <div className="ListaTurmasDataContainer">
+              {data.map((item) => {
+                return (
+                  <LinhaListaTurmas
+                    id={item.codigo}
+                    ocupacao={item.ocupacao}
+                    data={item.data}
+                    qntd={item.qntd}
+                    redirect={redirect}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  )
-}
+      </Base>
+    );
+  }
+  
