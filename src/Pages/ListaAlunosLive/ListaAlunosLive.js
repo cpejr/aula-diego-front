@@ -22,13 +22,11 @@ export default function ListaAlunoLIve(props){
                 alignItems: "center",
                 height: "30vh",
               }}
-            > <div style={{
-
-
-                </div>
+            > 
               </div>
             </div>
         </div>
+
         </Base>
     );
 }

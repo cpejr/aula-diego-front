@@ -3,8 +3,38 @@ import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from '@material-ui/icons/Info';
 import { useHistory } from "react-router-dom";
-import Board from "../../Components/Board/Board"
 import DATA from "./data"
+
+function LinhaListaTurmas(props) {
+     
+  const [pin,setPin]=useState(true);
+
+  function removeLine(id){
+      setPin(!pin)
+      
+  }
+
+return (
+
+ 
+  pin ?
+ <div className="LinhaListaTurmas">
+    <p>{props.ocupacao}</p>
+    <p>{props.data}</p>
+    <p style={{ marginLeft:90 }} >{props.qntd}</p>
+    <div className="LinhaListaTurmasIcons">
+      <InfoIcon
+        style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}
+        onClick={props.redirect}
+      />
+      
+    </div>
+  </div>
+
+  :
+  <div></div>
+);
+}
 
 export default function Infolive() {
 
@@ -15,10 +45,7 @@ export default function Infolive() {
     let path = '/listalive'
     history.push(path);
   }
-  
-  export default function Infolive() {
     
-    let history = useHistory()
     function redirect(){
         let path = '/listalive'
         history.push(path);
@@ -45,7 +72,7 @@ export default function Infolive() {
             </div>
     
             <div className="ListaTurmasDataContainer">
-              {data.map((item) => {
+              {DATA.map((item) => {
                 return (
                   <LinhaListaTurmas
                     id={item.codigo}
@@ -55,7 +82,7 @@ export default function Infolive() {
                     redirect={redirect}
                   />
                 );
-              })}
+              })}*/
             </div>
           </div>
         </div>
