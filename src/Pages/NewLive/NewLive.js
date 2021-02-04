@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./NewLive.css";
-import Header from "../../Components/Header/Header";
-import SideBar from "../../Components/Sidebar/Sidebar";
+import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -147,5 +146,6 @@ export default function NewLive() {
         </div>
       </div>
     </div>
+    </Base>
   );
 }
