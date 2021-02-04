@@ -45,6 +45,7 @@ export default function PrivateRoute({
         setRenderComponent(
           <Route {...rest} to={path} component={masterComponent} />
         );
+        break;
       default:
         setRenderComponent(<Route to={path} component={Loader} />);
         break;

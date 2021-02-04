@@ -4,7 +4,7 @@ import Logo from "../../images/logoTeste.png";
 import { useSession } from "../../Context/SessionContext";
 import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
-import ListaAlunos from "../../Pages/ListaAlunos";
+import ListaAlunos from "../../Pages/ListaAlunos/ListaAlunos";
 
 export default function Sidebar() {
 

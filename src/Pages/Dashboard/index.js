@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../Components/Sidebar/Sidebar";
-import Header from "../../Components/Header/Header";
+import Base from "../../Components/Base/Base";
 import Cards from "../../Components/Cards/Cards";
 import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
 import "./index.css";
@@ -8,21 +7,13 @@ import Foto from "../../images/samu.svg";
 
 export default function Dashboard() {
   return (
-    <div
-      className="pageWrapper"
-      style={{
-        display: "flex",
-        backgroundColor: "#fafafa",
-      }}
-    >
-      <Sidebar />
-      <div style={{ flex: 1 }}>
-        <Header />
+    <>
+      <Base>
         <div className="DashboardTitle">
           <img src={Foto} className="TitleImg" />
           <h1 style={{ fontWeight: 600 }}>PRÓXIMAS LIVES</h1>
         </div>
-        <div style={{ flex: 1, backgroundColor: "#fafafa" }}>
+        <div style={{ backgroundColor: "#fafafa" }}>
           <div className="DashboardCardContainer">
             <Cards
               title="SAMU"
@@ -54,7 +45,7 @@ export default function Dashboard() {
             status={true}
           />
         </div>
-      </div>
-    </div>
+      </Base>
+    </>
   );
 }

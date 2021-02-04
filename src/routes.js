@@ -8,7 +8,7 @@ import Live from "./Pages/Live/Live";
 import Admin from "./Pages/Admin/Admin";
 import Newlive from "./Pages/NewLive/NewLive";
 import Cadastro from "./Pages/Cadastro/Cadastro";
-import ListaAlunos from "./Pages/ListaAlunos";
+import ListaAlunos from "./Pages/ListaAlunos/ListaAlunos";
 import ListaTurma from "./Pages/ListaTurmas/ListaTurmas";
 import NovaTurma from "./Pages/NovaTurma/NovaTurma";
 import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
@@ -85,7 +85,7 @@ const routes = () => {
         <PrivateRoute
           path="/tabelaturma"
           studentComponent={() => <Redirect to="dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
+          adminComponent={TabelaTurmas}
           masterComponent={TabelaTurmas}
         />
         <PrivateRoute
