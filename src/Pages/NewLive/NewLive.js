@@ -3,9 +3,24 @@ import "./NewLive.css";
 import Header from "../../Components/Header/Header";
 import SideBar from "../../Components/Sidebar/Sidebar";
 import api from "../../services/api";
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ptBR from "date-fns/locale/pt-BR";
+
+const generateCode = () => {
+  let code = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+
+  for (let i = 0; i < 6; i++)
+    code += characters[Math.floor(Math.random() * characters.length)];
+
+  return code;
+}
 
 export default function NewLive() {
   const [state, setState] = useState({});
+  const [date, setDate] = useState(null);
+  const [confirmation, setConfirmation] = useState(generateCode());
 
   function validateForm() {
     const inputs = document.querySelectorAll("input");
@@ -26,11 +41,7 @@ export default function NewLive() {
     if (!validateForm())
       return alert("Preencha todos os campos para criar uma nova live");
 
-    const start_date = new Date(state["date"] + " " + state["time"]);
-    const data = state;
-
-    data["start_date"] = start_date;
-    delete data["time"];
+    const data = {...state, "date": date, "confirmation_code": confirmation};  
 
     api
       .post("/newlive", data)
@@ -39,85 +50,94 @@ export default function NewLive() {
   }
 
   return (
-    <div className="NewLiveContainer">
+    <div className="pageRoot">
       <div>
-            {/* <SideBar />   */}
+        {/*             <SideBar /> */}
       </div>
-      <div className="NewLiveContent"> 
-            {/* <Header />     */}
-        <div className="NewLiveFormContainer">
-          <div style={{ width: "80%", marginBottom: "5vh" }}>
-            <h1 className="NewLiveTitle">Nova Live</h1>
+      <div className="pageBody">
+        <Header />
+        <div className="pageContent">
+          <div className="pageTitle">
+            <h1>Criar Live</h1>
           </div>
-          <div className="NewLiveFormBox">
-            <form className="NewLiveForm">
-              <div className="NewLiveInputLine">
-                <label className="NewLiveLabel">Título:</label>
-                <input
-                  className="NewLiveTitleInput"
-                  type="text"
-                  placeholder="Digite o título da Live"
-                  name="title"
-                  onChange={handleChange}
-                />
+          <div className="formWrapper">
+            <form className="liveForm">
+              <div className="inputLine">
+                <div className="inputWrapper">
+                  <label>Título:</label>
+                  <input
+                    type="text"
+                    placeholder="Digite o título da Live"
+                    name="title"
+                    onChange={handleChange}
+                  />
+                </div>
+
               </div>
-              <div className="NewLiveInputLine">
-                <label className="NewLiveLabel">Data:</label>
-                <input
-                  className="NewLiveLabelDataInput"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  name="date"
-                  onChange={handleChange}
-                />
-                <label className="NewLiveLabel">Horário:</label>
-                <input
-                  className="NewLiveLabelTimeInput"
-                  type="time"
-                  name="time"
-                  onChange={handleChange}
-                />
-                <label className="NewLiveLabel">Duração:</label>
-                <input
-                  className="NewLiveLabelTimeInput"
-                  type="time"
-                  name="duration"
-                  onChange={handleChange}
-                />
+              <div className="inputLine">
+                <div className="inputWrapper">
+                  <label>Data:</label>
+                  <DatePicker
+                    width="100%"
+                    className="form-control"
+                    id="exampleInputAddress"
+                    name="birthdate"
+                    selected={date}
+                    onChange={(date) => setDate(date)}
+                    placeholderText="Selecione data"
+                    locale="br"
+                    required
+                  />
+                </div>
+                <div className="inputWrapper">
+                  <label>Horário:</label>
+                  <input
+                    type="time"
+                    name="time"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="inputWrapper">
+                  <label>Duração:</label>
+                  <input
+                    type="time"
+                    name="duration"
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-              <div className="NewLiveInputLine">
-                <label className="NewLiveLabel">Link:</label>
-                <input
-                  className="NewLiveLabelLinkInput"
-                  type="text"
-                  placeholder="Digite a URL da live"
-                  name="live_link"
-                  onChange={handleChange}
-                />
+              <div className="inputLine">
+                <div className="inputWrapper">
+                  <label>Link:</label>
+                  <input
+                    type="text"
+                    placeholder="Digite a URL da live"
+                    name="live_link"
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-              <div className="NewLiveInputLine">
-                <label className="NewLiveLabel">Código de Confirmação:</label>
-                <input
-                  className="NewLiveLabelCodeInput"
-                  type="text"
-                  placeholder="Digite o código de confirmação"
-                  name="confirmation_code"
-                  onChange={handleChange}
-                />
+              <div className="inputLine">
+                <div className="inputWrapper">
+                  <label>Descrição:</label>
+                  <textarea
+                    placeholder="Digite a descrição da live, com informações e assuntos a serem abordados"
+                    name="description"
+                    onChange={handleChange}
+                    rows="1"
+                  />
+                </div>
               </div>
-              <div className="NewLiveInputLine">
-                <label className="NewLiveLabel">Descrição:</label>
-                <textarea
-                  placeholder="Digite a descrição da live, com informações e assuntos a serem abordados"
-                  className="NewLiveLabelDescriptionInput"
-                  name="description"
-                  onChange={handleChange}
-                />
+              <div className="inputLine">
+                <div className="inputWrapper">
+                  <label>Codigo de Confirmação:</label>
+                  <span>{confirmation}</span>
+                </div>
               </div>
-              <div className="NewLiveButtonContainer">
+              <div className="buttonWrapper">
                 <input
                   type="button"
-                  className="NewLiveButton"
+                  className="formButton"
                   value="CONCLUIR"
                   onClick={handleSubmit}
                 />
