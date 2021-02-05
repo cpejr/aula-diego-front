@@ -47,3 +47,15 @@
     font-weight: 500;
     margin-bottom: 10px;
 }
+
+@media (max-width: 800px) {
+    .tituloNovaTurma{
+        font-size: 30px;
+    }
+    .subTituloNovaTurma{
+        font-size: 20px;
+    }
+    .NovaTurmaInput{
+        width: 85vw;
+    }
+}
