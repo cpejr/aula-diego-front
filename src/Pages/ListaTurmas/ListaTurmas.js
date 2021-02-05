@@ -1,102 +1,149 @@
 import React, { useState, useEffect } from "react";
 import "./ListaTurmas.css";
 import Base from "../../Components/Base/Base";
+import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import {useHistory} from 'react-router-dom'
+
+import { Table, Tag, Input } from "antd";
 
 const data = [
   {
-    ocupacao: "SAMU",
-    codigo: "251862",
+    name: "turma matutino",
+    organization: "SAMU",
+    code: "251862",
     number: 34,
   },
   {
-    ocupacao: "SAMU",
-    codigo: "321312",
+    name: "turma vespertino",
+    organization: "SAMU",
+    code: "321312",
     number: 19,
   },
   {
-    ocupacao: "UPA",
-    codigo: "72483",
+    name: "turma noturno",
+    organization: "UPA",
+    code: "72483",
     number: 88,
   },
   {
-    ocupacao: "Pronto Socorro",
-    codigo: "585855",
+    name: "turminha da pesada",
+    organization: "Bombeiros",
+    code: "585855",
     number: 75,
   },
 ];
 
-function LinhaListaTurmas(props) { 
+export default function ListaTurmas() {
+  const [occupations, setOccupations] = useState([]);
+  const [filteredData, setfilteredData] = useState(data);
+  const [search, setSearch] = useState("");
 
-    let history = useHistory();
-    const [pin,setPin]=useState(true);
+  // const orgId = props.match.params
 
-    function removeLine(id){
-        setPin(!pin)
-        
-    }
+  // useEffect(() => {
+  //   const config = {
+  //     headers: {
+  //       authorization: "BEARER " + accessToken,
+  //     },
+  //   };
+  //   api.get("/", config).then((data) => setOccupations(data)); // MUDAR O PATH
+  // }, []);
 
-    function redirect(path){
-      history.push(path)
-    }
+  const columns = [
+    {
+      title: "Nome",
+      dataIndex: "name",
+      render: (name) => {
+        return (
+          <p className="clickable" onClick={() => handleChange(name)}>
+            {name}
+          </p>
+        );
+      },
+    },
+
+    {
+      title: "Código",
+      dataIndex: "code",
+      align: "left",
+    },
+    {
+      title: "N° alunos",
+      dataIndex: "number",
+      align: "left",
+    },
+    {
+      title: "Organização",
+      dataIndex: "organization",
+      key: "tags",
+      render: (tag) => {
+        let color = tag.length > 5 ? "geekblue" : "green";
+        color = tag.length > 7 ? "blueviolet" : color;
+        color = tag.length > 8 ? "orchid" : color;
+        color = tag.length > 9 ? "turquoise" : color;
+        return (
+          <Tag
+            color={color}
+            key={tag}
+            className="clickable"
+            onClick={() => handleChange(tag)}
+          >
+            {" "}
+            {tag}{" "}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: "Ações",
+      render: () => (
+        <>
+          <EditIcon className="clickable" onClick={handleEdit} />{" "}
+          <DeleteIcon className="clickable" onClick={handleDelete} />
+        </>
+      ),
+    },
+  ];
+
+  function handleDelete() {
+    alert("DELETE ainda não faz nada. tururu");
+  }
+
+  function handleEdit() {
+    alert("EDIT ainda não faz nada. tururu");
+  }
+
+  function handleChange(value) {
+    setSearch(value);
+
+    // retorna os dados de acordo com o que estiver na barra de pesquisa
+    setfilteredData(
+      data.filter((occupation) => {
+        if (value === "") return occupation;
+        return (
+          occupation.organization.toLowerCase().includes(value.toLowerCase()) ||
+          occupation.name.toLowerCase().includes(value.toLowerCase())
+        );
+      })
+    );
+  }
 
   return (
-   
-    pin ?
-   <div className="LinhaListaTurmas">
-      <p>{props.ocupacao}</p>
-      <p>{props.codigo}</p>
-      <p>{props.number}</p>
-      <div className="LinhaListaTurmasIcons">
-        <EditIcon
-          style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}
-          onClick={() => redirect('/tabelaturmas')}
-        />
-        <DeleteForeverIcon
-          style={{ marginRight: 20, fontSize: 40, color: "#9F9F9F" }}
-          onClick={() => removeLine(data.codigo)}
-        />
-      </div>
-    </div>
-
-    :
-    <div></div>
-  );
-}
-
-export default function ListaTurmas() {   
-
-  return (
-    <>
     <Base>
-      <div className="ListaTurmasContainer">
-        <div className="ListaTurmasContent">
-          <div className="TitleContainer">
-            <h1 className="ListaTurmasTtitle">Turmas</h1>
-          </div>
-          <div className="ListaTurmasLabelContainer">
-            <p className="ListaTurmasLabel">Ocupação</p>
-            <p className="ListaTurmasLabel">Código</p>
-            <p className="ListaTurmasLabel">Nº de Alunos</p>
-          </div>
-
-          <div className="ListaTurmasDataContainer">
-            {data.map((item) => {
-              return (
-                <LinhaListaTurmas
-                  id={item.codigo}
-                  ocupacao={item.ocupacao}
-                  codigo={item.codigo}
-                  number={item.number}
-                />
-              );
-            })}
-          </div>
-        </div>
+      <h1 className="page-title">Lista de Turmas</h1>
+      <div className="table-container">
+        <Input
+          className="search-input"
+          placeholder="procurar por nome, organização"
+          onChange={(e) => handleChange(e.target.value)}
+          value={search}
+        />
+        <Table
+          // title={() => `Lista de Ocupações da empresa ${organization}`}
+          columns={columns}
+          dataSource={filteredData}
+        />
       </div>
-    </Base> 
-    </>
+    </Base>
   );
 }

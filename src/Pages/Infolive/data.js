@@ -1,25 +1,28 @@
-const DATA = [
-
-    {
-        ocupacao: "SAMU",
-        data: "29/11",
-        qntd: 34,
-    },
-    {
-        ocupacao: "SAMU",
-        data: "28/11",
-        qntd: 19,
-    },
-    {
-        ocupacao: "UPA",
-        data: "26/11",
-        qntd: 88,
-    },
-    {
-        ocupacao: "Pronto Socorro",
-        data: "25/11",
-        qntd: 75,
-    },
+const date = [
+  {
+    occupation: "SAMU",
+    date: "29/11",
+    qntd: 34,
+    course: "calculo 2",
+  },
+  {
+    occupation: "SAMU",
+    date: "28/11",
+    qntd: 19,
+    course: "calculo 2",
+  },
+  {
+    occupation: "UPA",
+    date: "26/11",
+    qntd: 88,
+    course: "calculo 2",
+  },
+  {
+    occupation: "Pronto Socorro",
+    date: "25/11",
+    qntd: 75,
+    course: "calculo 2",
+  },
 ];
 
-export default DATA;
+export default date;

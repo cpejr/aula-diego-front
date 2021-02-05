@@ -1,0 +1,26 @@
+@import "~antd/dist/antd.css";
+
+.page-title {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.search-input {
+  margin-bottom: 20px;
+}
+
+.table-container {
+  width: 80%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .column-description {
+    display: none;
+  }
+}
