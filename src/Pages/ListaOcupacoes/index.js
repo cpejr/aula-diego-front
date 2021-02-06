@@ -1,39 +1,17 @@
-import React, { useState, useEffect } from "react";
-import "./ListaTurmas.css";
-import Base from "../../Components/Base/Base";
+import React, { useEffect, useState } from "react";
+import api from "../../services/api";
+
+import { Table, Tag, Input } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 
-import { Table, Tag, Input } from "antd";
+import Base from "../../Components/Base/Base";
+import "./ListaOcupacoes.css";
 
-const data = [
-  {
-    name: "turma matutino",
-    organization: "SAMU",
-    code: "251862",
-    number: 34,
-  },
-  {
-    name: "turma vespertino",
-    organization: "SAMU",
-    code: "321312",
-    number: 19,
-  },
-  {
-    name: "turma noturno",
-    organization: "UPA",
-    code: "72483",
-    number: 88,
-  },
-  {
-    name: "turminha da pesada",
-    organization: "Bombeiros",
-    code: "585855",
-    number: 75,
-  },
-];
+// TEMPORARIO
+import data from "./data";
 
-export default function ListaTurmas() {
+export default function ListaOrganizacoes() {
   const [occupations, setOccupations] = useState([]);
   const [filteredData, setfilteredData] = useState(data);
   const [search, setSearch] = useState("");
@@ -51,7 +29,7 @@ export default function ListaTurmas() {
 
   const columns = [
     {
-      title: "Nome",
+      title: "Ocupação",
       dataIndex: "name",
       render: (name) => {
         return (
@@ -61,20 +39,17 @@ export default function ListaTurmas() {
         );
       },
     },
-
     {
-      title: "Código",
-      dataIndex: "code",
-      align: "left",
-    },
-    {
-      title: "N° alunos",
-      dataIndex: "number",
+      title: "Descrição",
+      className: "column-description",
+      dataIndex: "description",
       align: "left",
     },
     {
       title: "Organização",
+      className: "column-organization",
       dataIndex: "organization",
+      align: "left",
       key: "tags",
       render: (tag) => {
         let color = tag.length > 5 ? "geekblue" : "green";
@@ -130,11 +105,11 @@ export default function ListaTurmas() {
 
   return (
     <Base>
-      <h1 className="page-title">Lista de Turmas</h1>
+      <h1 className="page-title">Lista de Ocupações</h1>
       <div className="table-container">
         <Input
           className="search-input"
-          placeholder="procurar por nome, organização"
+          placeholder="procurar por ocupação, empresa"
           onChange={(e) => handleChange(e.target.value)}
           value={search}
         />
