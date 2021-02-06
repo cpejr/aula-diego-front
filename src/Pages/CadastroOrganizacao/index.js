@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Label, Input, Form, Button } from "antd";
+import { Input, Form, Button } from "antd";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
@@ -46,47 +46,44 @@ export default function CadastroOrganizacao() {
 
   return (
     <Base>
-      <Form className="form-organization" onFinish={handleSubmit} {...layout}>
-        <h1 className="page-title"> Cadastro de Organização</h1>
-        <Form.Item
-          className="mt20"
-          label="Nome"
-          rules={[
-            {
-              required: true,
-              message: "Por favor, digite o nome da Organização!",
-            },
-          ]}
-        >
-          <Input
-            placeholder="Nome da Organização"
-            name="name"
-            className="form-input"
-            onChange={handleChange}
-          />
-        </Form.Item>
-        <Form.Item label="Descrição: " className="mt20">
-          <TextArea
-            name="description"
-            value={formValues["description"]}
-            onChange={handleChange}
-            placeholder="Descrição sobre a Organização"
-            className="form-input"
-            rows={4}
-          />
-        </Form.Item>
-
-        <Form.Item className="mt20">
-          <Button
-            type="primary"
-            className="register-btn"
-            htmlType="submit"
-            {...tailLayout}
+      <div className="form-container">
+        <Form className="form-ocupacao" onFinish={handleSubmit}>
+          <h1 className="page-title"> Cadastro de Organização</h1>
+          <Form.Item
+            className="mt20"
+            label="Nome"
+            rules={[
+              {
+                required: true,
+                message: "Por favor, digite o nome da Organização!",
+              },
+            ]}
           >
-            Cadastrar
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input
+              placeholder="Nome da Organização"
+              name="name"
+              className="form-input"
+              onChange={handleChange}
+            />
+          </Form.Item>
+          <Form.Item label="Descrição: " className="mt20">
+            <Input.TextArea
+              name="description"
+              value={formValues["description"]}
+              onChange={handleChange}
+              placeholder="Descrição sobre a Organização"
+              className="form-input"
+              rows={4}
+            />
+          </Form.Item>
+
+          <Form.Item className="mt20">
+            <button className="register-organization-btn" type="submit">
+              Cadastrar
+            </button>
+          </Form.Item>
+        </Form>
+      </div>
     </Base>
   );
 }

@@ -16,11 +16,9 @@ import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
-<<<<<<< HEAD
 import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
-=======
+import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
 import ListaOcupacoes from "./Pages/ListaOcupacoes";
->>>>>>> tables
 
 const routes = () => {
   return (
@@ -111,7 +109,17 @@ const routes = () => {
           adminComponent={ListaOcupacoes}
           masterComponent={ListaOcupacoes}
         />
-        <Route path="/" component={() => <Redirect to="dashboard" />} />
+        <PrivateRoute
+          path="/teste"
+          studentComponent={CadastroOcupacao}
+          adminComponent={CadastroOcupacao}
+          masterComponent={CadastroOcupacao}
+        />
+        <Route
+          path="/"
+          component={() => <h1> Erro 404: Página não encontrada </h1>}
+        />{" "}
+        {/* Rota para caminhos desconhecidos no sistema */}
       </Switch>
     </BrowserRouter>
   );
