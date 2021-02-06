@@ -37,7 +37,7 @@ export default function CadastroOrganizacao() {
       },
     };
     api
-      .post("/", formValues) // alterar esse trem, que tá errado
+      .post("/", formValues, config) // alterar esse trem, que tá errado
       .then(() => alert("Organização cadastrada com sucesso!"))
       .catch((error) =>
         alert(`Não foi possível cadastrar organização. \n Erro: ${error}`)
