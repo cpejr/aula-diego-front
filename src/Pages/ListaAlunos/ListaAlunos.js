@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
-import Header from "../../Components/Header/Header";
 import Board from "../../Components/Board/Board";
 import DATA from "./data.js";
 import "./ListaAlunos.css";
 
-const ListaAlunos = () => {
+export default function ListaAlunos() {
   const [search, setSearch] = useState("");
 
   return (
@@ -28,6 +27,4 @@ const ListaAlunos = () => {
       </div>
     </Base>
   );
-};
-
-export default ListaAlunos;
+}

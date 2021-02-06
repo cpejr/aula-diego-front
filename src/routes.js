@@ -16,6 +16,7 @@ import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
+import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
 
 const routes = () => {
   return (
@@ -94,6 +95,13 @@ const routes = () => {
           adminComponent={ListaAlunosLive}
           masterComponent={ListaAlunosLive}
         />
+        <PrivateRoute
+          path="/cadastroorganizacao"
+          studentComponent={() => <Redirect to="dashboard" />}
+          adminComponent={() => <Redirect to="dashboard" />}
+          masterComponent={CadastroOrganizacao}
+        />
+        <Route path="/" component={() => <Redirect to="dashboard" />} />
       </Switch>
     </BrowserRouter>
   );
