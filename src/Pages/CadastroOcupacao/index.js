@@ -97,7 +97,9 @@ export default function CadastroOrganizacao() {
               <Select.Option value="empty">Selecione uma opção</Select.Option>
               {organizations.map((org) => {
                 return org.isDeleted ? null : (
-                  <Select.Option value={org.name}>{org.name}</Select.Option>
+                  <Select.Option key={org.name} value={org.name}>
+                    {org.name}
+                  </Select.Option>
                 );
               })}
             </Select>

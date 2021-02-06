@@ -77,7 +77,7 @@ export default function Infolive() {
   ];
 
   function handleInfo() {
-    alert("DELETE ainda não faz nada. tururu");
+    alert("HANDLEINFO ainda não faz nada. tururu");
   }
 
   function handleChange(value) {
