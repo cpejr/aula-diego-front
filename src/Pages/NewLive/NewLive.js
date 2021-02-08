@@ -49,12 +49,11 @@ export default function NewLive() {
   }
 
   return (
+  <Base>
     <div className="pageRoot">
       <div>
-        {/*             <SideBar /> */}
       </div>
       <div className="pageBody">
-        <Header />
         <div className="pageContent">
           <div className="pageTitle">
             <h1>Criar Live</h1>
