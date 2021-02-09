@@ -16,6 +16,9 @@ import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
+import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
+import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
+import ListaOcupacoes from "./Pages/ListaOcupacoes";
 
 const routes = () => {
   return (
@@ -85,7 +88,7 @@ const routes = () => {
         <PrivateRoute
           path="/tabelaturma"
           studentComponent={() => <Redirect to="dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
+          adminComponent={TabelaTurmas}
           masterComponent={TabelaTurmas}
         />
         <PrivateRoute
@@ -94,6 +97,29 @@ const routes = () => {
           adminComponent={ListaAlunosLive}
           masterComponent={ListaAlunosLive}
         />
+        <PrivateRoute
+          path="/cadastroorganizacao"
+          studentComponent={() => <Redirect to="dashboard" />}
+          adminComponent={() => <Redirect to="dashboard" />}
+          masterComponent={CadastroOrganizacao}
+        />
+        <PrivateRoute
+          path="/listaocupacoes"
+          studentComponent={() => <Redirect to="dashboard" />}
+          adminComponent={ListaOcupacoes}
+          masterComponent={ListaOcupacoes}
+        />
+        <PrivateRoute
+          path="/teste"
+          studentComponent={CadastroOcupacao}
+          adminComponent={CadastroOcupacao}
+          masterComponent={CadastroOcupacao}
+        />
+        <Route
+          path="/"
+          component={() => <h1> Erro 404: Página não encontrada </h1>}
+        />{" "}
+        {/* Rota para caminhos desconhecidos no sistema */}
       </Switch>
     </BrowserRouter>
   );

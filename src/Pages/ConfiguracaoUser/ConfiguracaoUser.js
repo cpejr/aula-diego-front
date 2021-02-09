@@ -90,7 +90,9 @@ export default function ConfiguracaoAluno(props) {
           onClose={handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Edite suas Informações</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            Edite suas Informações
+          </DialogTitle>
           <DialogContent>
             <DialogContentText>
               Complete os campos e clique em "Concluir Edição", para alterar os
@@ -230,7 +232,9 @@ export default function ConfiguracaoAluno(props) {
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Data de Nascimento:</p>
-                  <p className="configAlunoOutput">{dataAluno.birthdate}</p>{" "}
+                  <p className="configAlunoOutput">
+                    {dataAluno.birthdate}
+                  </p>{" "}
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Email:</p>

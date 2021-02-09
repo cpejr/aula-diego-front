@@ -1,10 +1,12 @@
-.Sidebar{
-
+.Sidebar {
 }
 
-.active{
-  display: none;
-  height: 10vh;
+.active {
+  position: fixed;
+  height: 90vh;
+  width: 100vw;
+  z-index: 999;
+  background-color: white;
 }
 
 .headerContainer {
@@ -36,44 +38,35 @@
   align-items: center;
 }
 
-
-.LabelContainer{
-
+.LabelContainer {
   display: flex;
   flex: 0.25;
   justify-content: space-between;
-
 }
 
-.aHeader{
+.aHeader {
   color: white;
-
 }
-.aHeader:hover{
+.aHeader:hover {
   cursor: pointer;
   color: white;
 }
 
-
-@media(max-width:780px){
-  .Sidebar{
-      display: none;
+@media (max-width: 780px) {
+  .Sidebar {
+    display: none;
   }
-  .active{
+  .active {
     margin-top: 15%;
     display: block;
   }
 }
 
-@media (max-width:1025px){
-
-    .LabelContainer{
-
-      display: none;
-
-    }
-    .HeaderImg{
-      display: flex;
-    }
-
+@media (max-width: 1025px) {
+  .LabelContainer {
+    display: none;
+  }
+  .HeaderImg {
+    display: flex;
+  }
 }

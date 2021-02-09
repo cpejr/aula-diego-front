@@ -1,0 +1,45 @@
+.page-title {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.form-container {
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  border: solid 1px black;
+  padding: 0 20px;
+}
+
+.form-ocupacao {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.form-input {
+  width: 100%;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.ant-form-item-explain-error {
+  color: #ff4d4f;
+}
+
+.ant-form-item-has-error {
+  border-color: #ff4d4f;
+}
+
+.register-occupation-btn {
+  background-color: #c63756;
+  color: white;
+  border: none;
+  font-size: 1.3em;
+  border-radius: 5px;
+}

@@ -1,44 +1,5 @@
-.pageRoot {
-    width: 100%;
-    background-color: #fafafa;
-}
-
-.pageBody{
-    width: 100%;
-    align-items: center;
-}
-
-.pageContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    margin: auto;   
-}
-
-.pageContent h1{
-    margin-top: 7%;
-    margin-bottom: 8%;
-    color: #25003c;
-    font-size: 50px;
-}
-.pageContent input {
-    min-width: 60%;
-    max-width: 90%;
-    padding-left: 10px;
-}
-
 @media (max-width: 600px) {
-    .listContainer h1 {
-        text-align: center;
-    }
-
-    .inputboard input {
-        width: 280px;
-    }
-
-    .ListaDeAlunosContainer{
-        margin-left: 0%;
-    }
+  .column-turma {
+    display: none;
+  }
 }
