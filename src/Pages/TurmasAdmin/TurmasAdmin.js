@@ -7,20 +7,16 @@ import EditIcon from '@material-ui/icons/Edit';
 
 export default function TurmasAdmin() {
   return (
-    <>
     <Base>
       <div className="ContainerTurmasAdmin">
         <div className="TurmasAdmin">
-          <div className="ContainerCardsTurmasAdmin">
-            <h1>Turma</h1>
-            <div className="CardsTurmasAdmin">
-              <AdmCard style={{marginRight: "100px"}} title="Nova Turma" Icon={AddIcon} route="/novaturma"/>
-              <AdmCard style={{marginLeft: "100px"}} title="Visualizar e Editar" Icon={EditIcon} route="/listaturma"/>
-            </div>
-          </div>
+            <h1 className='ContainerCardsTurmasAdmin' >Turmas</h1>
+             <div className = 'DashboardCardContainer' >
+              <AdmCard title="Nova Turma" Icon={AddIcon} route="/novaturma"/>
+              <AdmCard title="Visualizar e Editar" Icon={EditIcon} route="/listaturma"/>
+            </div> 
         </div>
       </div>
     </Base>
-    </>
   );
 }

@@ -14,7 +14,7 @@
   display: grid;
   grid-template-columns: repeat(3, 15vw);
   margin-left: 3vw;
-  grid-column-gap: 120px;
+  grid-column-gap: 10vw;
   margin-bottom: 1vh;
   color: grey;
   font-weight: 500;
@@ -29,7 +29,7 @@
   grid-template-columns: repeat(3, 15vw);
   margin-left: 3vw;
   margin-top: 2%;
-  grid-column-gap: 118px;
+  grid-column-gap: 10vw;
   color: grey;
   font-weight: 600;
   font-size: x-large;
@@ -38,4 +38,21 @@
   display: flex;
   width: 250px;
   margin: 0%;
+}
+
+@media (max-width: 800px) {
+  .ContainerNovaTurma {
+    width: 90vw;
+    margin-left: 5%;
+  }
+  .TitulosDaTabela{
+    display: grid;
+    grid-template-columns: repeat(3, 24vw);
+    font-size: small;
+  }
+  .LinhaTabelaNovaTurma{
+    font-size: small;
+    grid-template-columns: repeat(3, 15vw);
+    grid-column-gap: 19vw;
+  }
 }
