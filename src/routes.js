@@ -20,6 +20,7 @@ import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
 import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
 import ListaOcupacoes from "./Pages/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos";
+import ListaMeusCursos from "./Pages/ListaMeusCursos";
 
 const routes = () => {
   return (
@@ -118,9 +119,9 @@ const routes = () => {
         />
         <PrivateRoute
           path="/listacursos"
-          studentComponent={ListaCursos}
+          studentComponent={ListaMeusCursos}
           adminComponent={ListaCursos}
-          masterComponent={ListaCursos}
+          masterComponent={ListaMeusCursos}
         />
         <Route
           path="/"
