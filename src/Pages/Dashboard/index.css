@@ -1,11 +1,7 @@
 .pageWrapper{
   background-color: #fafafa;
+  min-width: 100vw;
 }
-
-.Teste {
-  margin-right: 50px;
-}
-
 .dashboardCardContainer{
   display: flex;
   margin-right: 50px;
@@ -13,19 +9,18 @@
   vertical-align: middle;
   align-items: center;
   justify-content: center;
+  background-color: #fafafa;
 }
-
 .DashboardTitle{
   display: flex;
   flex: 1;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 5%;
   color: #707070;
+  background-color: #fafafa;
   margin-bottom: -5%;
   
 }
-
 .TitleImg{
   display: flex;
   width: 65px;
@@ -34,7 +29,6 @@
   border-radius: 200;
   margin-left: 5%;
   margin-right: 3%;
-  
 }
 
 @media (max-width:600px){
