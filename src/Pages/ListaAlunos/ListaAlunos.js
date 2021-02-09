@@ -116,7 +116,8 @@ export default function ListaAlunos() {
         return (
           student.name.toLowerCase().includes(value.toLowerCase()) ||
           student.matricula.toLowerCase().includes(value.toLowerCase()) ||
-          student.curso.toLowerCase().includes(value.toLowerCase())
+          student.curso.toLowerCase().includes(value.toLowerCase()) ||
+          student.turma.toLowerCase().includes(value.toLowerCase())
         );
       })
     );
