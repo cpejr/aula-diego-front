@@ -1,0 +1,11 @@
+.TitleNovoCurso{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #25003c;
+    flex-direction: column;
+}
+.formContainer{
+    background-color: #fafafa;
+    height: 100vh;
+}

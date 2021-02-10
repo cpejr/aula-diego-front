@@ -30,7 +30,7 @@ ul a:hover {
   background-color: white;
   font-weight: 500;
   flex-shrink: 0;
-  position: absolute;
+  position: fixed;
 }
 
 .logoSidebar {

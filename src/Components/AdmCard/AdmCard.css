@@ -24,10 +24,13 @@
 }
 
 @media (max-width:800px) {
- 
+    .AdmCardsContainer{
+        margin-right: 0px;
+        margin-left: 0px;
+    }
 
     .AdmCardsContainer{
-        width: 85%;
-        height: 20vh;
+        width: 80vw;
+        height: 35vh;
     }
 }
