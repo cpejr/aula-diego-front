@@ -13,8 +13,8 @@ export default function Curso() {
         <div className="TurmasAdmin">
             <h1 className='ContainerCardsTurmasAdmin' >Criar novo Curso</h1>
              <div className = 'DashboardCardContainer' >
-              <AdmCard title="Novo Curso" Icon={AddIcon} route="/adicionar"/>
-              <AdmCard title="Visualizar e Editar" Icon={EditIcon} route="/editar"/>
+              <AdmCard title="Novo Curso" Icon={AddIcon} route="/curso/criar"/>
+              <AdmCard title="Visualizar e Editar" Icon={EditIcon} route="/curso/editar"/>
             </div> 
         </div>
       </div>

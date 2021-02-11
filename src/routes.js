@@ -77,13 +77,14 @@ const routes = () => {
           masterComponent={NovaTurma}
         />
         <PrivateRoute
-          path="/novocurso"
+          path="/curso"
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={() => <Redirect to="dashboard" />}
           masterComponent={Curso}
+          exact
         />
         <PrivateRoute
-          path="/adicionar"
+          path="/curso/criar"
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={() => <Redirect to="dashboard" />}
           masterComponent={NovoCurso}

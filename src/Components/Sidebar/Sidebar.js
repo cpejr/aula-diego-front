@@ -71,7 +71,7 @@ export default function Sidebar() {
     },
     {
       title: "Novo Curso",
-      path: "/novocurso",
+      path: "/curso",
     },
     {
       title: "Lista de Presença",
