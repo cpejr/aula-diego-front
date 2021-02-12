@@ -30,7 +30,7 @@ export default function Admin() {
             <h1 className='DashBoardTitleFont' >Próximas Lives</h1>
             </div>
              <div className = 'DashboardCardContainer' >
-                <AdmCard title="Adicionar Nova Live" Icon={AddIcon} route="/newlive" />
+                <AdmCard title="Adicionar Nova Live" Icon={AddIcon} route="/live" />
                 <Cards title='UPA' cardColor1 = '#6AA5E3'cardColor2='#686AE9' date = '20/10/2020' hour = '20:00' />
                 <Cards title='Bombeiros' cardColor1 = '#FD88A4'cardColor2='#EE3763' date = '20/10/2020' hour = '20:00' />
             </div> 
