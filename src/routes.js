@@ -11,6 +11,9 @@ import Cadastro from "./Pages/Cadastro/Cadastro";
 import ListaAlunos from "./Pages/ListaAlunos/ListaAlunos";
 import ListaTurma from "./Pages/ListaTurmas/ListaTurmas";
 import NovaTurma from "./Pages/NovaTurma/NovaTurma";
+import Curso from "./Pages/Curso/Curso";
+import NovoCurso from "./Pages/NovoCurso/NovoCurso";
+import ListaCurso from "./Pages/ListaCurso/ListaCurso";
 import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
 import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
@@ -82,8 +85,26 @@ const routes = () => {
           masterComponent={NovaTurma}
         />
         <PrivateRoute
-          path="/turma"
+          path="/curso"
+          studentComponent={() => <Redirect to="dashboard" />}
+          adminComponent={() => <Redirect to="dashboard" />}
+          masterComponent={Curso}
           exact
+        />
+        <PrivateRoute
+          path="/curso/criar"
+          studentComponent={() => <Redirect to="dashboard" />}
+          adminComponent={() => <Redirect to="dashboard" />}
+          masterComponent={NovoCurso}
+        />
+        <PrivateRoute
+          path="/editar"
+          studentComponent={() => <Redirect to="dashboard" />}
+          adminComponent={() => <Redirect to="dashboard" />}
+          masterComponent={ListaCurso}
+        />
+        <PrivateRoute
+          path="/listaturma"
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={ListaTurma}
           masterComponent={ListaTurma}

@@ -70,6 +70,10 @@ export default function Sidebar() {
       path: "/tabelaturma",
     },
     {
+      title: "Novo Curso",
+      path: "/curso",
+    },
+    {
       title: "Lista de Presença",
       path: "/listalive",
     },
