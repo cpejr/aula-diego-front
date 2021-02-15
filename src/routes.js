@@ -13,7 +13,6 @@ import ListaTurma from "./Pages/ListaTurmas/ListaTurmas";
 import NovaTurma from "./Pages/NovaTurma/NovaTurma";
 import Curso from "./Pages/Curso/Curso";
 import NovoCurso from "./Pages/NovoCurso/NovoCurso";
-import ListaCurso from "./Pages/ListaCurso/ListaCurso";
 import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
 import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
