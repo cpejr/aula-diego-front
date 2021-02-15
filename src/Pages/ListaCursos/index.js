@@ -3,24 +3,42 @@ import Base from "../../Components/Base/Base";
 import { Table, Tag, Input } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import data from "./dados.js";
 import "./ListaCursos.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 
 export default function ListaCursos() {
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const { session } = useSession();
 
-  //   useEffect(() => {
-  //     const config = {
-  //       headers: {
-  //         authorization: "BEARER " + accessToken,
-  //       },
-  //     };
-  //     api.get("/", config).then((data) => setFilteredData(data)); // MUDAR O PATH
-  //   }, []);
+  useEffect(() => {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      query: {
+        organization_id: session.user.organization_id,
+      },
+    };
+    const configMaster = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
+    if (session.user.type == "master") {
+      api.get("/course", configMaster).then((response) => {
+        setData(response.data);
+        setFilteredData(response.data);
+      });
+    } else {
+      api.get("/course", config).then((response) => {
+        setData(response.data);
+        setFilteredData(response.data);
+      });
+    }
+  }, []);
 
   const columns = [
     {
@@ -42,26 +60,28 @@ export default function ListaCursos() {
     {
       title: "Organização",
       dataIndex: "organization",
-      align: "left",
       key: "tags",
       render: (tag) => {
-        let color = tag.length > 3 ? "geekblue" : "green";
-        color = tag.length > 4 ? "coral" : color;
-        color = tag.length > 5 ? "volcano" : color;
-        color = tag.length > 7 ? "turquoise" : color;
-        color = tag.length > 9 ? "yellowgreen" : color;
-        color = tag.length > 11 ? "salmon" : color;
-        return (
-          <Tag
-            color={color}
-            key={tag}
-            className="clickable"
-            onClick={() => handleChange(tag)}
-          >
-            {" "}
-            {tag}{" "}
-          </Tag>
-        );
+        if (tag) {
+          let color = tag.length > 3 ? "geekblue" : "green";
+          color = tag.length > 4 ? "coral" : color;
+          color = tag.length > 5 ? "volcano" : color;
+          color = tag.length > 7 ? "turquoise" : color;
+          color = tag.length > 9 ? "yellowgreen" : color;
+          color = tag.length > 11 ? "salmon" : color;
+          return (
+            <Tag
+              color={color}
+              key={tag}
+              className="clickable"
+              onClick={() => handleChange(tag)}
+            >
+              {" "}
+              {tag}{" "}
+            </Tag>
+          );
+        }
+        return null;
       },
     },
     {
