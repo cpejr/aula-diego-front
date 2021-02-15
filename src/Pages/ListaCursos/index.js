@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
-import { Table, Tag, Input } from "antd";
+import { Table, Tag, Input, Popconfirm, message, Button } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import "./ListaCursos.css";
@@ -11,6 +12,7 @@ export default function ListaCursos() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const history = useHistory();
   const { session } = useSession();
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function ListaCursos() {
         setFilteredData(response.data);
       });
     } else {
-      api.get("/course", config).then((response) => {
+      api.get(`/course/user/${session.user.id}`, config).then((response) => {
         setData(response.data);
         setFilteredData(response.data);
       });
@@ -43,7 +45,7 @@ export default function ListaCursos() {
   const columns = [
     {
       title: "Curso",
-      dataIndex: "name",
+      dataIndex: "course_name",
       render: (name) => {
         return (
           <p className="clickable" onClick={() => handleChange(name)}>
@@ -53,13 +55,54 @@ export default function ListaCursos() {
       },
     },
     {
+      title: "Ver Curso",
+      dataIndex: "course_id",
+      render: (course_id) => {
+        return (
+          <p
+            className="clickable link"
+            onClick={() => history.push(`/curso/${course_id}`)}
+          >
+            Ver curso
+          </p>
+        );
+      },
+    },
+    {
       title: "Descrição",
-      dataIndex: "description",
+      dataIndex: "course_description",
       className: "column-description",
     },
     {
+      title: "Turma",
+      dataIndex: "class_name",
+      key: "tags",
+      render: (tag) => {
+        if (tag) {
+          let color = tag.length > 3 ? "geekblue" : "green";
+          color = tag.length > 4 ? "coral" : color;
+          color = tag.length > 5 ? "volcano" : color;
+          color = tag.length > 6 ? "turquoise" : color;
+          color = tag.length > 7 ? "yellowgreen" : color;
+          color = tag.length > 8 ? "salmon" : color;
+          return (
+            <Tag
+              color={color}
+              key={tag}
+              className="clickable"
+              onClick={() => handleChange(tag)}
+            >
+              {" "}
+              {tag}{" "}
+            </Tag>
+          );
+        }
+        return null;
+      },
+    },
+    {
       title: "Organização",
-      dataIndex: "organization",
+      dataIndex: "organization_name",
       key: "tags",
       render: (tag) => {
         if (tag) {
@@ -86,21 +129,68 @@ export default function ListaCursos() {
     },
     {
       title: "Ações",
-      render: () => (
+      dataIndex: "actions",
+      className: session.user.type === "master" ? null : "hide",
+      render: (course_id) => (
         <>
-          <EditIcon className="clickable" onClick={handleEdit} />{" "}
-          <DeleteIcon className="clickable" onClick={handleDelete} />
+          {session.user.type === "master" ? (
+            <DeleteIcon
+              className="clickable"
+              onClick={() => handleDelete(course_id)}
+            />
+          ) : null}
         </>
       ),
     },
   ];
 
-  function handleDelete() {
-    alert("DELETE ainda não faz nada. tururu");
-  }
+  function handleDelete(course_id) {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
 
-  function handleEdit() {
-    alert("EDIT ainda não faz nada. tururu");
+    const answer = window.confirm("Você deseja apagar esse curso?");
+    if (answer === true)
+      api
+        .put(`/course/${course_id}`, {}, config)
+        .then(() => alert("Curso deletado com sucesso"))
+        .then(() => {
+          const config = {
+            headers: {
+              authorization: "BEARER " + session.accessToken,
+            },
+            query: {
+              organization_id: session.user.organization_id,
+            },
+          };
+          const configMaster = {
+            headers: {
+              authorization: "BEARER " + session.accessToken,
+            },
+          };
+          if (session.user.type == "master") {
+            api.get("/course", configMaster).then((response) => {
+              setData(response.data);
+              setFilteredData(response.data);
+            });
+          } else {
+            api
+              .get(`/course/user/${session.user.id}`, config)
+              .then((response) => {
+                setData(response.data);
+                setFilteredData(response.data);
+              });
+          }
+        })
+        .catch((error) =>
+          alert(
+            "Não foi possível deletar o curso. Tente novamente mais tarde.\nErro:" +
+              error
+          )
+        );
+    else alert("Operação cancelada.");
   }
 
   function handleChange(value) {
@@ -111,15 +201,29 @@ export default function ListaCursos() {
       data.filter((course) => {
         if (value === "") return course;
         return (
-          course.name.toLowerCase().includes(value.toLowerCase()) ||
-          course.organization.toLowerCase().includes(value.toLowerCase())
+          course.course_name.toLowerCase().includes(value.toLowerCase()) ||
+          course.class_name.toLowerCase().includes(value.toLowerCase()) ||
+          course.organization_name.toLowerCase().includes(value.toLowerCase())
         );
       })
     );
   }
+
   return (
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
+      {session.user.type != "student" ? (
+        <>
+          <Button
+            className="new-course-btn course-btn"
+            type="primary"
+            ghost
+            onClick={() => history.push("/course/new")}
+          >
+            Novo Curso
+          </Button>
+        </>
+      ) : null}
       <div className="table-container">
         <Input
           className="search-input"
