@@ -212,13 +212,13 @@ export default function ListaCursos() {
   return (
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
-      {session.user.type != "student" ? (
+      {session.user.type == "master" ? (
         <>
           <Button
             className="new-course-btn course-btn"
             type="primary"
             ghost
-            onClick={() => history.push("/course/new")}
+            onClick={() => history.push("/cadastro/curso")}
           >
             Novo Curso
           </Button>
