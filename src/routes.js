@@ -89,12 +89,6 @@ const routes = () => {
           masterComponent={NovoCurso}
         />
         <PrivateRoute
-          path="/editar"
-          studentComponent={() => <Redirect to="dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
-          masterComponent={ListaCurso}
-        />
-        <PrivateRoute
           path="/listaturma"
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={() => <Redirect to="dashboard" />}
