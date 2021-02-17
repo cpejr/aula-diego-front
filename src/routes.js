@@ -21,6 +21,7 @@ import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
 import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
 import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
 import ListaOcupacoes from "./Pages/ListaOcupacoes";
+import ListaAulas from "./Pages/ListaAulas/ListaAulas";
 
 const routes = () => {
   return (
@@ -129,6 +130,10 @@ const routes = () => {
           studentComponent={CadastroOcupacao}
           adminComponent={CadastroOcupacao}
           masterComponent={CadastroOcupacao}
+        />
+        <PrivateRoute
+          path="/aulas"
+          studentComponent={ListaAulas}
         />
         <Route
           path="/"

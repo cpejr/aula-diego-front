@@ -20,6 +20,10 @@ export default function Sidebar() {
       title: "Informações sobre a Live",
       path: "/infolive",
     },
+    {
+      title: "Meus Cursos",
+      path: "/curso",
+    },
   ];
   const adminLinks = [
     {
