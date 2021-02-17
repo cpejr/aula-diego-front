@@ -1,0 +1,22 @@
+.new-course-btn {
+  margin-left: 10%;
+}
+
+.course-btn {
+  margin-right: 15px;
+}
+
+.link {
+  text-decoration: underline;
+  color: #3f07d1;
+}
+
+.hide {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .column-description {
+    display: none;
+  }
+}
