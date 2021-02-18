@@ -58,14 +58,15 @@ export default function Curso(props) {
   return (
     <Base>
       <div className="page-content">
-        <h1 className="mb60">{courseData && courseData.name}</h1>
+        <h1 className="mb60 capitalize">{courseData && courseData.name}</h1>
         <p className="mb60 block">{courseData && courseData.description}</p>
-        <h2 className="mb20">Últimas Lives</h2>
+        <h2 className="mb20 capitalize">Últimas Lives</h2>
         <div className="course-card-container mb20">
           {lives
             ? lives.map((live) => {
                 return (
                   <CourseCard
+                    className="capitalize"
                     title={live.name}
                     description={live.description}
                     path={`/live/${live.id}`}
@@ -74,12 +75,13 @@ export default function Curso(props) {
               })
             : null}
         </div>
-        <h2 className="mb20">Últimas Aulas</h2>
+        <h2 className="mb20 capitalize">Últimas Aulas</h2>
         <div className="course-card-container">
           {lessons
             ? lessons.map((lesson) => {
                 return (
                   <CourseCard
+                    className="capitalize"
                     title={lesson.name}
                     description={lesson.description}
                     path={`/lesson/${lesson.id}`}
@@ -97,7 +99,7 @@ function CourseCard({ title, description, path }) {
   const history = useHistory();
   return (
     <div className="course-card" onClick={() => history.push(path)}>
-      <h3 className="course-card-title">{title}</h3>
+      <h3 className="course-card-title capitalize">{title}</h3>
       <p className="course-card-description">{description}</p>
     </div>
   );
