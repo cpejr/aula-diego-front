@@ -17,6 +17,7 @@ import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
 import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
+import ForgottenPassword from "./Pages/ForgottenPassword/forgot";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
 import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
 import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
@@ -40,6 +41,13 @@ const routes = () => {
           adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={Cadastro}
           component={Cadastro} // (opcional) componente que renderiza se não estiver logado
+        />
+        <PrivateRoute
+          path="/forgottenpassword"
+          studentComponent={ForgottenPassword}
+          adminComponent={ForgottenPassword}
+          masterComponent={ForgottenPassword}
+          component = {ForgottenPassword}
         />
         <PrivateRoute
           path="/dashboard"
