@@ -1,0 +1,35 @@
+.page-content {
+  padding: 30px;
+}
+.course-card-container {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.course-card {
+  border-radius: 10px;
+  padding: 25px;
+  min-width: 300px;
+  max-width: 400px;
+  background: linear-gradient(to right, #890092, #fb006d);
+  color: white;
+  cursor: pointer;
+  margin: 25px;
+}
+
+.course-card-title {
+  color: white;
+  text-decoration: underline;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+.mb60 {
+  margin-bottom: 60px;
+}
+
+.block {
+  display: block;
+}
