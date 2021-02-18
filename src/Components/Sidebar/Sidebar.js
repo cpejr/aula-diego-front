@@ -22,7 +22,7 @@ export default function Sidebar() {
     },
     {
       title: "Meus Cursos",
-      path: "/curso",
+      path: "/cursos",
     },
   ];
   const adminLinks = [
