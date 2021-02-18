@@ -127,7 +127,10 @@ export default function Login() {
               </button>
             </div>
             <div className="esqueceuLoginDiv">
-              <a className="esqueceuLogin">Esqueceu a senha?</a>
+              <a className="esqueceuLogin"
+              onClick={() => redirect("/forgottenpassword")}
+              target="blank"
+              >Esqueceu a senha?</a>
             </div>
             <div className="resgateLogin">
               <h5 className="naotemLogin">Não tem conta?</h5>
