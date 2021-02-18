@@ -11,7 +11,7 @@ import Cadastro from "./Pages/Cadastro/Cadastro";
 import ListaAlunos from "./Pages/ListaAlunos/ListaAlunos";
 import ListaTurma from "./Pages/ListaTurmas/ListaTurmas";
 import NovaTurma from "./Pages/NovaTurma/NovaTurma";
-import Curso from "./Pages/Curso/Curso";
+import GerenciarCurso from "./Pages/GerenciarCursos/Curso";
 import NovoCurso from "./Pages/NovoCurso/NovoCurso";
 import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
 import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
@@ -23,6 +23,7 @@ import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
 import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
 import ListaOcupacoes from "./Pages/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos";
+import Curso from "./Pages/Curso";
 
 const routes = () => {
   return (
@@ -95,7 +96,7 @@ const routes = () => {
           path="/gerenciar/curso"
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={() => <Redirect to="dashboard" />}
-          masterComponent={Curso}
+          masterComponent={GerenciarCurso}
           exact
         />
         <PrivateRoute
@@ -158,6 +159,13 @@ const routes = () => {
           studentComponent={ListaCursos}
           adminComponent={ListaCursos}
           masterComponent={ListaCursos}
+        />
+        <PrivateRoute
+          path="/curso/:id"
+          exact
+          studentComponent={Curso}
+          adminComponent={Curso}
+          masterComponent={Curso}
         />
         <Route
           path="/"
