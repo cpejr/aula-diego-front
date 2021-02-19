@@ -93,6 +93,16 @@
     color: white;
 }
 
+.form-group textarea {
+    background-color: rgb(48, 33, 54);
+    border: 1.5px solid rgb(63, 55, 73);
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 0.3rem;
+    color: white;
+    resize: none;
+}
+
 .form-group select {
     background-color: rgb(48, 33, 54);
     border: 1.5px solid rgb(63, 55, 73);

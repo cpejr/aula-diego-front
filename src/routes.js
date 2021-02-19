@@ -24,6 +24,7 @@ import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
 import ListaOcupacoes from "./Pages/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos";
 import Curso from "./Pages/Curso";
+import Aula from "./Pages/Aula/Aula";
 
 const routes = () => {
   return (
@@ -166,6 +167,13 @@ const routes = () => {
           studentComponent={Curso}
           adminComponent={Curso}
           masterComponent={Curso}
+        />
+        <PrivateRoute
+          path="/aula/:id"
+          exact
+          studentComponent={Aula}
+          adminComponent={Aula}
+          masterComponent={Aula}
         />
         <Route
           path="/"

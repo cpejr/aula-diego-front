@@ -34,7 +34,7 @@ export default function NovoCurso() {
           },
         };
         api
-          .post("/newcourse", formValues, config) //esperar ver o controller do db novo
+          .post("/course", formValues, config) //esperar ver o controller do db novo
           .then(() => alert("Curso cadastrado com sucesso!"))
           .catch((error) =>
             alert(`Não foi possível cadastrar o Curso. \n Erro: ${error}`)
