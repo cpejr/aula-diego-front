@@ -25,16 +25,25 @@ import ListaOcupacoes from "./Pages/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos";
 import Curso from "./Pages/Curso";
 import Aula from "./Pages/Aula/Aula";
+import Sobre from "./Pages/Sobre/Sobre";
 
 const routes = () => {
   return (
     <BrowserRouter>
       <Switch>
         <IsLoggedRoute
-          component={Login}
+          component={Sobre}
           exact
           path="/"
           loggedPath="/dashboard"
+        />
+        <PrivateRoute
+          path="/login"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={() => <Redirect to="/dashboard" />}
+          component={Login} // (opcional) componente que renderiza se não estiver logado
         />
         <PrivateRoute
           path="/cadastro"

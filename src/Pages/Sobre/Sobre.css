@@ -1,0 +1,160 @@
+.headerHome{
+    height: 15vh;
+    background-color: #ffffff;
+    display: flex;
+}
+
+#logo{
+    height: 10vh;
+}
+
+.imgLogo{
+    padding: 2vh;
+    display: flex;
+}
+
+.btns{
+    display: flex;
+    padding: 3vh;
+    margin-left: 52vw;
+    font-weight: 500;
+}
+
+.btnLogin{
+    border-radius: 8px;
+    height: 8vh;
+    width: 10vw;
+    background-color: rgb(198, 53, 84);
+    border: 2px solid #B11734;
+    color : #ffffff;
+    outline:none;
+    border:none;
+    font-weight: 600;
+}
+
+.btnCadastro{
+    border-radius: 8px;
+    height: 8vh;
+    width: 10vw;
+    background-color: #ffffff;
+    border: 2px solid #ffffff;
+    color : #B11734;
+    outline:none;
+    border:none;
+    font-weight: 600;
+}
+
+.btnCadastro :focus {
+    outline: none;
+    border:none;
+}
+
+.btnLogin :focus {
+    outline: none;
+    border:none;
+}
+
+.contentWave{
+    position: relative;
+    display: flex;
+    background-image: linear-gradient(to top, #290043 73%, #B11734);
+    height: 700px;
+}
+
+.contentWave:before { 
+    content: ""; 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 250px; 
+    background: url(../../images/wave.png); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+}
+
+.contentWaveBottom{
+    margin-top: 25vh;
+    position: relative;
+    display: flex;
+    background-image: linear-gradient(to top, #290043 73%, #B11734);
+    height: 50px;
+}
+
+.contentWaveBottom:after { 
+    content: ""; 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 250px; 
+    background: url(../../images/wave-bottom.svg); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+}
+
+.textSobre{
+    padding: 7vw 5vw 5vw 5vw;
+}
+
+.textoPadrao{
+    font-weight: 50;
+    color: #ffffff;
+}
+
+.TextWhite{
+    color: #ffffff;
+}
+
+.image{
+    width: 358px;
+    height: 365px;
+    margin: 10vw;
+    margin-top: 5vw;
+}
+
+.section{
+    display: flex;
+}
+
+.plus{
+    margin-left: 5vw;
+}
+
+.logo{
+    height: 40vh;
+    padding: 2vw 10vw 2vw 2vw;
+}
+
+.textCenter{
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 3vw;
+    text-align: center;
+    margin: 5vw 15vw;
+}
+
+@media (max-width: 720px) {
+    .headerHome{
+        height: 10vh;
+    }
+    .btns{
+        margin-left: 0vw;
+        font-size: 15px;
+        padding: 3vh;
+    }
+    #logo{
+        height: 3vh;
+    }
+    .btnLogin{
+        height: 4vh;
+        width: 20vw;
+    }
+    .btnCadastro{
+        height: 4vh;
+        width: 30vw;
+    }
+    .imgLogo{
+        padding: 3vh;
+    }
+}
