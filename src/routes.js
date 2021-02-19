@@ -76,80 +76,80 @@ const routes = () => {
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaAlunos}
-          masterComponent={ListaAlunos} // isso vai ser alterado depois -> pagina em que o master poderá excluir alunos
+          masterComponent={ListaAlunos}
         />
         <PrivateRoute
           path="/info/live"
           exact
-          studentComponent={Infolive}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={Infolive}
           masterComponent={Infolive}
         />
         <PrivateRoute
           path="/cadastro/turma"
           exact
-          studentComponent={() => <Redirect to="dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={NovaTurma}
         />
         <PrivateRoute
           path="/gerenciar/curso"
-          studentComponent={() => <Redirect to="dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={GerenciarCurso}
           exact
         />
         <PrivateRoute
           path="/cadastro/curso"
-          studentComponent={() => <Redirect to="dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={NovoCurso}
         />
         <PrivateRoute
           path="/lista/turma"
-          studentComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaTurma}
           masterComponent={ListaTurma}
         />
         <PrivateRoute
           path="/gerenciar/turma"
           exact
-          studentComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={TurmasAdmin}
           masterComponent={TurmasAdmin}
         />
         <PrivateRoute
           path="/alunos/turma/:id"
           exact
-          studentComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={TabelaTurmas}
           masterComponent={TabelaTurmas}
         />
         <PrivateRoute
           path="/presenca/live/:live_id"
           exact
-          studentComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaAlunosLive}
           masterComponent={ListaAlunosLive}
         />
         <PrivateRoute
           path="/cadastro/organizacao"
           exact
-          studentComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={() => <Redirect to="dashboard" />}
           masterComponent={CadastroOrganizacao}
         />
         <PrivateRoute
           path="/ocupacao"
           exact
-          studentComponent={() => <Redirect to="dashboard" />}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaOcupacoes}
           masterComponent={ListaOcupacoes}
         />
         <PrivateRoute
           path="/cadastro/ocupacao"
           exact
-          studentComponent={CadastroOcupacao}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={CadastroOcupacao}
           masterComponent={CadastroOcupacao}
         />
