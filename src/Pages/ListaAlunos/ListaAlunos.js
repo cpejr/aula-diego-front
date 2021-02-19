@@ -225,7 +225,9 @@ export default function ListaAlunos() {
         if (value === "") return student;
         return (
           student.name.toLowerCase().includes(value.toLowerCase()) ||
-          student.registration.toString().includes(value.toLowerCase())
+          student.registration.toString().includes(value.toLowerCase()) ||
+          student.organization_name.toString().includes(value.toLowerCase()) ||
+          student.occupation_name.toString().includes(value.toLowerCase())
         );
       })
     );
