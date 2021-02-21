@@ -49,7 +49,7 @@ const routes = () => {
           studentComponent={ForgottenPassword}
           adminComponent={ForgottenPassword}
           masterComponent={ForgottenPassword}
-          component = {ForgottenPassword}
+          component={ForgottenPassword}
         />
         <PrivateRoute
           path="/dashboard"
@@ -88,14 +88,14 @@ const routes = () => {
           masterComponent={ListaAlunos} // isso vai ser alterado depois -> pagina em que o master poderá excluir alunos
         />
         <PrivateRoute
-          path="info/live"
+          path="/info/live"
           exact
           studentComponent={Infolive}
           adminComponent={Infolive}
           masterComponent={Infolive}
         />
         <PrivateRoute
-          path="cadastro/turma"
+          path="/cadastro/turma"
           exact
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={() => <Redirect to="dashboard" />}
@@ -115,7 +115,7 @@ const routes = () => {
           masterComponent={NovoCurso}
         />
         <PrivateRoute
-          path="/listaturma"
+          path="/lista/turma"
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={ListaTurma}
           masterComponent={ListaTurma}
@@ -135,7 +135,7 @@ const routes = () => {
           masterComponent={TabelaTurmas}
         />
         <PrivateRoute
-          path="/presenca/live"
+          path="/presenca/live/:live_id"
           exact
           studentComponent={() => <Redirect to="dashboard" />}
           adminComponent={ListaAlunosLive}
