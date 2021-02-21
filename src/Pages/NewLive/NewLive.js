@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import "./NewLive.css";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import DatePicker, { registerLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import ptBR from "date-fns/locale/pt-BR";
+import { Form, DatePicker, Input, Button } from "antd"
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import "./NewLive.css";
 
 const generateCode = () => {
   let code = '';
@@ -16,31 +15,38 @@ const generateCode = () => {
   return code;
 }
 
+const formItemLayout = {
+  labelCol: {
+    span: 4
+  },
+  wrapperCol: {
+    span: 16
+  },
+};
+
+const tailFormItemLayout = {
+  wrapperCol: {
+    offset: 4
+  }
+};
+
 export default function NewLive() {
   const [state, setState] = useState({});
   const [date, setDate] = useState(null);
   const [confirmation, setConfirmation] = useState(generateCode());
 
-  function validateForm() {
-    const inputs = document.querySelectorAll("input");
-
-    for (let i = 0; i < inputs.length; ++i) {
-      if (!inputs[i].value || inputs[i].value == "") return false;
-    }
-
-    return true;
-  }
-
   function handleChange(e) {
     setState({ ...state, [e.target.name]: e.target.value });
   }
 
+  function handleChangeDate(e) {
+    setState({ ...state, date: e._d });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    if (!validateForm())
-      return alert("Preencha todos os campos para criar uma nova live");
 
-    const data = {...state, "date": date, "confirmation_code": confirmation};  
+    const data = { ...state, "date": date, "confirmation_code": confirmation };
 
     api
       .post("/newlive", data)
@@ -49,102 +55,66 @@ export default function NewLive() {
   }
 
   return (
-  <Base>
-    <div className="pageRoot">
-      <div>
-      </div>
-      <div className="pageBody">
-        <div className="pageContent">
-          <div className="pageTitle">
-            <h1>Criar Live</h1>
-          </div>
+    <Base>
+      <div className="pageRoot">
+        <div>
+        </div>
+        <div className="pageBody">
           <div className="formWrapper">
-            <form className="liveForm">
-              <div className="inputLine">
-                <div className="inputWrapper">
-                  <label>Título:</label>
-                  <input
-                    type="text"
-                    placeholder="Digite o título da Live"
-                    name="title"
-                    onChange={handleChange}
-                  />
-                </div>
-
-              </div>
-              <div className="inputLine">
-                <div className="inputWrapper">
-                  <label>Data:</label>
-                  <DatePicker
-                    width="100%"
-                    className="form-control"
-                    id="exampleInputAddress"
-                    name="birthdate"
-                    selected={date}
-                    onChange={(date) => setDate(date)}
-                    placeholderText="Selecione data"
-                    locale="br"
-                    required
-                  />
-                </div>
-                <div className="inputWrapper">
-                  <label>Horário:</label>
-                  <input
-                    type="time"
-                    name="time"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="inputWrapper">
-                  <label>Duração:</label>
-                  <input
-                    type="time"
-                    name="duration"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className="inputLine">
-                <div className="inputWrapper">
-                  <label>Link:</label>
-                  <input
-                    type="text"
-                    placeholder="Digite a URL da live"
-                    name="live_link"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className="inputLine">
-                <div className="inputWrapper">
-                  <label>Descrição:</label>
-                  <textarea
-                    placeholder="Digite a descrição da live, com informações e assuntos a serem abordados"
-                    name="description"
-                    onChange={handleChange}
-                    rows="1"
-                  />
-                </div>
-              </div>
-              <div className="inputLine">
-                <div className="inputWrapper">
-                  <label>Codigo de Confirmação:</label>
-                  <span>{confirmation}</span>
-                </div>
-              </div>
-              <div className="buttonWrapper">
-                <input
-                  type="button"
-                  className="formButton"
-                  value="CONCLUIR"
-                  onClick={handleSubmit}
-                />
-              </div>
-            </form>
+            <Form
+              {...formItemLayout}
+              name="newLive"
+              className="liveForm"
+              initialValues={{ remember: true }}
+              onFinish={handleSubmit}
+              size={"large"}
+              scrollToFirstError
+            > 
+              <Form.Item {...tailFormItemLayout}>
+                <h1>Nova Live</h1>
+              </Form.Item>
+              <Form.Item
+                name="title"
+                label={<label style={{ fontSize: "large" }}> Título </label>}
+                rules={[{ required: true, message: 'Por favor insira o título da live!' }]}
+              >
+                <Input placeholder="Título da Live" name="title" onChange={handleChange}/>
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                rules={[{ message: 'Por favor insira a descrição da live!' }]}
+              >
+                <Input placeholder="Descreva o temas que serão abordados na live" name="description" onChange={handleChange}/>
+              </Form.Item>
+              <Form.Item
+                name="date"
+                label={<label style={{ fontSize: "large" }}> Data </label>}
+                rules={[{ required: true, message: 'Por favor insira a data da live!' }]}
+              >
+                <DatePicker showTime format="DD-MM-YYYY HH:mm" name="date" onChange={handleChangeDate}/>
+              </Form.Item>
+              <Form.Item
+                name="link"
+                label={<label style={{ fontSize: "large" }}> Link </label>}
+                rules={[{ required: true, message: 'Por favor insira o link da live!' }]}
+              >
+                <Input placeholder="Insira o URL da página da live" name="link" onChange={handleChange}/>
+              </Form.Item>
+              <Form.Item
+                label={<label style={{ fontSize: "large" }}> Código </label>}
+              >
+                <span className="confirmationCode">{confirmation}</span>
+              </Form.Item>
+              <Form.Item {...tailFormItemLayout}>
+                <Button type="primary" htmlType="submit" style={{ fontSize: "large"}}>
+                  Criar
+                </Button>
+              </Form.Item>
+            </Form>
           </div>
         </div>
       </div>
-    </div>
     </Base>
   );
 }

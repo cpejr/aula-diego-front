@@ -57,6 +57,14 @@ const routes = () => {
           adminComponent={Admin}
           masterComponent={Admin}
         />
+        /* REVISAR */
+        <PrivateRoute
+          path="/newlive"
+          exact
+          studentComponent={Newlive}
+          adminComponent={Newlive}
+          masterComponent={Newlive}
+        />
         <PrivateRoute
           path="/config"
           exact
