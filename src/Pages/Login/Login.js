@@ -14,18 +14,18 @@ export default function Login() {
 
   function responseGoogle(response) {
     if (response.error) return;
-    console.log(response);
     const email = response.profileObj.email;
     const google = true;
+    const tokenId = response.tokenId;
     api
-      .post("/login", { email, google })
+      .post("/login", { email, google, tokenId })
       .then((response) => {
         handleLogin({
           accessToken: response.data.accessToken,
           user: response.data.user,
         });
-        redirect("/dashboard");
       })
+      .then(() => redirect("/dashboard"))
       .catch((error) => {
         history.push({
           pathname: "/cadastro",
@@ -81,71 +81,73 @@ export default function Login() {
       <div className="content">
         <img className="LoginImg" src={logo}></img>
         <div className="bloco">
-          <form className="loginForm">
-            <h1 className="entrarLogin">Entrar</h1>
-            <GoogleLogin
-              clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
-              render={(renderProps) => (
-                <button
-                  className="googleButton"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FcGoogle size="1.75em" />
-                  <p className="googleText">Entrar com o Google</p>
-                </button>
-              )}
-              buttonText="Login"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-            />
-            <h3 className="insiraLogin">Ou insira:</h3>
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                id="exampleFormControlInput1"
-                placeholder="Email"
-                spellCheck="false"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                id="exampleInputPassword1"
-                placeholder="Senha"
-                spellCheck="false"
-                onChange={handleChange}
-              />
-              <button className="entrarButtonLogin" onClick={handleSubmit}>
-                Entrar
+          <h1 className="entrarLogin">Entrar</h1>
+          <GoogleLogin
+            clientId="225647618283-l615d2dlgp53jar7rop80h75dc22daa3.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <button
+                className="googleButton"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
+                <FcGoogle size="1.75em" />
+                <p className="googleText">Entrar com o Google</p>
               </button>
-            </div>
-            <div className="esqueceuLoginDiv">
-              <a
-                className="esqueceuLogin"
-                onClick={() => redirect("/forgottenpassword")}
-                target="blank"
-              >
-                Esqueceu a senha?
-              </a>
-            </div>
-            <div className="resgateLogin">
-              <h5 className="naotemLogin">Não tem conta?</h5>
-              <a
-                className="cadastreLogin"
-                onClick={() => redirect("/cadastro")}
-                target="blank"
-              >
-                Cadastre-se
-              </a>
-            </div>
-          </form>
+            )}
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
+          <div>
+            <form>
+              <h3 className="insiraLogin">Ou insira:</h3>
+              <div className="form-group">
+                <input
+                  type="email"
+                  className="form-control"
+                  name="email"
+                  id="exampleFormControlInput1"
+                  placeholder="Email"
+                  spellCheck="false"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  id="exampleInputPassword1"
+                  placeholder="Senha"
+                  spellCheck="false"
+                  onChange={handleChange}
+                />
+                <button className="entrarButtonLogin" onClick={handleSubmit}>
+                  Entrar
+                </button>
+              </div>
+              <div className="esqueceuLoginDiv">
+                <a
+                  className="esqueceuLogin"
+                  onClick={() => redirect("/forgottenpassword")}
+                  target="blank"
+                >
+                  Esqueceu a senha?
+                </a>
+              </div>
+              <div className="resgateLogin">
+                <h5 className="naotemLogin">Não tem conta?</h5>
+                <a
+                  className="cadastreLogin"
+                  onClick={() => redirect("/cadastro")}
+                  target="blank"
+                >
+                  Cadastre-se
+                </a>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
