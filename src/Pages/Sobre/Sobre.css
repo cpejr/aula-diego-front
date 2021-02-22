@@ -73,24 +73,22 @@
     background-repeat: no-repeat; 
 }
 
-.contentWaveBottom{
-    margin-top: 25vh;
-    position: relative;
-    display: flex;
-    background-image: linear-gradient(to top, #290043 73%, #B11734);
-    height: 50px;
-}
-
-.contentWaveBottom:after { 
+.contentWaveBottom::after{ 
     content: ""; 
-    position: absolute; 
+    position: absolute;
     bottom: 0; 
     left: 0; 
     width: 100%; 
     height: 250px; 
-    background: url(../../images/wave-bottom.svg); 
+    background: url(../../images/wave-bottom.png); 
     background-size: cover; 
     background-repeat: no-repeat; 
+}
+
+.contentWaveBottom{
+    position: relative;
+    background-image: linear-gradient(to top, #290043 73%, #B11734);
+    height: 500px;
 }
 
 .textSobre{
@@ -115,6 +113,7 @@
 
 .section{
     display: flex;
+    align-items: center;
 }
 
 .plus{
