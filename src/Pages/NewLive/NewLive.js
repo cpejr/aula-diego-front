@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, DatePicker, Input, Button } from "antd"
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import "./NewLive.css";
 
 const generateCode = () => {
@@ -32,7 +31,6 @@ const tailFormItemLayout = {
 
 export default function NewLive() {
   const [state, setState] = useState({});
-  const [date, setDate] = useState(null);
   const [confirmation, setConfirmation] = useState(generateCode());
 
   function handleChange(e) {
@@ -46,7 +44,7 @@ export default function NewLive() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const data = { ...state, "date": date, "confirmation_code": confirmation };
+    const data = { ...state, "confirmation_code": confirmation };
 
     api
       .post("/newlive", data)
@@ -57,8 +55,6 @@ export default function NewLive() {
   return (
     <Base>
       <div className="pageRoot">
-        <div>
-        </div>
         <div className="pageBody">
           <div className="formWrapper">
             <Form
@@ -78,12 +74,11 @@ export default function NewLive() {
                 label={<label style={{ fontSize: "large" }}> Título </label>}
                 rules={[{ required: true, message: 'Por favor insira o título da live!' }]}
               >
-                <Input placeholder="Título da Live" name="title" onChange={handleChange}/>
+                <Input placeholder="Título da live" name="title" onChange={handleChange}/>
               </Form.Item>
               <Form.Item
                 name="description"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
-                rules={[{ message: 'Por favor insira a descrição da live!' }]}
               >
                 <Input placeholder="Descreva o temas que serão abordados na live" name="description" onChange={handleChange}/>
               </Form.Item>
@@ -92,7 +87,7 @@ export default function NewLive() {
                 label={<label style={{ fontSize: "large" }}> Data </label>}
                 rules={[{ required: true, message: 'Por favor insira a data da live!' }]}
               >
-                <DatePicker showTime format="DD-MM-YYYY HH:mm" name="date" onChange={handleChangeDate}/>
+                <DatePicker placeholder="Selecione uma data" showTime format="DD-MM-YYYY HH:mm" name="date" onChange={handleChangeDate}/>
               </Form.Item>
               <Form.Item
                 name="link"
