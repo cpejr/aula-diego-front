@@ -11,24 +11,42 @@ import SAMU from "../../images/logo-samu-home.png";
 import UPA from "../../images/logo-upa-home.svg";
 import "./Sobre.css";
 
-export default function Aula() {
-    /*const nightModeStorage = localStorage.getItem('gmtNightMode');
-    const nightMode = document.querySelector('#darkMode');
+document.addEventListener("DOMContentLoaded", function(event) {
+    document.documentElement.setAttribute("data-theme", "light");
 
-    if (nightModeStorage) {
-        document.documentElement.classList.add('darkMode');
-        nightMode.checked = true;
+    var themeSwitcher = document.getElementById("theme-switcher");
+    themeSwitcher.onclick = function() {
+    
+    var currentTheme = document.documentElement.getAttribute("data-theme");
+    var switchToTheme = currentTheme === "dark" ? "light" : "dark"
+    document.documentElement.setAttribute("data-theme", switchToTheme);
+    
+    if(currentTheme === "dark"){
+        imglight();
+    }else{
+        imgdark();
     }
+}   
+  });
 
-    nightMode.addEventListener('click', () => {
-        document.documentElement.classList.toggle('darkMode');
-        if (document.documentElement.classList.contains('darkMode')) {
-            localStorage.setItem('gmtNightMode', true);
-            return
-        }
-        localStorage.removeItem('gmtNightMode');
-    });*/
 
+  const imgdark = () => {
+    document.querySelector(".logodark").classList.remove("block");
+    document.querySelector(".logo").classList.add("block");
+
+    document.querySelector(".contentWave").classList.replace("contentWave","waveTopDark");
+    document.querySelector(".contentWaveBottom").classList.replace("contentWaveBottom","waveBottomDark");
+  }
+
+  const imglight = () => {
+    document.querySelector(".logodark").classList.add("block");
+    document.querySelector(".logo").classList.remove("block");
+
+    document.querySelector(".waveTopDark").classList.replace("waveTopDark","contentWave");
+    document.querySelector(".waveBottomDark").classList.replace("waveBottomDark","contentWaveBottom");
+  }
+
+export default function Sobre() {
     return (
         <>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"></link>
@@ -36,16 +54,16 @@ export default function Aula() {
                 <div className="headerHome">
                     <div className="imgLogo">
                         <Link to="/dashboard">
-                            <img id="logo" src={Logo}></img>
+                            <img className="logo" src={Logo}></img>
                         </Link>
                         <Link to="/dashboard">
-                            <img id="logodark" src={LogoDark}></img>    
+                            <img className="logodark block" src={LogoDark}></img>    
                         </Link>
                     </div>
                     <div className="btns">
                         <Link to="/login">
                             <button className="btnLogin">
-                                Entrar
+                                Entrars
                             </button>
                         </Link>
                         <Link to="/cadastro">
@@ -55,7 +73,7 @@ export default function Aula() {
                         </Link>
                         <div className="switch">
                             <BulbOutlined color="#23282D" />
-                            <Switch size="small" className="lamp" id="darkMode" />
+                            <Switch size="small" className="lamp" id="theme-switcher" />
                         </div>
                     </div>
                 </div>
