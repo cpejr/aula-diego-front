@@ -13,12 +13,12 @@ export default function Sidebar() {
   const { handleLogout } = useSession();
   const studentList = [
     {
-      title: "Live",
+      title: "Lives",
       path: "/live",
     },
     {
-      title: "Informações sobre a Live",
-      path: "/infolive",
+      title: "Meus Cursos",
+      path: "/cursos",
     },
   ];
   const adminLinks = [
@@ -28,11 +28,11 @@ export default function Sidebar() {
     },
     {
       title: "Lista de Alunos",
-      path: "/listaalunos",
+      path: "/aluno",
     },
     {
       title: "Informações sobre a live",
-      path: "/infolive",
+      path: "/info/live",
     },
     {
       title: "Lista de Presença",
@@ -47,30 +47,26 @@ export default function Sidebar() {
     },
     {
       title: "Lista de Alunos",
-      path: "/listaalunos",
+      path: "/aluno",
     },
     {
       title: "Informações sobe a live",
-      path: "/infolive",
+      path: "/info/live",
     },
     {
       title: "Nova Turma",
-      path: "/novaturma",
-    },
-    {
-      title: "Lista de Turma",
-      path: "/listaTurma",
-    },
-    {
-      title: "Turmas",
-      path: "/listaTurma",
+      path: "/cadastro/turma",
     },
     {
       title: "Lista de Turmas",
-      path: "/tabelaturma",
+      path: "/lista/turma",
     },
     {
       title: "Novo Curso",
+      path: "/cadastro/curso",
+    },
+    {
+      title: "Lista de Cursos",
       path: "/curso",
     },
     {

@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.documentElement.setAttribute("data-theme", "light");
 
     var themeSwitcher = document.getElementById("theme-switcher");
+    if(themeSwitcher === null){
+        return;
+    }
     themeSwitcher.onclick = function() {
     
     var currentTheme = document.documentElement.getAttribute("data-theme");
@@ -63,7 +66,7 @@ export default function Sobre() {
                     <div className="btns">
                         <Link to="/login">
                             <button className="btnLogin">
-                                Entrars
+                                Entrar
                             </button>
                         </Link>
                         <Link to="/cadastro">
