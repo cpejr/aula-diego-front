@@ -11,6 +11,7 @@ export default function NovaAula(props) {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const { session } = useSession();
+  const course = new URLSearchParams(props.location.search)
 
   const formLayout = {
     labelCol: {
@@ -58,7 +59,7 @@ export default function NovaAula(props) {
     const data = {
       ...lesson,
       files,
-      "course_id": props.match.params.id,
+      "course_id": course.get("course"),
       "user_id": session.user.id
     }
 

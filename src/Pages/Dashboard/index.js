@@ -5,7 +5,8 @@ import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades
 import "./index.css";
 import Foto from "../../images/samu.svg";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
+  const params = props.match.parms
   return (
     <>
       <Base>
@@ -21,6 +22,7 @@ export default function Dashboard() {
               cardColor2="#9244E3"
               date="20/10/2020"
               hour="20:00"
+              path={`/cadastrar/aula?course=3acce2d3-f52a-4cf0-bdc3-38c2621e46ca`}
             />
             <Cards
               title="UPA"

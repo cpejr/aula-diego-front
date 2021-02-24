@@ -31,7 +31,7 @@ export default function Admin() {
             </div>
              <div className = 'DashboardCardContainer' >
                 <AdmCard title="Adicionar Nova Live" Icon={AddIcon} route="/live" />
-                <Cards title='UPA' cardColor1 = '#6AA5E3'cardColor2='#686AE9' date = '20/10/2020' hour = '20:00' />
+                <Cards title='UPA' cardColor1 = '#6AA5E3'cardColor2='#686AE9' date = '20/10/2020' hour = '20:00' path={`/cadastro/aula?course=3acce2d3-f52a-4cf0-bdc3-38c2621e46ca`}/>
                 <Cards title='Bombeiros' cardColor1 = '#FD88A4'cardColor2='#EE3763' date = '20/10/2020' hour = '20:00' />
             </div> 
             </div >
