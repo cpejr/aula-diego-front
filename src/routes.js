@@ -108,7 +108,7 @@ const routes = () => {
           path="/cadastro/turma"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={NovaTurma}
           masterComponent={NovaTurma}
         />
         <PrivateRoute

@@ -18,39 +18,16 @@ export default function Sidebar() {
     },
     {
       title: "Meus Cursos",
-      path: "/cursos",
+      path: "",
     },
   ];
   const adminLinks = [
-    {
-      title: "Nova Live",
-      path: "/live",
-    },
     {
       title: "Lista de Alunos",
       path: "/aluno",
     },
     {
       title: "Informações sobre a live",
-      path: "/info/live",
-    },
-    {
-      title: "Lista de Presença",
-      path: "/listalive",
-    },
-  ];
-
-  const masterLinks = [
-    {
-      title: "Novo Usuário",
-      path: "/cadastro",
-    },
-    {
-      title: "Lista de Alunos",
-      path: "/aluno",
-    },
-    {
-      title: "Informações sobe a live",
       path: "/info/live",
     },
     {
@@ -70,8 +47,59 @@ export default function Sidebar() {
       path: "/curso",
     },
     {
-      title: "Lista de Presença",
-      path: "/listalive",
+      title:"Nova Aula",
+      path: "/aula/criar/:id"
+    },
+    {
+      title:"Lista de Aulas",
+      path: "",
+    }
+  ];
+
+  const masterLinks = [
+    {
+      title: "Novo Usuário",
+      path: "/cadastro",
+    },
+    {
+      title: "Lista de Alunos",
+      path: "/aluno",
+    },
+    {
+      title: "Informações sobre a live",
+      path: "/info/live",
+    },
+    {
+      title: "Nova Turma",
+      path: "/cadastro/turma",
+    },
+    {
+      title: "Lista de Turmas",
+      path: "/lista/turma",
+    },
+    {
+      title: "Novo Curso",
+      path: "/cadastro/curso",
+    },
+    {
+      title: "Lista de Cursos",
+      path: "/curso",
+    },
+    {
+      title: "Nova Organização",
+      path: "/cadastro/organizacao",
+    },
+    {
+      title: "Lista Organizações",
+      path: "/organizacao",
+    },
+    {
+      title: "Nova Ocupação",
+      path: "/cadastro/ocupacao",
+    },
+    {
+      title: "Lista Ocupações",
+      path: "/ocupacao",
     },
   ];
   const [linksList, setLinksList] = useState(studentList);
