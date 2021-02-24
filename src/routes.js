@@ -25,7 +25,7 @@ import ListaOcupacoes from "./Pages/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos";
 import Curso from "./Pages/Curso";
 import Aula from "./Pages/Aula/Aula";
-import NovaAula from "./Pages/NovaAula/NovaAula"
+import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 
 const routes = () => {
@@ -121,7 +121,7 @@ const routes = () => {
         <PrivateRoute
           path="/cadastro/curso"
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={NovoCurso}
           masterComponent={NovoCurso}
         />
         <PrivateRoute
