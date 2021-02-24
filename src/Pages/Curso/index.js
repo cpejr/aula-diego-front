@@ -22,7 +22,7 @@ export default function Curso(props) {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-    params: {
+    query: {
       course_id: id,
     },
   };
@@ -51,7 +51,7 @@ export default function Curso(props) {
       .then((response) => {
         setLessons(response.data);
       })
-      .catch(() => {
+      .catch((error) => {
         message.error("Não foi possível carregar dados das aulas");
       });
   }, []);
