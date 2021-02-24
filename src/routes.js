@@ -84,11 +84,18 @@ const routes = () => {
           masterComponent={ConfigUser}
         />
         <PrivateRoute
-          path="/live"
+          path="/live/:id"
           exact
           studentComponent={Live}
+          adminComponent={Live}
+          masterComponent={Live}
+        />
+        <PrivateRoute
+          path="/cadastro/live"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={Newlive}
-          masterComponent={Infolive} // mudar depois
+          masterComponent={Newlive}
         />
         <PrivateRoute
           path="/aluno"
@@ -194,7 +201,7 @@ const routes = () => {
           masterComponent={Aula}
         />
         <PrivateRoute
-          path="/aula/criar/:id"
+          path="/cadastro/aula"
           exact
           studentComponent={NovaAula}
           adminComponent={NovaAula}
