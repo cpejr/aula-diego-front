@@ -11,7 +11,6 @@ import { useSession } from "../../Context/SessionContext";
 export default function ListaCursos() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const history = useHistory();
   const { session } = useSession();
 
@@ -31,13 +30,12 @@ export default function ListaCursos() {
     };
     if (session.user.type == "master") {
       api.get("/course", configMaster).then((response) => {
-        setData(response.data);
-        setFilteredData(response.data);
+        console.log(response.data);
+        if (response.data) setData(response.data);
       });
     } else {
       api.get(`/course/user/${session.user.id}`, config).then((response) => {
-        setData(response.data);
-        setFilteredData(response.data);
+        if (response.data) setData(response.data);
       });
     }
   }, []);
@@ -173,14 +171,12 @@ export default function ListaCursos() {
           if (session.user.type == "master") {
             api.get("/course", configMaster).then((response) => {
               setData(response.data);
-              setFilteredData(response.data);
             });
           } else {
             api
               .get(`/course/user/${session.user.id}`, config)
               .then((response) => {
                 setData(response.data);
-                setFilteredData(response.data);
               });
           }
         })
@@ -195,18 +191,6 @@ export default function ListaCursos() {
 
   function handleChange(value) {
     setSearch(value);
-
-    // retorna os dados de acordo com o que estiver na barra de pesquisa
-    setFilteredData(
-      data.filter((course) => {
-        if (value === "") return course;
-        return (
-          course.course_name.toLowerCase().includes(value.toLowerCase()) ||
-          course.class_name.toLowerCase().includes(value.toLowerCase()) ||
-          course.organization_name.toLowerCase().includes(value.toLowerCase())
-        );
-      })
-    );
   }
 
   return (
@@ -231,7 +215,19 @@ export default function ListaCursos() {
           onChange={(e) => handleChange(e.target.value)}
           value={search}
         />
-        <Table columns={columns} dataSource={filteredData} />
+        <Table
+          columns={columns}
+          dataSource={data.map((course) => {
+            if (search === "") return course;
+            return (
+              course.course_name.toLowerCase().includes(search.toLowerCase()) ||
+              course.class_name.toLowerCase().includes(search.toLowerCase()) ||
+              course.organization_name
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            );
+          })}
+        />
       </div>
     </Base>
   );
