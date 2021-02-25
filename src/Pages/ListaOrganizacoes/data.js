@@ -25,7 +25,7 @@ const data = [
     name: "lerolerolirolero",
     description:
       "O cara que ganha mais dinheiro na porra toda. É o Braia da empresa",
-    organization: "BOMBEIROS",
+    organization: "SAMU",
   },
 ];
 
