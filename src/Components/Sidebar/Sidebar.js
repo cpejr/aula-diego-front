@@ -4,7 +4,6 @@ import Logo from "../../images/logoTeste.png";
 import { useSession } from "../../Context/SessionContext";
 import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
-import ListaAlunos from "../../Pages/ListaAlunos/ListaAlunos";
 
 export default function Sidebar() {
 
@@ -18,12 +17,12 @@ export default function Sidebar() {
     },
     {
       title: "Meus Cursos",
-      path: "",
+      path: "curso",
     },
   ];
   const adminLinks = [
     {
-      title: "Lista de Alunos",
+      title: "Alunos",
       path: "/aluno",
     },
     {
@@ -31,19 +30,11 @@ export default function Sidebar() {
       path: "/info/live",
     },
     {
-      title: "Nova Turma",
-      path: "/cadastro/turma",
-    },
-    {
-      title: "Lista de Turmas",
+      title: "Turmas",
       path: "/lista/turma",
     },
     {
-      title: "Novo Curso",
-      path: "/cadastro/curso",
-    },
-    {
-      title: "Lista de Cursos",
+      title: "Cursos",
       path: "/curso",
     },
     {
@@ -62,7 +53,7 @@ export default function Sidebar() {
       path: "/cadastro",
     },
     {
-      title: "Lista de Alunos",
+      title: "Alunos",
       path: "/aluno",
     },
     {
@@ -70,35 +61,19 @@ export default function Sidebar() {
       path: "/info/live",
     },
     {
-      title: "Nova Turma",
-      path: "/cadastro/turma",
-    },
-    {
-      title: "Lista de Turmas",
+      title: "Turmas",
       path: "/lista/turma",
     },
     {
-      title: "Novo Curso",
-      path: "/cadastro/curso",
-    },
-    {
-      title: "Lista de Cursos",
+      title: "Cursos",
       path: "/curso",
     },
     {
-      title: "Nova Organização",
-      path: "/cadastro/organizacao",
-    },
-    {
-      title: "Lista Organizações",
+      title: "Organizações",
       path: "/organizacao",
     },
     {
-      title: "Nova Ocupação",
-      path: "/cadastro/ocupacao",
-    },
-    {
-      title: "Lista Ocupações",
+      title: "Ocupações",
       path: "/ocupacao",
     },
   ];

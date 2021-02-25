@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 
-import { Table, Tag, Input } from "antd";
+import { Table, Tag, Input, Tooltip } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from '@material-ui/icons/Add';
 
 import Base from "../../Components/Base/Base";
 import "./ListaOcupacoes.css";
@@ -15,6 +17,7 @@ export default function ListaOrganizacoes() {
   const [occupations, setOccupations] = useState([]);
   const [filteredData, setfilteredData] = useState(data);
   const [search, setSearch] = useState("");
+  const history = useHistory();
 
   // const orgId = props.match.params
 
@@ -107,12 +110,17 @@ export default function ListaOrganizacoes() {
     <Base>
       <h1 className="page-title">Lista de Ocupações</h1>
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="procurar por ocupação, empresa"
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
-        />
+        <div style={{display:"flex"}}>
+          <Input
+            className="search-input"
+            placeholder="procurar por ocupação, empresa"
+            onChange={(e) => handleChange(e.target.value)}
+            value={search}
+          />
+          <Tooltip title="Adicionar Ocupação">
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
+          </Tooltip>
+        </div>
         <Table
           // title={() => `Lista de Ocupações da empresa ${organization}`}
           columns={columns}
