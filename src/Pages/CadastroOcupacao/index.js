@@ -110,8 +110,8 @@ export default function CadastroOrganizacao() {
               value={formValues["description"]}
               onChange={handleChange}
               placeholder="Descrição sobre a Organização"
+              autoSize={{ minRows: 2, maxRows: 6 }}
               className="form-input"
-              rows={4}
             />
           </Form.Item>
 

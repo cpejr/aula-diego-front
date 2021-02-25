@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
-import { Table, Tag, Input, Popconfirm, message, Button } from "antd";
+import { Table, Tag, Input, Popconfirm, message, Button, Tooltip } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from '@material-ui/icons/Add';
 import "./ListaCursos.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
@@ -196,25 +197,18 @@ export default function ListaCursos() {
   return (
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
-      {session.user.type == "master" ? (
-        <>
-          <Button
-            className="new-course-btn course-btn"
-            type="primary"
-            ghost
-            onClick={() => history.push("/cadastro/curso")}
-          >
-            Novo Curso
-          </Button>
-        </>
-      ) : null}
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="procurar por curso, empresa"
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
-        />
+        <div style={{display:"flex"}}>
+          <Input
+              className="search-input"
+              placeholder="procurar por curso, empresa"
+              onChange={(e) => handleChange(e.target.value)}
+              value={search}
+            />
+          <Tooltip title="Adicionar Curso">
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/curso")} />
+          </Tooltip>
+        </div>
         <Table
           columns={columns}
           dataSource={data.map((course) => {
