@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
@@ -138,13 +139,9 @@ export default function Login() {
               </div>
               <div className="resgateLogin">
                 <h5 className="naotemLogin">Não tem conta?</h5>
-                <a
-                  className="cadastreLogin"
-                  onClick={() => redirect("/cadastro")}
-                  target="blank"
-                >
+                <Link className="cadastreLogin" to="/cadastro">
                   Cadastre-se
-                </a>
+                </Link>
               </div>
             </form>
           </div>
