@@ -38,13 +38,11 @@ const routes = () => {
           path="/"
           loggedPath="/dashboard"
         />
-        <PrivateRoute
-          path="/login"
+        <IsLoggedRoute
+          component={Login}
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={() => <Redirect to="/dashboard" />}
-          masterComponent={() => <Redirect to="/dashboard" />}
-          component={Login} // (opcional) componente que renderiza se não estiver logado
+          path="/login"
+          loggedPath="/dashboard"
         />
         <PrivateRoute
           path="/cadastro"
