@@ -27,6 +27,7 @@ import Curso from "./Pages/Curso";
 import Aula from "./Pages/Aula/Aula";
 import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
+import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 
 const routes = () => {
   return (
@@ -157,6 +158,13 @@ const routes = () => {
           masterComponent={ListaAlunosLive}
         />
         <PrivateRoute
+          path="/organizacao"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={ListaOrganizacao}
+        />
+        <PrivateRoute
           path="/cadastro/organizacao"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
@@ -167,14 +175,14 @@ const routes = () => {
           path="/ocupacao"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={ListaOcupacoes}
+          adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={ListaOcupacoes}
         />
         <PrivateRoute
           path="/cadastro/ocupacao"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={CadastroOcupacao}
+          adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={CadastroOcupacao}
         />
         <PrivateRoute
