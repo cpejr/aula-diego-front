@@ -58,7 +58,6 @@ export default function NovaAula(props) {
     const fileIds = []
     const data = {
       ...lesson,
-      files,
       "course_id": course.get("course"),
       "user_id": session.user.id
     }
