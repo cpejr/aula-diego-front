@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Table, Input, Popconfirm, message } from "antd";
+import { Table, Input, Popconfirm, message, Tooltip } from "antd";
 import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from '@material-ui/icons/Add';
 import { useSession } from "../../Context/SessionContext"
 import "./ListaTurmas.css";
 
@@ -130,6 +131,11 @@ export default function ListaOrganizacoes() {
           onChange={(e) => handleChange(e.target.value)}
           value={search}
         />
+          <Tooltip title="Adicionar Turma">
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
+          </Tooltip>
+        </div>
+
         <Table
           columns={columns}
           dataSource={filteredData}

@@ -4,7 +4,6 @@ import Logo from "../../images/logoTeste.png";
 import { useSession } from "../../Context/SessionContext";
 import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
-import ListaAlunos from "../../Pages/ListaAlunos/ListaAlunos";
 
 export default function Sidebar() {
 
@@ -18,16 +17,12 @@ export default function Sidebar() {
     },
     {
       title: "Meus Cursos",
-      path: "/cursos",
+      path: "curso",
     },
   ];
   const adminLinks = [
     {
-      title: "Nova Live",
-      path: "/live",
-    },
-    {
-      title: "Lista de Alunos",
+      title: "Alunos",
       path: "/aluno",
     },
     {
@@ -35,9 +30,21 @@ export default function Sidebar() {
       path: "/info/live",
     },
     {
-      title: "Lista de Presença",
-      path: "/listalive",
+      title: "Turmas",
+      path: "/lista/turma",
     },
+    {
+      title: "Cursos",
+      path: "/curso",
+    },
+    {
+      title:"Nova Aula",
+      path: "/aula/criar/:id"
+    },
+    {
+      title:"Lista de Aulas",
+      path: "",
+    }
   ];
 
   const masterLinks = [
@@ -46,32 +53,28 @@ export default function Sidebar() {
       path: "/cadastro",
     },
     {
-      title: "Lista de Alunos",
+      title: "Alunos",
       path: "/aluno",
     },
     {
-      title: "Informações sobe a live",
+      title: "Informações sobre a live",
       path: "/info/live",
     },
     {
-      title: "Nova Turma",
-      path: "/cadastro/turma",
-    },
-    {
-      title: "Lista de Turmas",
+      title: "Turmas",
       path: "/lista/turma",
     },
     {
-      title: "Novo Curso",
-      path: "/cadastro/curso",
-    },
-    {
-      title: "Lista de Cursos",
+      title: "Cursos",
       path: "/curso",
     },
     {
-      title: "Lista de Presença",
-      path: "/listalive",
+      title: "Organizações",
+      path: "/organizacao",
+    },
+    {
+      title: "Ocupações",
+      path: "/ocupacao",
     },
   ];
   const [linksList, setLinksList] = useState(studentList);
