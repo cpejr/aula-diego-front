@@ -1,0 +1,15 @@
+.Cursos{
+    background-color: #fafafa;
+}
+
+.containerCursos{
+    display: flex;
+    flex-direction: column;
+}
+
+.TitleCursos{
+    margin-top: 5vh;
+    color: #25003c;
+    margin-left: 5vw;
+    text-align: left;
+}
