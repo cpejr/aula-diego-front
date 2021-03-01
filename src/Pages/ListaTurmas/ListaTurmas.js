@@ -5,6 +5,7 @@ import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from '@material-ui/icons/Add';
+import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext"
 import "./ListaTurmas.css";
 
@@ -14,6 +15,7 @@ export default function ListaOrganizacoes() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true)
   const { session } = useSession();
+  const history = useHistory();
 
   const config = {
     headers: {
@@ -135,13 +137,11 @@ export default function ListaOrganizacoes() {
             <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
           </Tooltip>
         </div>
-
         <Table
           columns={columns}
           dataSource={filteredData}
           loading={loading}
         />
-      </div>
     </Base>
   );
 }
