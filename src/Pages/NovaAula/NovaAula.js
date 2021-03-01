@@ -93,9 +93,10 @@ export default function NovaAula(props) {
         }
 
         setUploading(false);
+        message.success("Aula criada com sucesso!")
       })
       .catch((err) => {
-        alert(`Não foi possível criar aula \n ${err}`);
+        message.error("Não foi possível criar a aula!")
         setUploading(false);
       });
   }
@@ -107,8 +108,8 @@ export default function NovaAula(props) {
           <div className="formWrapper">
             <Form
               {...formLayout}
-              name="newLive"
-              className="liveForm"
+              name="newClass"
+              className="classForm"
               initialValues={{ remember: true }}
               onFinish={handleSubmit}
               size={"large"}

@@ -75,8 +75,8 @@ export default function Sobre() {
                             </button>
                         </Link>
                         <div className="switch">
-                            <BulbOutlined color="#23282D" />
-                            <Switch size="small" className="lamp" id="theme-switcher" />
+                            <BulbOutlined className="lamp" color="#23282D" />
+                            <Switch size="small" id="theme-switcher" />
                         </div>
                     </div>
                 </div>
@@ -112,8 +112,10 @@ export default function Sobre() {
                     </div>
                     <img src={Data} className="image"/>
                 </div>
-            
-                <div className="contentWaveBottom">
+            </div>
+
+            <div className="contentWaveBottom">
+                <div className="textSobre">
                     <h1 className="TextBlack">Lorem ipsum dolor sit amet.</h1>
                 </div>
             </div>

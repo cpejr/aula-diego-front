@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
-import { Table, Tag, Input, Popconfirm, message, Button, Tooltip } from "antd";
+import { Table, Tag, Input, Popconfirm, message, Button } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
 import "./ListaCursos.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
@@ -12,32 +11,35 @@ import { useSession } from "../../Context/SessionContext";
 export default function ListaCursos() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
   const { session } = useSession();
 
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    query: {
+      organization_id: session.user.organization_id,
+    },
+  };
+  const configMaster = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
   useEffect(() => {
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-      query: {
-        organization_id: session.user.organization_id,
-      },
-    };
-    const configMaster = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-    };
     if (session.user.type == "master") {
       api.get("/course", configMaster).then((response) => {
-        console.log(response.data);
         if (response.data) setData(response.data);
-      });
+      })
+      .then(setLoading(false));;
     } else {
       api.get(`/course/user/${session.user.id}`, config).then((response) => {
         if (response.data) setData(response.data);
-      });
+      })
+      .then(setLoading(false));
     }
   }, []);
 
@@ -144,49 +146,35 @@ export default function ListaCursos() {
   ];
 
   function handleDelete(course_id) {
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-    };
-
     const answer = window.confirm("Você deseja apagar esse curso?");
-    if (answer === true)
+    if (answer === true){
+      setLoading(true);
+
       api
         .put(`/course/${course_id}`, {}, config)
         .then(() => alert("Curso deletado com sucesso"))
         .then(() => {
-          const config = {
-            headers: {
-              authorization: "BEARER " + session.accessToken,
-            },
-            query: {
-              organization_id: session.user.organization_id,
-            },
-          };
-          const configMaster = {
-            headers: {
-              authorization: "BEARER " + session.accessToken,
-            },
-          };
           if (session.user.type == "master") {
             api.get("/course", configMaster).then((response) => {
               setData(response.data);
-            });
+            })
+            .then(setLoading(false));
           } else {
             api
               .get(`/course/user/${session.user.id}`, config)
               .then((response) => {
                 setData(response.data);
-              });
+              })
+              .then(setLoading(false));
           }
         })
         .catch((error) =>
           alert(
             "Não foi possível deletar o curso. Tente novamente mais tarde.\nErro:" +
-              error
+            error
           )
         );
+    }
     else alert("Operação cancelada.");
   }
 
@@ -197,18 +185,25 @@ export default function ListaCursos() {
   return (
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
+      {session.user.type == "master" ? (
+        <>
+          <Button
+            className="new-course-btn course-btn"
+            type="primary"
+            ghost
+            onClick={() => history.push("/cadastro/curso")}
+          >
+            Novo Curso
+          </Button>
+        </>
+      ) : null}
       <div className="table-container">
-        <div style={{display:"flex"}}>
-          <Input
-              className="search-input"
-              placeholder="procurar por curso, empresa"
-              onChange={(e) => handleChange(e.target.value)}
-              value={search}
-            />
-          <Tooltip title="Adicionar Curso">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/curso")} />
-          </Tooltip>
-        </div>
+        <Input
+          className="search-input"
+          placeholder="procurar por curso, empresa"
+          onChange={(e) => handleChange(e.target.value)}
+          value={search}
+        />
         <Table
           columns={columns}
           dataSource={data.map((course) => {
@@ -221,6 +216,7 @@ export default function ListaCursos() {
                 .includes(search.toLowerCase())
             );
           })}
+          loading={loading}
         />
       </div>
     </Base>

@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Table, Input, Popconfirm, message, Tooltip } from "antd";
+import { Table, Input, Popconfirm, message } from "antd";
 import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
-import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext"
-import "./ListaTurmas.css";
+import "./ListaOcupacoes.css";
 
 export default function ListaOrganizacoes() {
-  const [classes, setClasses] = useState([]);
+  const [occupations, setOccupations] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true)
   const { session } = useSession();
-  const history = useHistory();
 
   const config = {
     headers: {
@@ -24,10 +21,10 @@ export default function ListaOrganizacoes() {
   };
 
   useEffect(() => {
-    api.get("/class", config)
-      .then((classes) => {
-        setClasses(classes.data);
-        setFilteredData(classes.data);
+    api.get("/occupation", config)
+      .then((occupations) => {
+        setOccupations(occupations.data);
+        setFilteredData(occupations.data);
         setLoading(false);
       })
       .catch(err => { console.log(err) });
@@ -35,7 +32,7 @@ export default function ListaOrganizacoes() {
 
   const columns = [
     {
-      title: <h5>Nome</h5>,
+      title: <h5>Ocupação</h5>,
       dataIndex: "name",
       render: (name) => {
         return (
@@ -57,8 +54,8 @@ export default function ListaOrganizacoes() {
       }
     },
     {
-      title: <h5>Curso</h5>,
-      dataIndex: "course_name",
+      title: <h5>Organização</h5>,
+      dataIndex: "organization_name",
       render: (name) => {
         return (
           <p className="clickable" onClick={() => handleChange(name)}>
@@ -87,27 +84,27 @@ export default function ListaOrganizacoes() {
   const handleChange = (value) => {
     setSearch(value);
     setFilteredData(
-      classes.filter((cl4ss) => {
-        if (value === "") return cl4ss;
+      occupations.filter((occupation) => {
+        if (value === "") return occupation;
         return (
-          cl4ss.name.toLowerCase().includes(value.toLowerCase()) ||
-          cl4ss.description.toLowerCase().includes(value.toLowerCase()) ||
-          cl4ss.organization_name.toLowerCase().includes(value.toLowerCase())
+          occupation.name.toLowerCase().includes(value.toLowerCase()) ||
+          occupation.description.toLowerCase().includes(value.toLowerCase()) ||
+          occupation.organization_name.toLowerCase().includes(value.toLowerCase())
         );
       })
     );
   }
 
-  function handleDelete(class_id) {
+  function handleDelete(occupation_id) {
     setLoading(true);
 
     api
-      .put(`/class/${class_id}`, config)
+      .put(`/occupation/${occupation_id}`, {}, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api.get("/class", config)
+        api.get("/occupation", config)
           .then((response) => { 
-            setClasses(response.data); 
+            setOccupations(response.data); 
             setFilteredData(response.data);
           })
           .then(setLoading(false));
@@ -125,7 +122,7 @@ export default function ListaOrganizacoes() {
 
   return (
     <Base>
-      <h1 className="page-title">Turmas</h1>
+      <h1 className="page-title">Ocupações</h1>
       <div className="table-container">
         <Input
           className="search-input"
@@ -133,15 +130,12 @@ export default function ListaOrganizacoes() {
           onChange={(e) => handleChange(e.target.value)}
           value={search}
         />
-          <Tooltip title="Adicionar Turma">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
-          </Tooltip>
-        </div>
         <Table
           columns={columns}
           dataSource={filteredData}
           loading={loading}
         />
+      </div>
     </Base>
   );
 }

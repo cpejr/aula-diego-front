@@ -21,7 +21,9 @@ export default function IsLoggedRoute({
   useEffect(() => {
     if (session && session.accessToken)
       setrenderComponent(<Redirect {...rest} to={loggedPath} />);
-  }, [session]);
+    else
+      setrenderComponent(<Route {...rest} component={component} path={path} />);
+  }, [session, component]);
 
   return renderComponent;
 }
