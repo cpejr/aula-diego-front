@@ -160,23 +160,35 @@ export default function ListaAlunos() {
     {
       title: "Ações",
       dataIndex: "id",
-      render: (id) => (
-        <>
-          <EditIcon className="clickable" onClick={() => openEditModal(id)} />
-          <Popconfirm
-            title="Tem certeza que deseja tornar este user admin?"
-            onConfirm={() => tournIntoAdmin(id)}
-          >
-            <Supervisor className="clickable" />
-          </Popconfirm>
-          <Popconfirm
-            title="Tem certeza que deseja excluir este item?"
-            onConfirm={() => handleDelete(id)}
-          >
-            <DeleteIcon className="clickable" />
-          </Popconfirm>
-        </>
-      ),
+      className: session.user.type === "master" ? "" : "hide",
+      render: (id) => {
+        return session.user.type === "master" ? (
+          <>
+            <EditIcon
+              className="clickable icon icon-edit"
+              onClick={() => openEditModal(id)}
+            />
+            <span className="hint-edit hint">Editar</span>
+            <Popconfirm
+              title="Tem certeza que deseja tornar este user admin?"
+              onConfirm={() => tournIntoAdmin(id)}
+            >
+              <Supervisor
+                className="clickable icon icon-admin"
+                aria-label="Tornar admin"
+              />
+              <span className="hint-admin hint">Tornar admin</span>
+            </Popconfirm>
+            <Popconfirm
+              title="Tem certeza que deseja excluir este item?"
+              onConfirm={() => handleDelete(id)}
+            >
+              <DeleteIcon className="clickable icon icon-delete" />
+              <span className="hint-delete hint">Deletar</span>
+            </Popconfirm>
+          </>
+        ) : null;
+      },
     },
   ];
 
@@ -203,22 +215,22 @@ export default function ListaAlunos() {
     const wantsToDelete = window.confirm(
       "Você tem certeza que deseja alterar esse usuário?"
     );
-    else
-      api
-        .put(`/user/${id}`, {}, config)
-        .then(() => message.success(`Usuário deletado com sucesso`))
-        .catch(() =>
-          message.error(
-            "Não foi possível deletar usuário. Tente novamente mais tarde"
-          )
-        );
+    if (!wantsToDelete) return;
+    api
+      .put(`/user/${id}`, {}, config)
+      .then(() => message.success(`Usuário deletado com sucesso`))
+      .catch(() =>
+        message.error(
+          "Não foi possível deletar usuário. Tente novamente mais tarde"
+        )
+      );
   }
 
   function handleOk() {
     const wantsToEdit = window.confirm(
       "Você tem certeza que deseja alterar esse usuário?"
     );
-    if (!wantsToEdit) return message.error("Operação cancelada");
+    if (!wantsToEdit) return;
     else
       api
         .post(`/user/${editUserId}`, dataForm, config)

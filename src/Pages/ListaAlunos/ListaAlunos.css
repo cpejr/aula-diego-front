@@ -1,8 +1,32 @@
+.icon {
+  position: relative;
+}
+
+.icon-edit:hover + .hint-edit {
+  display: block;
+}
+.icon-admin:hover + .hint-admin {
+  display: block;
+}
+.icon-delete:hover + .hint-delete {
+  display: block;
+}
+
+.hint {
+  display: none;
+  position: absolute;
+  bottom: -5px;
+  background-color: rgb(49, 49, 49);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 10px;
+}
+
 @media (max-width: 600px) {
   .column-turma {
     display: none;
   }
 }
-.input-buttom{
+.input-buttom {
   display: flex;
 }
