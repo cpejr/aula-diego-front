@@ -3,7 +3,7 @@ import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 
-import { Table, Tag, Input, Tooltip, message } from "antd";
+import { Table, Tag, Input, Tooltip, message, Popconfirm } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from '@material-ui/icons/Add';
@@ -74,55 +74,37 @@ export default function ListaOrganizacoes() {
         align: "left",
     },
     {
-      title: "Ações",
-      render: () => (
+      title: <h5>Ações</h5>,
+      dataIndex: ("id"),
+      render: (id) => (
         <>
           <EditIcon className="clickable" onClick={handleEdit} />{" "}
-          <DeleteIcon className="clickable" onClick={handleDelete} />
+          <Popconfirm
+            title="Tem certeza que deseja excluir este item?"
+            onConfirm={() => handleDelete(id)}
+          >
+            <DeleteIcon className="clickable" onClick={handleDelete} />
+          </Popconfirm>
         </>
       ),
     },
   ];
 
   function handleDelete(organization_id) {
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-    };
-
-    const answer = window.confirm("Você deseja apagar essa organização?");
-    if (answer === true)
-      api
-        .put(`/organization/${organization_id}`, {}, config)
-        .then(() => alert("Organização deletada com sucesso"))
-        .then(() => {
-          const config = {
-            headers: {
-              authorization: "BEARER " + session.accessToken,
-            },
-            query: {
-              organization_id: session.user.organization_id,
-            },
-          };
-          const configMaster = {
-            headers: {
-              authorization: "BEARER " + session.accessToken,
-            },
-          };
-          if (session.user.type == "master") {
-            api.get("/organization", configMaster).then((response) => {
-              setData(response.data);
-            });
-          }
-        })
-        .catch((error) =>
-          alert(
-            "Não foi possível deletar a organização. Tente novamente mais tarde.\nErro:" +
-              error
-          )
-        );
-    else alert("Operação cancelada.");
+    api
+      .put(`/organization/${organization_id}`, {}, config)
+      .then(() => message.success("Deletado com sucesso"))
+      .then(() => {
+        api.get("/organization", config)
+          .then((response) => { 
+            setOrganizations(response.data); 
+          })
+      })
+      .catch((error) => {
+        message.error("Não foi possível excluir");
+        console.log(error);
+        }
+      );
   }
 
   function handleEdit() {
@@ -144,7 +126,7 @@ export default function ListaOrganizacoes() {
             onChange={(e) => handleChange(e.target.value)}
             value={search}
           />
-          <Tooltip title="Adicionar Ocupação">
+          <Tooltip title="Adicionar Organização">
             <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/organizacao")} />
           </Tooltip>
         </div>

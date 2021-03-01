@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Table, Input, Popconfirm, message } from "antd";
+import { Table, Input, Popconfirm, message, Tooltip } from "antd";
 import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import { useSession } from "../../Context/SessionContext"
+import AddIcon from '@material-ui/icons/Add';
+import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import "./ListaOcupacoes.css";
 
 export default function ListaOrganizacoes() {
@@ -13,6 +15,7 @@ export default function ListaOrganizacoes() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true)
   const { session } = useSession();
+  const history = useHistory();
 
   const config = {
     headers: {
@@ -124,12 +127,17 @@ export default function ListaOrganizacoes() {
     <Base>
       <h1 className="page-title">Ocupações</h1>
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="Pesquisar..."
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
-        />
+        <div style={{display:"flex"}}>
+          <Input
+            className="search-input"
+            placeholder="Pesquisar..."
+            onChange={(e) => handleChange(e.target.value)}
+            value={search}
+          />
+          <Tooltip title="Adicionar Ocupação">
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/ocupacao")} />
+          </Tooltip>
+        </div>
         <Table
           columns={columns}
           dataSource={filteredData}
