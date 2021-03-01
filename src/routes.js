@@ -14,16 +14,16 @@ import NovaTurma from "./Pages/NovaTurma/NovaTurma";
 import GerenciarCurso from "./Pages/GerenciarCursos/Curso";
 import NovoCurso from "./Pages/NovoCurso/NovoCurso";
 import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
-import TabelaTurmas from "./Pages/TabelaTurmas/TabelaTurmas";
+import ListaAlunosTurma from "./Pages/ListaAlunosTurma/ListaAlunosTurma";
 import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
 import ForgottenPassword from "./Pages/ForgottenPassword/forgot";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
 import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
-import CadastroOcupacao from "./Pages/CadastroOcupacao/index";
-import ListaOcupacoes from "./Pages/ListaOcupacoes";
-import ListaCursos from "./Pages/ListaCursos";
-import Curso from "./Pages/Curso";
+import CadastroOcupacao from "./Pages/CadastroOcupacao/CadastroOcupacao";
+import ListaOcupacoes from "./Pages/ListaOcupacoes/ListaOcupacoes";
+import ListaCursos from "./Pages/ListaCursos/ListaCursos";
+import Curso from "./Pages/Curso/curso";
 import Aula from "./Pages/Aula/Aula";
 import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
@@ -115,7 +115,7 @@ const routes = () => {
           path="/cadastro/turma"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={NovaTurma}
           masterComponent={NovaTurma}
         />
         <PrivateRoute
@@ -145,11 +145,11 @@ const routes = () => {
           masterComponent={TurmasAdmin}
         />
         <PrivateRoute
-          path="/alunos/turma/:id"
+          path="/alunos/turma"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={TabelaTurmas}
-          masterComponent={TabelaTurmas}
+          adminComponent={ListaAlunosTurma}
+          masterComponent={ListaAlunosTurma}
         />
         <PrivateRoute
           path="/presenca/live/:live_id"
@@ -162,7 +162,7 @@ const routes = () => {
           path="/cadastro/organizacao"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={() => <Redirect to="dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={CadastroOrganizacao}
         />
         <PrivateRoute
