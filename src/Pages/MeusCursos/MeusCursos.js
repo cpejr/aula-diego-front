@@ -12,7 +12,6 @@ export default function MeusCursos() {
     const [organization, setOrganizations] = useState([]);
     const [user, setUser] = useState([]);
     const { session } = useSession();
-    const history = useHistory();
 
     const config = {
         headers: {
@@ -57,14 +56,14 @@ export default function MeusCursos() {
                     <h1 className="TitleCursos"><BookOutlined />Meus Cursos</h1>
                     {courses
                         ? courses.map((course) => {
-                        return (
-                            <CardCurso
-                                title={course.name}
-                                organization={course.organization_id}
-                                description={course.description}
-                                path={`/curso/${course.id}`}
-                            />
-                        );
+                            return (
+                                <CardCurso
+                                    title={course.name}
+                                    organization={course.organization_id}
+                                    description={course.description}
+                                    path={`/curso/${course.id}`}
+                                />
+                            );
                         })
                     : null}
                 </div>
