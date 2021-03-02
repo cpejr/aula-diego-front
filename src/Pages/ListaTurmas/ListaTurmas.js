@@ -127,12 +127,13 @@ export default function ListaOrganizacoes() {
     <Base>
       <h1 className="page-title">Turmas</h1>
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="Pesquisar..."
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
-        />
+        <div style={{display:"flex"}}>
+          <Input
+            className="search-input"
+            placeholder="Pesquisar..."
+            onChange={(e) => handleChange(e.target.value)}
+            value={search}
+          />
           <Tooltip title="Adicionar Turma">
             <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
           </Tooltip>
@@ -142,6 +143,7 @@ export default function ListaOrganizacoes() {
           dataSource={filteredData}
           loading={loading}
         />
+        </div>
     </Base>
   );
 }
