@@ -9,6 +9,7 @@ import "./MeusCursos.css";
 
 export default function MeusCursos() {
     const [courses, setCourses] = useState([]);
+    const [organization, setOrganizations] = useState([]);
     const [user, setUser] = useState([]);
     const { session } = useSession();
     const history = useHistory();
@@ -37,6 +38,15 @@ export default function MeusCursos() {
           .catch(() => {
             message.error("Não foi possível carregar dados dos cursos");
           });
+
+        api
+          .get(`/organization`, config)
+          .then((response) => {
+            setOrganizations(response.data);
+          })
+          .catch(() => {
+            message.error("Não foi possível carregar dados das organizações");
+          });
         }, 
       []);
     
@@ -48,19 +58,12 @@ export default function MeusCursos() {
                     {courses
                         ? courses.map((course) => {
                         return (
-                            <div className="containerCursos">
-                                <div className="CardCursoTop">
-                                    <h4 className="descriptionCurso"></h4> 
-                                </div>
-                                <div className="CardCursoBottom">
-                                    <h3 className="TitleCurso">{course.name}</h3>
-                                    <h6 className="subTitleCurso">{course.organization_id}</h6>
-                                    <h6 className="subTitleCurso">{course.description}</h6>
-                                    <button className="btnVerCurso" onClick={() => history.push(`/curso/${course.id}`)}>
-                                        Ver Curso
-                                    </button>
-                                </div>
-                            </div>
+                            <CardCurso
+                                title={course.name}
+                                organization={course.organization_id}
+                                description={course.description}
+                                path={`/curso/${course.id}`}
+                            />
                         );
                         })
                     : null}
@@ -69,3 +72,22 @@ export default function MeusCursos() {
         </Base>
     );
 }
+
+function CardCurso({ title, organization, description, path }) {
+    const history = useHistory();
+    return (
+        <div className="containerCursos">
+            <div className="CardCursoTop">
+                <h4 className="descriptionCurso"></h4> 
+            </div>
+            <div className="CardCursoBottom">
+                <h3 className="TitleCurso">{title}</h3>
+                <h6 className="subTitleCurso">{organization}</h6>
+                <h6 className="subTitleCurso">{description}</h6>
+                <button className="btnVerCurso" onClick={() => history.push(path)}>
+                    Ver Curso
+                </button>
+            </div>
+        </div>
+    );
+  }
