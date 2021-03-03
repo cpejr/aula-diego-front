@@ -28,6 +28,7 @@ import Aula from "./Pages/Aula/Aula";
 import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
+import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 
 const routes = () => {
   return (
@@ -212,6 +213,13 @@ const routes = () => {
           studentComponent={NovaAula}
           adminComponent={NovaAula}
           masterComponent={NovaAula}
+        />
+        <PrivateRoute
+          path="/usuarios/pendentes"
+          exact
+          studentComponent={usuariosPendentes}
+          adminComponent={usuariosPendentes}
+          masterComponent={usuariosPendentes}
         />
         <Route
           path="/"
