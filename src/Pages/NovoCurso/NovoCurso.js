@@ -4,7 +4,7 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
-import { Input, Form, message } from 'antd';
+import { Input, Form, message, Select } from 'antd';
 
 const { TextArea } = Input;
 
@@ -13,28 +13,50 @@ const layout = {
 };
 
 export default function NovoCurso() {
-    const [inputValues, setInputValues] = useState({});
-    const history = useHistory();
+    const [formData, setformData] = useState([]);
+    const [course, setCourse] = useState({});
+    const [organizations, setOrganizations] = useState({});
     const { session } = useSession();
 
-    function handleChange(e) {
-        setInputValues({ ...inputValues, [e.target.name]: e.target.value });
-    }
-    
-    function handleSubmit(e) {
-        e.preventDefault();
-    
-        let data = inputValues;
+    const config = {
+        headers: {
+          authorization: "BEARER " + session.accessToken
+        }
+      };
 
-        api
-        .post("/course", data)
-        .then(() => {
-            history.push("/");
-        })
-        .catch((error) =>
-            message.error("Não foi possível concluir o cadastro, tente novamente.")
-        );
+    function handleChange(e) {
+        setformData({ ...formData, [e.target.name]: e.target.value });
     }
+
+    function handleSelectChange(value, field) {
+        if (field === "organization_id");
+        console.log(`${field}: ${value}`);
+        setformData({ ...formData, [field]: value });
+    }
+    
+    function handleSubmit() {
+        api
+          .post(`/course`, config)
+          .then((response) => {
+            setCourse(response.data);
+            message.success("Curso criado com sucesso!");
+          })
+          .catch(() => {
+            message.error("Não foi possível criar o curso");
+          });
+      }
+      
+      useEffect(() => {
+        api
+          .get(`/organization`, config)
+          .then((response) => {
+            setOrganizations(response.data);
+          })
+          .catch(() => {
+            message.error("Não foi possível carregar dados das organizações");
+          });
+      }, 
+      []);
 
     return (
         <Base>
@@ -43,7 +65,23 @@ export default function NovoCurso() {
                 <Form {...layout} className="formCurso" onFinish={handleSubmit}>
                 <h1 className='TitleNovoCurso' >Cadastrar novo Curso</h1>
                     <Form.Item name="nome" label="Nome">
-                        <Input onChange={handleChange} placeholder="Nome do Curso" size="large" value={inputValues["name"]} />
+                        <Input onChange={handleChange} placeholder="Nome do Curso" size="large" value={formData["name"]} />
+                    </Form.Item>
+                    <Form.Item>
+                    <Select
+                        name="organization_id"
+                        value={formData["organization_id"]}
+                        onChange={(e) => handleSelectChange(e, "organization_id")}
+                        placeholder="organização"
+                    >
+                        {organizations.map((organization) => {
+                            return organization != [] ? (
+                            <Select.Option name="organization_id" value={organization.id}>
+                                {organization.name}
+                            </Select.Option>
+                            ) : null;
+                        })}
+                    </Select>
                     </Form.Item>
                     <Form.Item name="descricao" label="Descrição:">
                         <TextArea
@@ -51,7 +89,7 @@ export default function NovoCurso() {
                             size="large"
                             placeholder="Descrição sobre o conteúdo do curso"
                             autoSize={{ minRows: 2, maxRows: 6 }}
-                            value={inputValues["description"]}/>
+                            value={formData["description"]}/>
                     </Form.Item>
                     <Form.Item>
                         <button className="btnCurso" type="submit">
