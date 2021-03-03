@@ -217,7 +217,7 @@ const routes = () => {
         <PrivateRoute
           path="/usuarios/pendentes"
           exact
-          studentComponent={usuariosPendentes}
+          studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={usuariosPendentes}
           masterComponent={usuariosPendentes}
         />
