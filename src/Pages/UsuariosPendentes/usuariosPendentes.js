@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import { Input, message, Table } from "antd";
-import { CheckCircle } from "@material-ui/icons";
+import { CheckCircle, Close } from "@material-ui/icons";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./usuariosPendents.css";
@@ -37,15 +37,15 @@ export default function UsuariosPendentes() {
     getData();
   }, []);
 
-  function approveUser(id) {
+  function modifyStatus(id, status) {
     api
-      .put(`/user`, { id, status: "approved" }, config)
+      .put(`/user`, { id, status }, config)
       .then(() => {
-        message.success("Usuário ativo com sucesso");
+        message.success("Status do usuário modificado com sucesso");
         getData();
       })
       .catch((err) => {
-        message.error("Não foi possível ativar usuário");
+        message.error("Não foi possível modificar status do usuário");
         console.log(err);
       });
   }
@@ -101,7 +101,16 @@ export default function UsuariosPendentes() {
       dataIndex: "id",
       render: (id) => {
         return (
-          <CheckCircle className="clickable" onClick={() => approveUser(id)} />
+          <>
+            <CheckCircle
+              className="clickable"
+              onClick={() => modifyStatus(id, "approved")}
+            />
+            <Close
+              className="clickable"
+              onClick={() => modifyStatus(id, "refused")}
+            />
+          </>
         );
       },
     },
