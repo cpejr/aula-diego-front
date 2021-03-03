@@ -101,7 +101,7 @@ export default function ListaCursos() {
     },
     {
       title: "Ações",
-      dataIndex: "actions",
+      dataIndex: "id",
       className: session.user.type === "master" ? null : "hide",
       render: (course_id) => {
         return course_id ? (
