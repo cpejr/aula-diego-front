@@ -20,7 +20,7 @@ export default function ListaCursos() {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
-      query: {
+      params: {
         organization_id: session.user.organization_id,
       },
     };
@@ -45,7 +45,7 @@ export default function ListaCursos() {
   const columns = [
     {
       title: "Curso",
-      dataIndex: "course_name",
+      dataIndex: "name",
       render: (name) => {
         return (
           <p className="clickable" onClick={() => handleChange(name)}>
@@ -56,7 +56,7 @@ export default function ListaCursos() {
     },
     {
       title: "Ver Curso",
-      dataIndex: "course_id",
+      dataIndex: "id",
       render: (course_id) => {
         return (
           <p
@@ -70,35 +70,8 @@ export default function ListaCursos() {
     },
     {
       title: "Descrição",
-      dataIndex: "course_description",
+      dataIndex: "description",
       className: "column-description",
-    },
-    {
-      title: "Turma",
-      dataIndex: "class_name",
-      key: "tags",
-      render: (tag) => {
-        if (tag) {
-          let color = tag.length > 3 ? "geekblue" : "green";
-          color = tag.length > 4 ? "coral" : color;
-          color = tag.length > 5 ? "volcano" : color;
-          color = tag.length > 6 ? "turquoise" : color;
-          color = tag.length > 7 ? "yellowgreen" : color;
-          color = tag.length > 8 ? "salmon" : color;
-          return (
-            <Tag
-              color={color}
-              key={tag}
-              className="clickable"
-              onClick={() => handleChange(tag)}
-            >
-              {" "}
-              {tag}{" "}
-            </Tag>
-          );
-        }
-        return null;
-      },
     },
     {
       title: "Organização",
