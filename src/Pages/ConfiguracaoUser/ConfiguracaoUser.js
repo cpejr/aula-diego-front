@@ -12,27 +12,33 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
 import { UTCToLocal } from "../../utils/convertDate";
+import { message } from "antd";
+
 
 export default function ConfiguracaoAluno(props) {
-  const [dataAluno, setDataAluno] = useState("");
+  const [dataAluno, setDataAluno] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+  const [occupations, setOccupations] = useState([]);
   const { session } = useSession();
-  const [editInputs, setEditInputs] = useState({});
+  const [editInputs, setEditInputs] = useState([]);
   const [open, setOpen] = useState(false);
 
+  const configUser = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
   useEffect(() => {
-    getAndSetData().catch((error) =>
-      alert("Não foi possível receber os dados do usuário")
-    );
-  }, []);
-
-  function getAndSetData() {
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-    };
-
-    return api.get(`/user/${session.user.user_id}`, config).then((response) => {
+    api
+      .get(`/user/${session.user.id}`, config)
+      .then((response) => {
       const birthdate = new Date(response.data.birthdate).toLocaleDateString(
         "pt-BR"
       );
@@ -47,8 +53,28 @@ export default function ConfiguracaoAluno(props) {
         birthdate: birthdate,
         phone: formattedPhone,
       });
-    });
-  }
+    })
+
+    api
+      .get(`/organization`, config)
+      .then((response) => {
+        setOrganizations(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados das organizações");
+      });
+
+    api
+      .get(`/occupation`, config)
+      .then((response) => {
+        setOccupations(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados das ocupações");
+      });
+  }, 
+  []);
+  
 
   function handleChange(e) {
     setEditInputs({ ...editInputs, [e.target.name]: e.target.value });
@@ -228,7 +254,13 @@ export default function ConfiguracaoAluno(props) {
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Empresa:</p>
-                  <p className="configAlunoOutput">{dataAluno.company}</p>
+                  {organizations
+                    ? organizations.map((organization) => {
+                      return (
+                        <p className="configAlunoOutput">{organization.id === dataAluno.organization_id ? organization.name : null}</p>
+                        );
+                    })
+                  : null}
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Data de Nascimento:</p>
@@ -244,19 +276,17 @@ export default function ConfiguracaoAluno(props) {
               <div className="Lista1">
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Ocupação:</p>
-                  <p className="configAlunoOutput">{dataAluno.occupation}</p>
+                  {occupations
+                    ? occupations.map((occupation) => {
+                      return (
+                        <p className="configAlunoOutput">{occupation.id === dataAluno.occupation_id ? occupation.name : null}</p>
+                        );
+                    })
+                  : null}
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Telefone:</p>
                   <p className="configAlunoOutput">{dataAluno.phone}</p>
-                </div>
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Cidade:</p>
-                  <p className="configAlunoOutput">{dataAluno.city}</p>
-                </div>
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Estado:</p>
-                  <p className="configAlunoOutput">{dataAluno.state}</p>
                 </div>
               </div>
             </div>

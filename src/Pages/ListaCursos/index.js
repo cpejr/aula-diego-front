@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
-import { Table, Tag, Input, Popconfirm, message, Button } from "antd";
+import { Table, Tag, Input, Popconfirm, message, Button, Tooltip } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from '@material-ui/icons/Add';
 import "./ListaCursos.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
@@ -11,7 +12,6 @@ import { useSession } from "../../Context/SessionContext";
 export default function ListaCursos() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const history = useHistory();
   const { session } = useSession();
 
@@ -31,13 +31,12 @@ export default function ListaCursos() {
     };
     if (session.user.type == "master") {
       api.get("/course", configMaster).then((response) => {
-        setData(response.data);
-        setFilteredData(response.data);
+        console.log(response.data);
+        if (response.data) setData(response.data);
       });
     } else {
       api.get(`/course/user/${session.user.id}`, config).then((response) => {
-        setData(response.data);
-        setFilteredData(response.data);
+        if (response.data) setData(response.data);
       });
     }
   }, []);
@@ -146,14 +145,12 @@ export default function ListaCursos() {
           if (session.user.type == "master") {
             api.get("/course", configMaster).then((response) => {
               setData(response.data);
-              setFilteredData(response.data);
             });
           } else {
             api
               .get(`/course/user/${session.user.id}`, config)
               .then((response) => {
                 setData(response.data);
-                setFilteredData(response.data);
               });
           }
         })
@@ -168,43 +165,36 @@ export default function ListaCursos() {
 
   function handleChange(value) {
     setSearch(value);
-
-    // retorna os dados de acordo com o que estiver na barra de pesquisa
-    setFilteredData(
-      data.filter((course) => {
-        if (value === "") return course;
-        return (
-          course.course_name.toLowerCase().includes(value.toLowerCase()) ||
-          course.class_name.toLowerCase().includes(value.toLowerCase()) ||
-          course.organization_name.toLowerCase().includes(value.toLowerCase())
-        );
-      })
-    );
   }
 
   return (
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
-      {session.user.type == "master" ? (
-        <>
-          <Button
-            className="new-course-btn course-btn"
-            type="primary"
-            ghost
-            onClick={() => history.push("/cadastro/curso")}
-          >
-            Novo Curso
-          </Button>
-        </>
-      ) : null}
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="procurar por curso, empresa"
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
+        <div style={{display:"flex"}}>
+          <Input
+              className="search-input"
+              placeholder="procurar por curso, empresa"
+              onChange={(e) => handleChange(e.target.value)}
+              value={search}
+            />
+          <Tooltip title="Adicionar Curso">
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/curso")} />
+          </Tooltip>
+        </div>
+        <Table
+          columns={columns}
+          dataSource={data.map((course) => {
+            if (search === "") return course;
+            return (
+              course.course_name.toLowerCase().includes(search.toLowerCase()) ||
+              course.class_name.toLowerCase().includes(search.toLowerCase()) ||
+              course.organization_name
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            );
+          })}
         />
-        <Table columns={columns} dataSource={filteredData} />
       </div>
     </Base>
   );

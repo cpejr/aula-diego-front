@@ -6,7 +6,7 @@ const Cards = (props) => {
     const history = useHistory()
 
     function redirect(){
-        history.push('/live')
+        history.push(props.path)
     }
 
     return (

@@ -3,3 +3,6 @@
     display: none;
   }
 }
+.input-buttom{
+  display: flex;
+}
