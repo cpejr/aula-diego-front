@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Table, Input, Popconfirm, message, Tooltip } from "antd";
+import { Table, Input, Popconfirm, message } from "antd";
 import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
-import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext"
-import "./ListaTurmas.css";
+import "./ListaAlunosTurma.css";
 
-export default function ListaOrganizacoes() {
-  const [classes, setClasses] = useState([]);
+export default function ListaOrganizacoes(props) {
+  const [students, setStudents] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true)
   const { session } = useSession();
-  const history = useHistory();
+  const cl4ss = new URLSearchParams(props.location.search)
 
   const config = {
     headers: {
@@ -24,10 +22,10 @@ export default function ListaOrganizacoes() {
   };
 
   useEffect(() => {
-    api.get("/class", config)
-      .then((classes) => {
-        setClasses(classes.data);
-        setFilteredData(classes.data);
+    api.get(`/class/users/${cl4ss.get("id")}`, config)
+      .then((students) => {
+        setStudents(students.data);
+        setFilteredData(students.data);
         setLoading(false);
       })
       .catch(err => { console.log(err) });
@@ -35,7 +33,7 @@ export default function ListaOrganizacoes() {
 
   const columns = [
     {
-      title: <h5>Nome</h5>,
+      title: <h5>Alunos</h5>,
       dataIndex: "name",
       render: (name) => {
         return (
@@ -46,8 +44,8 @@ export default function ListaOrganizacoes() {
       }
     },
     {
-      title: <h5>Descrição</h5>,
-      dataIndex: "description",
+      title: <h5>Registration</h5>,
+      dataIndex: "registration",
       render: (name) => {
         return (
           <p className="clickable" onClick={() => handleChange(name)}>
@@ -57,8 +55,19 @@ export default function ListaOrganizacoes() {
       }
     },
     {
-      title: <h5>Curso</h5>,
-      dataIndex: "course_name",
+      title: <h5>Organização</h5>,
+      dataIndex: "organization",
+      render: (name) => {
+        return (
+          <p className="clickable" onClick={() => handleChange(name)}>
+            {name}
+          </p>
+        );
+      }
+    },
+    {
+      title: <h5>Ocupação</h5>,
+      dataIndex: "occupation",
       render: (name) => {
         return (
           <p className="clickable" onClick={() => handleChange(name)}>
@@ -87,7 +96,7 @@ export default function ListaOrganizacoes() {
   const handleChange = (value) => {
     setSearch(value);
     setFilteredData(
-      classes.filter((cl4ss) => {
+      students.filter((cl4ss) => {
         if (value === "") return cl4ss;
         return (
           cl4ss.name.toLowerCase().includes(value.toLowerCase()) ||
@@ -98,19 +107,20 @@ export default function ListaOrganizacoes() {
     );
   }
 
-  function handleDelete(class_id) {
+  function handleDelete(user_id) {
     setLoading(true);
 
     api
-      .put(`/class/${class_id}`, config)
+      .delete(`/class/user/${cl4ss.get("id")}/${user_id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api.get("/class", config)
-          .then((response) => { 
-            setClasses(response.data); 
-            setFilteredData(response.data);
-          })
-          .then(setLoading(false));
+        api.get(`/class/users/${cl4ss.get("id")}`, config)
+        .then((students) => {
+          setStudents(students.data);
+          setFilteredData(students.data);
+          setLoading(false);
+        })
+        .catch(err => { console.log(err) });
       })
       .catch((error) => {
         message.error("Não foi possível exluir");
@@ -125,25 +135,20 @@ export default function ListaOrganizacoes() {
 
   return (
     <Base>
-      <h1 className="page-title">Turmas</h1>
+      <h1 className="page-title">Alunos</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
-          <Input
-            className="search-input"
-            placeholder="Pesquisar..."
-            onChange={(e) => handleChange(e.target.value)}
-            value={search}
-          />
-          <Tooltip title="Adicionar Turma">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
-          </Tooltip>
-        </div>
+        <Input
+          className="search-input"
+          placeholder="Pesquisar..."
+          onChange={(e) => handleChange(e.target.value)}
+          value={search}
+        />
         <Table
           columns={columns}
           dataSource={filteredData}
           loading={loading}
         />
-        </div>
+      </div>
     </Base>
   );
 }
