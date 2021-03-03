@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
+
 import Base from "../../Components/Base/Base";
 import { BookOutlined } from '@ant-design/icons';
 import { message } from 'antd';
@@ -9,45 +10,55 @@ import "./MeusCursos.css";
 
 export default function MeusCursos() {
     const [courses, setCourses] = useState([]);
-    const [organization, setOrganizations] = useState([]);
-    const [user, setUser] = useState([]);
+    const [classes, setClasses] = useState([]);
     const { session } = useSession();
 
-    const config = {
-        headers: {
+    const configCourse = {
+      headers: {
         authorization: "BEARER " + session.accessToken,
-        },
-    };
+      },
+      params: {
+        'course.organization_id': session.user.organization_id,
+      },
+    };  
 
     useEffect(() => {
-        api
-          .get(`/user/${session.user.id}`, config)
-          .then((response) => {
-            setUser(response.data);
-          })
-          .catch(() => {
-            message.error("Não foi possível carregar dados do usuário");
-          });
-        
-        api
-          .get(`/course`, config)
-          .then((response) => {
-            setCourses(response.data);
-          })
-          .catch(() => {
-            message.error("Não foi possível carregar dados dos cursos");
-          });
+      api
+        .get(`/course/user/${session.user.id}`, configCourse)
+        .then((response) => {
 
+          console.log(response);
+          setCourses(response.data);
+        })
+        .catch(() => {
+          message.error("Não foi possível carregar dados dos cursos");
+
+        });
+    }, 
+    []);
+
+    function classesUser(value) {
+      const config = {
+        headers: {
+          authorization: "BEARER " + session.accessToken,
+        },
+        params: {
+          corse_id: value,
+        },
+      };
+      if (value){
         api
-          .get(`/organization`, config)
+          .get(`/class/user`, config)
           .then((response) => {
-            setOrganizations(response.data);
+            console.log(response);
+            setClasses(response.data);
           })
           .catch(() => {
-            message.error("Não foi possível carregar dados das organizações");
+            message.error("Não foi possível carregar dados das turmas");
           });
-        }, 
-      []);
+      }
+    }
+  
     
     return (
         <Base>
@@ -56,14 +67,16 @@ export default function MeusCursos() {
                     <h1 className="TitleCursos"><BookOutlined />Meus Cursos</h1>
                     {courses
                         ? courses.map((course) => {
+                            
                             return (
                                 <CardCurso
-                                    title={course.name}
-                                    organization={course.organization_id}
-                                    description={course.description}
-                                    path={`/curso/${course.id}`}
+                                    title={course.course_name}
+                                    organization={course.organization_name}
+                                    description={course.course_description}
+                                    path={`/curso/${course.course_id}`}
                                 />
                             );
+                            
                         })
                     : null}
                 </div>
@@ -81,7 +94,7 @@ function CardCurso({ title, organization, description, path }) {
             </div>
             <div className="CardCursoBottom">
                 <h3 className="TitleCurso">{title}</h3>
-                <h6 className="subTitleCurso">{organization}</h6>
+                <h5 className="subTitleCurso">{organization}</h5>
                 <h6 className="subTitleCurso">{description}</h6>
                 <button className="btnVerCurso" onClick={() => history.push(path)}>
                     Ver Curso
