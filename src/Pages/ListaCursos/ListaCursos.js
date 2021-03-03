@@ -4,7 +4,7 @@ import Base from "../../Components/Base/Base";
 import { Table, Tag, Input, Popconfirm, message, Button, Tooltip } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import "./ListaCursos.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
@@ -31,23 +31,40 @@ export default function ListaCursos() {
   };
 
   useEffect(() => {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      params: {
+        organization_id: session.user.organization_id,
+      },
+    };
+    const configMaster = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
     if (session.user.type == "master") {
-      api.get("/course", configMaster).then((response) => {
-        if (response.data) setData(response.data);
-      })
-      .then(setLoading(false));;
+      api
+        .get("/course", configMaster)
+        .then((response) => {
+          if (response.data) setData(response.data);
+        })
+        .then(setLoading(false));
     } else {
-      api.get(`/course/user/${session.user.id}`, config).then((response) => {
-        if (response.data) setData(response.data);
-      })
-      .then(setLoading(false));
+      api
+        .get(`/course/user/${session.user.id}`, config)
+        .then((response) => {
+          if (response.data) setData(response.data);
+        })
+        .then(setLoading(false));
     }
   }, []);
 
   const columns = [
     {
       title: "Curso",
-      dataIndex: "course_name",
+      dataIndex: "name",
       render: (name) => {
         return (
           <p className="clickable" onClick={() => handleChange(name)}>
@@ -58,49 +75,22 @@ export default function ListaCursos() {
     },
     {
       title: "Ver Curso",
-      dataIndex: "course_id",
+      dataIndex: "id",
       render: (course_id) => {
-        return (
+        return course_id ? (
           <p
             className="clickable link"
             onClick={() => history.push(`/curso/${course_id}`)}
           >
             Ver curso
           </p>
-        );
+        ) : null;
       },
     },
     {
       title: "Descrição",
-      dataIndex: "course_description",
+      dataIndex: "description",
       className: "column-description",
-    },
-    {
-      title: "Turma",
-      dataIndex: "class_name",
-      key: "tags",
-      render: (tag) => {
-        if (tag) {
-          let color = tag.length > 3 ? "geekblue" : "green";
-          color = tag.length > 4 ? "coral" : color;
-          color = tag.length > 5 ? "volcano" : color;
-          color = tag.length > 6 ? "turquoise" : color;
-          color = tag.length > 7 ? "yellowgreen" : color;
-          color = tag.length > 8 ? "salmon" : color;
-          return (
-            <Tag
-              color={color}
-              key={tag}
-              className="clickable"
-              onClick={() => handleChange(tag)}
-            >
-              {" "}
-              {tag}{" "}
-            </Tag>
-          );
-        }
-        return null;
-      },
     },
     {
       title: "Organização",
@@ -131,24 +121,26 @@ export default function ListaCursos() {
     },
     {
       title: "Ações",
-      dataIndex: "actions",
+      dataIndex: "id",
       className: session.user.type === "master" ? null : "hide",
-      render: (course_id) => (
-        <>
-          {session.user.type === "master" ? (
-            <DeleteIcon
-              className="clickable"
-              onClick={() => handleDelete(course_id)}
-            />
-          ) : null}
-        </>
-      ),
+      render: (course_id) => {
+        return course_id ? (
+          <>
+            {session.user.type === "master" ? (
+              <DeleteIcon
+                className="clickable"
+                onClick={() => handleDelete(course_id)}
+              />
+            ) : null}
+          </>
+        ) : null;
+      },
     },
   ];
 
   function handleDelete(course_id) {
     const answer = window.confirm("Você deseja apagar esse curso?");
-    if (answer === true){
+    if (answer === true) {
       setLoading(true);
 
       api
@@ -156,10 +148,12 @@ export default function ListaCursos() {
         .then(() => alert("Curso deletado com sucesso"))
         .then(() => {
           if (session.user.type == "master") {
-            api.get("/course", configMaster).then((response) => {
-              setData(response.data);
-            })
-            .then(setLoading(false));
+            api
+              .get("/course", configMaster)
+              .then((response) => {
+                setData(response.data);
+              })
+              .then(setLoading(false));
           } else {
             api
               .get(`/course/user/${session.user.id}`, config)
@@ -172,11 +166,10 @@ export default function ListaCursos() {
         .catch((error) =>
           alert(
             "Não foi possível deletar o curso. Tente novamente mais tarde.\nErro:" +
-            error
+              error
           )
         );
-    }
-    else alert("Operação cancelada.");
+    } else alert("Operação cancelada.");
   }
 
   function handleChange(value) {
@@ -187,7 +180,7 @@ export default function ListaCursos() {
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
+        <div style={{ display: "flex" }}>
           <Input
             className="search-input"
             placeholder="procurar por curso, empresa"
@@ -195,20 +188,25 @@ export default function ListaCursos() {
             value={search}
           />
           <Tooltip title="Adicionar Curso">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/curso")} />
+            <AddIcon
+              style={{ height: "30px", width: "30px" }}
+              className="clickable"
+              onClick={() => history.push("/cadastro/curso")}
+            />
           </Tooltip>
         </div>
         <Table
           columns={columns}
           dataSource={data.map((course) => {
             if (search === "") return course;
-            return (
-              course.course_name.toLowerCase().includes(search.toLowerCase()) ||
-              course.class_name.toLowerCase().includes(search.toLowerCase()) ||
+            if (
+              course.name.toLowerCase().includes(search.toLowerCase()) ||
               course.organization_name
                 .toLowerCase()
                 .includes(search.toLowerCase())
-            );
+            ) {
+              return course;
+            } else return null;
           })}
           loading={loading}
         />
