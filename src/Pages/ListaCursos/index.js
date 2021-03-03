@@ -4,7 +4,7 @@ import Base from "../../Components/Base/Base";
 import { Table, Tag, Input, Popconfirm, message, Button, Tooltip } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import "./ListaCursos.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
@@ -57,14 +57,14 @@ export default function ListaCursos() {
       title: "Ver Curso",
       dataIndex: "id",
       render: (course_id) => {
-        return (
+        return course_id ? (
           <p
             className="clickable link"
             onClick={() => history.push(`/curso/${course_id}`)}
           >
             Ver curso
           </p>
-        );
+        ) : null;
       },
     },
     {
@@ -103,16 +103,18 @@ export default function ListaCursos() {
       title: "Ações",
       dataIndex: "actions",
       className: session.user.type === "master" ? null : "hide",
-      render: (course_id) => (
-        <>
-          {session.user.type === "master" ? (
-            <DeleteIcon
-              className="clickable"
-              onClick={() => handleDelete(course_id)}
-            />
-          ) : null}
-        </>
-      ),
+      render: (course_id) => {
+        return course_id ? (
+          <>
+            {session.user.type === "master" ? (
+              <DeleteIcon
+                className="clickable"
+                onClick={() => handleDelete(course_id)}
+              />
+            ) : null}
+          </>
+        ) : null;
+      },
     },
   ];
 
@@ -171,28 +173,33 @@ export default function ListaCursos() {
     <Base>
       <h1 className="page-title">Lista de Cursos</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
+        <div style={{ display: "flex" }}>
           <Input
-              className="search-input"
-              placeholder="procurar por curso, empresa"
-              onChange={(e) => handleChange(e.target.value)}
-              value={search}
-            />
+            className="search-input"
+            placeholder="procurar por curso, empresa"
+            onChange={(e) => handleChange(e.target.value)}
+            value={search}
+          />
           <Tooltip title="Adicionar Curso">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/curso")} />
+            <AddIcon
+              style={{ height: "30px", width: "30px" }}
+              className="clickable"
+              onClick={() => history.push("/cadastro/curso")}
+            />
           </Tooltip>
         </div>
         <Table
           columns={columns}
           dataSource={data.map((course) => {
             if (search === "") return course;
-            return (
-              course.course_name.toLowerCase().includes(search.toLowerCase()) ||
-              course.class_name.toLowerCase().includes(search.toLowerCase()) ||
+            if (
+              course.name.toLowerCase().includes(search.toLowerCase()) ||
               course.organization_name
                 .toLowerCase()
                 .includes(search.toLowerCase())
-            );
+            ) {
+              return course;
+            } else return null;
           })}
         />
       </div>
