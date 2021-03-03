@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
-import { Table, Tag, Input, Modal, DatePicker, Select, message } from "antd";
+import {
+  Table,
+  Tag,
+  Input,
+  Modal,
+  DatePicker,
+  Select,
+  message,
+  Popconfirm,
+} from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import Supervisor from "@material-ui/icons/SupervisorAccount";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./ListaAlunos.css";
@@ -12,7 +22,7 @@ export default function ListaAlunos() {
   const [filteredData, setFilteredData] = useState([]);
   const [isModalEditVisible, setIsModalEditVisible] = useState(false);
   const [editUserId, setEditUserId] = useState();
-  const [formData, setformData] = useState([]);
+  const [dataForm, setDataForm] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [occupations, setOccupations] = useState([]);
   const [data, setData] = useState([]);
@@ -62,8 +72,8 @@ export default function ListaAlunos() {
   }
 
   useEffect(() => {
-    if (formData["organization_id"]) loadOccups();
-  }, [formData["organization_id"]]);
+    if (dataForm["organization_id"]) loadOccups();
+  }, [dataForm["organization_id"]]);
 
   const columns = [
     {
@@ -150,12 +160,35 @@ export default function ListaAlunos() {
     {
       title: "Ações",
       dataIndex: "id",
-      render: (id) => (
-        <>
-          <EditIcon className="clickable" onClick={() => openEditModal(id)} />{" "}
-          <DeleteIcon className="clickable" onClick={() => handleDelete(id)} />
-        </>
-      ),
+      className: session.user.type === "master" ? "" : "hide",
+      render: (id) => {
+        return session.user.type === "master" ? (
+          <>
+            <EditIcon
+              className="clickable icon icon-edit"
+              onClick={() => openEditModal(id)}
+            />
+            <span className="hint-edit hint">Editar</span>
+            <Popconfirm
+              title="Tem certeza que deseja tornar este user admin?"
+              onConfirm={() => tournIntoAdmin(id)}
+            >
+              <Supervisor
+                className="clickable icon icon-admin"
+                aria-label="Tornar admin"
+              />
+              <span className="hint-admin hint">Tornar admin</span>
+            </Popconfirm>
+            <Popconfirm
+              title="Tem certeza que deseja excluir este item?"
+              onConfirm={() => handleDelete(id)}
+            >
+              <DeleteIcon className="clickable icon icon-delete" />
+              <span className="hint-delete hint">Deletar</span>
+            </Popconfirm>
+          </>
+        ) : null;
+      },
     },
   ];
 
@@ -164,6 +197,13 @@ export default function ListaAlunos() {
       authorization: "BEARER " + session.accessToken,
     },
   };
+
+  function tournIntoAdmin(id) {
+    api
+      .put(`/user`, { id, type: "admin" }, config)
+      .then(() => message.success(`O usuário agora é admin`))
+      .catch((err) => message.error("não foi possível tornar usuário admin"));
+  }
 
   function openEditModal(id) {
     loadOrgs();
@@ -175,24 +215,25 @@ export default function ListaAlunos() {
     const wantsToDelete = window.confirm(
       "Você tem certeza que deseja alterar esse usuário?"
     );
-    if (!wantsToDelete) return message.error("Operação cancelada");
-    else
-      api
-        .put(`/user/${id}`, {}, config)
-        .then(() => alert(`Usuário deletado com sucesso`))
-        .catch(() =>
-          alert("Não foi possível deletar usuário. Tente novamente mais tarde")
-        );
+    if (!wantsToDelete) return;
+    api
+      .put(`/user/${id}`, {}, config)
+      .then(() => message.success(`Usuário deletado com sucesso`))
+      .catch(() =>
+        message.error(
+          "Não foi possível deletar usuário. Tente novamente mais tarde"
+        )
+      );
   }
 
   function handleOk() {
     const wantsToEdit = window.confirm(
       "Você tem certeza que deseja alterar esse usuário?"
     );
-    if (!wantsToEdit) return message.error("Operação cancelada");
+    if (!wantsToEdit) return;
     else
       api
-        .post(`/user/${editUserId}`, formData, config)
+        .post(`/user/${editUserId}`, dataForm, config)
         .then(() => message.success("Usuário alterado com sucesso"))
         .catch(() => message.success("não foi possível editar usuário"));
   }
@@ -203,17 +244,17 @@ export default function ListaAlunos() {
   }
 
   function handleFormChange(e) {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+    setDataForm({ ...dataForm, [e.target.name]: e.target.value });
   }
 
   function handleSelectChange(value, field) {
     if (field === "organization_id") loadOccups(value);
     console.log(`${field}: ${value}`);
-    setformData({ ...formData, [field]: value });
+    setDataForm({ ...dataForm, [field]: value });
   }
 
   function handleDateChange(date, dateString) {
-    setformData({ ...formData, birthdate: new Date(dateString) });
+    setDataForm({ ...dataForm, birthdate: new Date(dateString) });
   }
 
   function handleChange(value) {
@@ -252,13 +293,13 @@ export default function ListaAlunos() {
       >
         <Input
           name="name"
-          value={formData["name"]}
+          value={dataForm["name"]}
           onChange={handleFormChange}
           placeholder="nome"
         />
         <Select
           name="organization_id"
-          value={formData["organization_id"]}
+          value={dataForm["organization_id"]}
           onChange={(e) => handleSelectChange(e, "organization_id")}
           placeholder="organização"
         >
@@ -290,7 +331,7 @@ export default function ListaAlunos() {
         />
         <Select
           name="state"
-          value={formData["state"]}
+          value={dataForm["state"]}
           onChange={() => handleSelectChange("state")}
           placeholder="Estado"
         >
