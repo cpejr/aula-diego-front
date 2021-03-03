@@ -31,7 +31,6 @@ export default function ListaCursos() {
   };
 
   useEffect(() => {
-<<<<<<< HEAD:src/Pages/ListaCursos/index.js
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -45,18 +44,20 @@ export default function ListaCursos() {
         authorization: "BEARER " + session.accessToken,
       },
     };
-=======
->>>>>>> main:src/Pages/ListaCursos/ListaCursos.js
     if (session.user.type == "master") {
-      api.get("/course", configMaster).then((response) => {
-        if (response.data) setData(response.data);
-      })
-      .then(setLoading(false));;
+      api
+        .get("/course", configMaster)
+        .then((response) => {
+          if (response.data) setData(response.data);
+        })
+        .then(setLoading(false));
     } else {
-      api.get(`/course/user/${session.user.id}`, config).then((response) => {
-        if (response.data) setData(response.data);
-      })
-      .then(setLoading(false));
+      api
+        .get(`/course/user/${session.user.id}`, config)
+        .then((response) => {
+          if (response.data) setData(response.data);
+        })
+        .then(setLoading(false));
     }
   }, []);
 
@@ -139,7 +140,7 @@ export default function ListaCursos() {
 
   function handleDelete(course_id) {
     const answer = window.confirm("Você deseja apagar esse curso?");
-    if (answer === true){
+    if (answer === true) {
       setLoading(true);
 
       api
@@ -147,10 +148,12 @@ export default function ListaCursos() {
         .then(() => alert("Curso deletado com sucesso"))
         .then(() => {
           if (session.user.type == "master") {
-            api.get("/course", configMaster).then((response) => {
-              setData(response.data);
-            })
-            .then(setLoading(false));
+            api
+              .get("/course", configMaster)
+              .then((response) => {
+                setData(response.data);
+              })
+              .then(setLoading(false));
           } else {
             api
               .get(`/course/user/${session.user.id}`, config)
@@ -163,11 +166,10 @@ export default function ListaCursos() {
         .catch((error) =>
           alert(
             "Não foi possível deletar o curso. Tente novamente mais tarde.\nErro:" +
-            error
+              error
           )
         );
-    }
-    else alert("Operação cancelada.");
+    } else alert("Operação cancelada.");
   }
 
   function handleChange(value) {
