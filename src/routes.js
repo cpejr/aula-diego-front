@@ -71,13 +71,6 @@ const routes = () => {
         />
         /* REVISAR */
         <PrivateRoute
-          path="/newlive"
-          exact
-          studentComponent={Newlive}
-          adminComponent={Newlive}
-          masterComponent={Newlive}
-        />
-        <PrivateRoute
           path="/config"
           exact
           studentComponent={ConfigUser}
@@ -85,18 +78,25 @@ const routes = () => {
           masterComponent={ConfigUser}
         />
         <PrivateRoute
-          path="/live/:id"
-          exact
-          studentComponent={Live}
-          adminComponent={Live}
-          masterComponent={Live}
-        />
+            path="/live/:id"
+            exact
+            studentComponent={Live}
+            adminComponent={Live}
+            masterComponent={Live}
+       />
         <PrivateRoute
-          path="/cadastro/live"
+          path="/cadastro"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={Newlive}
           masterComponent={Newlive}
+        />
+        <PrivateRoute
+          path="/live/info"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={Infolive}
+          masterComponent={Infolive}
         />
         <PrivateRoute
           path="/aluno"
@@ -104,13 +104,6 @@ const routes = () => {
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaAlunos}
           masterComponent={ListaAlunos}
-        />
-        <PrivateRoute
-          path="/info/live"
-          exact
-          studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={Infolive}
-          masterComponent={Infolive}
         />
         <PrivateRoute
           path="/cadastro/turma"
@@ -191,7 +184,7 @@ const routes = () => {
           path="/curso"
           exact
           studentComponent={MeusCursos}
-          adminComponent={ListaCursos}
+          adminComponent={MeusCursos}
           masterComponent={ListaCursos}
         />
         <PrivateRoute

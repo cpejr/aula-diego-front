@@ -27,7 +27,7 @@ export default function Sidebar() {
     },
     {
       title: "Informações sobre a live",
-      path: "/info/live",
+      path: "/live/info",
     },
     {
       title: "Turmas",
@@ -39,11 +39,11 @@ export default function Sidebar() {
     },
     {
       title:"Nova Aula",
-      path: "/aula/criar/:id"
+      path: "cadastro/aula"
     },
     {
-      title:"Lista de Aulas",
-      path: "",
+      title:"Meus Cursos",
+      path: "curso",
     }
   ];
 
