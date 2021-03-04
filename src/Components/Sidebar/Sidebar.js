@@ -17,7 +17,7 @@ export default function Sidebar() {
     },
     {
       title: "Meus Cursos",
-      path: "curso",
+      path: "/curso",
     },
   ];
   const adminLinks = [
@@ -27,11 +27,11 @@ export default function Sidebar() {
     },
     {
       title: "Informações sobre a live",
-      path: "/info/live",
+      path: "/live/info",
     },
     {
       title: "Turmas",
-      path: "/lista/turma",
+      path: "/turma/lista",
     },
     {
       title: "Cursos",
@@ -39,12 +39,8 @@ export default function Sidebar() {
     },
     {
       title:"Nova Aula",
-      path: "/aula/criar/:id"
+      path: "/aula/cadastro"
     },
-    {
-      title:"Lista de Aulas",
-      path: "",
-    }
   ];
 
   const masterLinks = [
@@ -58,11 +54,11 @@ export default function Sidebar() {
     },
     {
       title: "Informações sobre a live",
-      path: "/info/live",
+      path: "/live/info",
     },
     {
       title: "Turmas",
-      path: "/lista/turma",
+      path: "/turma/lista",
     },
     {
       title: "Cursos",

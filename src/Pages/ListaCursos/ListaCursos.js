@@ -191,7 +191,7 @@ export default function ListaCursos() {
             <AddIcon
               style={{ height: "30px", width: "30px" }}
               className="clickable"
-              onClick={() => history.push("/cadastro/curso")}
+              onClick={() => history.push("/curso/cadastro")}
             />
           </Tooltip>
         </div>

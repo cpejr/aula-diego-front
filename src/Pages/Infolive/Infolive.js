@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
-import { Table, Tag, Input } from "antd";
+import { Table, Tag, Input, Tooltip } from "antd";
+import AddIcon from "@material-ui/icons/Add";
 import DATA from "./data";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(DATA);
+  const history = useHistory();
 
   const columns = [
     {
@@ -70,7 +73,7 @@ export default function Infolive() {
       title: "Ações",
       render: () => (
         <>
-          <InfoIcon className="clickable" onClick={handleInfo} />
+          <InfoIcon className="clickable" onClick={() => {history.push("/live/presenca/id")}} />
         </>
       ),
     },
@@ -97,14 +100,23 @@ export default function Infolive() {
   }
   return (
     <Base>
-      <h1 className="page-title">Lista de Alunos</h1>
+      <h1 className="page-title">Informações sobre as Lives:</h1>
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="procurar por nome, matricula, curso"
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
-        />
+        <div style={{ display: "flex" }}>
+          <Input
+            className="search-input"
+            placeholder="procurar por nome, matricula, curso"
+            onChange={(e) => handleChange(e.target.value)}
+            value={search}
+          />
+          <Tooltip title="Criar Live">
+            <AddIcon
+              style={{ height: "30px", width: "30px" }}
+              className="clickable"
+              onClick={() => history.push("/live/cadastro")}
+            />
+          </Tooltip>
+        </div>
         <Table
           // title={() => `Lista de Ocupações da empresa ${organization}`}
           columns={columns}
