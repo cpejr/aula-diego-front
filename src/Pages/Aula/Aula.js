@@ -40,13 +40,11 @@ export default function Aula(props) {
         },
     };
 
-    const config = {
+    const configCourse = {
         headers: {
           authorization: "BEARER " + session.accessToken,
         },
-        params: {
-            'course.id': lesson && lesson.course_id,
-          },
+        
     };  
     
       useEffect(() => {
@@ -69,10 +67,10 @@ export default function Aula(props) {
           });*/
 
           api
-          .get(`/course`, config)
+          .get(`/course`, configCourse)
           .then(
             (response) => {
-            setCourse(response.data);
+              if (lesson.course_id === response.data.id) setCourse(response.data);
           })
           .catch(() => {
             message.error("Não foi possível carregar dados do curso");
@@ -82,14 +80,9 @@ export default function Aula(props) {
         <Base>
             <div className="Aula">
                 <div className="description">
-                {course
-                        ? course.map((course) => {
-                            
-                            return (
-                        <h1 className="TitleAulas"><SnippetsOutlined />{course.name}</h1>
-                            );
-                        })
-                        : null}
+                
+                        <h1 className="TitleAulas"><SnippetsOutlined />{course && course.id}</h1>
+                           
                     <VideoAula 
                         title={lesson && lesson.name}
                         video_url="https://www.youtube.com/embed/sj9J2ecsSpo"
