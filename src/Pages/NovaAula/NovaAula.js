@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Upload, Input, Button, message } from "antd"
+import { Form, Upload, Input, Button, message } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
-import { useSession } from "../../Context/SessionContext"
+import { useSession } from "../../Context/SessionContext";
 import "./NovaAula.css";
 
 export default function NovaAula(props) {

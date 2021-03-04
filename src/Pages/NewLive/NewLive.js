@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button } from "antd"
+import { Form, DatePicker, Input, Button, Message, message } from "antd";
+import { useSession } from "../../Context/SessionContext";
 import "./NewLive.css";
 
 const generateCode = () => {
@@ -29,27 +30,48 @@ const tailFormItemLayout = {
   }
 };
 
-export default function NewLive() {
-  const [state, setState] = useState({});
+export default function NewLive(props) {
+  const [live, setLive] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { session } = useSession();
   const [confirmation, setConfirmation] = useState(generateCode());
+  const course = new URLSearchParams(props.location.search)
 
   function handleChange(e) {
-    setState({ ...state, [e.target.name]: e.target.value });
+    setLive({ ...live, [e.target.name]: e.target.value });
   }
 
   function handleChangeDate(e) {
-    setState({ ...state, date: e._d });
+    setLive({ ...live, date: e._d });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
 
-    const data = { ...state, "confirmation_code": confirmation };
+    const data = {
+      ...live, 
+      "confirmation_code": confirmation,
+      "course_id": course.get("course")
+    };
+
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken
+      }
+    };
 
     api
-      .post("/newlive", data)
-      .then(() => setState({}))
-      .catch((err) => alert(`Não foi possível criar live \n ${err}`));
+      .post("/live", data, config)
+      .then(() => {
+        setLoading(false);
+        message.success("Live criada com sucesso!");
+      })
+      .catch((err) => {
+        setLoading(false);
+        message.error("Não foi possiível criar a live!");
+        console.log(err)
+      });
   }
 
   return (
@@ -70,11 +92,11 @@ export default function NewLive() {
                 <h1>Nova Live</h1>
               </Form.Item>
               <Form.Item
-                name="title"
+                name="name"
                 label={<label style={{ fontSize: "large" }}> Título </label>}
                 rules={[{ required: true, message: 'Por favor insira o título da live!' }]}
               >
-                <Input placeholder="Título da live" name="title" onChange={handleChange}/>
+                <Input placeholder="Título da live" name="name" onChange={handleChange}/>
               </Form.Item>
               <Form.Item
                 name="description"
@@ -102,8 +124,13 @@ export default function NewLive() {
                 <span className="confirmationCode">{confirmation}</span>
               </Form.Item>
               <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" style={{ fontSize: "large"}}>
-                  Criar
+                <Button 
+                  type="primary" 
+                  onClick={handleSubmit}
+                  style={{ fontSize: "large"}}
+                  loading={loading}
+                >
+                  Criar Live
                 </Button>
               </Form.Item>
             </Form>
