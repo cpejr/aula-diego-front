@@ -29,7 +29,7 @@ export default function NovaAula(props) {
         "user.organization_id": session.user.organization_id
       }
     }
-
+    
     api.get("/user", configStudents)
       .then((users) => {
         let students = [];
