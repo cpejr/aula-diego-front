@@ -31,35 +31,6 @@ export default function Aula() {
             <div className="Aula">
                 <div className="description">
                     <h1 className="TitleAulas"><SnippetsOutlined />Programação Orientada a Objetos</h1>
-                    <div className="AulaVideoContainer">
-                        <h1 className="TitleVideo">Aula 01 - Programação Orientada a Objetos</h1>
-                        <div className="videoAula">
-                            <VideoFrame url='https://www.youtube.com/embed/yhEqroz32Nk'/>
-                        </div>  
-                    </div>
-                    <FormEmail />
-
-                    <div className="AulaVideoContainer">
-                        <h1 className="TitleVideo">Envio de tarefa:</h1>
-                        <div className="videoAula">
-                        <Dragger {...props}>
-                            <p className="ant-upload-drag-icon">
-                                <InboxOutlined />
-                            </p>
-                            <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                            <p className="ant-upload-hint">
-                                Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                                band files
-                            </p>
-                        </Dragger>
-                        </div>
-                        <button className="btnEnviarTarefa">
-                            Enviar
-                        </button>
-                    </div>
-                    <div className="formDuvidas">
-                        <h6 className='TitleVideo'>*Serão aceitos arquivos em pdf, jpg e png apenas</h6>
-                    </div>
 
                     <div className="AulaVideoContainer">
                         <h1 className="TitleVideo">Aula 02 - Padronização de Commits</h1>
@@ -80,4 +51,58 @@ export default function Aula() {
         </div>
     </Base>
     );
+}
+
+function VideoAula({ title, video_url, description }) {
+    return (
+        <>
+            <div className="AulaVideoContainer">
+                <h1 className="TitleVideo">{title}</h1>
+                <div className="videoAula">
+                    <VideoFrame url={video_url}/>
+                    <h6 className="descriptionText">{description}</h6>
+                </div>  
+            </div>
+            <FormEmail />
+        </>
+    );
+}
+
+function Arquivo({ title, arquivo_url, description }){
+    <>
+        <div className="AulaVideoContainer">
+            <h1 className="TitleVideo">{title}</h1>
+            <div className="videoAula">
+                <iframe src={arquivo_url} frameborder="0" width="100%" height="480"/>
+                <h6 className="descriptionText">{description}</h6>
+            </div>  
+        </div>
+        <FormEmail />
+    </>
+}
+
+function EnviarTarefa() {
+    <>
+        <div className="AulaVideoContainer">
+            <h1 className="TitleVideo">Envio de tarefa:</h1>
+            <div className="videoAula">
+                <Dragger {...props}>
+                    <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text"> Clique ou arraste os arquivos para essa área para enviar</p>
+                    <p className="ant-upload-hint">
+                        Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+                        band files
+                    </p>
+                </Dragger>
+            </div>
+            <button className="btnEnviarTarefa">
+                Enviar
+            </button>
+        </div>
+        <div className="formDuvidas">
+            <h6 className='TitleVideo'>*Serão aceitos arquivos em pdf, jpg e png apenas</h6>
+        </div>
+    </>
 }
