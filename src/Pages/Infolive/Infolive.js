@@ -73,7 +73,7 @@ export default function Infolive() {
       title: "Ações",
       render: () => (
         <>
-          <InfoIcon className="clickable" onClick={handleInfo} />
+          <InfoIcon className="clickable" onClick={() => {history.push("/live/presenca/id")}} />
         </>
       ),
     },
@@ -100,7 +100,7 @@ export default function Infolive() {
   }
   return (
     <Base>
-      <h1 className="page-title">Lista de Alunos</h1>
+      <h1 className="page-title">Informações sobre as Lives:</h1>
       <div className="table-container">
         <div style={{ display: "flex" }}>
           <Input
@@ -113,7 +113,7 @@ export default function Infolive() {
             <AddIcon
               style={{ height: "30px", width: "30px" }}
               className="clickable"
-              
+              onClick={() => history.push("/live/cadastro")}
             />
           </Tooltip>
         </div>

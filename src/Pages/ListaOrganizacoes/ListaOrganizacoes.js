@@ -163,7 +163,7 @@ export default function ListaOrganizacoes() {
             value={search}
           />
           <Tooltip title="Adicionar Organização">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/organizacao")} />
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/organizacao/cadastro")} />
           </Tooltip>
         </div>
         <Table
