@@ -100,8 +100,8 @@ const routes = () => {
             exact
             path="/live/:id"
             studentComponent={Live}
-            adminComponent={() => <Redirect to="/dashboard" />}
-            masterComponent={() => <Redirect to="/dashboard" />}
+            adminComponent={Live}
+            masterComponent={Live}
           />
           /* TURMA */
           <PrivateRoute
