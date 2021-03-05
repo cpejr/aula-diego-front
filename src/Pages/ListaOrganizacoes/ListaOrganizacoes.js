@@ -124,13 +124,20 @@ export default function ListaOrganizacoes() {
   }
 
   function handleOk(organization_id) {
+    setformData({ ...formData, id: organization_id });
+    const configOrganization = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      
+    };
     const wantsToEdit = window.confirm(
       "Você tem certeza que deseja alterar essa organização?"
     );
     if (!wantsToEdit) return message.error("Operação cancelada");
     else
       api
-        .put(`/organization/${organization_id}`, {formData}, config)
+        .put(`/organization/${organization_id}`, formData, configOrganization)
         .then(() => message.success("Organização alterada com sucesso"))
         .catch(() => message.error("Não foi possível editar a organização"));
   }
