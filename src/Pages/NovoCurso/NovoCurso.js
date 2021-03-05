@@ -45,8 +45,26 @@ export default function NovoCurso() {
             message.error("Não foi possível criar o curso");
           });
       }
-      
-      useEffect(() => {
+    
+    function loadOrgs() {
+      api
+        .get("/organization", config)
+        .then((data) => {
+          setOrganizations(data.data);
+        })
+        .catch(() => message.error("Não foi possível carregar organizações"));
+    }
+    
+    /*useEffect(() => {
+      api
+      .get(`/organization`, config)
+      .then((response) => {
+        console.log(response.json())
+        setOrganizations(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados das organizações");
+      });
         api
           .get(`/organization`, config)
           .then((response) => {
@@ -56,10 +74,10 @@ export default function NovoCurso() {
             message.error("Não foi possível carregar dados das organizações");
           });
       }, 
-      []);
-
+      []);*/
     return (
         <Base>
+        {loadOrgs()}
         <div className="Curso">
             <div className="formContainer">
                 <Form {...layout} className="formCurso" onFinish={handleSubmit}>
@@ -70,17 +88,16 @@ export default function NovoCurso() {
                     <Form.Item>
                     <Select
                         name="organization_id"
-                        value={formData["organization_id"]}
-                        onChange={(e) => handleSelectChange(e, "organization_id")}
-                        placeholder="organização"
+                        onChange={() => handleSelectChange("organization_id")}
+                        placeholder="Organização"
                     >
-                        {organizations.map((organization) => {
-                            return organization != [] ? (
-                            <Select.Option name="organization_id" value={organization.id}>
-                                {organization.name}
-                            </Select.Option>
-                            ) : null;
-                        })}
+                      {organizations.map((organization) => {
+                        return (
+                          <Select.Option name="organization_id" value={organization.id}>
+                            {organization.name}
+                          </Select.Option>
+                        ) 
+                      })}
                     </Select>
                     </Form.Item>
                     <Form.Item name="descricao" label="Descrição:">

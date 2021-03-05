@@ -123,22 +123,15 @@ export default function ListaOrganizacoes() {
     setIsModalEditVisible(true);
   }
 
-  function handleOk() {
+  function handleOk(organization_id) {
     const wantsToEdit = window.confirm(
       "Você tem certeza que deseja alterar essa organização?"
     );
     if (!wantsToEdit) return message.error("Operação cancelada");
     else
       api
-        .post(`/organization/${editOrganizationId}`, formData, config)
+        .put(`/organization/${organization_id}`, {formData}, config)
         .then(() => message.success("Organização alterada com sucesso"))
-        .then(() => {
-          api.get("/organization", config)
-            .then((response) => { 
-              setOrganizations(response.data); 
-            })
-            .then(setLoading(false));
-        })
         .catch(() => message.error("Não foi possível editar a organização"));
   }
 
@@ -173,9 +166,9 @@ export default function ListaOrganizacoes() {
         />
       </div>
       <Modal
-        title="Editar usuário"
+        title="Editar organização"
         visible={isModalEditVisible}
-        onOk={() => handleOk()}
+        onOk={() => handleOk(editOrganizationId)}
         onCancel={() => handleCancel()}
       >
         <Input

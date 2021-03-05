@@ -1,48 +1,40 @@
 import React, { useState } from "react";
-import { Input, Form, Button } from "antd";
+import { Input, Form, message } from "antd";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./CadastroOrganizacao.css";
 
-const { TextArea } = Input;
-
 export default function CadastroOrganizacao() {
-  const [formValues, setFormValues] = useState({ name: "", description: "" });
+  const [formData, setformData] = useState({});
   const { session } = useSession();
 
-  const layout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
-  const tailLayout = {
-    wrapperCol: {
-      offset: 8,
-      span: 16,
-    },
-  };
-
   function handleChange(e) {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    setformData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
   function handleSubmit() {
     const config = {
       headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
+        authorization: "BEARER " + session.accessToken
+        }
     };
+
+    let data = formData;
+
     api
-      .post("/", formValues, config) // alterar esse trem, que tá errado
-      .then(() => alert("Organização cadastrada com sucesso!"))
-      .catch((error) =>
-        alert(`Não foi possível cadastrar organização. \n Erro: ${error}`)
-      );
+      .post(`/organization`, data, config)
+      .then(() => {
+        message.success("Organização criada com sucesso!");
+      })
+      .catch(() => {
+        message.error(`Não foi possível cadastrar organização.`);
+      });
   }
+  
 
   return (
     <Base>
@@ -62,6 +54,7 @@ export default function CadastroOrganizacao() {
             <Input
               placeholder="Nome da Organização"
               name="name"
+              value={formData["name"]}
               className="form-input"
               onChange={handleChange}
             />
@@ -69,16 +62,16 @@ export default function CadastroOrganizacao() {
           <Form.Item label="Descrição: " className="mt20">
             <Input.TextArea
               name="description"
-              value={formValues["description"]}
-              onChange={handleChange}
+              value={formData["description"]}
               placeholder="Descrição sobre a Organização"
               autoSize={{ minRows: 2, maxRows: 6 }}
               className="form-input"
+              onChange={handleChange}
             />
           </Form.Item>
 
           <Form.Item className="mt20">
-            <button className="register-organization-btn" type="submit">
+            <button className="register-organization-btn" type="submit" onClick={handleSubmit}>
               Cadastrar
             </button>
           </Form.Item>
