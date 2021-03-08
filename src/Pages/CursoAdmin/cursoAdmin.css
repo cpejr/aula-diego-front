@@ -1,0 +1,32 @@
+.pageBody {
+  margin: 5%;
+}
+
+.pageBody h5 {
+  color: gray;
+}
+
+.tabsWrapper {
+  width: 80%;
+  margin-top: 2%
+}
+
+.inputWrapper {
+  display: flex
+}
+
+.addButton {
+  cursor: pointer;
+  font-size: x-large;
+  margin: auto;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+.editButton {
+  cursor: pointer;
+  font-size: large;
+  margin: auto;
+  margin-left: 3%;
+  margin-right: 3%;
+}
