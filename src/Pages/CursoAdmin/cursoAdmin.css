@@ -12,7 +12,8 @@
 }
 
 .inputWrapper {
-  display: flex
+  display: flex;
+  margin-bottom: 2%;
 }
 
 .addButton {

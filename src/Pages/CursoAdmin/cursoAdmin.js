@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -63,6 +63,12 @@ export default function CursoAdmin(props) {
       render: (id) => (
         <>
           <Popconfirm
+            title="Visitar item?"
+            onConfirm={() => handleVisit(id)}
+          >
+            <EyeOutlined className="editButton"/>
+          </Popconfirm>
+          <Popconfirm
             title="Editar item?"
             onConfirm={() => handleEdit(id)}
           >
@@ -97,6 +103,12 @@ export default function CursoAdmin(props) {
       dataIndex: ("id"),
       render: (id) => (
         <>
+          <Popconfirm
+            title="Visitar item?"
+            onConfirm={() => handleVisit(id)}
+          >
+            <EyeOutlined className="editButton"/>
+          </Popconfirm>
           <Popconfirm
             title="Editar item?"
             onConfirm={() => handleEdit(id)}
@@ -232,8 +244,13 @@ export default function CursoAdmin(props) {
       });
   }
 
-  function handleEdit() {
-    console.log('TODO')
+  function handleEdit(id) {
+    console.log(id)
+  }
+
+  function handleVisit(id) {
+    const requests = ['aula', 'live', 'turma'];
+    history.push(`/${requests[activeTab]}/${id}`)
   }
 
   return (
