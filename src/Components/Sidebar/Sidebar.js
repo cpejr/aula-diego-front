@@ -62,7 +62,7 @@ export default function Sidebar() {
     },
     {
       title: "Cursos",
-      path: "/curso",
+      path: "/curso/lista",
     },
     {
       title: "Organizações",
@@ -126,7 +126,7 @@ export default function Sidebar() {
             className="sidebarButton"
             onClick={() => {
               handleLogout();
-              history.push("/");
+              history.push("/login");
             }}
           >
             SAIR

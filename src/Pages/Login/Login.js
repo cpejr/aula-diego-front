@@ -80,7 +80,7 @@ export default function Login() {
   return (
     <div className="pageLogin">
       <div className="content">
-        <img className="LoginImg" src={logo}></img>
+        <img className="LoginImg" src={logo} onClick={() => {history.push("/")}} ></img>
         <div className="bloco">
           <h1 className="entrarLogin">Entrar</h1>
           <GoogleLogin

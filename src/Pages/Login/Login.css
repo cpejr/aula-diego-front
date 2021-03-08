@@ -115,6 +115,7 @@
 .LoginImg {
   width: 400px;
   margin-bottom: 40px;
+  cursor: pointer;
 }
 
 input:focus,
