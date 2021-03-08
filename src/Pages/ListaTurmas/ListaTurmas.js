@@ -135,7 +135,7 @@ export default function ListaOrganizacoes() {
             value={search}
           />
           <Tooltip title="Adicionar Turma">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/cadastro/turma")} />
+            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/turma/cadastro")} />
           </Tooltip>
         </div>
         <Table

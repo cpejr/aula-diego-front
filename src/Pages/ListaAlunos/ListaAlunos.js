@@ -300,7 +300,7 @@ export default function ListaAlunos() {
         <Select
           name="organization_id"
           value={dataForm["organization_id"]}
-          onChange={(e) => handleSelectChange(e, "organization_id")}
+          onChange={(e) => handleSelectChange("organization_id",e)}
           placeholder="organização"
         >
           {organizations.map((organization) => {

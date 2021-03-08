@@ -22,6 +22,7 @@ export default function ListaOrganizacoes() {
   const [loading, setLoading] = useState(true);
   const { session } = useSession();
   const history = useHistory();
+  let name, description;
 
   const config = {
     headers: {
@@ -102,7 +103,7 @@ export default function ListaOrganizacoes() {
   function handleDelete(organization_id) {
     setLoading(true);
     api
-      .put(`/organization/${organization_id}`, {}, config)
+      .delete(`/organization/${organization_id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
         api.get("/organization", config)
@@ -123,22 +124,22 @@ export default function ListaOrganizacoes() {
     setIsModalEditVisible(true);
   }
 
-  function handleOk() {
+  function handleOk(organization_id) {
+    setformData({ ...formData, id: organization_id });
+    const configOrganization = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      
+    };
     const wantsToEdit = window.confirm(
       "Você tem certeza que deseja alterar essa organização?"
     );
     if (!wantsToEdit) return message.error("Operação cancelada");
     else
       api
-        .post(`/organization/${editOrganizationId}`, formData, config)
+        .put(`/organization/${organization_id}`, formData, configOrganization)
         .then(() => message.success("Organização alterada com sucesso"))
-        .then(() => {
-          api.get("/organization", config)
-            .then((response) => { 
-              setOrganizations(response.data); 
-            })
-            .then(setLoading(false));
-        })
         .catch(() => message.error("Não foi possível editar a organização"));
   }
 
@@ -173,22 +174,29 @@ export default function ListaOrganizacoes() {
         />
       </div>
       <Modal
-        title="Editar usuário"
+        title="Editar organização"
         visible={isModalEditVisible}
-        onOk={() => handleOk()}
+        onOk={() => handleOk(editOrganizationId)}
         onCancel={() => handleCancel()}
       >
+        { organization.map((organization) => {
+            if(organization.id === editOrganizationId){
+              name = organization.name;
+              description = organization.description;
+              return (organization.name);
+            }
+          })}
         <Input
           name="name"
           value={formData["name"]}
           onChange={handleFormChange}
-          placeholder="Nome"
+          placeholder={name}
         />
         <Input
           name="description"
           value={formData["description"]}
           onChange={handleFormChange}
-          placeholder="Descrição"
+          placeholder={description}
         />
       </Modal>
     </Base>
