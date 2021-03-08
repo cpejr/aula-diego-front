@@ -11,7 +11,7 @@ import Cadastro from "./Pages/Cadastro/Cadastro";
 import ListaAlunos from "./Pages/ListaAlunos/ListaAlunos";
 import ListaTurma from "./Pages/ListaTurmas/ListaTurmas";
 import NovaTurma from "./Pages/NovaTurma/NovaTurma";
-import GerenciarCurso from "./Pages/GerenciarCursos/Curso";
+import CursoAdmin from "./Pages/CursoAdmin/cursoAdmin";
 import NovoCurso from "./Pages/NovoCurso/NovoCurso";
 import ConfigUser from "./Pages/ConfiguracaoUser/ConfiguracaoUser";
 import ListaAlunosTurma from "./Pages/ListaAlunosTurma/ListaAlunosTurma";
@@ -130,7 +130,7 @@ const routes = () => {
             masterComponent={NovoCurso}
           />
           <PrivateRoute
-            path="/curso"
+            path="/curso/lista"
             studentComponent={MeusCursos}
             adminComponent={MeusCursos}
             masterComponent={ListaCursos}
@@ -141,6 +141,13 @@ const routes = () => {
             studentComponent={Curso}
             adminComponent={Curso}
             masterComponent={Curso}
+          />
+          <PrivateRoute
+            path="/curso/admin/:id"
+            exact
+            studentComponent={() => <Redirect to="/dashboard" />}
+            adminComponent={CursoAdmin}
+            masterComponent={CursoAdmin}
           />
           /* AULA */
           <PrivateRoute
