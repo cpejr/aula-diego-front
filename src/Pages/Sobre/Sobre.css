@@ -11,7 +11,7 @@
 }
 
 .headerHome{
-    height: 15vh;
+    height: 80px;
     background-color: var(--background-color);
     display: flex;
 }
@@ -21,13 +21,13 @@
 }
 
 .logodark{
-    height: 15vh;
+    height: 5vh;
     height: 8vh;
     margin: 1vh;
 }
 
 .imgLogo{
-    padding: 2vh;
+    padding: 1vh;
     display: flex;
 }
 
@@ -44,7 +44,7 @@
     display: flex;
     justify-content: flex-end;
     flex: 1;
-    padding: 3vh;
+    padding: 2vh;
     font-weight: 500;
 }
 
@@ -101,6 +101,25 @@
     background-repeat: no-repeat; 
 }
 
+.waveTopDark{
+    position: relative;
+    display: flex;
+    background-image: linear-gradient(to top, #290043 73%, #B11734);
+    height: 700px;
+}
+
+.waveTopDark:before { 
+    content: ""; 
+    position: absolute; 
+    bottom: 0; 
+    left: 0;  
+    height: 250px;
+    width: 100%; 
+    background: url(../../images/wave-top-dark.png); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+}
+
 .contentWaveBottom{
     background-image: linear-gradient(to bottom, #290043 73%, #B11734);
     height: 350px;
@@ -117,28 +136,9 @@
     background-repeat: no-repeat; 
 }
 
-.waveTopDark{
-    position: relative;
-    display: flex;
-    background-image: linear-gradient(to top, #290043 73%, #B11734);
-    height: 120vh;
-}
-
 .waveBottomDark{
     background-image: linear-gradient(to bottom, #290043 73%, #B11734);
     height: 350px;
-}
-
-.waveTopDark:before { 
-    content: ""; 
-    position: absolute; 
-    bottom: 0; 
-    left: 0;  
-    height: 250px;
-    width: 100%; 
-    background: url(../../images/wave-top-dark.png); 
-    background-size: cover; 
-    background-repeat: no-repeat; 
 }
 
 .waveBottomDark:before { 
