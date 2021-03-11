@@ -92,3 +92,9 @@
 .timer p {
     color: white;
 }
+
+.liveDescription{
+    color: #ffffff;
+    font-weight: 50;
+    margin-top: 5px;
+}
