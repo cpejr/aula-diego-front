@@ -3,7 +3,7 @@
 }
 
 .TitleVideo{
-    color: white;
+    color: #ffffff;
     text-align: center;
 }
 
@@ -17,6 +17,12 @@
 .description{
     display: flex;
     flex-direction: column;
+}
+
+.descriptionText{
+    color: #ffffff;
+    text-align: justify;
+    font-weight: 50;
 }
 
 .AulaVideoContainer{
