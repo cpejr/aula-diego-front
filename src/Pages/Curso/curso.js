@@ -3,93 +3,131 @@ import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
+import { message, Divider, Card } from "antd";
+import { VideoCameraOutlined, ReadOutlined } from '@ant-design/icons'
 import "./curso.css";
-import { message } from "antd";
 
 export default function Curso(props) {
-  const { session } = useSession();
-  const [courseData, setCourseData] = useState();
+  const [course, setCourse] = useState();
   const [lives, setLives] = useState();
   const [lessons, setLessons] = useState();
+  const [done, setDone] = useState();
+  const [sorted, setSorted] = useState();
+
+  const history = useHistory();
+
+  const { session } = useSession();
   const { id } = props.match.params;
-  const configCourse = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-  };
+  const { Meta } = Card
+
+  const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
   const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    }
+  };
+
+  const configQuery = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
     query: {
       course_id: id,
-    },
+    }
   };
+
+  let requests = 0
+
+  const requestDone = (data) => {
+    requests += 1;
+
+    if (requests == 3)
+      setDone(true);
+  }
+
+  useEffect(() => {
+    if (done === true){
+      const sLesson = lessons.sort((a, b) => a.date - b.date);
+      const sLive = lives.sort((a, b) => a.date - b.date);
+      const combined = sLesson.concat(sLive).sort((a, b) => a.date - b.date);
+      
+      setSorted(combined);
+    }
+  }, [done])
 
   useEffect(() => {
     api
-      .get(`/course/${id}`, configCourse)
+      .get(`/course/${id}`, config)
       .then((response) => {
-        setCourseData(response.data);
+        setCourse(response.data);
+        requestDone();
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados do curso");
+      .catch((err) => {
       });
 
     api
-      .get(`/live`, config)
+      .get(`/live`, configQuery)
       .then((response) => {
-        setLives(response.data);
+        const lives = [];
+        response.data.map(live => lives.push({
+          ...live,
+          "date": new Date(live.created_at)
+        }));
+
+        setLives(lives);
+        requestDone();
       })
       .catch(() => {
-        message.error("Não foi possível carregar dados das lives");
       });
 
     api
-      .get(`/lesson`, config)
+      .get(`/lesson`, configQuery)
       .then((response) => {
-        setLessons(response.data);
+        const lessons = [];
+        response.data.map(lesson => lessons.push({
+          ...lesson,
+          "date": new Date(lesson.created_at)
+        }));
+
+        setLessons(lessons);
+        requestDone();
       })
-      .catch((error) => {
-        message.error("Não foi possível carregar dados das aulas");
+      .catch((err) => {
       });
   }, []);
+
   return (
     <Base>
-      <div className="page-content">
-        <h1 className="mb60 capitalize">{courseData && courseData.name}</h1>
-        <p className="mb60 block">{courseData && courseData.description}</p>
-        <h2 className="mb20 capitalize">Últimas Lives</h2>
-        <div className="course-card-container mb20">
-          {lives
-            ? lives.map((live) => {
-                return (
-                  <CourseCard
-                    className="capitalize"
-                    title={live.name}
-                    description={live.description}
-                    path={`/live/${live.id}`}
-                  />
-                );
-              })
-            : null}
-        </div>
-        <h2 className="mb20 capitalize">Últimas Aulas</h2>
-        <div className="course-card-container">
-          {lessons
-            ? lessons.map((lesson) => {
-                return (
-                  <CourseCard
-                    className="capitalize"
-                    title={lesson.name}
-                    description={lesson.description}
-                    path={`/lesson/${lesson.id}`}
-                  />
-                );
-              })
-            : null}
-        </div>
+      <div className="pageBody">
+        {course !== undefined ? <h1>{course.name}</h1> : <></>}
+        {months.map((month, idx) => {
+          if (sorted !== undefined) {
+            const found = true ? sorted.find(m => m.date.getMonth() === idx) !== undefined : false
+
+            if (found) {    
+              return (
+                <>
+                  <Divider orientation="left">{month}</Divider>
+                  {sorted.map(element => {
+                    if (element.date.getMonth() === idx) {
+                      const icon = (element.confirmation_code !== undefined) ? <VideoCameraOutlined/> : <ReadOutlined/>
+                      const path = (element.confirmation_code !== undefined) ? 'live' : 'aula'
+                      const noDesc = <span style={{color: "gray", fontStyle: "italic"}}>Sem descrição</span>
+
+                      return(
+                        <Card hoverable className="card" size="small" onClick={() => history.push(`/${path}/${element.id}`)}>
+                          <Meta title={element.name} avatar={icon} description={element.description !== null ? element.description : noDesc}/>
+
+                        </Card>
+                      )
+                    }
+                  })}
+                </>
+              )
+            }
+          }
+        })}
       </div>
     </Base>
   );

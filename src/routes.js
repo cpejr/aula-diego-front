@@ -143,7 +143,7 @@ const routes = () => {
             masterComponent={Curso}
           />
           <PrivateRoute
-            path="/curso/admin/:id"
+            path="/curso/gerenciar/:id"
             exact
             studentComponent={() => <Redirect to="/dashboard" />}
             adminComponent={CursoAdmin}

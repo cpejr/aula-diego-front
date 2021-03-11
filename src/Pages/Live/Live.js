@@ -1,26 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
-import Header from "../../Components/Header/Header";
+import api from "../../services/api";
 import TempoLive from "../../Components/TempoLive/TempoLive.js";
-import ConfirmacaoLive from "../../Components/ConfirmacaoLive/ConfirmacaoLive"
-import LiveFinal from '../../Components/LiveFinal/LiveFinal'
 import VideoFrame from '../../Components/VideoFrame/VideoFrame'
+import { useSession } from "../../Context/SessionContext";
 import "./Live.css";
 
-const Live = () => {
+export default function Live(props) {
 
-  let url = '2-XVG6Vg8_o'
-
+  const [live, setLive] = useState([])
+  const [url, setUrl] = useState("")
   const [toggleViewInfo, setToggleViewInfo] = useState(true)
   const [toggleViewVideo, setToggleViewVideo] = useState(false)
   const [toggleView3, setToggleView3] = useState(false)
 
+  const { session } = useSession();
+  const { id } = props.match.params;
 
   function handleToggle() {
     setToggleViewInfo(false)
     setToggleViewVideo(true)
   }
 
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    query: {
+      course_id: id,
+    }
+  };
+
+  useEffect(() => {
+    api
+      .get(`/live/${id}`, config)
+      .then((response) => {
+        setLive(response.data);
+        setUrl(response.data.link.match(/(?<=\?v=).+/g));
+      })
+      .catch((err) => {
+      });
+  }, []);
 
   return (
     <Base>
@@ -28,13 +48,13 @@ const Live = () => {
         <div className="paginaLive">
           <div className="blocoLive">
             <div className="tituloLive">
-              <p>Live Marketing Digital 20/10</p>
+              <p>{live.name}</p>
             </div>
             {toggleViewInfo && <div className="acessarLive">
               <button className="buttonAccessLive" onClick={handleToggle}>ACESSAR</button>
             </div>}
             {toggleViewVideo && <div className="videoFrame">
-              <VideoFrame url={'https://www.youtube.com/embed/' + String(url)} />
+              <VideoFrame url={'https://www.youtube.com/embed/' + url} />
             </div>}
           </div>
           {toggleViewVideo && <div className="certificateWrapper">
@@ -45,6 +65,4 @@ const Live = () => {
       </div>
     </Base>
   );
-};
-
-export default Live;
+}

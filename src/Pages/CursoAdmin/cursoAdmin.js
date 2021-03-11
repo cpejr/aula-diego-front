@@ -29,6 +29,20 @@ export default function CursoAdmin(props) {
 
   let requests = 0
 
+  const requestDone = (data) => {
+    requests += 1;
+
+    if (requests == 4)
+      setDone(true);
+  }
+
+  useEffect(() => {
+    if (done === true){
+      setTabs([lessons, lives, classes]);
+      setLoading(false);
+    }
+  }, [done])
+
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
@@ -187,20 +201,6 @@ export default function CursoAdmin(props) {
         message.error("Não foi possível carregar dados das aulas");
       });
   }, []);
-
-  useEffect(() => {
-    if (done === true){
-      setTabs([lessons, lives, classes]);
-      setLoading(false);
-    }
-  }, [done])
-
-  const requestDone = (data) => {
-    requests += 1;
-
-    if (requests == 4)
-      setDone(true)
-  }
 
   function handleSearch(value) {
     setSearch(value);

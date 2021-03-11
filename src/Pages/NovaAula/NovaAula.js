@@ -12,7 +12,7 @@ export default function NovaAula(props) {
   const [uploading, setUploading] = useState(false);
   const { session } = useSession();
   const course = new URLSearchParams(props.location.search)
-
+  console.log(props.location.search)
   const formLayout = {
     labelCol: {
       span: 4
@@ -48,10 +48,6 @@ export default function NovaAula(props) {
     setLesson({ ...lesson, [e.target.name]: e.target.value });
   }
 
-  function handleChangeFiles(e) {
-    setFiles({ ...files, date: e.files });
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -59,9 +55,11 @@ export default function NovaAula(props) {
     const data = {
       ...lesson,
       "course_id": course.get("course"),
-      "user_id": session.user.id
+      "user_id": session.user.id,
+      "files": files
     }
 
+    console.log(data)
     setUploading(true);
 
     const config = {

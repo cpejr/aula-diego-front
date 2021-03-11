@@ -89,7 +89,7 @@ export default function ListaOrganizacoes() {
             title="Tem certeza que deseja excluir este item?"
             onConfirm={() => handleDelete(id)}
           >
-            <DeleteIcon className="clickable" onClick={handleDelete} />
+            <DeleteIcon className="clickable"/>
           </Popconfirm>
         </>
       ),
