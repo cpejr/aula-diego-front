@@ -17,9 +17,9 @@ export default function Live(props) {
   const { session } = useSession();
   const { id } = props.match.params;
 
-  function handleToggle() {
-    setToggleViewInfo(false)
-    setToggleViewVideo(true)
+  function dateFormate(){	
+    var data = new Date(liveData && liveData.date);
+    return data.toLocaleDateString([], {dateStyle: 'short'}) + ' ' + data.toLocaleTimeString([], {timeStyle: 'short'});
   }
 
   const config = {
@@ -48,13 +48,14 @@ export default function Live(props) {
         <div className="paginaLive">
           <div className="blocoLive">
             <div className="tituloLive">
-              <p>{live.name}</p>
+              <p>{liveData && liveData.name}, {dateFormate()}</p>
             </div>
             {toggleViewInfo && <div className="acessarLive">
               <button className="buttonAccessLive" onClick={handleToggle}>ACESSAR</button>
             </div>}
             {toggleViewVideo && <div className="videoFrame">
               <VideoFrame url={'https://www.youtube.com/embed/' + url} />
+              <h5 className="liveDescription">{liveData && liveData.description}</h5>
             </div>}
           </div>
           {toggleViewVideo && <div className="certificateWrapper">

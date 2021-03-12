@@ -35,7 +35,7 @@ export default function Sidebar() {
     },
     {
       title: "Cursos",
-      path: "/curso",
+      path: "/curso/lista",
     },
     {
       title:"Nova Aula",
