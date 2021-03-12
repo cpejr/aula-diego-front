@@ -2,24 +2,32 @@ import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import TempoLive from "../../Components/TempoLive/TempoLive.js";
-import VideoFrame from '../../Components/VideoFrame/VideoFrame'
+import VideoFrame from "../../Components/VideoFrame/VideoFrame";
 import { useSession } from "../../Context/SessionContext";
 import "./Live.css";
 
 export default function Live(props) {
-
-  const [live, setLive] = useState([])
-  const [url, setUrl] = useState("")
-  const [toggleViewInfo, setToggleViewInfo] = useState(true)
-  const [toggleViewVideo, setToggleViewVideo] = useState(false)
-  const [toggleView3, setToggleView3] = useState(false)
+  const [live, setLive] = useState([]);
+  const [url, setUrl] = useState("");
+  const [toggleViewInfo, setToggleViewInfo] = useState(true);
+  const [toggleViewVideo, setToggleViewVideo] = useState(false);
+  const [toggleView3, setToggleView3] = useState(false);
 
   const { session } = useSession();
   const { id } = props.match.params;
 
-  function dateFormate(){	
-    var data = new Date(liveData && liveData.date);
-    return data.toLocaleDateString([], {dateStyle: 'short'}) + ' ' + data.toLocaleTimeString([], {timeStyle: 'short'});
+  function handleToggle() {
+    setToggleViewInfo(false);
+    setToggleViewVideo(true);
+  }
+
+  function dateFormate() {
+    var data = new Date(live.date);
+    return (
+      data.toLocaleDateString([], { dateStyle: "long" }) +
+      " às " +
+      data.toLocaleTimeString([], { timeStyle: "short" })
+    );
   }
 
   const config = {
@@ -28,7 +36,7 @@ export default function Live(props) {
     },
     query: {
       course_id: id,
-    }
+    },
   };
 
   useEffect(() => {
@@ -38,8 +46,7 @@ export default function Live(props) {
         setLive(response.data);
         setUrl(response.data.link.match(/(?<=\?v=).+/g));
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   }, []);
 
   return (
@@ -48,20 +55,30 @@ export default function Live(props) {
         <div className="paginaLive">
           <div className="blocoLive">
             <div className="tituloLive">
-              <p>{liveData && liveData.name}, {dateFormate()}</p>
+              <p>
+                {live.name}, {dateFormate()}
+              </p>
             </div>
-            {toggleViewInfo && <div className="acessarLive">
-              <button className="buttonAccessLive" onClick={handleToggle}>ACESSAR</button>
-            </div>}
-            {toggleViewVideo && <div className="videoFrame">
-              <VideoFrame url={'https://www.youtube.com/embed/' + url} />
-              <h5 className="liveDescription">{liveData && liveData.description}</h5>
-            </div>}
+            {toggleViewInfo && (
+              <div className="acessarLive">
+                <button className="buttonAccessLive" onClick={handleToggle}>
+                  ACESSAR
+                </button>
+              </div>
+            )}
+            {toggleViewVideo && (
+              <div className="videoFrame">
+                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
+                <h5 className="liveDescription">{live.description}</h5>
+              </div>
+            )}
           </div>
-          {toggleViewVideo && <div className="certificateWrapper">
-            <TempoLive />
-            <button className="buttonCertificateLive">Certificar Live</button>
-          </div>}
+          {toggleViewVideo && (
+            <div className="certificateWrapper">
+              <TempoLive />
+              <button className="buttonCertificateLive">Certificar Live</button>
+            </div>
+          )}
         </div>
       </div>
     </Base>
