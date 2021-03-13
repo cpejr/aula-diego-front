@@ -78,7 +78,7 @@ export default function NovaAula(props) {
     };
 
     api
-      .post("/lesson/create", data, config)
+      .post("/lesson_create", data, config)
       .then(response => {
         fileIds.push(response.data)
         
@@ -86,7 +86,7 @@ export default function NovaAula(props) {
           const formData = new FormData();
           formData.append(fileIds[i], files[i]);
 
-          api.post("lesson/upload", formData, configFiles);
+          api.post("lesson_upload", formData, configFiles);
         }
 
         setUploading(false);
