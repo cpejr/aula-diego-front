@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import TempoLive from "../../Components/TempoLive/TempoLive.js";
-import VideoFrame from '../../Components/VideoFrame/VideoFrame'
+import VideoFrame from "../../Components/VideoFrame/VideoFrame";
 import { useSession } from "../../Context/SessionContext";
 import "./Live.css";
+import { message } from "antd";
+import { Modal, Input } from "antd";
 
 export default function Live(props) {
-
-  const [live, setLive] = useState([])
-  const [url, setUrl] = useState("")
-  const [toggleViewInfo, setToggleViewInfo] = useState(true)
-  const [toggleViewVideo, setToggleViewVideo] = useState(false)
-  const [toggleView3, setToggleView3] = useState(false)
-
+  const codeRef = useRef();
+  const [live, setLive] = useState([]);
+  const [url, setUrl] = useState("");
+  const [confirmation_code, setConfirmation_code] = useState("");
+  const [toggleViewInfo, setToggleViewInfo] = useState(true);
+  const [toggleViewVideo, setToggleViewVideo] = useState(false);
+  const [toggleView3, setToggleView3] = useState(false);
   const { session } = useSession();
   const { id } = props.match.params;
 
   function handleToggle() {
-    setToggleViewInfo(false)
-    setToggleViewVideo(true)
+    setToggleViewInfo(false);
+    setToggleViewVideo(true);
   }
 
   const config = {
@@ -28,7 +30,7 @@ export default function Live(props) {
     },
     query: {
       course_id: id,
-    }
+    },
   };
 
   useEffect(() => {
@@ -38,9 +40,25 @@ export default function Live(props) {
         setLive(response.data);
         setUrl(response.data.link.match(/(?<=\?v=).+/g));
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   }, []);
+
+  function handleClick() {
+    if (!confirmation_code)
+      return alert("Código de confirmação não pode ser em branco");
+    api
+      .post(
+        "/presence/live",
+        {
+          confirmation_code,
+          user_id: session.user.id,
+          live_id: props.match.params.id,
+        },
+        config
+      )
+      .then(() => message.success("Presença registrada com sucesso"))
+      .catch(() => message.error("Não foi possível registrar presença"));
+  }
 
   return (
     <Base>
@@ -50,17 +68,35 @@ export default function Live(props) {
             <div className="tituloLive">
               <p>{live.name}</p>
             </div>
-            {toggleViewInfo && <div className="acessarLive">
-              <button className="buttonAccessLive" onClick={handleToggle}>ACESSAR</button>
-            </div>}
-            {toggleViewVideo && <div className="videoFrame">
-              <VideoFrame url={'https://www.youtube.com/embed/' + url} />
-            </div>}
+            {toggleViewInfo && (
+              <div className="acessarLive">
+                <button className="buttonAccessLive" onClick={handleToggle}>
+                  ACESSAR
+                </button>
+              </div>
+            )}
+            {toggleViewVideo && (
+              <div className="videoFrame">
+                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
+              </div>
+            )}
           </div>
-          {toggleViewVideo && <div className="certificateWrapper">
-            <TempoLive />
-            <button className="buttonCertificateLive">Certificar Live</button>
-          </div>}
+          {toggleViewVideo && (
+            <div className="certificateWrapper">
+              <TempoLive />
+              <Input
+                placeholder="Código de confirmação"
+                value={confirmation_code}
+                onChange={(e) => setConfirmation_code(e.target.value)}
+              />
+              <button
+                className="buttonCertificateLive"
+                onClick={() => handleClick(codeRef)}
+              >
+                Certificar Live
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </Base>
