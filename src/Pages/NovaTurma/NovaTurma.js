@@ -22,14 +22,14 @@ export default function NovaAula(props) {
     }
   };
 
-  useEffect(() => {
-    const configStudents = {
-      ...config,
-      params: {
-        "user.organization_id": session.user.organization_id
-      }
+  const configStudents = {
+    ...config,
+    params: {
+      "user.organization_id": session.user.organization_id
     }
-    
+  }
+
+  useEffect(() => {
     api.get("/user", configStudents)
       .then((users) => {
         let students = [];
@@ -110,7 +110,7 @@ export default function NovaAula(props) {
     };
 
     api
-      .post("/class/create", data, config)
+      .post("/class_create", data, config)
       .then(response => {
         message.success("Turma criada com sucesso!");
       })
