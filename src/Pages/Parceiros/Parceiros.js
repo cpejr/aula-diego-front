@@ -23,25 +23,59 @@ export default function ListaOrganizacoes() {
     }
   };
 
+  const configFile = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    responseType: 'blob',
+  };
+
   useEffect(() => {
     api.get("/partner", config)
-      .then((partners) => {
-        setPartners(partners.data);
-        setFiltered(partners.data);
-        setLoading(false);
+      .then(async response => {
+        getLogo(response.data)
+          .then(response => {
+            setPartners(response);
+            setLoading(false)
+          });
       })
-      .catch(err => {message.error("Não foi possível carregador dados da página")});
+      .catch(err => {
+        console.log(err)
+        message.error("Não foi possível carregador dados da página") 
+      });
   }, []);
+
+  const getLogo = async (list) => {
+    const result = [];
+
+    for (const partner of list) {
+      await api
+        .get(`/file_get/${partner.file_id}`, configFile)
+        .then(response => {
+          console.log(response.data)
+          const img = URL.createObjectURL(response.data);
+          result.push({
+            ...partner,
+            logo: img
+          })
+        })
+        .catch((err) => {
+          message.error("Não foi possível carregar dados dos arquivos");
+        });
+    }
+
+    return result;
+  }
 
   const columns = [
     {
       title: <h5>Logo</h5>,
-      dataIndex: "path",
-      render: (logo => (
-          <img 
-            className="clickable" 
-          />
-        )
+      dataIndex: "logo",
+      render: (logo) => (
+        <img 
+          src={logo}
+          style={{"maxWidth": "15%", "maxHeight": "15%"}}
+        />
       )
     },
     {
@@ -58,7 +92,7 @@ export default function ListaOrganizacoes() {
             title="Excluir item?"
             onConfirm={() => handleDelete(id)}
           >
-            <DeleteIcon className="clickable"/>
+            <DeleteIcon className="clickable" />
           </Popconfirm>
         </>
       ),
@@ -90,7 +124,7 @@ export default function ListaOrganizacoes() {
         setFiltered(deleted);
         setLoading(false);
       })
-      .catch(err => {message.error("Não foi possível exluir item!");console.log(err)});
+      .catch(err => { message.error("Não foi possível exluir item!"); console.log(err) });
   }
 
   function handleEdit() {
@@ -101,7 +135,7 @@ export default function ListaOrganizacoes() {
     <Base>
       <h1 className="page-title">Parceiros</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
+        <div style={{ display: "flex" }}>
           <Input
             className="search-input"
             placeholder="Pesquisar..."
@@ -109,15 +143,15 @@ export default function ListaOrganizacoes() {
             value={search}
           />
           <Tooltip title="Adicionar Turma">
-            <AddIcon style={{height:"30px", width:"30px"}} onClick={() => history.push("/parceiros/cadastro")} />
+            <AddIcon style={{ height: "30px", width: "30px" }} onClick={() => history.push("/parceiros/cadastro")} />
           </Tooltip>
         </div>
         <Table
           columns={columns}
-          dataSource={filtered}
+          dataSource={partners}
           loading={loading}
         />
-        </div>
+      </div>
     </Base>
   );
 }

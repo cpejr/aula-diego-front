@@ -104,7 +104,6 @@ export default function Aula(props) {
         fileDownload(response.data, `${name}.${extension}`);
       })
       .catch((err) => {
-        console.log(err)
         message.error("Não foi possível carregar dados dos arquivos");
       });
   }
