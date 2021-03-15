@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
-import { SnippetsOutlined, InboxOutlined } from '@ant-design/icons';
-import { Upload, message } from 'antd';
-import "./Aula.css";
+import { SnippetsOutlined, InboxOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Upload, message, Divider, Button } from 'antd';
 import VideoFrame from '../../Components/VideoFrame/VideoFrame';
 import FormEmail from '../../Components/FormEmail/FormEmail';
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
+import fileDownload from 'js-file-download'
+import "./Aula.css";
 
 const { Dragger } = Upload;
 
@@ -28,72 +29,134 @@ const props = {
 };
 
 export default function Aula(props) {
-  const { session } = useSession();
-  const [lesson, setLesson] = useState();
-  const [file, setFiles] = useState();
   const [course, setCourse] = useState();
+  const [lesson, setLesson] = useState();
+
+  const [videos, setVideos] = useState([]);
+  const [files, setFiles] = useState([]);
+  
   const { id } = props.match.params;
+  const { session } = useSession();
+
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
 
   const configLesson = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
+    params: {
+      lesson_id: id
+    }
   };
 
-  const configCourse = {
+  const configFile = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-
+    responseType: 'blob',
   };
 
   useEffect(() => {
     api
-      .get(`/lesson/${id}`, configLesson)
+      .get(`/lesson/${id}`, config)
       .then((response) => {
         setLesson(response.data);
+        api
+          .get(`/course/${response.data.course_id}`, config)
+          .then((response) => {
+              setCourse(response.data);
+            })
+          .catch(() => {
+            message.error("Não foi possível carregar dados do curso");
+          });
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da aula");
       });
 
-    /*api
-      .get(`/file`, config)
+    api
+      .get("/lesson_video", configLesson)
+      .then((response) => {
+        setVideos(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados da aula");
+      });
+
+    api
+      .get("/lesson_file", configLesson)
       .then((response) => {
         setFiles(response.data);
       })
       .catch(() => {
-        message.error("Não foi possível carregar dados dos arqivos");
-      });*/
-
-    api
-      .get(`/course`, configCourse)
-      .then(
-        (response) => {
-          if (lesson.course_id === response.data.id) setCourse(response.data);
-        })
-      .catch(() => {
-        message.error("Não foi possível carregar dados do curso");
+        message.error("Não foi possível carregar dados da aula");
       });
   }, []);
+
+  const downloadFile = (id, name, extension) => {
+    api
+      .get(`/file_get/${id}`, configFile)
+      .then(response => {
+        fileDownload(response.data, `${name}.${extension}`);
+      })
+      .catch((err) => {
+        console.log(err)
+        message.error("Não foi possível carregar dados dos arquivos");
+      });
+  }
+
   return (
     <Base>
-      <div className="Aula">
-        <div className="description">
-
-          <h1 className="TitleAulas"><SnippetsOutlined />{course && course.id}</h1>
-
-          <VideoAula
-            title={lesson && lesson.name}
-            video_url="https://www.youtube.com/embed/sj9J2ecsSpo"
-            description={lesson && lesson.description}
-          />
-        </div>
+      <div className="pageBody">
+          <div className="title">
+            <SnippetsOutlined />
+            <span>{lesson && lesson.name}</span>
+          </div>
+          <div className="description">
+            {lesson && lesson.description}
+          </div>
+          <Divider />
+          <div className="text">
+            {lesson && lesson.content}
+          </div>
+          {videos.map(video => {
+            return (
+              <>
+                <Divider />
+                <div className="videoWrapper">
+                  <VideoFrame url={video.video_url} />
+                </div>
+              </>
+            )
+          })}
+          {files && <div style={{"margin": "3%"}}>
+            <Divider />
+            <span className="downloadLabel">Download:</span>            
+          </div>}
+          {files.map(file => {
+            return (
+              <Button
+                size="large"
+                type="dashed"
+                style={{"margin-bottom": "1%"}}
+                onClick={() => downloadFile(file.id, file.name, file.type)}
+                block
+              >
+                <DownloadOutlined />{file.name}
+              </Button> 
+            )
+          })}
+          <Divider style={{"margin-bottom": "3%"}}/>
+          <FormEmail />
       </div>
     </Base>
   );
 }
-
+/* 
 function VideoAula({ title, video_url, description }) {
   return (
     <>
@@ -107,7 +170,7 @@ function VideoAula({ title, video_url, description }) {
       <FormEmail />
     </>
   );
-}
+} */
 
 function Arquivo({ title, arquivo_url, description }) {
   return (

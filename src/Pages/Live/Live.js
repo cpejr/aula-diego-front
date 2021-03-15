@@ -8,7 +8,6 @@ import "./Live.css";
 
 export default function Live(props) {
   const [live, setLive] = useState([]);
-  const [url, setUrl] = useState("");
   const [toggleViewInfo, setToggleViewInfo] = useState(true);
   const [toggleViewVideo, setToggleViewVideo] = useState(false);
   const [toggleView3, setToggleView3] = useState(false);
@@ -33,10 +32,7 @@ export default function Live(props) {
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
-    },
-    query: {
-      course_id: id,
-    },
+    }
   };
 
   useEffect(() => {
@@ -44,7 +40,6 @@ export default function Live(props) {
       .get(`/live/${id}`, config)
       .then((response) => {
         setLive(response.data);
-        setUrl(response.data.link.match(/(?<=\?v=).+/g));
       })
       .catch((err) => {});
   }, []);
@@ -68,7 +63,7 @@ export default function Live(props) {
             )}
             {toggleViewVideo && (
               <div className="videoFrame">
-                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
+                <VideoFrame url={live.link} />
                 <h5 className="liveDescription">{live.description}</h5>
               </div>
             )}

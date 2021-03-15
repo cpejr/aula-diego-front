@@ -32,7 +32,7 @@ export default function Curso(props) {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-    query: {
+    params: {
       course_id: id,
     }
   };
