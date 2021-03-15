@@ -30,6 +30,7 @@ import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
+import Parceiros from "./Pages/Parceiros/Parceiros";
 
 const routes = () => {
   return (
@@ -205,7 +206,21 @@ const routes = () => {
             adminComponent={usuariosPendentes}
             masterComponent={usuariosPendentes}
           />
-          <Route
+          <PrivateRoute
+            path="/parceiros"
+            exact
+            studentComponent={Parceiros}
+            adminComponent={Parceiros}
+            masterComponent={Parceiros}
+          />
+          <PrivateRoute
+            path="/sobre"
+            exact
+            studentComponent={Sobre}
+            adminComponent={Sobre}
+            masterComponent={Sobre}
+          />
+          <PrivateRoute
             path="/"
             component={() => <h1> Erro 404: Página não encontrada </h1>}
           />{" "}
