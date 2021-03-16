@@ -162,12 +162,13 @@ export default function Infolive() {
     },
     {
       title: "Ações",
-      render: () => (
+      dataIndex: "id",
+      render: (id) => (
         <>
           <InfoIcon
             className="clickable"
             onClick={() => {
-              history.push("/live/presenca/id");
+              history.push(`/live/presenca/${id}`);
             }}
           />
         </>
