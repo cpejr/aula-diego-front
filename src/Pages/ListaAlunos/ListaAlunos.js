@@ -159,7 +159,7 @@ export default function ListaAlunos() {
     },
     {
       title: "Ações",
-      dataIndex: "id",
+      dataIndex: ("id"),
       className: session.user.type === "master" ? "" : "hide",
       render: (id) => {
         return session.user.type === "master" ? (
@@ -261,17 +261,17 @@ export default function ListaAlunos() {
     setSearch(value);
 
     // retorna os dados de acordo com o que estiver na barra de pesquisa
-    setFilteredData(
-      data.filter((student) => {
+     setFilteredData(
+       data.filter((student) => {
         if (value === "") return student;
-        return (
-          student.name.toLowerCase().includes(value.toLowerCase()) ||
-          student.registration.toString().includes(value.toLowerCase()) ||
-          student.organization_name.toString().includes(value.toLowerCase()) ||
-          student.occupation_name.toString().includes(value.toLowerCase())
+          return (
+              student.name.toLowerCase().includes(value.toLowerCase()) ||
+              student.registration.toString().includes(value.toLowerCase())||
+              student.organization_name.toLowerCase().includes(value.toLowerCase()) ||
+              student.occupation_name.toLowerCase().includes(value.toLowerCase())  
         );
-      })
-    );
+       })
+     );
   }
   return (
     <Base>
@@ -283,7 +283,10 @@ export default function ListaAlunos() {
           onChange={(e) => handleChange(e.target.value)}
           value={search}
         />
-        <Table columns={columns} dataSource={filteredData} />
+        <Table 
+        columns={columns} 
+        dataSource={filteredData}
+         />
       </div>
       <Modal
         title="Editar usuário"
