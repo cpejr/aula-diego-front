@@ -1,28 +1,117 @@
 import React, { useState, useEffect } from "react";
+import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
+import api from "../../services/api";
 import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
-import { Table, Tag, Input, Tooltip } from "antd";
+import { Table, Tag, Input, Tooltip, message } from "antd";
 import AddIcon from "@material-ui/icons/Add";
-import DATA from "./data";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(DATA);
+  const [loading, setLoading] = useState(true);
+  const [lives, setLives] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+  const [audience, setAudience] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const { session } = useSession();
   const history = useHistory();
+
+  function dateFormate(date) {
+    var data = new Date(date);
+    return data.toLocaleDateString([], { dateStyle: "short" });
+  }
+
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  useEffect(() => {
+    api
+      .get(`/live`, config)
+      .then((lives) => {
+        setLives(lives.data);
+        setFilteredData(lives.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados das lives");
+      });
+
+    api
+      .get(`/course`, config)
+      .then((courses) => {
+        setCourses(courses.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados dos cursos");
+      });
+
+    api
+      .get(`/organization`, config)
+      .then((organizations) => {
+        setOrganizations(organizations.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados das organizações");
+      });
+  }, []);
+
+  function espectadores(id) {
+    var count = 0;
+
+    const configPresence = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      params: {
+        live_id: id,
+        confirmation: true,
+      },
+    };
+
+    api
+      .get(`/presence/live/${id}`, configPresence)
+      .then((count) => {
+        setAudience(count);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados da presença das lives");
+      });
+    return count;
+  }
 
   const columns = [
     {
-      title: "Ocupação",
-      dataIndex: "occupation",
+      title: "Organização",
       align: "left",
-      render: (occupation) => {
-        return (
-          <p className="clickable" onClick={() => handleChange(occupation)}>
-            {occupation}
-          </p>
-        );
+      render: () => {
+        return organizations
+          ? organizations.map((organization) => {
+              let color = organization.name.length > 3 ? "geekblue" : "green";
+              color = organization.name.length > 4 ? "coral" : color;
+              color = organization.name.length > 5 ? "volcano" : color;
+              color = organization.name.length > 6 ? "turquoise" : color;
+              color = organization.name.length > 7 ? "yellowgreen" : color;
+              color = organization.name.length > 8 ? "salmon" : color;
+              return organization.id === session.user.organization_id ? (
+                <Tag
+                  key={organization.name}
+                  className="clickable"
+                  color={color}
+                  onClick={() => handleChange(organization.name)}
+                >
+                  {organization.name}
+                </Tag>
+              ) : null;
+            })
+          : null;
       },
     },
     {
@@ -30,50 +119,61 @@ export default function Infolive() {
       dataIndex: "date",
       align: "left",
       render: (date) => {
-        return (
-          <p className="clickable" onClick={() => handleChange(date)}>
-            {date}
-          </p>
-        );
+        return <p>{dateFormate(date)}</p>;
       },
     },
     {
       title: "Nº espectadores",
-      dataIndex: "qntd",
+      dataIndex: "id",
       align: "left",
       className: "column-numEspec",
+      render: (id) => {
+        {
+          return espectadores(id);
+        }
+      },
     },
     {
       title: "Curso",
-      className: "column-organization",
-      dataIndex: "course",
+      className: "column-course",
+      dataIndex: "course_id",
       align: "left",
       key: "tags",
-      render: (tag) => {
-        let color = tag.length > 5 ? "geekblue" : "green";
-        color = tag.length > 7 ? "coral" : color;
-        color = tag.length > 8 ? "volcano" : color;
-        color = tag.length > 9 ? "turquoise" : color;
-        color = tag.length > 10 ? "yellowgreen" : color;
-        color = tag.length > 11 ? "salmon" : color;
-        return (
-          <Tag
-            color={color}
-            key={tag}
-            className="clickable"
-            onClick={() => handleChange(tag)}
-          >
-            {" "}
-            {tag}{" "}
-          </Tag>
-        );
+      render: (course) => {
+        return courses
+          ? courses.map((courses) => {
+              let color = courses.name.length > 5 ? "geekblue" : "green";
+              color = courses.name.length > 7 ? "coral" : color;
+              color = courses.name.length > 9 ? "volcano" : color;
+              color = courses.name.length > 12 ? "turquoise" : color;
+              color = courses.name.length > 15 ? "yellowgreen" : color;
+              color = courses.name.length > 17 ? "salmon" : color;
+
+              return courses.id === course ? (
+                <Tag
+                  color={color}
+                  key={courses.name}
+                  className="clickable"
+                  onClick={() => handleChange(courses.name)}
+                >
+                  {courses.name}
+                </Tag>
+              ) : null;
+            })
+          : null;
       },
     },
     {
       title: "Ações",
-      render: () => (
+      dataIndex: "id",
+      render: (id) => (
         <>
-          <InfoIcon className="clickable" onClick={() => {history.push("/live/presenca/id")}} />
+          <InfoIcon
+            className="clickable"
+            onClick={() => {
+              history.push(`/live/presenca/${id}`);
+            }}
+          />
         </>
       ),
     },
@@ -88,10 +188,10 @@ export default function Infolive() {
 
     // retorna os dados de acordo com o que estiver na barra de pesquisa
     setFilteredData(
-      DATA.filter((live) => {
+      lives.filter((live) => {
         if (value === "") return live;
         return (
-          live.occupation.toLowerCase().includes(value.toLowerCase()) ||
+          live.organization.toLowerCase().includes(value.toLowerCase()) ||
           live.date.toLowerCase().includes(value.toLowerCase()) ||
           live.course.toLowerCase().includes(value.toLowerCase())
         );
@@ -121,6 +221,7 @@ export default function Infolive() {
           // title={() => `Lista de Ocupações da empresa ${organization}`}
           columns={columns}
           dataSource={filteredData}
+          loading={loading}
         />
       </div>
     </Base>

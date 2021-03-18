@@ -16,6 +16,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  position: sticky;
+  top: 0;
+  z-index: 99;
 }
 
 .headerContainer img {
@@ -50,7 +53,6 @@
   cursor: pointer;
   color: white;
 }
-
 @media (max-width: 780px) {
   .Sidebar {
     display: none;

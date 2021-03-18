@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Input, Button, message, Table } from "antd"
-import { UploadOutlined } from '@ant-design/icons';
-import { useSession } from "../../Context/SessionContext"
+import { Form, Input, Button, message, Table } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import "./NovaTurma.css";
 
 export default function NovaAula(props) {
@@ -12,74 +13,78 @@ export default function NovaAula(props) {
   const [search, setSearch] = useState("");
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const { session } = useSession();
-  const course = new URLSearchParams(props.location.search)
+  const history = useHistory();
+  const course = new URLSearchParams(props.location.search);
 
   const config = {
     headers: {
-      authorization: "BEARER " + session.accessToken
-    }
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  const configStudents = {
+    ...config,
+    params: {
+      "user.organization_id": session.user.organization_id,
+    },
   };
 
   useEffect(() => {
-    const configStudents = {
-      ...config,
-      params: {
-        "user.organization_id": session.user.organization_id
-      }
-    }
-    
-    api.get("/user", configStudents)
+    api
+      .get("/user", configStudents)
       .then((users) => {
         let students = [];
 
-        users.data.map(user => {
-          students.push({...user, "key": user.id});
-        })
+        users.data.map((user) => {
+          students.push({ ...user, key: user.id });
+        });
 
         setStudents(students);
         setFilteredStudents(students);
         setLoading(false);
       })
-      .catch(err => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const formLayout = {
     labelCol: {
-      span: 4
+      span: 4,
     },
     wrapperCol: {
-      span: 16
+      span: 16,
     },
   };
 
   const formTailLayout = {
     wrapperCol: {
-      offset: 4
-    }
+      offset: 4,
+    },
   };
 
   const studentsTable = [
     {
-      title: 'Nome',
-      dataIndex: 'name',
+      title: "Nome",
+      dataIndex: "name",
     },
     {
-      title: 'Matrícula',
-      dataIndex: 'registration',
+      title: "Matrícula",
+      dataIndex: "registration",
     },
     {
-      title: 'Ocupação',
-      dataIndex: 'occupation_name',
+      title: "Ocupação",
+      dataIndex: "occupation_name",
     },
   ];
 
   const selectedRows = {
     onChange: (selected) => {
-      setSelectedStudents(selected)
-    }
-  }
+      setSelectedStudents(selected);
+    },
+  };
 
   function handleChange(e) {
     setClass({ ...cl4ss, [e.target.name]: e.target.value });
@@ -104,15 +109,16 @@ export default function NovaAula(props) {
 
     const data = {
       ...cl4ss,
-      "students": selectedStudents,
-      "course_id": course.get("course"),
-      "organization_id": session.user.organization_id
+      students: selectedStudents,
+      course_id: course.get("course"),
+      organization_id: session.user.organization_id,
     };
 
     api
-      .post("/class/create", data, config)
-      .then(response => {
+      .post("/class_create", data, config)
+      .then((response) => {
         message.success("Turma criada com sucesso!");
+        history.push("/turma/lista");
       })
       .catch((err) => {
         console.log(err);
@@ -140,20 +146,38 @@ export default function NovaAula(props) {
               <Form.Item
                 name="name"
                 label={<label style={{ fontSize: "large" }}> Nome </label>}
-                rules={[{ required: true, message: 'Por favor insira o nome da turma!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira o nome da turma!",
+                  },
+                ]}
               >
-                <Input placeholder="Nome da turma" name="name" onChange={handleChange} />
+                <Input
+                  placeholder="Nome da turma"
+                  name="name"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 name="description"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
               >
-                <Input placeholder="Descreva o detalhes da turma" name="description" onChange={handleChange} />
+                <Input
+                  placeholder="Descreva o detalhes da turma"
+                  name="description"
+                  onChange={handleChange}
+                />
               </Form.Item>
-              <Form.Item 
-                name="students" 
+              <Form.Item
+                name="students"
                 label={<label style={{ fontSize: "large" }}> Alunos </label>}
-                rules={[{ required: true, message: 'Por favor selecione pelo menos um aluno!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor selecione pelo menos um aluno!",
+                  },
+                ]}
               >
                 <Input
                   className="search-students"
@@ -161,9 +185,9 @@ export default function NovaAula(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Table 
-                  rowSelection={selectedRows} 
-                  columns={studentsTable} 
+                <Table
+                  rowSelection={selectedRows}
+                  columns={studentsTable}
                   dataSource={filteredStudents}
                   loading={loading}
                 />

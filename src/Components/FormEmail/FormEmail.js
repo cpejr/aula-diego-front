@@ -7,6 +7,23 @@ import './FormEmail.css';
 export default function FormEmail() {
     const [formValues, setFormValues] = useState({ email: "", subject: "", text:"" });
     const { session } = useSession();
+
+    /*const configEmail = {
+        headers: {
+            reply
+        },
+    };  
+    
+      useEffect(() => {
+        api
+          .get(`/sendemail`, configEmail)
+          .then((response) => {
+            setLesson(response.data);
+          })
+          .catch(() => {
+            message.error("Não foi possível carregar dados da aula");
+          });
+      }, []);*/
     
     function validateForm() {
         const inputs = document.querySelectorAll("input");
@@ -89,9 +106,11 @@ export default function FormEmail() {
                         spellCheck="false"
                         required
                     />
-                    <button className="btnEnviar" onClick={handleSubmit}>
-                        Enviar
-                    </button>
+                    <div style={{textAlign: "right"}}>
+                        <button className="btnEnviar" onClick={handleSubmit}>
+                            Enviar
+                        </button>
+                    </div>
             </div>
         </div>
     )

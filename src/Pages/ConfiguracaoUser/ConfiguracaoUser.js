@@ -14,11 +14,10 @@ import { Formik, Field, Form } from "formik";
 import { UTCToLocal } from "../../utils/convertDate";
 import { message } from "antd";
 
-
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState([]);
-  const [organizations, setOrganizations] = useState([]);
-  const [occupations, setOccupations] = useState([]);
+  const [organization, setOrganization] = useState([]);
+  const [occupation, setOccupation] = useState([]);
   const { session } = useSession();
   const [editInputs, setEditInputs] = useState([]);
   const [open, setOpen] = useState(false);
@@ -36,9 +35,7 @@ export default function ConfiguracaoAluno(props) {
   };
 
   useEffect(() => {
-    api
-      .get(`/user/${session.user.id}`, config)
-      .then((response) => {
+    api.get(`/user/${session.user.id}`, config).then((response) => {
       const birthdate = new Date(response.data.birthdate).toLocaleDateString(
         "pt-BR"
       );
@@ -53,28 +50,26 @@ export default function ConfiguracaoAluno(props) {
         birthdate: birthdate,
         phone: formattedPhone,
       });
-    })
+    });
 
     api
-      .get(`/organization`, config)
+      .get(`/organization/${session.user.organization_id}`, config)
       .then((response) => {
-        setOrganizations(response.data);
+        setOrganization(response.data);
       })
       .catch(() => {
-        message.error("Não foi possível carregar dados das organizações");
+        message.error("Não foi possível carregar dados da organização");
       });
 
     api
-      .get(`/occupation`, config)
+      .get(`/occupation/${session.user.occupation_id}`, config)
       .then((response) => {
-        setOccupations(response.data);
+        setOccupation(response.data);
       })
       .catch(() => {
-        message.error("Não foi possível carregar dados das ocupações");
+        message.error("Não foi possível carregar dados da ocupação");
       });
-  }, 
-  []);
-  
+  }, []);
 
   function handleChange(e) {
     setEditInputs({ ...editInputs, [e.target.name]: e.target.value });
@@ -254,13 +249,7 @@ export default function ConfiguracaoAluno(props) {
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Empresa:</p>
-                  {organizations
-                    ? organizations.map((organization) => {
-                      return (
-                        <p className="configAlunoOutput">{organization.id === dataAluno.organization_id ? organization.name : null}</p>
-                        );
-                    })
-                  : null}
+                  <p className="configAlunoOutput">{organization.name}</p>
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Data de Nascimento:</p>
@@ -276,13 +265,7 @@ export default function ConfiguracaoAluno(props) {
               <div className="Lista1">
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Ocupação:</p>
-                  {occupations
-                    ? occupations.map((occupation) => {
-                      return (
-                        <p className="configAlunoOutput">{occupation.id === dataAluno.occupation_id ? occupation.name : null}</p>
-                        );
-                    })
-                  : null}
+                  <p className="configAlunoOutput">{occupation.name}</p>
                 </div>
                 <div className="linhasConfigAluno">
                   <p className="configAlunoInput">Telefone:</p>
