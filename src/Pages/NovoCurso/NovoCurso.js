@@ -3,83 +3,119 @@ import "./NovoCurso.css";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { Input, Form, message, Select } from 'antd';
+import { useHistory } from "react-router-dom";
+import { Input, Form, message, Select } from "antd";
 
 const { TextArea } = Input;
 
-const layout = {
-    labelCol: { span: 2 },
+const formLayout = {
+  labelCol: {
+    span: 4,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+
+const formTailLayout = {
+  wrapperCol: {
+    offset: 4,
+  },
 };
 
 export default function NovoCurso() {
-    const [formData, setformData] = useState([]);
-    const { session } = useSession();
+  const [formData, setformData] = useState([]);
+  const history = useHistory();
+  const { session } = useSession();
 
-    function handleChange(e) {
-      setformData({
-        ...formData,
-        [e.target.name]: e.target.value,
+  function handleChange(e) {
+    setformData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function handleSubmit() {
+    setformData({
+      ...formData,
+      organization_id: session.user.organization_id,
+    });
+
+    console.log(formData);
+
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
+
+    api
+      .post(`/course`, formData, config)
+      .then(() => {
+        message.success("Curso criado com sucesso!");
+        history.push("/curso/lista");
+      })
+      .catch(() => {
+        message.error(`Não foi possível cadastrar o curso.`);
       });
-    }
-    
-    function handleSubmit() {
-      setformData({
-        ...formData,
-        organization_id: session.user.organization_id,
-      });
+  }
 
-      console.log(formData);
-
-      const config = {
-        headers: {
-          authorization: "BEARER " + session.accessToken
-        }
-      };
-      
-      api
-        .post(`/course`, formData, config)
-        .then(() => {
-          message.success("Curso criado com sucesso!");
-        })
-        .catch(() => {
-          message.error(`Não foi possível cadastrar o curso.`);
-        });
-    }
-
-    return (
-        <Base>
-        <div className="Curso">
-            <div className="formContainer">
-                <Form {...layout} className="formCurso" onFinish={handleSubmit}>
-                <h1 className='TitleNovoCurso' >Cadastrar novo Curso</h1>
-                    <Form.Item name="nome" label="Nome">
-                        <Input 
-                          placeholder="Nome do Curso" 
-                          size="large" 
-                          name="name"
-                          value={formData["name"]} 
-                          onChange={handleChange}
-                        />
-                    </Form.Item>
-                    <Form.Item name="descricao" label="Descrição:">
-                        <TextArea
-                            onChange={handleChange}
-                            size="large"
-                            placeholder="Descrição sobre o conteúdo do curso"
-                            name="description"
-                            autoSize={{ minRows: 2, maxRows: 6 }}
-                            value={formData["description"]}
-                            onChange={handleChange}
-                        />
-                    </Form.Item>
-                    <Form.Item>
-                        <button className="btnCurso" type="submit" onClick={handleSubmit}>
-                            Cadastrar
-                        </button>
-                    </Form.Item>
-                </Form>
-            </div>
+  return (
+    <Base>
+      <div className="pageRoot">
+        <div className="pageBody">
+          <div className="formWrapper">
+            <Form
+              {...formLayout}
+              name="newOccpation"
+              className="occupationForm"
+              initialValues={{ remember: true }}
+              onFinish={handleSubmit}
+              size={"large"}
+              scrollToFirstError
+            >
+              <Form.Item {...formTailLayout}>
+                <h1>Novo Curso</h1>
+              </Form.Item>
+              <Form.Item
+                name="name"
+                label={<label style={{ fontSize: "large" }}> Nome </label>}
+              >
+                <Input
+                  placeholder="Nome do Curso"
+                  size="large"
+                  name="name"
+                  value={formData["name"]}
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+              >
+                <TextArea
+                  onChange={handleChange}
+                  size="large"
+                  placeholder="Descrição sobre o conteúdo do curso"
+                  name="description"
+                  autoSize={{ minRows: 2, maxRows: 6 }}
+                  value={formData["description"]}
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item {...formTailLayout} className="mt20">
+                <button
+                  className="btnCurso"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Cadastrar
+                </button>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
-        </Base>
-    );
+      </div>
+    </Base>
+  );
 }

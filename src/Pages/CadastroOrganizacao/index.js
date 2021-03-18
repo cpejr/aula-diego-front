@@ -3,10 +3,12 @@ import { Input, Form, message } from "antd";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import "./CadastroOrganizacao.css";
 
 export default function CadastroOrganizacao() {
   const [formData, setformData] = useState({});
+  const history = useHistory();
   const { session } = useSession();
 
   function handleChange(e) {
@@ -19,8 +21,8 @@ export default function CadastroOrganizacao() {
   function handleSubmit() {
     const config = {
       headers: {
-        authorization: "BEARER " + session.accessToken
-        }
+        authorization: "BEARER " + session.accessToken,
+      },
     };
 
     let data = formData;
@@ -29,12 +31,12 @@ export default function CadastroOrganizacao() {
       .post(`/organization`, data, config)
       .then(() => {
         message.success("Organização criada com sucesso!");
+        history.push("/organizacao/lista");
       })
       .catch(() => {
         message.error(`Não foi possível cadastrar organização.`);
       });
   }
-  
 
   return (
     <Base>
@@ -71,7 +73,11 @@ export default function CadastroOrganizacao() {
           </Form.Item>
 
           <Form.Item className="mt20">
-            <button className="register-organization-btn" type="submit" onClick={handleSubmit}>
+            <button
+              className="register-organization-btn"
+              type="submit"
+              onClick={handleSubmit}
+            >
               Cadastrar
             </button>
           </Form.Item>

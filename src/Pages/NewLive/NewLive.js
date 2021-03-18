@@ -3,31 +3,32 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, DatePicker, Input, Button, Message, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import "./NewLive.css";
 
 const generateCode = () => {
-  let code = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+  let code = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
   for (let i = 0; i < 6; i++)
     code += characters[Math.floor(Math.random() * characters.length)];
 
   return code;
-}
+};
 
 const formItemLayout = {
   labelCol: {
-    span: 4
+    span: 4,
   },
   wrapperCol: {
-    span: 16
+    span: 16,
   },
 };
 
 const tailFormItemLayout = {
   wrapperCol: {
-    offset: 4
-  }
+    offset: 4,
+  },
 };
 
 export default function NewLive(props) {
@@ -35,7 +36,8 @@ export default function NewLive(props) {
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const [confirmation, setConfirmation] = useState(generateCode());
-  const course = new URLSearchParams(props.location.search)
+  const course = new URLSearchParams(props.location.search);
+  const history = useHistory();
 
   function handleChange(e) {
     setLive({ ...live, [e.target.name]: e.target.value });
@@ -50,15 +52,15 @@ export default function NewLive(props) {
     setLoading(true);
 
     const data = {
-      ...live, 
-      "confirmation_code": confirmation,
-      "course_id": course.get("course")
+      ...live,
+      confirmation_code: confirmation,
+      course_id: course.get("course"),
     };
 
     const config = {
       headers: {
-        authorization: "BEARER " + session.accessToken
-      }
+        authorization: "BEARER " + session.accessToken,
+      },
     };
 
     api
@@ -66,11 +68,12 @@ export default function NewLive(props) {
       .then(() => {
         setLoading(false);
         message.success("Live criada com sucesso!");
+        history.push("/live/info");
       })
       .catch((err) => {
         setLoading(false);
         message.error("Não foi possiível criar a live!");
-        console.log(err)
+        console.log(err);
       });
   }
 
@@ -87,36 +90,69 @@ export default function NewLive(props) {
               onFinish={handleSubmit}
               size={"large"}
               scrollToFirstError
-            > 
+            >
               <Form.Item {...tailFormItemLayout}>
                 <h1>Nova Live</h1>
               </Form.Item>
               <Form.Item
                 name="name"
                 label={<label style={{ fontSize: "large" }}> Título </label>}
-                rules={[{ required: true, message: 'Por favor insira o título da live!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira o título da live!",
+                  },
+                ]}
               >
-                <Input placeholder="Título da live" name="name" onChange={handleChange}/>
+                <Input
+                  placeholder="Título da live"
+                  name="name"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 name="description"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
               >
-                <Input placeholder="Descreva o temas que serão abordados na live" name="description" onChange={handleChange}/>
+                <Input
+                  placeholder="Descreva o temas que serão abordados na live"
+                  name="description"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 name="date"
                 label={<label style={{ fontSize: "large" }}> Data </label>}
-                rules={[{ required: true, message: 'Por favor insira a data da live!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira a data da live!",
+                  },
+                ]}
               >
-                <DatePicker placeholder="Selecione uma data" showTime format="DD-MM-YYYY HH:mm" name="date" onChange={handleChangeDate}/>
+                <DatePicker
+                  placeholder="Selecione uma data"
+                  showTime
+                  format="DD-MM-YYYY HH:mm"
+                  name="date"
+                  onChange={handleChangeDate}
+                />
               </Form.Item>
               <Form.Item
                 name="link"
                 label={<label style={{ fontSize: "large" }}> Link </label>}
-                rules={[{ required: true, message: 'Por favor insira o link da live!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira o link da live!",
+                  },
+                ]}
               >
-                <Input placeholder="Insira o URL da página da live" name="link" onChange={handleChange}/>
+                <Input
+                  placeholder="Insira o URL da página da live"
+                  name="link"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 label={<label style={{ fontSize: "large" }}> Código </label>}
@@ -124,10 +160,10 @@ export default function NewLive(props) {
                 <span className="confirmationCode">{confirmation}</span>
               </Form.Item>
               <Form.Item {...tailFormItemLayout}>
-                <Button 
-                  type="primary" 
+                <Button
+                  type="primary"
                   onClick={handleSubmit}
-                  style={{ fontSize: "large"}}
+                  style={{ fontSize: "large" }}
                   loading={loading}
                 >
                   Criar Live
