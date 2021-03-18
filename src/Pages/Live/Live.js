@@ -86,8 +86,7 @@ export default function Live(props) {
             )}
             {toggleViewVideo && (
               <div className="videoFrame">
-                <VideoFrame url={live.link} />
-                <h5 className="liveDescription">{live.description}</h5>
+                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
               </div>
             )}
           </div>
