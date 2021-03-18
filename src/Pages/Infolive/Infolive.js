@@ -13,6 +13,7 @@ export default function Infolive() {
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
   const [organizations, setOrganizations] = useState([]);
+  const [audience, setAudience] = useState([]);
   const [courses, setCourses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const { session } = useSession();
@@ -76,9 +77,9 @@ export default function Infolive() {
     };
 
     api
-      .get(`/presence/live`, configPresence)
-      .then(() => {
-        count++;
+      .get(`/presence/live/${id}`, configPresence)
+      .then((count) => {
+        setAudience(count);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da presença das lives");
@@ -127,7 +128,9 @@ export default function Infolive() {
       align: "left",
       className: "column-numEspec",
       render: (id) => {
-        return espectadores(id);
+        {
+          return espectadores(id);
+        }
       },
     },
     {

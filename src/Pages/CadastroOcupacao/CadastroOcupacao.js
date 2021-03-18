@@ -1,30 +1,32 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Input, Button, message } from "antd"
-import { UploadOutlined } from '@ant-design/icons';
-import { useSession } from "../../Context/SessionContext"
+import { Form, Input, Button, message } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import "./CadastroOcupacao.css";
 
 export default function NovaAula(props) {
   const [occupation, setOccupation] = useState({});
   const [uploading, setUploading] = useState(false);
+  const history = useHistory();
   const { session } = useSession();
-  const organization = new URLSearchParams(props.location.search)
+  const organization = new URLSearchParams(props.location.search);
 
   const formLayout = {
     labelCol: {
-      span: 4
+      span: 4,
     },
     wrapperCol: {
-      span: 16
+      span: 16,
     },
   };
 
   const formTailLayout = {
     wrapperCol: {
-      offset: 4
-    }
+      offset: 4,
+    },
   };
 
   function handleChange(e) {
@@ -35,28 +37,29 @@ export default function NovaAula(props) {
     e.preventDefault();
     setUploading(true);
 
-    console.log(occupation)
+    console.log(occupation);
     console.log(organization.get("organization"));
 
     const data = {
       ...occupation,
-      "organization_id": organization.get("organization")
-    }
+      organization_id: organization.get("organization"),
+    };
 
     const config = {
       headers: {
-        authorization: "BEARER " + session.accessToken
-      }
+        authorization: "BEARER " + session.accessToken,
+      },
     };
 
     api
       .post("/occupation", data, config)
-      .then(response => {
+      .then((response) => {
         setUploading(false);
-        message.success("Ocupação criada com sucesso!")
+        message.success("Ocupação criada com sucesso!");
+        history.push("/ocupacao/lista");
       })
       .catch((err) => {
-        message.error("Não foi possível criar a ocupação!")
+        message.error("Não foi possível criar a ocupação!");
         setUploading(false);
       });
   }
@@ -81,15 +84,28 @@ export default function NovaAula(props) {
               <Form.Item
                 name="name"
                 label={<label style={{ fontSize: "large" }}> Nome </label>}
-                rules={[{ required: true, message: 'Por favor insira o nome da ocupação!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira o nome da ocupação!",
+                  },
+                ]}
               >
-                <Input placeholder="Nome da ocupação" name="name" onChange={handleChange} />
+                <Input
+                  placeholder="Nome da ocupação"
+                  name="name"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 name="description"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
               >
-                <Input placeholder="Descreva a função da ocupação" name="description" onChange={handleChange} />
+                <Input
+                  placeholder="Descreva a função da ocupação"
+                  name="description"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item {...formTailLayout}>
                 <Button
@@ -98,7 +114,7 @@ export default function NovaAula(props) {
                   loading={uploading}
                   style={{ fontSize: "large" }}
                 >
-                  {uploading ? 'Criando' : 'Criar ocupação'}
+                  {uploading ? "Criando" : "Criar ocupação"}
                 </Button>
               </Form.Item>
             </Form>

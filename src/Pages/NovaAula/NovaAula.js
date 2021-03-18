@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Upload, Input, Button, message } from "antd";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import "./NovaAula.css";
 
 export default function NovaAula(props) {
@@ -11,34 +12,35 @@ export default function NovaAula(props) {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const { session } = useSession();
-  const course = new URLSearchParams(props.location.search)
-  console.log(props.location.search)
+  const history = useHistory();
+  const course = new URLSearchParams(props.location.search);
+  console.log(props.location.search);
   const formLayout = {
     labelCol: {
-      span: 4
+      span: 4,
     },
     wrapperCol: {
-      span: 16
+      span: 16,
     },
   };
 
   const formTailLayout = {
     wrapperCol: {
-      offset: 4
-    }
+      offset: 4,
+    },
   };
 
   const fileProps = {
-    name: 'file',
-    multiple: 'true',
-    onRemove: file => {
+    name: "file",
+    multiple: "true",
+    onRemove: (file) => {
       const index = files.indexOf(file);
       const newFiles = files;
       newFiles.splice(index, 1);
-      setFiles(newFiles)
+      setFiles(newFiles);
     },
-    beforeUpload: file => {
-      setFiles([...files, file])
+    beforeUpload: (file) => {
+      setFiles([...files, file]);
       return false;
     },
     files,
@@ -51,37 +53,37 @@ export default function NovaAula(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const fileIds = []
+    const fileIds = [];
     const data = {
       ...lesson,
-      "course_id": course.get("course"),
-      "user_id": session.user.id,
-      "files": files
-    }
+      course_id: course.get("course"),
+      user_id: session.user.id,
+      files: files,
+    };
 
-    console.log(data)
+    console.log(data);
     setUploading(true);
 
     const config = {
       headers: {
-        authorization: "BEARER " + session.accessToken
-      }
+        authorization: "BEARER " + session.accessToken,
+      },
     };
 
     const configFiles = {
       headers: {
         authorization: "BEARER " + session.accessToken,
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
         processData: false,
-        contentType: false
-      }
+        contentType: false,
+      },
     };
 
     api
       .post("/lesson_create", data, config)
-      .then(response => {
-        fileIds.push(response.data)
-        
+      .then((response) => {
+        fileIds.push(response.data);
+
         for (let i = 0; i < fileIds.length; i++) {
           const formData = new FormData();
           formData.append(fileIds[i], files[i]);
@@ -90,10 +92,12 @@ export default function NovaAula(props) {
         }
 
         setUploading(false);
-        message.success("Aula criada com sucesso!")
+        message.success("Aula criada com sucesso!");
+        history.push(`/curso/${course.id}`);
       })
       .catch((err) => {
-        message.error("Não foi possível criar a aula!")
+        message.error("Não foi possível criar a aula!");
+        console.log(course.id);
         setUploading(false);
       });
   }
@@ -118,20 +122,38 @@ export default function NovaAula(props) {
               <Form.Item
                 name="name"
                 label={<label style={{ fontSize: "large" }}> Título </label>}
-                rules={[{ required: true, message: 'Por favor insira o título da aula!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira o título da aula!",
+                  },
+                ]}
               >
-                <Input placeholder="Título da aula" name="name" onChange={handleChange} />
+                <Input
+                  placeholder="Título da aula"
+                  name="name"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 name="description"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
               >
-                <Input placeholder="Descreva o temas que serão abordados na aula" name="description" onChange={handleChange} />
+                <Input
+                  placeholder="Descreva o temas que serão abordados na aula"
+                  name="description"
+                  onChange={handleChange}
+                />
               </Form.Item>
               <Form.Item
                 name="files"
                 label={<label style={{ fontSize: "large" }}> Arquivos </label>}
-                rules={[{ required: true, message: 'Por favor insira no mínimo um arquivo!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira no mínimo um arquivo!",
+                  },
+                ]}
               >
                 <Upload {...fileProps}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
@@ -144,7 +166,7 @@ export default function NovaAula(props) {
                   loading={uploading}
                   style={{ fontSize: "large" }}
                 >
-                  {uploading ? 'Criando' : 'Criar aula'}
+                  {uploading ? "Criando" : "Criar aula"}
                 </Button>
               </Form.Item>
             </Form>
