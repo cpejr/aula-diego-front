@@ -98,10 +98,7 @@ export default function Live(props) {
                 value={confirmation_code}
                 onChange={(e) => setConfirmation_code(e.target.value)}
               />
-              <button
-                className="buttonCertificateLive"
-                onClick={() => handleClick(codeRef)}
-              >
+              <button className="buttonCertificateLive" onClick={handleClick}>
                 Certificar Live
               </button>
             </div>
