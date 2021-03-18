@@ -174,6 +174,7 @@ export default function ListaCursos() {
 
   function handleChange(value) {
     setSearch(value);
+    
   }
 
   return (
@@ -197,7 +198,7 @@ export default function ListaCursos() {
         </div>
         <Table
           columns={columns}
-          dataSource={data.map((course) => {
+          dataSource={data.filter((course) => {
             if (search === "") return course;
             if (
               course.name.toLowerCase().includes(search.toLowerCase()) ||
