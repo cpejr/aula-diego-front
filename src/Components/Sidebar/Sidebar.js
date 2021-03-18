@@ -4,12 +4,20 @@ import Logo from "../../images/logoTeste.png";
 import { useSession } from "../../Context/SessionContext";
 import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
+import api from "../../services/api";
 
 export default function Sidebar() {
-
   const history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
+  const [score, setScore] = useState("0 XP");
+
+  const config = {
+    headers: {
+      authorization: "Bearer " + session.accessToken,
+    },
+  };
+
   const studentList = [
     {
       title: "Lives",
@@ -38,8 +46,8 @@ export default function Sidebar() {
       path: "/curso/lista",
     },
     {
-      title:"Nova Aula",
-      path: "/aula/cadastro"
+      title: "Nova Aula",
+      path: "/aula/cadastro",
     },
   ];
 
@@ -92,6 +100,11 @@ export default function Sidebar() {
           setLinksList(studentList);
           break;
       }
+
+      api
+        .post("/score", { user_id: session.user.id }, config)
+        .then((res) => setScore(res.data.score))
+        .catch(() => alert("Não foi possível receber pontuação do usuário."));
     }
   }, []);
   return (
@@ -105,10 +118,14 @@ export default function Sidebar() {
       </div>
 
       <div className="sidebarPerfil">
-        <img src={Foto} />
+        {/* <img src={Foto} /> */}
         <br></br>
         <label>{session.user.name}</label>
         <br></br>
+      </div>
+
+      <div className="sidebarScore">
+        <p>{score}</p>
       </div>
 
       <div className="sidebarBody">

@@ -89,23 +89,26 @@ ul a:hover {
   font-weight: 600;
 }
 
-@media(max-width:780px){
-  .sidebarPerfil{
-      display: none;
-  }
+.sidebarScore {
+  margin-left: 40px;
+}
 
-  .logoContainer{
+@media (max-width: 780px) {
+  .sidebarPerfil {
     display: none;
   }
 
-  .sidebarBody{
+  .logoContainer {
+    display: none;
+  }
+
+  .sidebarBody {
     width: 50vw;
   }
 
-  .sidebarContainer{
+  .sidebarContainer {
     height: 100vh;
     width: 100vw;
 
   }
-  
 }
