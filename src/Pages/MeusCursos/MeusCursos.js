@@ -96,9 +96,11 @@ function CardCurso({ title, organization, description, path }) {
                 <h3 className="TitleCurso">{title}</h3>
                 <h5 className="subTitleCurso">{organization}</h5>
                 <h6 className="subTitleCurso">{description}</h6>
-                <button className="btnVerCurso" onClick={() => history.push(path)}>
-                    Ver Curso
-                </button>
+                <div style={{textAlign: "right"}}>
+                  <button className="btnVerCurso" onClick={() => history.push(path)}>
+                      Ver Curso
+                  </button>
+                </div>
             </div>
         </div>
     );

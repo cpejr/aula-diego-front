@@ -1,84 +1,95 @@
-.Aula{
-    background-color: #fafafa;
+.pageBody {
+  width: 90%
 }
 
-.TitleVideo{
-    color: white;
-    text-align: center;
+.title {
+  display: flex;
+  align-items: baseline;
+  margin-top: 2%;
+  color: #25003c;
+  font-size: xx-large;
 }
 
-.TitleAulas{
-    margin-top: 5vh;
-    color: #25003c;
-    margin-left: 5vw;
-    text-align: left;
+.title span {
+  margin-left: 4px;
 }
 
-.description{
-    display: flex;
-    flex-direction: column;
+.description {
+  color: gray;
+  font-size: large;
+  margin-top: 5px;
+  margin-left: 3%;
 }
 
-.AulaVideoContainer{
-    padding: 5vh 5vh;
-    margin: 5vh 15vh 15vh 15vh;
-    margin-bottom: 0vh;
-    border-radius: 20px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    display: flex;
-    background-image: linear-gradient(to right, #290043 73%, #B11734);
-    justify-content: center;
-    flex-direction: column;
+.text {
+  width: 95%;
+  margin: auto  ;
 }
 
-.videoAula{
-    padding: 5%;
+.downloadLabel {
+  font-size: large;
+  color: #25003c;
 }
 
-.formDuvidas{
-    text-align: center;
-    margin: 10vh 15vh;
-    padding: 5vh;
-    margin-top: 0%;
-    background-color: #111426;
-    border-radius: 20px;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
+.AulaVideoContainer {
+  padding: 5vh 5vh;
+  margin: 5vh 15vh 15vh 15vh;
+  margin-bottom: 0vh;
+  border-radius: 20px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  display: flex;
+  background-image: linear-gradient(to right, #290043 73%, #B11734);
+  justify-content: center;
+  flex-direction: column;
 }
 
-.btnEnviarTarefa{
-    margin-left: 42vw;
-    margin-top: 15px; 
-    border-radius: 8px;
-    height: 50px;
-    width: 15vw;
-    background-color: rgb(198, 53, 84);
-    border: 2px solid #B11734;
-    color : rgb(244, 232, 242);
-    outline:none;
-    border:none;
+.videoWrapper {
+  margin: auto;
+  width: 80%;
+}
+
+.formDuvidas {
+  text-align: center;
+  margin: 10vh 15vh;
+  padding: 5vh;
+  margin-top: 0%;
+  background-color: #111426;
+  border-radius: 20px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+.btnEnviarTarefa {
+  margin-left: 42vw;
+  margin-top: 15px;
+  border-radius: 8px;
+  height: 50px;
+  width: 15vw;
+  background-color: rgb(198, 53, 84);
+  border: 2px solid #B11734;
+  color: rgb(244, 232, 242);
+  outline: none;
+  border: none;
 }
 
 @media (max-width: 600px) {
-    .TitleAulas{
-        margin-top: 0vh;
-        padding: 1vh;
-    }
-    .AulaVideoContainer{
-        margin: 1vh 1vh;
-        padding: 1vh;
-        margin-bottom: 0vh;
-    }
-
-    .formDuvidas{
-        margin: 1vh 1vh;
-        margin-top: 0vh;
-        padding: 4vh;
-    }
-
-    .btnEnviar{
-        width: 70vw;
-        margin-left: 0vw;
-    }
+  .TitleAulas {
+    margin-top: 0vh;
+    padding: 1vh;
   }
+  .AulaVideoContainer {
+    margin: 1vh 1vh;
+    padding: 1vh;
+    margin-bottom: 0vh;
+  }
+  .formDuvidas {
+    margin: 1vh 1vh;
+    margin-top: 0vh;
+    padding: 4vh;
+  }
+  .btnEnviar {
+    width: 70vw;
+    margin-left: 0vw;
+  }
+}

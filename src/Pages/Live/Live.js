@@ -9,7 +9,6 @@ import { message } from "antd";
 import { Modal, Input } from "antd";
 
 export default function Live(props) {
-  const codeRef = useRef();
   const [live, setLive] = useState([]);
   const [url, setUrl] = useState("");
   const [confirmation_code, setConfirmation_code] = useState("");
@@ -22,6 +21,15 @@ export default function Live(props) {
   function handleToggle() {
     setToggleViewInfo(false);
     setToggleViewVideo(true);
+  }
+
+  function dateFormate() {
+    var data = new Date(live.date);
+    return (
+      data.toLocaleDateString([], { dateStyle: "long" }) +
+      " às " +
+      data.toLocaleTimeString([], { timeStyle: "short" })
+    );
   }
 
   const config = {
@@ -38,7 +46,6 @@ export default function Live(props) {
       .get(`/live/${id}`, config)
       .then((response) => {
         setLive(response.data);
-        setUrl(response.data.link.match(/(?<=\?v=).+/g));
       })
       .catch((err) => {});
   }, []);
@@ -66,7 +73,9 @@ export default function Live(props) {
         <div className="paginaLive">
           <div className="blocoLive">
             <div className="tituloLive">
-              <p>{live.name}</p>
+              <p>
+                {live.name}, {dateFormate()}
+              </p>
             </div>
             {toggleViewInfo && (
               <div className="acessarLive">
@@ -77,7 +86,8 @@ export default function Live(props) {
             )}
             {toggleViewVideo && (
               <div className="videoFrame">
-                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
+                <VideoFrame url={live.link} />
+                <h5 className="liveDescription">{live.description}</h5>
               </div>
             )}
           </div>
