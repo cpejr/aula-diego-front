@@ -1,36 +1,42 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Table, Input, Popconfirm, message, Tooltip } from "antd";
+import { Table, Input, Popconfirm, message, Tooltip, Modal } from "antd";
 import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import { useHistory } from "react-router-dom";
-import { useSession } from "../../Context/SessionContext"
+import { useSession } from "../../Context/SessionContext";
 import "./ListaTurmas.css";
 
 export default function ListaOrganizacoes() {
   const [classes, setClasses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true)
+  const [editIsVisible, setEditIsVisible] = useState(false);
+  const [id, setId] = useState("");
+  const [editInfo, setEditInfo] = useState({});
+  const [loading, setLoading] = useState(true);
   const { session } = useSession();
   const history = useHistory();
 
   const config = {
     headers: {
-      authorization: "BEARER " + session.accessToken
-    }
+      authorization: "BEARER " + session.accessToken,
+    },
   };
 
   useEffect(() => {
-    api.get("/class", config)
+    api
+      .get("/class", config)
       .then((classes) => {
         setClasses(classes.data);
         setFilteredData(classes.data);
         setLoading(false);
       })
-      .catch(err => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const columns = [
@@ -43,7 +49,7 @@ export default function ListaOrganizacoes() {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Descrição</h5>,
@@ -54,7 +60,7 @@ export default function ListaOrganizacoes() {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Curso</h5>,
@@ -65,19 +71,25 @@ export default function ListaOrganizacoes() {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Ações</h5>,
-      dataIndex: ("id"),
+      dataIndex: "id",
       render: (id) => (
         <>
-          <EditIcon className="clickable" onClick={handleEdit} />{" "}
+          <EditIcon
+            className="clickable"
+            onClick={() => {
+              setEditIsVisible(true);
+              setId(id);
+            }}
+          />{" "}
           <Popconfirm
             title="Tem certeza que deseja excluir este item?"
             onConfirm={() => handleDelete(id)}
           >
-            <DeleteIcon className="clickable"/>
+            <DeleteIcon className="clickable" />
           </Popconfirm>
         </>
       ),
@@ -96,18 +108,19 @@ export default function ListaOrganizacoes() {
         );
       })
     );
-  }
+  };
 
   function handleDelete(class_id) {
     setLoading(true);
 
     api
-      .put(`/class/${class_id}`, config)
+      .put(`/class/${class_id}`, {}, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api.get("/class", config)
-          .then((response) => { 
-            setClasses(response.data); 
+        api
+          .get("/class", config)
+          .then((response) => {
+            setClasses(response.data);
             setFilteredData(response.data);
           })
           .then(setLoading(false));
@@ -115,19 +128,40 @@ export default function ListaOrganizacoes() {
       .catch((error) => {
         message.error("Não foi possível exluir");
         console.log(error);
-        }
-      );
+      });
   }
 
   function handleEdit() {
-    alert("EDIT ainda não faz nada. tururu");
+    api
+      .put(`/class/`, { ...editInfo, id }, config)
+      .then(() => {
+        message.success("Modificações feitas com sucesso");
+        setEditIsVisible(false);
+      })
+      .then(() => {
+        api
+          .get("/class", config)
+          .then((classes) => {
+            setClasses(classes.data);
+            setFilteredData(classes.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch(() => message.error("não foi possível alterar turma"));
+  }
+
+  function handleModalChange(e) {
+    setEditInfo({ ...editInfo, [e.target.name]: e.target.value });
   }
 
   return (
     <Base>
       <h1 className="page-title">Turmas</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
+        <div style={{ display: "flex" }}>
           <Input
             className="search-input"
             placeholder="Pesquisar..."
@@ -135,15 +169,33 @@ export default function ListaOrganizacoes() {
             value={search}
           />
           <Tooltip title="Adicionar Turma">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/turma/cadastro")} />
+            <AddIcon
+              style={{ height: "30px", width: "30px", marginLeft: "1%" }}
+              className="clickable"
+              onClick={() => history.push("/turma/cadastro")}
+            />
           </Tooltip>
         </div>
-        <Table
-          columns={columns}
-          dataSource={filteredData}
-          loading={loading}
+        <Table columns={columns} dataSource={filteredData} loading={loading} />
+      </div>
+      <Modal
+        visible={editIsVisible}
+        onCancel={() => setEditIsVisible(false)}
+        onOk={handleEdit}
+      >
+        <Input
+          placeholder="Nome"
+          name="name"
+          onChange={handleModalChange}
+          value={editInfo["name"]}
         />
-        </div>
+        <Input
+          placeholder="Descrição"
+          name="description"
+          onChange={handleModalChange}
+          value={editInfo["description"]}
+        />
+      </Modal>
     </Base>
   );
 }
