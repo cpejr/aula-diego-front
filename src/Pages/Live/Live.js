@@ -100,7 +100,7 @@ export default function Live(props) {
               />
               <button
                 className="buttonCertificateLive"
-                onClick={() => handleClick(codeRef)}
+                onClick={() => handleClick()}
               >
                 Certificar Live
               </button>
