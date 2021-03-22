@@ -31,7 +31,7 @@ export default function CadastroOrganizacao() {
       .post(`/organization`, data, config)
       .then(() => {
         message.success("Organização criada com sucesso!");
-        history.push("/organizacao/lista");
+        history.push("/organizacao");
       })
       .catch(() => {
         message.error(`Não foi possível cadastrar organização.`);
@@ -41,7 +41,7 @@ export default function CadastroOrganizacao() {
   return (
     <Base>
       <div className="form-container">
-        <Form className="form-ocupacao" onFinish={handleSubmit}>
+        <Form className="form-ocupacao" >
           <h1 className="page-title"> Cadastro de Organização</h1>
           <Form.Item
             className="mt20"
