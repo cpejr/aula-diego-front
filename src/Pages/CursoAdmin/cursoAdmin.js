@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
+import { message, Tabs, Table, Input, Popconfirm, Tooltip, Modal } from "antd";
 import {PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
