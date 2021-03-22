@@ -48,6 +48,19 @@
   color: white;
 }
 
+.buttonVoltarAluno {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 13px;
+  font-size: 17pt;
+  font-weight: 600;
+  padding: 1%;
+  padding-left: 4%;
+  padding-right: 4%;
+  color: #c63756;
+  margin-right: 20px;
+}
+
 .Listas {
   flex-direction: row;
   align-content: center;

@@ -22,7 +22,7 @@ const tailFormItemLayout = {
 };
 
 export default function EditarLive(props) {
-  const [live, setLive] = useState({});
+  const [live, setLive] = useState([]);
   const [edit, setEdit] = useState({});
 
   const [name, setName] = useState([]);
@@ -35,8 +35,6 @@ export default function EditarLive(props) {
   const id = props.match.params.id;
   const history = useHistory();
 
-  //document.getElementById("name").value = live.name;
-
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
@@ -44,34 +42,17 @@ export default function EditarLive(props) {
   };
 
   useEffect(() => {
-    api
-      .get(`/live/${id}`, config)
-      .then((response) => {
-        setLive(response.data);
-        setName(response.data.name);
-        setDescription(response.data.description);
-        setDate(response.data.date);
-        setLink(response.data.link);
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da live");
-      });
+    api.get(`/live/${id}`, config).then((response) => {
+      setLive(response.data);
+      setName(response.data.name);
+      setDescription(response.data.description);
+      setDate(response.data.date);
+      setLink(response.data.link);
+    });
   }, []);
-
-  function handleChange(e) {
-    setEdit({ ...edit, [e.target.name]: e.target.value });
-  }
 
   function handleChangeDate(e) {
     setEdit({ ...edit, date: e._d });
-  }
-
-  function loadingInputs(name, description, date, link) {
-    console.log(name);
-    document.getElementById("name").value = name;
-    document.getElementById("description").value = description;
-    document.getElementById("date").value = date;
-    document.getElementById("link").value = link;
   }
 
   function handleSubmit(e) {
@@ -79,9 +60,12 @@ export default function EditarLive(props) {
     setLoading(true);
 
     const data = {
-      ...live,
-      //confirmation_code: confirmation,
-      //course_id: course.get("course"),
+      name: name,
+      description: description,
+      date: date,
+      link: link,
+      confirmation_code: live.confirmation_code,
+      course_id: live.course_id,
     };
 
     const config = {
@@ -93,12 +77,10 @@ export default function EditarLive(props) {
     api
       .put("/live", data, config)
       .then(() => {
-        setLoading(false);
         message.success("Live editada com sucesso!");
         history.push(`/live/${id}`);
       })
       .catch((err) => {
-        setLoading(false);
         message.error("Não foi possiível editar a live!");
         console.log(err);
       });
@@ -109,55 +91,53 @@ export default function EditarLive(props) {
       <div className="pageRoot">
         {console.log(name)}
         <div className="pageBody">
+          <input defaultValue={name} />
           <div className="formWrapper">
             <Form
               {...formItemLayout}
-              /*onLoad={loadingInputs(
-                live.name,
-                live.description,
-                live.date,
-                live.link
-              )}*/
               name="newLive"
               className="liveForm"
-              initialValues={{ remember: true }}
               onFinish={handleSubmit}
               size={"large"}
-              scrollToFirstError
             >
               <Form.Item {...tailFormItemLayout}>
                 <h1>Nova Live</h1>
               </Form.Item>
               <Form.Item
-                name="name"
                 label={<label style={{ fontSize: "large" }}> Título </label>}
                 rules={[
                   {
                     required: true,
-                    message: "Por favor insira o título da live!",
+                    message: "Por favor insira o nome da live!",
+                  },
+                ]}
+              >
+                {console.log("AQUII", typeof name)}
+                <Input
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item
+                name="description_form"
+                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira a descrição da live!",
                   },
                 ]}
               >
                 <Input
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
-                  id="name"
-                  defaultValue={name}
-                />
-              </Form.Item>
-              <Form.Item
-                name="description"
-                label={<label style={{ fontSize: "large" }}> Descrição </label>}
-              >
-                <Input
                   name="description"
-                  onChange={handleChange}
-                  id="description"
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder={description}
                   defaultValue={description}
                 />
               </Form.Item>
               <Form.Item
-                name="date"
+                name="date_form"
                 label={<label style={{ fontSize: "large" }}> Data </label>}
                 rules={[
                   {
@@ -175,7 +155,7 @@ export default function EditarLive(props) {
                 />
               </Form.Item>
               <Form.Item
-                name="link"
+                name="link_form"
                 label={<label style={{ fontSize: "large" }}> Link </label>}
                 rules={[
                   {
@@ -186,8 +166,7 @@ export default function EditarLive(props) {
               >
                 <Input
                   name="link"
-                  onChange={handleChange}
-                  id="link"
+                  onChange={(e) => setLink(e.target.value)}
                   defaultValue={link}
                 />
               </Form.Item>
