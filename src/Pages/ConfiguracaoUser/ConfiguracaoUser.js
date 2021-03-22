@@ -3,30 +3,24 @@ import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
 import "./ConfiguracaoUser.css";
 import Base from "../../Components/Base/Base";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { Formik, Field, Form } from "formik";
 import { UTCToLocal } from "../../utils/convertDate";
-import { message } from "antd";
+import { message, Card, Col, Row, Input, Select } from "antd";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState([]);
+  const [name, setName] = useState([]);
+  const [birthdate, setBirthdate] = useState([]);
+  const [phone, setPhone] = useState([]);
   const [organization, setOrganization] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
   const [occupation, setOccupation] = useState([]);
+  const [occupations, setOccupations] = useState([]);
+  const [email, setEmail] = useState([]);
+
   const { session } = useSession();
+  const [formData, setFormData] = useState([]);
   const [editInputs, setEditInputs] = useState([]);
   const [open, setOpen] = useState(false);
-
-  const configUser = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-  };
 
   const config = {
     headers: {
@@ -50,12 +44,16 @@ export default function ConfiguracaoAluno(props) {
         birthdate: birthdate,
         phone: formattedPhone,
       });
+      setName(response.data.name);
+      setBirthdate(birthdate);
+      setPhone(phone);
+      setEmail(response.data.email);
     });
 
     api
       .get(`/organization/${session.user.organization_id}`, config)
       .then((response) => {
-        setOrganization(response.data);
+        setOrganization(response.data.name);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da organização");
@@ -64,18 +62,38 @@ export default function ConfiguracaoAluno(props) {
     api
       .get(`/occupation/${session.user.occupation_id}`, config)
       .then((response) => {
-        setOccupation(response.data);
+        setOccupation(response.data.name);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da ocupação");
       });
+
+    api
+      .get("/organization", config)
+      .then((data) => {
+        setOrganizations(data.data);
+      })
+      .catch(() => message.error("Não foi possível carregar organizações"));
+
+    api
+      .get("/occupation", config)
+      .then((data) => {
+        setOccupations(data.data);
+      })
+      .catch(() => message.error("Não foi possível carregar ocupações"));
   }, []);
 
   function handleChange(e) {
-    setEditInputs({ ...editInputs, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  const handleClickOpen = () => {
+  function handleSelectChange(value, field) {
+    if (field === "organization_id") loadOccups(value);
+    console.log(`${field}: ${value}`);
+    setFormData({ ...formData, [field]: value });
+  }
+
+  const handleEditOpen = () => {
     setOpen(true);
   };
 
@@ -84,12 +102,43 @@ export default function ConfiguracaoAluno(props) {
     setOpen(false);
   };
 
+  function loadOccups(value) {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      params: {
+        organization_id: value,
+      },
+    };
+    if (value)
+      api
+        .get("/occupation", config)
+        .then((data) => {
+          console.log(data);
+          setOccupations(data.data);
+        })
+        .catch((error) =>
+          message.error("Não foi possível carregar ocupações\n" + error)
+        );
+  }
+
   function handleSubmit() {
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
     };
+
+    const wantsToEdit = window.confirm(
+      "Você tem certeza que deseja alterar suas informações?"
+    );
+    if (!wantsToEdit) return message.error("Operação cancelada");
+    api
+      .put(`/user/${session.user.id}`, formData, configOrganization)
+      .then(() => message.success("Organização alterada com sucesso"))
+      .catch(() => message.error("Não foi possível editar a organização"));
+
     let birthdate = new Date(editInputs["birthdate"]);
     birthdate = UTCToLocal(birthdate).getTime();
     const editedData = editInputs;
@@ -101,186 +150,329 @@ export default function ConfiguracaoAluno(props) {
         handleClose();
         alert("não foi possível alterar informações");
       });
+
+    //setFormData({ ...formData, id: organization_id });
+    const configOrganization = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+    };
+    setOpen(false);
   }
 
+  function getType() {
+    if (dataAluno.type === "student") return "Estudante";
+    else if (dataAluno.type === "admin") return "Professor";
+    else if (dataAluno.type === "master") return "Administrador";
+    else return null;
+  }
+
+  function Info() {
+    return (
+      <>
+        <Card title={<h2>Suas Informações:</h2>}>
+          <Row gutter={26}>
+            <Col span={12}>
+              <Card type="inner" title="Nome" bordered={false}>
+                {dataAluno.name}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Empresa" bordered={false}>
+                {organization}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Data de Nascimento" bordered={false}>
+                {dataAluno.birthdate}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Ocupação" bordered={false}>
+                {occupation}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Telefone" bordered={false}>
+                {dataAluno.phone}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Tipo" bordered={false}>
+                {getType()}
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card type="inner" title="Email" bordered={false}>
+                {dataAluno.email}
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+        <div className="acessarConfigAluno">
+          <button className="buttonConfigAluno" onClick={handleEditOpen}>
+            Editar
+          </button>
+        </div>
+      </>
+    );
+  }
+
+  function Editar() {
+    return (
+      <>
+        <Card title={<h2>Editar as suas Informações:</h2>}>
+          <Row gutter={26}>
+            <Col span={12}>
+              <Card type="inner" title="Nome" bordered={false}>
+                <Input
+                  name="name"
+                  onChange={(e) => setName(e.target.value)}
+                  defaultValue={name}
+                  value={formData["name"]}
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Empresa" bordered={false}>
+                <Select
+                  name="organization_id"
+                  value={formData["organization_id"]}
+                  onChange={(e) => handleSelectChange(e, "organization_id")}
+                  placeholder="Organização"
+                  style={{ width: "100%" }}
+                >
+                  {organizations.map((organization) => {
+                    return organization != [] ? (
+                      <Select.Option
+                        name="organization_id"
+                        value={organization.id}
+                      >
+                        {organization.name}
+                      </Select.Option>
+                    ) : null;
+                  })}
+                </Select>
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Data de Nascimento" bordered={false}>
+                <Input
+                  name="birthdate"
+                  onChange={(e) => setBirthdate(e.target.value)}
+                  defaultValue={birthdate}
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Ocupação" bordered={false}>
+                <Select
+                  name="occupation_id"
+                  value={formData["occupation_id"]}
+                  onChange={(e) => handleSelectChange(e, "occupation_id")}
+                  placeholder="Ocupação"
+                  style={{ width: "100%" }}
+                >
+                  {occupations.map((occupation) => {
+                    return occupation != [] ? (
+                      <Select.Option value={occupation.id}>
+                        {occupation.name}
+                      </Select.Option>
+                    ) : null;
+                  })}
+                </Select>
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Telefone" bordered={false}>
+                <Input
+                  name="phone"
+                  onChange={(e) => setPhone(e.target.value)}
+                  defaultValue={phone}
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Tipo" bordered={false}>
+                {getType()}
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card type="inner" title="Email" bordered={false}>
+                <Input
+                  name="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  defaultValue={email}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+        <div className="acessarConfigAluno">
+          <button className="buttonConfigAluno" onClick={handleSubmit}>
+            Salvar
+          </button>
+        </div>
+      </>
+    );
+  }
+
+  if (open)
+    return (
+      <Base>
+        <div className="configUser">
+          <Editar />
+        </div>
+      </Base>
+    );
+  else if (!open) {
+    return (
+      <Base>
+        <div className="configUser">
+          <Info />
+        </div>
+      </Base>
+    );
+  }
+}
+
+/*<Visualizar
+        name={dataAluno.name}
+        organization={organization}
+        birthdate={dataAluno.birthdate}
+        email={dataAluno.email}
+        occupation={occupation}
+        phone={dataAluno.phone}
+      /> 
+
+function Visualizar(name, organization, birthdate, email, occupation, phone) {
   return (
-    <Base>
-      <div className="ConfigAluno">
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">
-            Edite suas Informações
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Complete os campos e clique em "Concluir Edição", para alterar os
-              dados do seu perfil
-            </DialogContentText>
-            <TextField
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              placeholder="Nome"
-              spellCheck="false"
-              required
-              onChange={handleChange}
-              value={editInputs["name"]}
-            />
-            <TextField
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
-              placeholder="Email"
-              spellCheck="false"
-              required
-              onChange={handleChange}
-              value={editInputs["email"]}
-            />
-
-            <Formik
-              validateOnMount
-              initialValues={{
-                city: "",
-                state: "",
-              }}
-              render={({ isValid, setFieldValue }) => (
-                <Form className="formEditProfile">
-                  <Field
-                    className="fieldEditProfile"
-                    name="city"
-                    type="text"
-                    placeholder="Cidade"
-                    onChange={handleChange}
-                    value={editInputs["city"]}
-                  />
-                  <Field
-                    className="fieldEditProfile"
-                    component="select"
-                    name="state"
-                    onChange={handleChange}
-                    value={editInputs["state"]}
-                  >
-                    <option value={null}>Selecione o Estado</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                  </Field>
-                </Form>
-              )}
-            />
-
-            <TextField
-              type="date"
-              className="form-control"
-              id="exampleInputAddress"
-              name="birthdate"
-              format="dd/mm/yyyy"
-              placeholder="Data de Nascimento"
-              mask="99/99/9999"
-              spellCheck="false"
-              value={props.value}
-              onChange={props.onChange}
-              required
-              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
-              required
-              onChange={handleChange}
-              value={editInputs["birthdate"]}
-            />
-            <TextField
-              type="text"
-              className="form-control"
-              id="company"
-              name="company"
-              placeholder="Empresa"
-              spellCheck="false"
-              required
-              onChange={handleChange}
-              value={editInputs["company"]}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancelar
-            </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Confirmar Edição
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <div className="paginaConfigAluno">
-          <div className="tituloConfigAluno">
-            <p>Suas Informações:</p>
-          </div>
-          <div className="blocoConfigAluno">
-            <div className="Listas">
-              <div className="Lista1">
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Nome:</p>
-                  <p className="configAlunoOutput">{dataAluno.name}</p>
-                </div>
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Empresa:</p>
-                  <p className="configAlunoOutput">{organization.name}</p>
-                </div>
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Data de Nascimento:</p>
-                  <p className="configAlunoOutput">
-                    {dataAluno.birthdate}
-                  </p>{" "}
-                </div>
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Email:</p>
-                  <p className="configAlunoOutput">{dataAluno.email}</p>
-                </div>
-              </div>
-              <div className="Lista1">
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Ocupação:</p>
-                  <p className="configAlunoOutput">{occupation.name}</p>
-                </div>
-                <div className="linhasConfigAluno">
-                  <p className="configAlunoInput">Telefone:</p>
-                  <p className="configAlunoOutput">{dataAluno.phone}</p>
-                </div>
-              </div>
-            </div>
-            <div className="acessarConfigAluno">
-              <button className="buttonConfigAluno" onClick={handleClickOpen}>
-                Editar
-              </button>
-            </div>
+    <>
+      <div className="pageRoot">
+        <div className="pageBody">
+          <div className="formWrapper">
+            <Form
+              {...formLayout}
+              name="informacoes"
+              className="occupationForm"
+              initialValues={{ remember: true }}
+              size={"large"}
+              scrollToFirstError
+            >
+              <Form.Item {...formTailLayout}>
+                <h1>Suas Informações</h1>
+              </Form.Item>
+              <Form.Item
+                name="name"
+                label={<label style={{ fontSize: "large" }}> Nome </label>}
+              >
+                <p>{name}</p>
+              </Form.Item>
+              <Form.Item
+                name="organization"
+                label={<label style={{ fontSize: "large" }}> Empresa </label>}
+              >
+                <p>{organization}</p>
+              </Form.Item>
+              <Form.Item
+                name="birthdate"
+                label={
+                  <label style={{ fontSize: "large" }}>
+                    {" "}
+                    Data de Nascimento{" "}
+                  </label>
+                }
+              >
+                <p>{birthdate}</p>
+              </Form.Item>
+              <Form.Item
+                name="email"
+                label={<label style={{ fontSize: "large" }}> Email </label>}
+              >
+                <p>{email}</p>
+              </Form.Item>
+              <Form.Item
+                name="occupation"
+                label={<label style={{ fontSize: "large" }}> Ocupação </label>}
+              >
+                <p>{occupation}</p>
+              </Form.Item>
+              <Form.Item
+                name="phone"
+                label={<label style={{ fontSize: "large" }}> Telefone </label>}
+              >
+                <p>{phone}</p>
+              </Form.Item>
+              <Form.Item {...formTailLayout} className="mt20">
+                <button className="btnCurso" type="submit">
+                  Editar
+                </button>
+              </Form.Item>
+            </Form>
           </div>
         </div>
       </div>
-    </Base>
+    </>
   );
 }
+
+ Editar({ title, arquivo_url, description }) {
+  return (
+    <>
+      <div className="pageRoot">
+        <div className="pageBody">
+          <div className="formWrapper">
+            <Form
+              {...formLayout}
+              name="newOccpation"
+              className="occupationForm"
+              initialValues={{ remember: true }}
+              onFinish={handleSubmit}
+              size={"large"}
+              scrollToFirstError
+            >
+              <Form.Item {...formTailLayout}>
+                <h1>Novo Curso</h1>
+              </Form.Item>
+              <Form.Item
+                name="name"
+                label={<label style={{ fontSize: "large" }}> Nome </label>}
+              >
+                <Input
+                  placeholder="Nome do Curso"
+                  size="large"
+                  name="name"
+                  value={formData["name"]}
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+              >
+                <TextArea
+                  onChange={handleChange}
+                  size="large"
+                  placeholder="Descrição sobre o conteúdo do curso"
+                  name="description"
+                  autoSize={{ minRows: 2, maxRows: 6 }}
+                  value={formData["description"]}
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item {...formTailLayout} className="mt20">
+                <button
+                  className="btnCurso"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Cadastrar
+                </button>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}*/

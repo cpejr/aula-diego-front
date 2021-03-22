@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   width: 70%;
-  
+
   padding: 0 20px;
 }
 
@@ -35,6 +35,15 @@
 .ant-form-item-has-error {
   border-color: #ff4d4f;
 }
+
+/*.ant-btn-primary {
+  background-color: rgb(198, 53, 84);
+  border: none;
+}
+
+.ant-btn-primary :hover {
+  background: rgb(198, 53, 84) !important;
+}*/
 
 .register-occupation-btn {
   background-color: #c63756;

@@ -150,8 +150,6 @@ export default function CursoAdmin(props) {
             key: lesson.id,
           })
         );
-        console.log({ lessons });
-        console.log(course_id);
 
         setLessons(lessons);
         setFiltered(lessons);
@@ -173,7 +171,6 @@ export default function CursoAdmin(props) {
           })
         );
 
-        console.log({ lives });
         setLives(lives);
         requestDone(lives);
       })
@@ -187,7 +184,6 @@ export default function CursoAdmin(props) {
         const classes = [];
         response.data.map((cl4ss) => classes.push({ ...cl4ss, key: cl4ss.id }));
 
-        console.log({ classes });
         setClasses(classes);
         requestDone(classes);
       })
@@ -243,6 +239,8 @@ export default function CursoAdmin(props) {
   }
 
   function handleEdit(id) {
+    const requests = ["aula", "live", "turma"];
+    history.push(`/${requests[activeTab]}/editar/${id}`);
     console.log(id);
   }
 
@@ -253,7 +251,7 @@ export default function CursoAdmin(props) {
 
   return (
     <Base>
-      <div className="pageBody">
+      <div className="pageBodyCurso">
         {course !== undefined ? <h1>{course.name}</h1> : <></>}
         <h5>Gerenciar</h5>
         <div className="tabsWrapper">
