@@ -22,6 +22,10 @@ export default function CursoAdmin(props) {
   const [activeTab, setActiveTab] = useState(0);
   const [selected, setSelected] = useState([]);
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [id, setId] = useState();
+  const [editData, setEditData] = useState({});
+
   const history = useHistory();
   const course_id = props.match.params.id;
   const { session } = useSession();
@@ -121,7 +125,12 @@ export default function CursoAdmin(props) {
     },
   ];
 
-  useEffect(() => {
+  function startEdit(id) {
+    setId(id);
+    setIsModalVisible(true);
+  }
+
+  function getData() {
     setLoading(true);
 
     api
@@ -189,6 +198,10 @@ export default function CursoAdmin(props) {
       .catch(() => {
         message.error("Não foi possível carregar dados das aulas");
       });
+  }
+
+  useEffect(() => {
+    getData();
   }, []);
 
   function handleSearch(value) {
@@ -237,8 +250,29 @@ export default function CursoAdmin(props) {
       });
   }
 
+  function handleEditChange(e) {
+    setEditData({ ...editData, [e.target.name]: e.target.value });
+  }
+
   function handleEdit(id) {
-    console.log(id);
+    let route;
+    if (activeTab === 0) route = "/lesson";
+    if (activeTab === 1) route = "/live";
+    if (activeTab === 2) route = "/class";
+
+    console.log(editData);
+
+    api
+      .put(route, { ...editData, id }, config)
+      .then(() => {
+        message.success("Alteração concluída com sucesso");
+        getData();
+        setIsModalVisible(false);
+      })
+      .catch(() => {
+        message.error("Não foi possível alterar dados.");
+      })
+      .finally(() => setLoading(false));
   }
 
   function handleVisit(id) {
@@ -328,6 +362,26 @@ export default function CursoAdmin(props) {
           </Tabs>
         </div>
       </div>
+
+      <Modal
+        title={id}
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        onOk={() => handleEdit(id)}
+      >
+        <Input
+          placeholder="Nome"
+          name="name"
+          value={editData["name"]}
+          onChange={handleEditChange}
+        />
+        <Input
+          placeholder="Descrição"
+          name="description"
+          value={editData["description"]}
+          onChange={handleEditChange}
+        />
+      </Modal>
     </Base>
   );
 }
