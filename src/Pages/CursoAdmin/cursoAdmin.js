@@ -3,12 +3,7 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import {PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -81,13 +76,13 @@ export default function CursoAdmin(props) {
       render: (id) => (
         <>
           <Popconfirm title="Visitar item?" onConfirm={() => handleVisit(id)}>
-            <EyeOutlined className="editButton" />
+            <EyeOutlined className="actionButton" />
           </Popconfirm>
           <Popconfirm title="Editar item?" onConfirm={() => handleEdit(id)}>
-            <EditOutlined className="editButton" />
+            <EditOutlined className="actionButton" />
           </Popconfirm>
           <Popconfirm title="Excluir item?" onConfirm={() => handleDelete(id)}>
-            <DeleteOutlined className="editButton" />
+            <DeleteOutlined className="actionButton" />
           </Popconfirm>
         </>
       ),
@@ -113,13 +108,13 @@ export default function CursoAdmin(props) {
       render: (id) => (
         <>
           <Popconfirm title="Visitar item?" onConfirm={() => handleVisit(id)}>
-            <EyeOutlined className="editButton" />
+            <EyeOutlined className="actionButton" />
           </Popconfirm>
           <Popconfirm title="Editar item?" onConfirm={() => handleEdit(id)}>
-            <EditOutlined className="editButton" />
+            <EditOutlined className="actionButton" />
           </Popconfirm>
           <Popconfirm title="Excluir item?" onConfirm={() => handleDelete(id)}>
-            <DeleteOutlined className="editButton" />
+            <DeleteOutlined className="actionButton" />
           </Popconfirm>
         </>
       ),

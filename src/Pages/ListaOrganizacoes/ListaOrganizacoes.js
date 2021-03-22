@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
+import Base from "../../Components/Base/Base";
+import api from "../../services/api";
+import { Table, Tag, Input, Tooltip, message, Popconfirm, Modal } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import api from "../../services/api";
-
-import { Table, Tag, Input, Tooltip, message, Popconfirm, Modal } from "antd";
-import DeleteIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
-
-import Base from "../../Components/Base/Base";
 import "./ListaOrganizacoes.css";
 
 
 export default function ListaOrganizacoes() {
   const [organization, setOrganizations] = useState([]);
-  const [isModalEditVisible, setIsModalEditVisible] = useState(false);
-  const [editOrganizationId, setEditOrganizationId] = useState();
-  const [formData, setformData] = useState([]);
-  const [data, setData] = useState("");
-  const [search, setSearch] = useState(data);
+  const [filtered, setFiltered] = useState([]);
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const { session } = useSession();
   const history = useHistory();
-  let name, description;
 
   const config = {
     headers: {
@@ -30,25 +22,66 @@ export default function ListaOrganizacoes() {
     },
   };
 
+  const configFile = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    responseType: 'blob',
+  };
+
   useEffect(() => {
     api
       .get(`/organization`, config)
       .then((response) => {
-        setOrganizations(response.data);
-        setLoading(false);
+        getLogo(response.data)
+          .then(response => {
+            setOrganizations(response);
+            setFiltered(response)
+            setLoading(false);
+          });
       })
       .catch(() => {
         message.error("Não foi possível carregar dados das organizações");
       });
-  }, 
-  []);
+  }, []);
+
+  const getLogo = async (organizations) => {
+    const result = [];
+    console.log(organizations)
+    for (const organization of organizations) {
+      await api
+        .get(`/file_get/${organization.file_id}`, configFile)
+        .then(response => {
+          const img = URL.createObjectURL(response.data);
+          result.push({
+            ...organization,
+            logo: img
+          })
+        })
+        .catch((err) => {
+          message.error("Não foi possível carregar dados dos arquivos");
+        });
+    }
+
+    return result;
+  }
 
   const columns = [
     {
-      title: "Organização",
-      className: "column-organization",
+      title: <h5 style={{ "textAlign": "center" }}>Logo</h5>,
+      dataIndex: "logo",
+      width: "15%",
+      render: (logo) => (
+        <div className="logo">
+          <img
+            src={logo}
+          />
+        </div>
+      )
+    },
+    {
+      title: <h5>Organização</h5>,
       dataIndex: "name",
-      align: "left",
       key: "tags",
       render: (tag) => {
         if (tag) {
@@ -74,30 +107,42 @@ export default function ListaOrganizacoes() {
       },
     },
     {
-        title: "Descrição",
-        className: "column-description",
-        dataIndex: "description",
-        align: "left",
+      title: <h5>Descrição</h5>,
+      dataIndex: "description",
     },
     {
       title: <h5>Ações</h5>,
       dataIndex: ("id"),
       render: (id) => (
         <>
-          <EditIcon className="clickable" onClick={() => openEditModal(id)} />{" "}
           <Popconfirm
-            title="Tem certeza que deseja excluir este item?"
+            title="Excluir item?"
             onConfirm={() => handleDelete(id)}
           >
-            <DeleteIcon className="clickable"/>
+            <EditOutlined className="actionButton" onClick={handleEdit} />
+          </Popconfirm>
+          <Popconfirm
+            title="Excluir item?"
+            onConfirm={() => handleDelete(id)}
+          >
+            <DeleteOutlined className="actionButton" />
           </Popconfirm>
         </>
       ),
     },
   ];
 
-  function handleFormChange(e) {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+  function handleEdit() {
+    alert("EDIT ainda não faz nada. tururu");
+  }
+
+  function handleSearch(value) {
+    setFiltered(filtered.filter(data => {
+      if (value === "") return data;
+      return (
+        data.name.toLowerCase().includes(value.toLowerCase())
+      )
+    }));
   }
 
   function handleDelete(organization_id) {
@@ -107,45 +152,16 @@ export default function ListaOrganizacoes() {
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
         api.get("/organization", config)
-          .then((response) => { 
-            setOrganizations(response.data); 
+          .then((response) => {
+            setOrganizations(response.data);
           })
           .then(setLoading(false));
       })
       .catch((error) => {
         message.error("Não foi possível excluir");
         console.log(error);
-        }
+      }
       );
-  }
-
-  function openEditModal(id) {
-    setEditOrganizationId(id);
-    setIsModalEditVisible(true);
-  }
-
-  function handleOk(organization_id) {
-    setformData({ ...formData, id: organization_id });
-    const configOrganization = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-      
-    };
-    const wantsToEdit = window.confirm(
-      "Você tem certeza que deseja alterar essa organização?"
-    );
-    if (!wantsToEdit) return message.error("Operação cancelada");
-    else
-      api
-        .put(`/organization/${organization_id}`, formData, configOrganization)
-        .then(() => message.success("Organização alterada com sucesso"))
-        .catch(() => message.error("Não foi possível editar a organização"));
-  }
-
-  function handleCancel() {
-    setIsModalEditVisible(false);
-    return message.error("Operação cancelada");
   }
 
   function handleChange(value) {
@@ -156,49 +172,28 @@ export default function ListaOrganizacoes() {
     <Base>
       <h1 className="page-title">Lista de Organizações</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
+        <div className="inputWrapper">
           <Input
-            className="search-input"
-            placeholder="procurar por organização"
-            onChange={(e) => handleChange(e.target.value)}
+            className="search"
+            placeholder="Pesquisar..."
+            onChange={(e) => handleSearch(e.target.value)}
             value={search}
           />
-          <Tooltip title="Adicionar Organização">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/organizacao/cadastro")} />
+          <Tooltip title="Nova Organização">
+            <PlusOutlined
+              className="addButton"
+              onClick={() =>
+                history.push('/organizacao/cadastro')
+              }
+            />
           </Tooltip>
         </div>
         <Table
           columns={columns}
-          dataSource={organization}
+          dataSource={filtered}
           loading={loading}
         />
       </div>
-      <Modal
-        title="Editar organização"
-        visible={isModalEditVisible}
-        onOk={() => handleOk(editOrganizationId)}
-        onCancel={() => handleCancel()}
-      >
-        { organization.map((organization) => {
-            if(organization.id === editOrganizationId){
-              name = organization.name;
-              description = organization.description;
-              return (organization.name);
-            }
-          })}
-        <Input
-          name="name"
-          value={formData["name"]}
-          onChange={handleFormChange}
-          placeholder={name}
-        />
-        <Input
-          name="description"
-          value={formData["description"]}
-          onChange={handleFormChange}
-          placeholder={description}
-        />
-      </Modal>
     </Base>
   );
 }

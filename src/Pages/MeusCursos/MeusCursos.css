@@ -8,11 +8,20 @@
     margin: 0vh 12vh 0vh 12vh;
 }
 
-.TitleCursos{
-    margin-top: 5vh;
-    color: #25003c;
-    margin-left: 5vw;
-    text-align: left;
+.title {
+  display: flex;
+  padding-top: 3%;
+  margin-left: 4%;
+  color: #25003c;
+  font-size: xx-large;
+}
+
+.title span {
+  margin-left: 4px;
+}
+
+.title svg {
+  margin-bottom: 8px;
 }
 
 .TitleCurso{

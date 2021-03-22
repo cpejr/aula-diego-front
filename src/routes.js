@@ -19,7 +19,7 @@ import TurmasAdmin from "./Pages/TurmasAdmin/TurmasAdmin";
 import Infolive from "./Pages/Infolive/Infolive";
 import ForgottenPassword from "./Pages/ForgottenPassword/forgot";
 import ListaAlunosLive from "./Pages/ListaAlunosLive/ListaAlunosLive";
-import CadastroOrganizacao from "./Pages/CadastroOrganizacao";
+import CadastroOrganizacao from "./Pages/CadastroOrganizacao/CadastroOrganizacao";
 import CadastroOcupacao from "./Pages/CadastroOcupacao/CadastroOcupacao";
 import ListaOcupacoes from "./Pages/ListaOcupacoes/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos/ListaCursos";
@@ -30,7 +30,6 @@ import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
-import Parceiros from "./Pages/Parceiros/Parceiros";
 
 const routes = () => {
   return (
@@ -205,13 +204,6 @@ const routes = () => {
             studentComponent={() => <Redirect to="/dashboard" />}
             adminComponent={usuariosPendentes}
             masterComponent={usuariosPendentes}
-          />
-          <PrivateRoute
-            path="/parceiros"
-            exact
-            studentComponent={Parceiros}
-            adminComponent={Parceiros}
-            masterComponent={Parceiros}
           />
           <PrivateRoute
             path="/sobre"
