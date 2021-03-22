@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Upload, Input, Button, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "./NovaAula.css";
+import "./CadastroOrganizacao.css";
 
 export default function NovaAula(props) {
-  const [lesson, setLesson] = useState({});
-  const [files, setFiles] = useState([]);
-  const [uploading, setUploading] = useState(false);
+  const [organization, setOrganization] = useState({});
+  const [file, setFile] = useState([]);
+  const [logoPreview, setLogoPreview] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const history = useHistory();
   const course = new URLSearchParams(props.location.search);
-  console.log(props.location.search);
+
   const formLayout = {
     labelCol: {
       span: 4,
@@ -32,77 +33,67 @@ export default function NovaAula(props) {
 
   const fileProps = {
     name: "file",
-    multiple: "true",
-    onRemove: (file) => {
-      const index = files.indexOf(file);
-      const newFiles = files;
-      newFiles.splice(index, 1);
-      setFiles(newFiles);
-    },
+    listType: "picture-card",
+    className: "avatar-uploader",
+    showUploadList: false,
     beforeUpload: (file) => {
-      setFiles([...files, file]);
+      setFile(file);
+      setLogoPreview(URL.createObjectURL(file))
       return false;
     },
-    files,
+  };
+
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  const configFiles = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+      "Content-Type": "multipart/form-data",
+      processData: false,
+      contentType: false,
+    },
   };
 
   function handleChange(e) {
-    setLesson({ ...lesson, [e.target.name]: e.target.value });
+    setOrganization({ ...organization, [e.target.name]: e.target.value });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
 
-    const fileIds = [];
     const data = {
-      ...lesson,
-      course_id: course.get("course"),
+      ...organization,
       user_id: session.user.id,
-      files: files,
-    };
-
-    console.log(data);
-    setUploading(true);
-
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-    };
-
-    const configFiles = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-        "Content-Type": "multipart/form-data",
-        processData: false,
-        contentType: false,
-      },
-    };
+      file_name: organization.name,
+      file_type: file.type
+    }
 
     api
-      .post("/lesson_create", data, config)
+      .post("/organization", data, config)
       .then((response) => {
-        fileIds.push(response.data);
+        const formData = new FormData();
+        formData.append(response.data.file_id, file);
 
-        for (let i = 0; i < fileIds.length; i++) {
-          const formData = new FormData();
-          formData.append(fileIds[i], files[i]);
+        api
+          .post("file_upload", formData, configFiles)
+          .then(() => {
+            setLoading(false);
+            message.success("Organização criada com sucesso!");
+            history.push(`/organizacao`);
 
-          api
-            .post("file_upload", formData, configFiles)
-            .catch(err => {
-              message.error("Não foi possível criar a aula!");
-            })
-        }
-
-        setUploading(false);
-        message.success("Aula criada com sucesso!");
-        history.push(`/curso/${course.id}`);
+          })
+          .catch(err => {
+            message.error("Não foi possível criar a organização!");
+          })
       })
       .catch((err) => {
-        message.error("Não foi possível criar a aula!");
-        console.log(course.id);
-        setUploading(false);
+        message.error("Não foi possível criar a organização!");
+        setLoading(false);
       });
   }
 
@@ -121,7 +112,7 @@ export default function NovaAula(props) {
               scrollToFirstError
             >
               <Form.Item {...formTailLayout}>
-                <h1>Nova Aula</h1>
+                <h1>Nova Organização</h1>
               </Form.Item>
               <Form.Item
                 name="name"
@@ -151,7 +142,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="files"
-                label={<label style={{ fontSize: "large" }}> Arquivos </label>}
+                label={<label style={{ fontSize: "large" }}> Logo </label>}
                 rules={[
                   {
                     required: true,
@@ -160,17 +151,25 @@ export default function NovaAula(props) {
                 ]}
               >
                 <Upload {...fileProps}>
-                  <Button icon={<UploadOutlined />}>Upload</Button>
+                  {logoPreview
+                    ?
+                    <img src={logoPreview} alt="avatar" style={{ width: '100%' }} />
+                    :
+                    <div>
+                      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                  }
                 </Upload>
               </Form.Item>
               <Form.Item {...formTailLayout}>
                 <Button
                   type="primary"
                   onClick={handleSubmit}
-                  loading={uploading}
+                  loading={loading}
                   style={{ fontSize: "large" }}
                 >
-                  {uploading ? "Criando" : "Criar aula"}
+                  {loading ? "Criando" : "Criar aula"}
                 </Button>
               </Form.Item>
             </Form>
