@@ -21,6 +21,7 @@ export default function Login() {
     api
       .post("/login", { email, google, tokenId })
       .then((response) => {
+        console.log(response);
         handleLogin({
           accessToken: response.data.accessToken,
           user: response.data.user,
@@ -28,6 +29,7 @@ export default function Login() {
       })
       .then(() => redirect("/dashboard"))
       .catch((error) => {
+        console.log(error);
         history.push({
           pathname: "/cadastro",
           state: {
@@ -80,7 +82,13 @@ export default function Login() {
   return (
     <div className="pageLogin">
       <div className="content">
-        <img className="LoginImg" src={logo} onClick={() => {history.push("/")}} ></img>
+        <img
+          className="LoginImg"
+          src={logo}
+          onClick={() => {
+            history.push("/");
+          }}
+        ></img>
         <div className="bloco">
           <h1 className="entrarLogin">Entrar</h1>
           <GoogleLogin

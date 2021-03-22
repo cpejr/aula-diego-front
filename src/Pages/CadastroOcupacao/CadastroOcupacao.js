@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Select } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -12,7 +12,10 @@ export default function NovaAula(props) {
   const [uploading, setUploading] = useState(false);
   const history = useHistory();
   const { session } = useSession();
-  const organization = new URLSearchParams(props.location.search);
+  const [organizations, setOrganizations] = useState([]);
+  const [organization, setOrganization] = useState(
+    session.user.organization_id
+  );
 
   const formLayout = {
     labelCol: {
@@ -29,8 +32,31 @@ export default function NovaAula(props) {
     },
   };
 
+  let config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  useEffect(() => {
+    if (session.user.type !== "master") {
+      config = {
+        ...config,
+        params: {
+          organization_id: session.user.organization_id,
+        },
+      };
+    }
+    api.get("/organization", config).then((res) => setOrganizations(res.data));
+  }, []);
+
   function handleChange(e) {
     setOccupation({ ...occupation, [e.target.name]: e.target.value });
+  }
+
+  function handleOrgChange(value) {
+    console.log(value);
+    setOccupation({ ...occupation, organization_id: value });
   }
 
   function handleSubmit(e) {
@@ -38,17 +64,11 @@ export default function NovaAula(props) {
     setUploading(true);
 
     console.log(occupation);
-    console.log(organization.get("organization"));
+    // console.log(organization.get("organization"));
 
     const data = {
       ...occupation,
-      organization_id: organization.get("organization"),
-    };
-
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
+      organization_id: organization,
     };
 
     api
@@ -81,6 +101,37 @@ export default function NovaAula(props) {
               <Form.Item {...formTailLayout}>
                 <h1>Nova Ocupação</h1>
               </Form.Item>
+              {session.user.type === "master" ? (
+                <Form.Item
+                  name="organization_id"
+                  label={
+                    <label style={{ fontSize: "large" }}> Organização </label>
+                  }
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor insira o nome da ocupação!",
+                    },
+                  ]}
+                >
+                  <Select
+                    onChange={handleOrgChange}
+                    defaultValue={session.user.organization_id}
+                  >
+                    {organizations.map((organization) => {
+                      return (
+                        <Select.Option
+                          key={organization.id}
+                          value={organization.id}
+                        >
+                          {organization.name}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              ) : null}
+
               <Form.Item
                 name="name"
                 label={<label style={{ fontSize: "large" }}> Nome </label>}

@@ -28,6 +28,7 @@ export default function NovaAula(props) {
     ...config,
     params: {
       "user.organization_id": session.user.organization_id,
+      "user.type": "student",
     },
   };
 
