@@ -70,7 +70,7 @@ export default function ListaOrganizacoes() {
     {
       title: <h5 style={{ "textAlign": "center" }}>Logo</h5>,
       dataIndex: "logo",
-      width: "15%",
+      width: "10%",
       render: (logo) => (
         <div className="logo">
           <img
@@ -170,7 +170,7 @@ export default function ListaOrganizacoes() {
 
   return (
     <Base>
-      <h1 className="page-title">Lista de Organizações</h1>
+      <h1 className="page-title">Organizações</h1>
       <div className="table-container">
         <div className="inputWrapper">
           <Input
