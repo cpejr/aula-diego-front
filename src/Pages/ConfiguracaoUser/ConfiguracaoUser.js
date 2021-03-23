@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
 import "./ConfiguracaoUser.css";
+import EditUser from "../../Components/EditUser/EditUser";
 import Base from "../../Components/Base/Base";
 import { UTCToLocal } from "../../utils/convertDate";
 import { message, Card, Col, Row, Input, Select, Form, DatePicker } from "antd";
@@ -234,242 +235,103 @@ export default function ConfiguracaoAluno(props) {
 
     return (
       <>
-        <div className="pageRoot">
-          <div className="pageBody">
-            <div className="formWrapper">
-              <Form
-                {...formItemLayout}
-                name="newLive"
-                className="liveForm"
-                onFinish={handleSubmit}
-                size={"large"}
-              >
-                <Form.Item {...tailFormItemLayout}>
-                  <h1>Editar Suas Informações:</h1>
-                </Form.Item>
-                <Form.Item
-                  label={<label style={{ fontSize: "large" }}> Nome </label>}
-                >
-                  <Input
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <label style={{ fontSize: "large" }}> Organização </label>
-                  }
-                >
-                  <Select
-                    name="organization_id"
-                    value={formData["organization_id"]}
-                    onChange={(e) => handleSelectChange(e, "organization_id")}
-                    placeholder="Organização"
-                    style={{ width: "100%" }}
-                  >
-                    {organizations.map((organization) => {
-                      return organization != [] ? (
-                        <Select.Option
-                          name="organization_id"
-                          value={organization.id}
-                        >
-                          {organization.name}
-                        </Select.Option>
-                      ) : null;
-                    })}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <label style={{ fontSize: "large" }}>
-                      {" "}
-                      Data de Nascimento{" "}
-                    </label>
-                  }
-                >
-                  <DatePicker
-                    name="date"
-                    //value={dateFormate(date)}
-                    showTime
-                    format="DD-MM-YYYY HH:mm"
-                    name="date"
-                    onChange={handleChangeDate}
-                    id="date"
-                  />
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <label style={{ fontSize: "large" }}> Ocupação </label>
-                  }
-                >
-                  <Select
-                    name="occupation_id"
-                    value={formData["occupation_id"]}
-                    onChange={(e) => handleSelectChange(e, "occupation_id")}
-                    placeholder="Ocupação"
-                    style={{ width: "100%" }}
-                  >
-                    {occupations.map((occupation) => {
-                      return occupation != [] ? (
-                        <Select.Option value={occupation.id}>
-                          {occupation.name}
-                        </Select.Option>
-                      ) : null;
-                    })}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <label style={{ fontSize: "large" }}> Telefone </label>
-                  }
-                >
-                  <Input
-                    name="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label={<label style={{ fontSize: "large" }}> Email </label>}
-                >
-                  <Input
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                  <div className="acessarConfigAluno">
-                    <button className="buttonVoltarAluno" onClick={handleClose}>
-                      Voltar
-                    </button>
-                    <button
-                      className="buttonConfigAluno"
-                      onClick={handleSubmit}
-                    >
-                      Salvar
-                    </button>
-                  </div>
-                </Form.Item>
-              </Form>
+        <Form
+          {...formItemLayout}
+          name="newLive"
+          className="liveForm"
+          onFinish={handleSubmit}
+          size={"large"}
+        >
+          <Form.Item {...tailFormItemLayout}>
+            <h1>Editar Suas Informações:</h1>
+          </Form.Item>
+          <Form.Item
+            label={<label style={{ fontSize: "large" }}> Nome </label>}
+          >
+            <Input
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            label={<label style={{ fontSize: "large" }}> Organização </label>}
+          >
+            <Select
+              name="organization_id"
+              value={formData["organization_id"]}
+              onChange={(e) => handleSelectChange(e, "organization_id")}
+              placeholder="Organização"
+              style={{ width: "100%" }}
+            >
+              {organizations.map((organization) => {
+                return organization != [] ? (
+                  <Select.Option name="organization_id" value={organization.id}>
+                    {organization.name}
+                  </Select.Option>
+                ) : null;
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label={
+              <label style={{ fontSize: "large" }}> Data de Nascimento </label>
+            }
+          >
+            <Input
+              name="birthdate"
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            label={<label style={{ fontSize: "large" }}> Ocupação </label>}
+          >
+            <Select
+              name="occupation_id"
+              value={formData["occupation_id"]}
+              onChange={(e) => handleSelectChange(e, "occupation_id")}
+              placeholder="Ocupação"
+              style={{ width: "100%" }}
+            >
+              {occupations.map((occupation) => {
+                return occupation != [] ? (
+                  <Select.Option value={occupation.id}>
+                    {occupation.name}
+                  </Select.Option>
+                ) : null;
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label={<label style={{ fontSize: "large" }}> Telefone </label>}
+          >
+            <Input
+              name="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            label={<label style={{ fontSize: "large" }}> Email </label>}
+          >
+            <Input
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item {...tailFormItemLayout}>
+            <div className="acessarConfigAluno">
+              <button className="buttonVoltarAluno" onClick={handleClose}>
+                Voltar
+              </button>
+              <button className="buttonConfigAluno" onClick={handleSubmit}>
+                Salvar
+              </button>
             </div>
-          </div>
-        </div>
-        {/*<Form>
-          <Card title={<h2>Editar as suas Informações:</h2>}>
-            <Row gutter={26}>
-              <Col span={12}>
-                <Form.Item>
-                  <Card type="inner" title="Nome" bordered={true}>
-                    <Input
-                      name="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </Card>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <Card type="inner" title="Empresa" bordered={false}>
-                    <Select
-                      name="organization_id"
-                      value={formData["organization_id"]}
-                      onChange={(e) => handleSelectChange(e, "organization_id")}
-                      placeholder="Organização"
-                      style={{ width: "100%" }}
-                    >
-                      {organizations.map((organization) => {
-                        return organization != [] ? (
-                          <Select.Option
-                            name="organization_id"
-                            value={organization.id}
-                          >
-                            {organization.name}
-                          </Select.Option>
-                        ) : null;
-                      })}
-                    </Select>
-                  </Card>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <Card
-                    type="inner"
-                    title="Data de Nascimento"
-                    bordered={false}
-                  >
-                    <Input
-                      name="birthdate"
-                      onChange={(e) => setBirthdate(e.target.value)}
-                      defaultValue={birthdate}
-                    />
-                  </Card>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <Card type="inner" title="Ocupação" bordered={false}>
-                    <Select
-                      name="occupation_id"
-                      value={formData["occupation_id"]}
-                      onChange={(e) => handleSelectChange(e, "occupation_id")}
-                      placeholder="Ocupação"
-                      style={{ width: "100%" }}
-                    >
-                      {occupations.map((occupation) => {
-                        return occupation != [] ? (
-                          <Select.Option value={occupation.id}>
-                            {occupation.name}
-                          </Select.Option>
-                        ) : null;
-                      })}
-                    </Select>
-                  </Card>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <Card type="inner" title="Telefone" bordered={false}>
-                    <Input
-                      name="phone"
-                      onChange={(e) => setPhone(e.target.value)}
-                      defaultValue={phone}
-                    />
-                  </Card>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <Card type="inner" title="Tipo" bordered={false}>
-                    {getType()}
-                  </Card>
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item>
-                  <Card type="inner" title="Email" bordered={false}>
-                    <Input
-                      name="email"
-                      onChange={(e) => setEmail(e.target.value)}
-                      defaultValue={email}
-                    />
-                  </Card>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Card>
-          <div className="acessarConfigAluno">
-            <button className="buttonVoltarAluno" onClick={handleClose}>
-              Voltar
-            </button>
-            <button className="buttonConfigAluno" onClick={handleSubmit}>
-              Salvar
-            </button>
-          </div>
-        </Form>*/}
+          </Form.Item>
+        </Form>
       </>
     );
   }
@@ -478,14 +340,21 @@ export default function ConfiguracaoAluno(props) {
     return (
       <Base>
         <div className="configUser">
-          <Editar />
+          <EditUser />
+          <div className="acessarConfigAluno">
+            <button className="buttonVoltarAluno" onClick={handleClose}>
+              Voltar
+            </button>
+          </div>
         </div>
       </Base>
     );
   else if (!open) {
     return (
       <Base>
-        <div className="configUser">{<Info />}</div>
+        <div className="configUser">
+          <Info />
+        </div>
       </Base>
     );
   }

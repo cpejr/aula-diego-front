@@ -29,7 +29,8 @@ export default function EditarLive(props) {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
+  //conferir!!!!
   const [link, setLink] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -163,10 +164,8 @@ export default function EditarLive(props) {
                 {console.log(moment(date).format("DD-MM-YYYY hh:mm"))}
                 <DatePicker
                   name="date"
-                  //value={moment(date, "DD-MM-YYYY hh:mm").format()}
-                  //value={moment(date).format("DD-MM-YYYY hh:mm")}
                   defaultValue={console.log(
-                    moment(date, true).format("DD-MM-YYYY hh:mm")
+                    typeof moment(new Date(date)).format("DD-MM-YYYY hh:mm")
                   )}
                   showTime
                   format="DD-MM-YYYY HH:mm"
