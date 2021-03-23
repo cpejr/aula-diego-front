@@ -3,12 +3,7 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Popconfirm, Tooltip, Modal } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import {PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -84,12 +79,14 @@ export default function CursoAdmin(props) {
       dataIndex: "id",
       render: (id) => (
         <>
-          <EyeOutlined className="editButton" onClick={() => handleVisit(id)} />
-          <Popconfirm title="Editar item?" onConfirm={() => startEdit(id)}>
-            <EditOutlined className="editButton" />
+          <Popconfirm title="Visitar item?" onConfirm={() => handleVisit(id)}>
+            <EyeOutlined className="actionButton" />
+          </Popconfirm>
+          <Popconfirm title="Editar item?" onConfirm={() => handleEdit(id)}>
+            <EditOutlined className="actionButton" />
           </Popconfirm>
           <Popconfirm title="Excluir item?" onConfirm={() => handleDelete(id)}>
-            <DeleteOutlined className="editButton" />
+            <DeleteOutlined className="actionButton" />
           </Popconfirm>
         </>
       ),
@@ -114,12 +111,14 @@ export default function CursoAdmin(props) {
       dataIndex: "id",
       render: (id) => (
         <>
-          <EyeOutlined className="editButton" onClick={() => handleVisit(id)} />
-          <Popconfirm title="Editar item?" onConfirm={() => startEdit(id)}>
-            <EditOutlined className="editButton" />
+          <Popconfirm title="Visitar item?" onConfirm={() => handleVisit(id)}>
+            <EyeOutlined className="actionButton" />
+          </Popconfirm>
+          <Popconfirm title="Editar item?" onConfirm={() => handleEdit(id)}>
+            <EditOutlined className="actionButton" />
           </Popconfirm>
           <Popconfirm title="Excluir item?" onConfirm={() => handleDelete(id)}>
-            <DeleteOutlined className="editButton" />
+            <DeleteOutlined className="actionButton" />
           </Popconfirm>
         </>
       ),

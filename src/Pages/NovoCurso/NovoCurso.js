@@ -4,7 +4,7 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import { Input, Form, message, Select } from "antd";
+import { Input, Form, message, Select, Button } from "antd";
 
 const { TextArea } = Input;
 
@@ -55,7 +55,7 @@ export default function NovoCurso() {
         message.success("Curso criado com sucesso!");
         history.push("/curso/lista");
       })
-      .catch(() => {
+      .catch((err) => {
         message.error(`Não foi possível cadastrar o curso.`);
       });
   }
@@ -104,13 +104,13 @@ export default function NovoCurso() {
                 />
               </Form.Item>
               <Form.Item {...formTailLayout} className="mt20">
-                <button
-                  className="btnCurso"
-                  type="submit"
+                <Button
+                  type="primary"
                   onClick={handleSubmit}
+                  style={{ fontSize: "large" }}
                 >
-                  Cadastrar
-                </button>
+                  Criar Turma
+                </Button>
               </Form.Item>
             </Form>
           </div>
