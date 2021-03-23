@@ -4,7 +4,7 @@ import api from "../../services/api";
 import "./ConfiguracaoUser.css";
 import Base from "../../Components/Base/Base";
 import { UTCToLocal } from "../../utils/convertDate";
-import { message, Card, Col, Row, Input, Select, Form } from "antd";
+import { message, Card, Col, Row, Input, Select, Form, DatePicker } from "antd";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState([]);
@@ -217,9 +217,146 @@ export default function ConfiguracaoAluno(props) {
   }
 
   function Editar() {
+    const formItemLayout = {
+      labelCol: {
+        span: 4,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+
+    const tailFormItemLayout = {
+      wrapperCol: {
+        offset: 4,
+      },
+    };
+
     return (
       <>
-        <Form>
+        <div className="pageRoot">
+          <div className="pageBody">
+            <div className="formWrapper">
+              <Form
+                {...formItemLayout}
+                name="newLive"
+                className="liveForm"
+                onFinish={handleSubmit}
+                size={"large"}
+              >
+                <Form.Item {...tailFormItemLayout}>
+                  <h1>Editar Suas Informações:</h1>
+                </Form.Item>
+                <Form.Item
+                  label={<label style={{ fontSize: "large" }}> Nome </label>}
+                >
+                  <Input
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <label style={{ fontSize: "large" }}> Organização </label>
+                  }
+                >
+                  <Select
+                    name="organization_id"
+                    value={formData["organization_id"]}
+                    onChange={(e) => handleSelectChange(e, "organization_id")}
+                    placeholder="Organização"
+                    style={{ width: "100%" }}
+                  >
+                    {organizations.map((organization) => {
+                      return organization != [] ? (
+                        <Select.Option
+                          name="organization_id"
+                          value={organization.id}
+                        >
+                          {organization.name}
+                        </Select.Option>
+                      ) : null;
+                    })}
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <label style={{ fontSize: "large" }}>
+                      {" "}
+                      Data de Nascimento{" "}
+                    </label>
+                  }
+                >
+                  <DatePicker
+                    name="date"
+                    //value={dateFormate(date)}
+                    showTime
+                    format="DD-MM-YYYY HH:mm"
+                    name="date"
+                    onChange={handleChangeDate}
+                    id="date"
+                  />
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <label style={{ fontSize: "large" }}> Ocupação </label>
+                  }
+                >
+                  <Select
+                    name="occupation_id"
+                    value={formData["occupation_id"]}
+                    onChange={(e) => handleSelectChange(e, "occupation_id")}
+                    placeholder="Ocupação"
+                    style={{ width: "100%" }}
+                  >
+                    {occupations.map((occupation) => {
+                      return occupation != [] ? (
+                        <Select.Option value={occupation.id}>
+                          {occupation.name}
+                        </Select.Option>
+                      ) : null;
+                    })}
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <label style={{ fontSize: "large" }}> Telefone </label>
+                  }
+                >
+                  <Input
+                    name="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label={<label style={{ fontSize: "large" }}> Email </label>}
+                >
+                  <Input
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                  <div className="acessarConfigAluno">
+                    <button className="buttonVoltarAluno" onClick={handleClose}>
+                      Voltar
+                    </button>
+                    <button
+                      className="buttonConfigAluno"
+                      onClick={handleSubmit}
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                </Form.Item>
+              </Form>
+            </div>
+          </div>
+        </div>
+        {/*<Form>
           <Card title={<h2>Editar as suas Informações:</h2>}>
             <Row gutter={26}>
               <Col span={12}>
@@ -332,7 +469,7 @@ export default function ConfiguracaoAluno(props) {
               Salvar
             </button>
           </div>
-        </Form>
+        </Form>*/}
       </>
     );
   }

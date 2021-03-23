@@ -5,6 +5,7 @@ import { Form, DatePicker, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarLive.css";
+var moment = require("moment");
 
 const formItemLayout = {
   labelCol: {
@@ -24,11 +25,12 @@ const tailFormItemLayout = {
 export default function EditarLive(props) {
   const [live, setLive] = useState([]);
   const [edit, setEdit] = useState({});
+  const [startDate, setStartDate] = useState(new Date());
 
-  const [name, setName] = useState([]);
-  const [description, setDescription] = useState([]);
-  const [date, setDate] = useState([]);
-  const [link, setLink] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [link, setLink] = useState("");
 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
@@ -86,12 +88,28 @@ export default function EditarLive(props) {
       });
   }
 
+  function dateFormate(date) {
+    const dataStr = moment(date).format("DD-MM-YYYY hh:mm");
+    console.log(dataStr);
+    /*var d = Date.parse(dataStr);
+    console.log(d);*/
+    return dataStr;
+    /*console.log(dataStr);
+    const data = new Date(dataStr, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    console.log(data);
+    return data;*/
+  }
+
   return (
     <Base>
       <div className="pageRoot">
-        {console.log(name)}
         <div className="pageBody">
-          <input defaultValue={name} />
           <div className="formWrapper">
             <Form
               {...formItemLayout}
@@ -101,7 +119,7 @@ export default function EditarLive(props) {
               size={"large"}
             >
               <Form.Item {...tailFormItemLayout}>
-                <h1>Nova Live</h1>
+                <h1>Editar Live</h1>
               </Form.Item>
               <Form.Item
                 label={<label style={{ fontSize: "large" }}> Título </label>}
@@ -112,7 +130,6 @@ export default function EditarLive(props) {
                   },
                 ]}
               >
-                {console.log("AQUII", typeof name)}
                 <Input
                   name="name"
                   value={name}
@@ -120,7 +137,6 @@ export default function EditarLive(props) {
                 />
               </Form.Item>
               <Form.Item
-                name="description_form"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
                 rules={[
                   {
@@ -131,13 +147,11 @@ export default function EditarLive(props) {
               >
                 <Input
                   name="description"
+                  value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder={description}
-                  defaultValue={description}
                 />
               </Form.Item>
               <Form.Item
-                name="date_form"
                 label={<label style={{ fontSize: "large" }}> Data </label>}
                 rules={[
                   {
@@ -146,7 +160,14 @@ export default function EditarLive(props) {
                   },
                 ]}
               >
+                {console.log(moment(date).format("DD-MM-YYYY hh:mm"))}
                 <DatePicker
+                  name="date"
+                  //value={moment(date, "DD-MM-YYYY hh:mm").format()}
+                  //value={moment(date).format("DD-MM-YYYY hh:mm")}
+                  defaultValue={console.log(
+                    moment(date, true).format("DD-MM-YYYY hh:mm")
+                  )}
                   showTime
                   format="DD-MM-YYYY HH:mm"
                   name="date"
@@ -155,7 +176,6 @@ export default function EditarLive(props) {
                 />
               </Form.Item>
               <Form.Item
-                name="link_form"
                 label={<label style={{ fontSize: "large" }}> Link </label>}
                 rules={[
                   {
@@ -166,8 +186,8 @@ export default function EditarLive(props) {
               >
                 <Input
                   name="link"
+                  value={link}
                   onChange={(e) => setLink(e.target.value)}
-                  defaultValue={link}
                 />
               </Form.Item>
               <Form.Item
