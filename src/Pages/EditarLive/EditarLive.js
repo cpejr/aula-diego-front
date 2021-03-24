@@ -5,7 +5,6 @@ import { Form, DatePicker, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarLive.css";
-var moment = require("moment");
 
 const formItemLayout = {
   labelCol: {
@@ -25,12 +24,9 @@ const tailFormItemLayout = {
 export default function EditarLive(props) {
   const [live, setLive] = useState([]);
   const [edit, setEdit] = useState({});
-  const [startDate, setStartDate] = useState(new Date());
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(new Date());
-  //conferir!!!!
+  const [date, setDate] = useState("");
   const [link, setLink] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -78,33 +74,28 @@ export default function EditarLive(props) {
     };
 
     api
-      .put("/live", data, config)
+      .put(`/live/${id}`, data, config)
       .then(() => {
         message.success("Live editada com sucesso!");
         history.push(`/live/${id}`);
       })
       .catch((err) => {
-        message.error("Não foi possiível editar a live!");
-        console.log(err);
+        message.error("Não foi possiível editar a live!\n" + err);
       });
   }
 
   function dateFormate(date) {
-    const dataStr = moment(date).format("DD-MM-YYYY hh:mm");
-    console.log(dataStr);
-    /*var d = Date.parse(dataStr);
-    console.log(d);*/
-    return dataStr;
-    /*console.log(dataStr);
-    const data = new Date(dataStr, {
+    /*const data = new Date(date).toLocaleDateString([], {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
     });
-    console.log(data);
     return data;*/
+    const data = new Date(date);
+    data.toString().split("GMT")[0] + " UTC";
+    return new Date(data).toISOString().split(".")[0];
   }
 
   return (
@@ -161,17 +152,15 @@ export default function EditarLive(props) {
                   },
                 ]}
               >
-                {console.log(moment(date).format("DD-MM-YYYY hh:mm"))}
-                <DatePicker
+                <Input
                   name="date"
-                  defaultValue={console.log(
-                    typeof moment(new Date(date)).format("DD-MM-YYYY hh:mm")
-                  )}
-                  showTime
-                  format="DD-MM-YYYY HH:mm"
-                  name="date"
-                  onChange={handleChangeDate}
-                  id="date"
+                  type="datetime-local"
+                  defaultValue={
+                    new Date(new Date().toString().split("GMT")[0] + " UTC")
+                      .toISOString()
+                      .split(".")[0]
+                  }
+                  onChange={(e) => setDate(e.target.value)}
                 />
               </Form.Item>
               <Form.Item

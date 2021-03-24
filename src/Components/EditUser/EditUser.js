@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "../../Context/SessionContext";
+import { UTCToLocal } from "../../utils/convertDate";
 import api from "../../services/api";
 import { message, Card, Col, Row, Input, Select } from "antd";
 
@@ -23,9 +24,6 @@ export default function EditUser() {
 
   useEffect(() => {
     api.get(`/user/${session.user.id}`, config).then((response) => {
-      const birthdate = new Date(response.data.birthdate).toLocaleDateString(
-        "pt-BR"
-      );
       const phone = response.data.phone.replace(/[^\w\s]/gi, ""); // essa regex remove todos os caracteres especiais
       const formattedPhone = `(${phone.slice(0, 2)}) ${phone.slice(
         2,
@@ -34,11 +32,10 @@ export default function EditUser() {
 
       setDataAluno({
         ...response.data,
-        birthdate: birthdate,
         phone: formattedPhone,
       });
       setName(response.data.name);
-      setBirthdate(birthdate);
+      setBirthdate(response.data.birthdate);
       setPhone(phone);
       setEmail(response.data.email);
     });
@@ -59,7 +56,7 @@ export default function EditUser() {
 
   function loadOccups(value) {
     console.log(value);
-    const config = {
+    const configOccupation = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
@@ -67,16 +64,16 @@ export default function EditUser() {
         organization_id: value,
       },
     };
-
-    api
-      .get("/occupation", config)
-      .then((data) => {
-        console.log(data);
-        setOccupations(data.data);
-      })
-      .catch((error) =>
-        message.error("Não foi possível carregar ocupações\n" + error)
-      );
+    if (value)
+      api
+        .get("/occupation", configOccupation)
+        .then((data) => {
+          console.log(data);
+          setOccupations(data.data);
+        })
+        .catch((error) =>
+          message.error("Não foi possível carregar ocupações\n" + error)
+        );
   }
 
   function handleSubmit() {
@@ -94,36 +91,24 @@ export default function EditUser() {
     addToData("occupation_id", formData["occupation_id"]);
     addToData("email", email);
 
+    console.log(data);
+
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
     };
 
-    let aniversario = new Date(data["birthdate"]);
-    aniversario = UTCToLocal(aniversario).getTime();
-    const editedData = data;
-    editedData["birthdate"] = aniversario;
-    console.log(editedData["birthdate"]);
-
     const wantsToEdit = window.confirm(
       "Você tem certeza que deseja alterar suas informações?"
     );
     if (!wantsToEdit) return message.error("Operação cancelada");
     api
-      .put(`/user/${session.user.id}`, editedData, config)
+      .put(`/user/${session.user.id}`, data, config)
       .then(() => message.success("usuário alterado com sucesso"))
-      .catch(() => message.error("Não foi possível editar o usuário"));
-
-    /*api
-      .put(`/user/${session.user.user_id}`, editedData, config)
-      .then(() => alert("dados enviados com sucesso"))
-      .catch((error) => {
-        handleClose();
-        alert("não foi possível alterar informações");
-      });*/
-
-    setOpen(false);
+      .catch((error) =>
+        message.error("Não foi possível editar o usuário\n" + error)
+      );
   }
 
   function getType() {
@@ -132,6 +117,12 @@ export default function EditUser() {
     else if (dataAluno.type === "master") return "Administrador";
     else return null;
   }
+
+  function dateFormate(date) {
+    const birthdate = new Date(date).toLocaleDateString("pt-BR");
+    return birthdate;
+  }
+
   return (
     <>
       <Card title={<h2>Editar as suas Informações:</h2>}>
@@ -171,7 +162,7 @@ export default function EditUser() {
             <Card type="inner" title="Data de Nascimento" bordered={false}>
               <Input
                 name="birthdate"
-                value={birthdate}
+                value={dateFormate(birthdate)}
                 onChange={(e) => setBirthdate(e.target.value)}
               />
             </Card>
