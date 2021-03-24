@@ -14,7 +14,7 @@ export default function NovaAula(props) {
   const { session } = useSession();
   const history = useHistory();
   const course = new URLSearchParams(props.location.search);
-  console.log(props.location.search);
+
   const formLayout = {
     labelCol: {
       span: 4,

@@ -30,6 +30,7 @@ import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
+import NovaProva from "./Pages/NovaProva/NovaProva";
 
 const routes = () => {
   return (
@@ -162,6 +163,13 @@ const routes = () => {
             studentComponent={Aula}
             adminComponent={Aula}
             masterComponent={Aula}
+          />
+          <PrivateRoute
+            path="/prova/cadastro"
+            exact
+            studentComponent={() => <Redirect to="/dashboard" />}
+            adminComponent={NovaProva}
+            masterComponent={NovaProva}
           />
           /* ORGANIZAÇÃO */
           <PrivateRoute

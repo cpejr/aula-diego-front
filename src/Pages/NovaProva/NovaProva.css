@@ -1,0 +1,28 @@
+.formWrapper {
+  width: 100%;
+  padding-top: 6%;
+  padding: 4%;
+}
+
+.questionsWrapper {
+  border: 1px dashed lightgray;
+  padding-top: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.questionWrapper {
+  padding: 2%;
+  padding-right: 10%;
+  margin-bottom: 2%;
+  border: 1px dashed lightgray;
+}
+
+.alternativeWrapper {
+  display: flex;
+}
+
+.alternative {
+  height: 40px;
+  border-radius: 0px;
+}
