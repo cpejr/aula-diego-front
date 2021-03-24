@@ -64,14 +64,13 @@ export default function Infolive() {
   }, []);
 
   function espectadores(id) {
-    var count = 0;
+    let cont = 0;
 
     const configPresence = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
       params: {
-        live_id: id,
         confirmation: true,
       },
     };
@@ -79,12 +78,18 @@ export default function Infolive() {
     api
       .get(`/presence/live/${id}`, configPresence)
       .then((count) => {
-        setAudience(count);
+        console.log(count.data);
+        cont = count.length;
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da presença das lives");
       });
-    return count;
+
+    setAudience(cont);
+    console.log(id);
+    console.log(cont);
+
+    return audience;
   }
 
   const columns = [
