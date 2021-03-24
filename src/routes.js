@@ -30,7 +30,6 @@ import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
-import Parceiros from "./Pages/Parceiros/Parceiros";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 
 const routes = () => {
@@ -212,13 +211,7 @@ const routes = () => {
           adminComponent={usuariosPendentes}
           masterComponent={usuariosPendentes}
         />
-        <PrivateRoute
-          path="/parceiros"
-          exact
-          studentComponent={Parceiros}
-          adminComponent={Parceiros}
-          masterComponent={Parceiros}
-        />
+        ola
         <PrivateRoute
           path="/sobre"
           exact
