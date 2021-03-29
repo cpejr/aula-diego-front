@@ -37,40 +37,33 @@ const alternativeTailLayout = {
 };
 
 const Field = ({ name, label, required = true, message = "Campo obrigatório", field, fieldKey, children }) => (
-  <Form.Item
-    {...field}
-    name={name}
-    label={label ? <label style={{ fontSize: "large" }}> {label} </label> : null}
-    fieldKey={fieldKey}
-    rules={[
-      {
-        required: { required },
-        message: { message },
-      },
-    ]}
-  >
-    {children}
-  </Form.Item>
+  <div className="fieldWrapper">
+    <Form.Item
+      {...field}
+      className="formItem"
+      name={name}
+      label={label ? <label className="formLabel"> {label} </label> : null}
+      fieldKey={fieldKey}
+      rules={[
+        {
+          required: { required },
+          message: { message },
+        },
+      ]}
+    >
+      {children}
+    </Form.Item>
+  </div>
 )
 
 const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, func, field, fieldKey }) => (
   <Field name={name} label={label} field={field} fieldKey={fieldKey} required={required} message={message}>
     <TextArea
+      className="formInput"
       placeholder={placeholder}
       onChange={func}
       rows={1}
       autoSize
-    />
-  </Field>
-)
-
-const InputNumericField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, min, max, func }) => (
-  <Field name={name} label={label} required={required} message={message}>
-    <InputNumber
-      placeholder={placeholder}
-      min={min}
-      max={max}
-      onChange={func}
     />
   </Field>
 )
@@ -197,12 +190,12 @@ const QuestionAlternatives = ({ index, field, func }) => (
       message="Por favor, insira enunciado da questão!"
       func={func}
     />
-    <Alternatives 
+    <Alternatives
       name={`alternative_${index + 1}`}
       label="Alternativas"
       fieldKey={[field.fieldKey, 'alternative']}
       message="Por favor, insira alteranativa!"
-      func={func} 
+      func={func}
     />
     <ImageUpload
       name={`image_${index + 1}`}
@@ -276,15 +269,6 @@ export default function NovaProva(props) {
                 onChange={examChangeDate}
               />
             </Field>
-            <InputNumericField
-              name="value"
-              label="Valor"
-              placeholder="Valor"
-              min={1}
-              max={100}
-              message="Por favor, insira valor da prova!"
-              func={examChange}
-            />
             <Field label="Questões">
               <div className="questionsWrapper">
                 <Form

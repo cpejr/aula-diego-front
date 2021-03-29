@@ -4,6 +4,18 @@
   padding: 4%;
 }
 
+.fieldWrapper {
+}
+
+.formInput {
+  padding: auto;
+}
+
+.formLabel {
+  font-size: large;
+  text-align: center;
+}
+
 .questionsWrapper {
   border: 1px dashed lightgray;
   padding-top: 2%;
