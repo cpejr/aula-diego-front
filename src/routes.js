@@ -30,6 +30,7 @@ import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
+import Comentario from "./Pages/Comentario/Comentario";
 
 const routes = () => {
   return (
@@ -76,146 +77,153 @@ const routes = () => {
           adminComponent={ConfigUser}
           masterComponent={ConfigUser}
         />
-        
-          /* LIVE */
-          <PrivateRoute
-            path="/live/cadastro"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={Newlive}
-            masterComponent={Newlive}
-          />
-          <PrivateRoute
-            path="/live/info"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={Infolive}
-            masterComponent={Infolive}
-          />
-          <PrivateRoute
-            path="/live/presenca/:id"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={ListaAlunosLive}
-            masterComponent={ListaAlunosLive}
-          />
-          <PrivateRoute
-            exact
-            path="/live/:id"
-            studentComponent={Live}
-            adminComponent={Live}
-            masterComponent={Live}
-          />
-          /* TURMA */
-          <PrivateRoute
-            path="/turma/lista"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={ListaTurma}
-            masterComponent={ListaTurma}
-          />
-          <PrivateRoute
-            path="/turma/cadastro"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={NovaTurma}
-            masterComponent={NovaTurma}
-          />
-          <PrivateRoute
-            path="/turma/alunos"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={ListaAlunosTurma}
-            masterComponent={ListaAlunosTurma}
-          />
-          /* CURSO */
-          <PrivateRoute
-            path="/curso/cadastro"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={NovoCurso}
-            masterComponent={NovoCurso}
-          />
-          <PrivateRoute
-            path="/curso/lista"
-            studentComponent={MeusCursos}
-            adminComponent={MeusCursos}
-            masterComponent={ListaCursos}
-          />
-          <PrivateRoute
-            path="/curso/:id"
-            exact
-            studentComponent={Curso}
-            adminComponent={Curso}
-            masterComponent={Curso}
-          />
-          <PrivateRoute
-            path="/curso/gerenciar/:id"
-            exact
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={CursoAdmin}
-            masterComponent={CursoAdmin}
-          />
-          /* AULA */
-          <PrivateRoute
-            path="/aula/cadastro"
-            studentComponent={NovaAula}
-            adminComponent={NovaAula}
-            masterComponent={NovaAula}
-          />
-          <PrivateRoute
-            path="/aula/:id"
-            exact
-            studentComponent={Aula}
-            adminComponent={Aula}
-            masterComponent={Aula}
-          />
-          /* ORGANIZAÇÃO */
-          <PrivateRoute
-            path="/organizacao/cadastro"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={() => <Redirect to="/dashboard" />}
-            masterComponent={CadastroOrganizacao}
-          />
-          <PrivateRoute
-            path="/organizacao"
-            exact
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={() => <Redirect to="/dashboard" />}
-            masterComponent={ListaOrganizacao}
-          />
-          /* OCUPAÇÃO */
-          <PrivateRoute
-            path="/ocupacao/cadastro"
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={() => <Redirect to="/dashboard" />}
-            masterComponent={CadastroOcupacao}
-          />
-          <PrivateRoute
-            path="/ocupacao"
-            exact
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={() => <Redirect to="/dashboard" />}
-            masterComponent={ListaOcupacoes}
-          />
-          <PrivateRoute
-            path="/aluno"
-            exact
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={ListaAlunos}
-            masterComponent={ListaAlunos}
-          />
-          <PrivateRoute
-            path="/usuarios/pendentes"
-            exact
-            studentComponent={() => <Redirect to="/dashboard" />}
-            adminComponent={usuariosPendentes}
-            masterComponent={usuariosPendentes}
-          />
-          <PrivateRoute
-            path="/sobre"
-            exact
-            studentComponent={Sobre}
-            adminComponent={Sobre}
-            masterComponent={Sobre}
-          />
-          <PrivateRoute
-            path="/"
-            component={() => <h1> Erro 404: Página não encontrada </h1>}
-          />{" "}
+        /* LIVE */
+        <PrivateRoute
+          path="/live/cadastro"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={Newlive}
+          masterComponent={Newlive}
+        />
+        <PrivateRoute
+          path="/live/info"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={Infolive}
+          masterComponent={Infolive}
+        />
+        <PrivateRoute
+          path="/live/presenca/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaAlunosLive}
+          masterComponent={ListaAlunosLive}
+        />
+        <PrivateRoute
+          exact
+          path="/live/:id"
+          studentComponent={Live}
+          adminComponent={Live}
+          masterComponent={Live}
+        />
+        /* TURMA */
+        <PrivateRoute
+          path="/turma/lista"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaTurma}
+          masterComponent={ListaTurma}
+        />
+        <PrivateRoute
+          path="/turma/cadastro"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={NovaTurma}
+          masterComponent={NovaTurma}
+        />
+        <PrivateRoute
+          path="/turma/alunos"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaAlunosTurma}
+          masterComponent={ListaAlunosTurma}
+        />
+        /* CURSO */
+        <PrivateRoute
+          path="/curso/cadastro"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={NovoCurso}
+          masterComponent={NovoCurso}
+        />
+        <PrivateRoute
+          path="/curso/lista"
+          studentComponent={MeusCursos}
+          adminComponent={MeusCursos}
+          masterComponent={ListaCursos}
+        />
+        <PrivateRoute
+          path="/curso/:id"
+          exact
+          studentComponent={Curso}
+          adminComponent={Curso}
+          masterComponent={Curso}
+        />
+        <PrivateRoute
+          path="/curso/gerenciar/:id"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={CursoAdmin}
+          masterComponent={CursoAdmin}
+        />
+        /* AULA */
+        <PrivateRoute
+          path="/aula/cadastro"
+          studentComponent={NovaAula}
+          adminComponent={NovaAula}
+          masterComponent={NovaAula}
+        />
+        <PrivateRoute
+          path="/aula/:id"
+          exact
+          studentComponent={Aula}
+          adminComponent={Aula}
+          masterComponent={Aula}
+        />
+        /* ORGANIZAÇÃO */
+        <PrivateRoute
+          path="/organizacao/cadastro"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={CadastroOrganizacao}
+        />
+        <PrivateRoute
+          path="/organizacao"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={ListaOrganizacao}
+        />
+        /* OCUPAÇÃO */
+        <PrivateRoute
+          path="/ocupacao/cadastro"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={CadastroOcupacao}
+        />
+        <PrivateRoute
+          path="/ocupacao"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={ListaOcupacoes}
+        />
+        <PrivateRoute
+          path="/aluno"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaAlunos}
+          masterComponent={ListaAlunos}
+        />
+        <PrivateRoute
+          path="/usuarios/pendentes"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={usuariosPendentes}
+          masterComponent={usuariosPendentes}
+        />
+        <PrivateRoute
+          path="/sobre"
+          exact
+          studentComponent={Sobre}
+          adminComponent={Sobre}
+          masterComponent={Sobre}
+        />
+        /* COMENTÁRIO */
+        <PrivateRoute
+          path="/comentario/:id"
+          exact
+          studentComponent={Comentario}
+          adminComponent={Comentario}
+          masterComponent={Comentario}
+        />
+        <PrivateRoute
+          path="/"
+          component={() => <h1> Erro 404: Página não encontrada </h1>}
+        />{" "}
       </Switch>
     </BrowserRouter>
   );
