@@ -78,12 +78,15 @@ export default function CommentsContainer({
       {questions.map((q) => {
         return (
           <Comment
-            onClick={() => history.push(`/comentario/${q.id}`)}
+            onClick={() => {
+              history.push(`/comentario/${q.id}`);
+              window.location.reload();
+            }}
             author={q.user_name}
             date={new Date(q.created_at).toLocaleDateString("pt-BR")}
             text={q.question}
             linkSrc={`${links_preffix}${parent_id}`}
-            linkText={q.parent_name}
+            linkText={parent_name}
           />
         );
       })}
