@@ -1,0 +1,22 @@
+.pageRoot {
+  display: flex;
+}
+
+.pageBody {
+  margin-top: 3%;
+  width: 100%;
+}
+
+.liveForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.formWrapper {
+  margin-top: 3%;
+}
+
+.confirmationCode {
+  color: #25003c;
+  font-size: large;
+}

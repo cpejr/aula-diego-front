@@ -20,12 +20,8 @@ export default function Sidebar() {
 
   const studentList = [
     {
-      title: "Lives",
-      path: "/live",
-    },
-    {
       title: "Meus Cursos",
-      path: "/curso",
+      path: "/curso/lista",
     },
   ];
   const adminLinks = [
@@ -38,16 +34,8 @@ export default function Sidebar() {
       path: "/live/info",
     },
     {
-      title: "Turmas",
-      path: "/turma/lista",
-    },
-    {
       title: "Cursos",
       path: "/curso/lista",
-    },
-    {
-      title: "Nova Aula",
-      path: "/aula/cadastro",
     },
   ];
 
