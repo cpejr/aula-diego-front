@@ -154,7 +154,7 @@ export default function Aula(props) {
           );
         })}
         <Divider style={{ "margin-bottom": "3%" }} />
-        {/* <FormEmail /> */}
+        <FormEmail />
       </div>
       <CommentsContainer
         parent_id={id}
