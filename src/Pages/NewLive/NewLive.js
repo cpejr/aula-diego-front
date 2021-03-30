@@ -36,7 +36,8 @@ export default function NewLive(props) {
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const [confirmation, setConfirmation] = useState(generateCode());
-  const course = new URLSearchParams(props.location.search);
+  const course = props.location.search;
+  const course_id = course.split("=", 2)[1];
   const history = useHistory();
 
   function handleChange(e) {
@@ -54,7 +55,7 @@ export default function NewLive(props) {
     const data = {
       ...live,
       confirmation_code: confirmation,
-      course_id: course.get("course"),
+      course_id: course_id,
     };
 
     const config = {
@@ -68,11 +69,12 @@ export default function NewLive(props) {
       .then(() => {
         setLoading(false);
         message.success("Live criada com sucesso!");
-        history.push("/live/info");
+        history.push(`/curso/gerenciar/${course_id}`);
       })
       .catch((err) => {
         setLoading(false);
         message.error("Não foi possiível criar a live!");
+        console.log(data);
         console.log(err);
       });
   }
