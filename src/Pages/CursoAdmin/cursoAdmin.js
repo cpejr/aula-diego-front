@@ -299,7 +299,7 @@ export default function CursoAdmin(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Tooltip title="Adicionar Turma">
+                <Tooltip title="Adicionar Aula">
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>
@@ -323,7 +323,7 @@ export default function CursoAdmin(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Tooltip title="Adicionar Turma">
+                <Tooltip title="Adicionar Live">
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>

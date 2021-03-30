@@ -12,9 +12,7 @@ export default function Infolive() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
-  const [organizations, setOrganizations] = useState([]);
   const [audience, setAudience] = useState([]);
-  const [courses, setCourses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const { session } = useSession();
   const history = useHistory();
@@ -40,26 +38,6 @@ export default function Infolive() {
       })
       .catch(() => {
         message.error("Não foi possível carregar dados das lives");
-      });
-
-    api
-      .get(`/course`, config)
-      .then((courses) => {
-        setCourses(courses.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados dos cursos");
-      });
-
-    api
-      .get(`/organization`, config)
-      .then((organizations) => {
-        setOrganizations(organizations.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das organizações");
       });
   }, []);
 
@@ -95,28 +73,42 @@ export default function Infolive() {
   const columns = [
     {
       title: "Organização",
+      dataIndex: "organization_name",
       align: "left",
-      render: () => {
-        return organizations
-          ? organizations.map((organization) => {
-              let color = organization.name.length > 3 ? "geekblue" : "green";
-              color = organization.name.length > 4 ? "coral" : color;
-              color = organization.name.length > 5 ? "volcano" : color;
-              color = organization.name.length > 6 ? "turquoise" : color;
-              color = organization.name.length > 7 ? "yellowgreen" : color;
-              color = organization.name.length > 8 ? "salmon" : color;
-              return organization.id === session.user.organization_id ? (
-                <Tag
-                  key={organization.name}
-                  className="clickable"
-                  color={color}
-                  onClick={() => handleChange(organization.name)}
-                >
-                  {organization.name}
-                </Tag>
-              ) : null;
-            })
-          : null;
+      key: "tags",
+      render: (tag) => {
+        if (tag) {
+          let color = tag.length > 3 ? "geekblue" : "green";
+          color = tag.length > 4 ? "coral" : color;
+          color = tag.length > 5 ? "volcano" : color;
+          color = tag.length > 6 ? "turquoise" : color;
+          color = tag.length > 7 ? "yellowgreen" : color;
+          color = tag.length > 8 ? "salmon" : color;
+          return (
+            <Tag
+              color={color}
+              key={tag}
+              className="clickable"
+              onClick={() => handleChange(tag)}
+            >
+              {" "}
+              {tag}{" "}
+            </Tag>
+          );
+        }
+        return null;
+      },
+    },
+    {
+      title: "Nome",
+      dataIndex: "name",
+      align: "left",
+      render: (name) => {
+        return (
+          <p className="clickable" onClick={() => setSearch(name)}>
+            {name}
+          </p>
+        );
       },
     },
     {
@@ -140,32 +132,30 @@ export default function Infolive() {
     },
     {
       title: "Curso",
-      className: "column-course",
-      dataIndex: "course_id",
+      dataIndex: "course_name",
       align: "left",
       key: "tags",
-      render: (course) => {
-        return courses
-          ? courses.map((courses) => {
-              let color = courses.name.length > 5 ? "geekblue" : "green";
-              color = courses.name.length > 7 ? "coral" : color;
-              color = courses.name.length > 9 ? "volcano" : color;
-              color = courses.name.length > 12 ? "turquoise" : color;
-              color = courses.name.length > 15 ? "yellowgreen" : color;
-              color = courses.name.length > 17 ? "salmon" : color;
-
-              return courses.id === course ? (
-                <Tag
-                  color={color}
-                  key={courses.name}
-                  className="clickable"
-                  onClick={() => handleChange(courses.name)}
-                >
-                  {courses.name}
-                </Tag>
-              ) : null;
-            })
-          : null;
+      render: (tag) => {
+        if (tag) {
+          let color = tag.length > 5 ? "geekblue" : "green";
+          color = tag.length > 7 ? "coral" : color;
+          color = tag.length > 9 ? "volcano" : color;
+          color = tag.length > 12 ? "turquoise" : color;
+          color = tag.length > 15 ? "yellowgreen" : color;
+          color = tag.length > 17 ? "salmon" : color;
+          return (
+            <Tag
+              color={color}
+              key={tag}
+              className="clickable"
+              onClick={() => handleChange(tag)}
+            >
+              {" "}
+              {tag}{" "}
+            </Tag>
+          );
+        }
+        return null;
       },
     },
     {
@@ -184,10 +174,6 @@ export default function Infolive() {
     },
   ];
 
-  function handleInfo() {
-    alert("HANDLEINFO ainda não faz nada. tururu");
-  }
-
   function handleChange(value) {
     setSearch(value);
 
@@ -196,13 +182,14 @@ export default function Infolive() {
       lives.filter((live) => {
         if (value === "") return live;
         return (
-          live.organization.toLowerCase().includes(value.toLowerCase()) ||
-          live.date.toLowerCase().includes(value.toLowerCase()) ||
-          live.course.toLowerCase().includes(value.toLowerCase())
+          live.name.toLowerCase().includes(value.toLowerCase()) ||
+          live.organization_name.toString().includes(value.toLowerCase()) ||
+          live.course_name.toLowerCase().includes(value.toLowerCase())
         );
       })
     );
   }
+
   return (
     <Base>
       <h1 className="page-title">Informações sobre as Lives:</h1>
@@ -211,8 +198,8 @@ export default function Infolive() {
           <Input
             className="search-input"
             placeholder="procurar por nome, matricula, curso"
-            onChange={(e) => handleChange(e.target.value)}
             value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <Tooltip title="Criar Live">
             <AddIcon
