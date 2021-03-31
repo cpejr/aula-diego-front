@@ -4,11 +4,11 @@ import {
   Table,
   Tag,
   Input,
-  Modal,
-  DatePicker,
   Select,
   message,
   Popconfirm,
+  Tabs,
+  Button,
 } from "antd";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
@@ -16,24 +16,50 @@ import Supervisor from "@material-ui/icons/SupervisorAccount";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./ListaAlunos.css";
+import userEvent from "@testing-library/user-event";
 
 export default function ListaAlunos() {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [isModalEditVisible, setIsModalEditVisible] = useState(false);
   const [editUserId, setEditUserId] = useState();
   const [dataForm, setDataForm] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [occupations, setOccupations] = useState([]);
   const [data, setData] = useState([]);
+  const [status, setStatus] = useState("");
+
+  const [filtered, setFiltered] = useState([]);
+  const [activeTab, setActiveTab] = useState(0);
+  const [tabs, setTabs] = useState([]);
+
   const { session } = useSession();
+  const { TabPane } = Tabs;
+
+  const organizationId = session.user.organization_id;
+  console.log(organizationId);
+  const type = session.user.type;
+  console.log(type);
 
   useEffect(() => {
-    const config = {
+    var config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
     };
+
+    if (type === "admin") {
+      console.log("OLAAAAA É AQUI");
+      config = {
+        headers: {
+          authorization: "BEARER " + session.accessToken,
+        },
+        query: {
+          organization_id: organizationId,
+        },
+      };
+      console.log({ config });
+    }
+
     api.get("/user", config).then((data) => {
       setData(data.data);
       console.log(data.data);
@@ -48,6 +74,19 @@ export default function ListaAlunos() {
         setOrganizations(data.data);
       })
       .catch(() => message.error("Não foi possível carregar organizações"));
+  }
+
+  function handleSelectChange(value) {
+    setStatus(value);
+  }
+
+  function handleSubmit(user) {
+    api
+      .put(`/user/${user.id}`, { status: status }, config)
+      .then(() => message.success(`Status do usuário alterado com sucesso!`))
+      .catch((err) =>
+        message.error("Não foi possível alterar o status do usuário!")
+      );
   }
 
   function loadOccups(value) {
@@ -159,7 +198,7 @@ export default function ListaAlunos() {
     },
     {
       title: "Ações",
-      dataIndex: ("id"),
+      dataIndex: "id",
       className: session.user.type === "master" ? "" : "hide",
       render: (id) => {
         return session.user.type === "master" ? (
@@ -192,6 +231,121 @@ export default function ListaAlunos() {
     },
   ];
 
+  const aprovarAlunos = [
+    {
+      title: "Nome",
+      dataIndex: "name",
+      render: (name) => {
+        return (
+          <p className="clickable" onClick={() => handleChange(name)}>
+            {name}
+          </p>
+        );
+      },
+    },
+    {
+      title: "Organização",
+      className: "column-organization",
+      dataIndex: "organization_name",
+      align: "left",
+      key: "tags",
+      render: (tag) => {
+        if (tag) {
+          let color = tag.length > 5 ? "geekblue" : "green";
+          color = tag.length > 7 ? "coral" : color;
+          color = tag.length > 8 ? "volcano" : color;
+          color = tag.length > 9 ? "turquoise" : color;
+          color = tag.length > 10 ? "yellowgreen" : color;
+          color = tag.length > 11 ? "salmon" : color;
+          return (
+            <Tag
+              color={color}
+              key={tag}
+              className="clickable"
+              onClick={() => handleChange(tag)}
+            >
+              {" "}
+              {tag}{" "}
+            </Tag>
+          );
+        }
+        return null;
+      },
+    },
+    {
+      title: "Ocupação",
+      className: "column-turma",
+      dataIndex: "occupation_name",
+      align: "left",
+      key: "tags",
+      render: (tag) => {
+        if (tag) {
+          let color = tag.length > 5 ? "geekblue" : "green";
+          color = tag.length > 7 ? "coral" : color;
+          color = tag.length > 8 ? "volcano" : color;
+          color = tag.length > 9 ? "turquoise" : color;
+          color = tag.length > 10 ? "yellowgreen" : color;
+          color = tag.length > 11 ? "salmon" : color;
+          color = tag.length > 12 ? "volcano" : color;
+          color = tag.length > 13 ? "turquoise" : color;
+          color = tag.length > 14 ? "yellowgreen" : color;
+          color = tag.length > 15 ? "salmon" : color;
+          color = tag.length > 16 ? "coral" : color;
+          color = tag.length > 17 ? "volcano" : color;
+          color = tag.length > 18 ? "turquoise" : color;
+          color = tag.length > 19 ? "yellowgreen" : color;
+          return (
+            <Tag
+              color={color}
+              key={tag}
+              className="clickable"
+              onClick={() => handleChange(tag)}
+            >
+              {" "}
+              {tag}{" "}
+            </Tag>
+          );
+        }
+      },
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (status, id) => {
+        return (
+          <>
+            <Select
+              style={{ width: "120px" }}
+              defaultValue={status}
+              size="small"
+              onChange={(e) => handleSelectChange(e)}
+            >
+              <Select.Option name="approved" value="approved">
+                Aprovado
+              </Select.Option>
+              <Select.Option name="pending" value="pending">
+                Pendente
+              </Select.Option>
+              <Select.Option name="refused" value="refused">
+                Reprovado
+              </Select.Option>
+            </Select>
+            <Button
+              type="primary"
+              size="small"
+              style={{ marginLeft: "5px" }}
+              onClick={() => {
+                handleSubmit(id);
+              }}
+            >
+              Ok
+            </Button>
+          </>
+        );
+      },
+    },
+  ];
+
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
@@ -200,7 +354,7 @@ export default function ListaAlunos() {
 
   function tournIntoAdmin(id) {
     api
-      .put(`/user`, { id, type: "admin" }, config)
+      .put(`/user/${id}`, { type: "admin" }, config)
       .then(() => message.success(`O usuário agora é admin`))
       .catch((err) => message.error("não foi possível tornar usuário admin"));
   }
@@ -243,130 +397,56 @@ export default function ListaAlunos() {
     return message.error("Operação cancelada");
   }
 
-  function handleFormChange(e) {
-    setDataForm({ ...dataForm, [e.target.name]: e.target.value });
-  }
-
-  function handleSelectChange(value, field) {
-    if (field === "organization_id") loadOccups(value);
-    console.log(`${field}: ${value}`);
-    setDataForm({ ...dataForm, [field]: value });
-  }
-
-  function handleDateChange(date, dateString) {
-    setDataForm({ ...dataForm, birthdate: new Date(dateString) });
+  function handleTabChange(key) {
+    setActiveTab(key);
+    setFiltered(tabs[key]);
   }
 
   function handleChange(value) {
     setSearch(value);
 
     // retorna os dados de acordo com o que estiver na barra de pesquisa
-     setFilteredData(
-       data.filter((student) => {
+    setFilteredData(
+      data.filter((student) => {
         if (value === "") return student;
-          return (
-              student.name.toLowerCase().includes(value.toLowerCase()) ||
-              student.registration.toString().includes(value.toLowerCase())||
-              student.organization_name.toLowerCase().includes(value.toLowerCase()) ||
-              student.occupation_name.toLowerCase().includes(value.toLowerCase())  
+        return (
+          student.name.toLowerCase().includes(value.toLowerCase()) ||
+          student.registration.toString().includes(value.toLowerCase()) ||
+          student.organization_name
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          student.occupation_name.toLowerCase().includes(value.toLowerCase())
         );
-       })
-     );
+      })
+    );
   }
   return (
     <Base>
       <h1 className="page-title">Lista de Alunos</h1>
       <div className="table-container">
-        <Input
-          className="search-input"
-          placeholder="procurar por nome, matricula, curso"
-          onChange={(e) => handleChange(e.target.value)}
-          value={search}
-        />
-        <Table 
-        columns={columns} 
-        dataSource={filteredData}
-         />
+        <Tabs defaultActiveKey="0" onChange={handleTabChange}>
+          <TabPane tab="Alunos" key="0">
+            <Input
+              className="search-input"
+              placeholder="procurar por nome, matricula, curso"
+              onChange={(e) => handleChange(e.target.value)}
+              value={search}
+            />
+            <Table columns={columns} dataSource={filteredData} />
+          </TabPane>
+          {session.user.type === "master" ? (
+            <TabPane tab="Aprovar Cadastro de Usuários" key="1">
+              <Input
+                className="search-input"
+                placeholder="procurar por nome, matricula, curso"
+                onChange={(e) => handleChange(e.target.value)}
+                value={search}
+              />
+              <Table columns={aprovarAlunos} dataSource={filteredData} />
+            </TabPane>
+          ) : null}
+        </Tabs>
       </div>
-      <Modal
-        title="Editar usuário"
-        visible={isModalEditVisible}
-        onOk={() => handleOk()}
-        onCancel={() => handleCancel()}
-      >
-        <Input
-          name="name"
-          value={dataForm["name"]}
-          onChange={handleFormChange}
-          placeholder="nome"
-        />
-        <Select
-          name="organization_id"
-          value={dataForm["organization_id"]}
-          onChange={(e) => handleSelectChange("organization_id",e)}
-          placeholder="organização"
-        >
-          {organizations.map((organization) => {
-            return organization != [] ? (
-              <Select.Option name="organization_id" value={organization.id}>
-                {organization.name}
-              </Select.Option>
-            ) : null;
-          })}
-        </Select>
-        <Select
-          name="occupation_id"
-          onChange={() => handleSelectChange("occupation_id")}
-          placeholder="Ocupação"
-        >
-          {occupations.map((occupation) => {
-            return occupation != [] ? (
-              <Select.Option value={occupation.id}>
-                {occupation.name}
-              </Select.Option>
-            ) : null;
-          })}
-        </Select>
-        <DatePicker
-          name="birthdate"
-          onChange={handleDateChange}
-          placeholder="Data de Nascimento"
-        />
-        <Select
-          name="state"
-          value={dataForm["state"]}
-          onChange={() => handleSelectChange("state")}
-          placeholder="Estado"
-        >
-          <Select.Option value="AC">Acre</Select.Option>
-          <Select.Option value="AL">Alagoas</Select.Option>
-          <Select.Option value="AP">Amapá</Select.Option>
-          <Select.Option value="AM">Amazonas</Select.Option>
-          <Select.Option value="BA">Bahia</Select.Option>
-          <Select.Option value="CE">Ceará</Select.Option>
-          <Select.Option value="DF">Distrito Federal</Select.Option>
-          <Select.Option value="ES">Espírito Santo</Select.Option>
-          <Select.Option value="GO">Goiás</Select.Option>
-          <Select.Option value="MA">Maranhão</Select.Option>
-          <Select.Option value="MT">Mato Grosso</Select.Option>
-          <Select.Option value="MS">Mato Grosso do Sul</Select.Option>
-          <Select.Option value="MG">Minas Gerais</Select.Option>
-          <Select.Option value="PA">Pará</Select.Option>
-          <Select.Option value="PB">Paraíba</Select.Option>
-          <Select.Option value="PR">Paraná</Select.Option>
-          <Select.Option value="PE">Pernambuco</Select.Option>
-          <Select.Option value="PI">Piauí</Select.Option>
-          <Select.Option value="RJ">Rio de Janeiro</Select.Option>
-          <Select.Option value="RN">Rio Grande do Norte</Select.Option>
-          <Select.Option value="RS">Rio Grande do Sul</Select.Option>
-          <Select.Option value="RO">Rondônia</Select.Option>
-          <Select.Option value="RR">Roraima</Select.Option>
-          <Select.Option value="SC">Santa Catarina</Select.Option>
-          <Select.Option value="SP">São Paulo</Select.Option>
-          <Select.Option value="SE">Sergipe</Select.Option>
-          <Select.Option value="TO">Tocantins</Select.Option>
-        </Select>
-      </Modal>
     </Base>
   );
 }
