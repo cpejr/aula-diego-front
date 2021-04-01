@@ -3,12 +3,8 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import ActionButton from "../../Components/ActionButton/actionButton"
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -26,10 +22,6 @@ export default function CursoAdmin(props) {
   const [filtered, setFiltered] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [selected, setSelected] = useState([]);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [id, setId] = useState();
-  const [editData, setEditData] = useState({});
 
   const history = useHistory();
   const course_id = props.match.params.id;
@@ -66,74 +58,86 @@ export default function CursoAdmin(props) {
     },
   };
 
-  const contentTable = [
+  const generalTable = [
     {
       title: "Título",
       dataIndex: "name",
+      width: "25%"
     },
     {
       title: "Descrição",
       dataIndex: "description",
+      width: "35%"
     },
     {
       title: "Data",
       dataIndex: "date",
+      width: "20%"
     },
+  ]
+
+  const lessonTable = [
+    ...generalTable,
     {
       title: "Ações",
       dataIndex: "id",
       render: (id) => (
         <>
-          <Popconfirm title="Visitar item?" onConfirm={() => handleVisit(id)}>
+          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => handleVisit(id)}>
             <EyeOutlined className="actionButton" />
-          </Popconfirm>
-          <Popconfirm title="Editar item?" onConfirm={() => handleEdit(id)}>
+          </ActionButton>
+          <ActionButton title="Editar" confirm="Editar aula?">
             <EditOutlined className="actionButton" />
-          </Popconfirm>
-          <Popconfirm title="Excluir item?" onConfirm={() => handleDelete(id)}>
+          </ActionButton>
+          <ActionButton title="Deletar" confirm="Deletar aula?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined className="actionButton" />
-          </Popconfirm>
+          </ActionButton>
         </>
       ),
-    },
+    }
+  ];
+
+  const liveTable = [
+    ...generalTable,
+    {
+      title: "Ações",
+      dataIndex: "id",
+      render: (id) => (
+        <>
+          <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => handleVisit(id)}>
+            <EyeOutlined className="actionButton" />
+          </ActionButton>
+          <ActionButton title="Editar" confirm="Editar live?">
+            <EditOutlined className="actionButton" />
+          </ActionButton>
+          <ActionButton title="Deletar" confirm="Deletar live?" onConfirm={() => handleDelete(id)}>
+            <DeleteOutlined className="actionButton" />
+          </ActionButton>
+        </>
+      ),
+    }
   ];
 
   const classTable = [
-    {
-      title: "Nome",
-      dataIndex: "name",
-    },
-    {
-      title: "Descrição",
-      dataIndex: "description",
-    },
-    {
-      title: "Organização",
-      dataIndex: "organization_name",
-    },
+    ...generalTable,
     {
       title: "Ações",
       dataIndex: "id",
       render: (id) => (
         <>
-          <Popconfirm title="Visitar item?" onConfirm={() => handleVisit(id)}>
+          <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => handleVisit(id)}>
             <EyeOutlined className="actionButton" />
-          </Popconfirm>
-          <Popconfirm title="Editar item?" onConfirm={() => handleEdit(id)}>
+          </ActionButton>
+          <ActionButton title="Editar" confirm="Editar turma?">
             <EditOutlined className="actionButton" />
-          </Popconfirm>
-          <Popconfirm title="Excluir item?" onConfirm={() => handleDelete(id)}>
+          </ActionButton>
+          <ActionButton title="Deletar" confirm="Deletar turma?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined className="actionButton" />
-          </Popconfirm>
+          </ActionButton>
         </>
       ),
-    },
+    }
   ];
-
-  function startEdit(id) {
-    setId(id);
-    setIsModalVisible(true);
-  }
 
   function getData() {
     setLoading(true);
@@ -251,34 +255,6 @@ export default function CursoAdmin(props) {
       });
   }
 
-  function handleEditChange(e) {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
-  }
-
-  function handleEdit(id) {
-    const requests = ["aula", "live", "turma"];
-    history.push(`/${requests[activeTab]}/editar/${id}`);
-    /*console.log(id);
-    let route;
-    if (activeTab === 0) route = "/lesson";
-    if (activeTab === 1) route = "/live";
-    if (activeTab === 2) route = "/class";
-
-    console.log(editData);
-
-    api
-      .put(route, { ...editData, id }, config)
-      .then(() => {
-        message.success("Alteração concluída com sucesso");
-        getData();
-        setIsModalVisible(false);
-      })
-      .catch(() => {
-        message.error("Não foi possível alterar dados.");
-      })
-      .finally(() => setLoading(false));*/
-  }
-
   function handleVisit(id) {
     const requests = ["aula", "live", "turma"];
     history.push(`/${requests[activeTab]}/${id}`);
@@ -310,7 +286,7 @@ export default function CursoAdmin(props) {
               </div>
               <Table
                 rowSelection={selected}
-                columns={contentTable}
+                columns={lessonTable}
                 dataSource={filtered}
                 loading={loading}
               />
@@ -334,7 +310,7 @@ export default function CursoAdmin(props) {
               </div>
               <Table
                 rowSelection={selected}
-                columns={contentTable}
+                columns={liveTable}
                 dataSource={filtered}
                 loading={loading}
               />
@@ -366,26 +342,6 @@ export default function CursoAdmin(props) {
           </Tabs>
         </div>
       </div>
-
-      {/*<Modal
-        title={id}
-        visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        onOk={() => handleEdit(id)}
-      >
-        <Input
-          placeholder="Nome"
-          name="name"
-          value={editData["name"]}
-          onChange={handleEditChange}
-        />
-        <Input
-          placeholder="Descrição"
-          name="description"
-          value={editData["description"]}
-          onChange={handleEditChange}
-        />
-      </Modal>*/}
     </Base>
   );
 }
