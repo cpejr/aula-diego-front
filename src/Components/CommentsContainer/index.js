@@ -54,7 +54,7 @@ export default function CommentsContainer({
       )
       .then(() => getData());
   }
-
+  
   return (
     <div className="comments__container">
       <h3>{title}</h3>

@@ -47,6 +47,7 @@ export default function Comentario(props) {
             date={new Date(comment?.created_at).toLocaleDateString("pt-BR")}
             text={comment?.question}
             linkText={comment?.parent_name}
+            linkSrc="/"
           />
 
           <CommentsContainer
