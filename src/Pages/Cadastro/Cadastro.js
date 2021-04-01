@@ -7,12 +7,12 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { Select } from "antd";
+import { message, Select } from "antd";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
-  const [organizations, setOrganizations] = useState([]);
-  const [occupations, setOccupations] = useState([]);
+  const [organizations, setOrganizations] = useState();
+  const [occupations, setOccupations] = useState();
   const [startDate, setStartDate] = useState(null);
   const history = useHistory();
   const { session } = useSession();
@@ -32,6 +32,10 @@ export default function Cadastro(props) {
   }, [inputValues["organization_id"]]);
 
   function handleChange(e) {
+    console.log({
+      ...inputValues,
+      [e.target.name]: e.target.value,
+    });
     setInputValues({
       ...inputValues,
       [e.target.name]: e.target.value,
@@ -49,6 +53,9 @@ export default function Cadastro(props) {
       return "pass";
     }
 
+    if (!inputValues["organization_id"] || !inputValues["occupation_id"])
+      return false;
+
     return true;
   }
 
@@ -56,7 +63,7 @@ export default function Cadastro(props) {
     e.preventDefault();
     if (validateForm() === "pass") return;
     if (!validateForm())
-      return alert("Preencha todos os campos para se cadastrar");
+      return message.error("Preencha todos os campos para se cadastrar");
 
     let data = inputValues;
     data.phone = data.phone.replace(/[()\s-]/g, "");
@@ -140,12 +147,11 @@ export default function Cadastro(props) {
                 onChange={handleChange}
                 required
               >
+                <option value={null} selected disabled hidden>
+                  Selecione a organização
+                </option>
                 {organizations?.map((org) => {
-                  return (
-                    <option value={org.id} selected>
-                      {org.name}
-                    </option>
-                  );
+                  return <option value={org.id}>{org.name}</option>;
                 })}
               </select>
             </div>
@@ -157,12 +163,11 @@ export default function Cadastro(props) {
                 onChange={handleChange}
                 required
               >
+                <option value={null} selected disabled hidden>
+                  Selecione a ocupação
+                </option>
                 {occupations?.map((occup) => {
-                  return (
-                    <option value={occup.id} selected>
-                      {occup.name}
-                    </option>
-                  );
+                  return <option value={occup.id}>{occup.name}</option>;
                 })}
               </select>
             </div>
@@ -175,7 +180,7 @@ export default function Cadastro(props) {
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
                 placeholderText="Data de Nascimento"
-                locale="br"
+                locale="pt-BR"
                 required
               />
             </div>
@@ -203,7 +208,7 @@ export default function Cadastro(props) {
                     onChange={handleChange}
                     required
                   >
-                    <option value="none" selected disabled hidden>
+                    <option value={null} selected disabled hidden>
                       Tipo de usuário
                     </option>
                     <option value="student">student</option>
