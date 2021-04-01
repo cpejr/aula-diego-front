@@ -12,7 +12,6 @@ import "./ListaCursos.css";
 export default function ListaOrganizacoes() {
   const [course, setCourse] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const { session } = useSession();
   const history = useHistory();
@@ -52,31 +51,9 @@ export default function ListaOrganizacoes() {
     },
     {
       title: <h5>Organização</h5>,
-      dataIndex: "organization",
+      dataIndex: "organization_name",
       width: "25%",
       key: "tags",
-      render: (tag) => {
-        if (tag) {
-          let color = tag.length > 3 ? "geekblue" : "green";
-          color = tag.length > 4 ? "coral" : color;
-          color = tag.length > 5 ? "volcano" : color;
-          color = tag.length > 6 ? "turquoise" : color;
-          color = tag.length > 7 ? "yellowgreen" : color;
-          color = tag.length > 8 ? "salmon" : color;
-          return (
-            <Tag
-              color={color}
-              key={tag}
-              className="clickable"
-              onClick={() => handleSearch(tag)}
-            >
-              {" "}
-              {tag}{" "}
-            </Tag>
-          );
-        }
-        return null;
-      }
     },
     {
       title: <h5>Ações</h5>,
@@ -96,7 +73,7 @@ export default function ListaOrganizacoes() {
   ];
 
   function handleSearch(value) {
-    setFiltered(filtered.filter(data => {
+    setFiltered(course.filter(data => {
       if (value === "") return data;
       return (
         data.name.toLowerCase().includes(value.toLowerCase()) ||
@@ -133,7 +110,6 @@ export default function ListaOrganizacoes() {
             className="search"
             placeholder="Pesquisar..."
             onChange={(e) => handleSearch(e.target.value)}
-            value={search}
           />
           <Tooltip title="Novo Curso">
             <PlusOutlined
