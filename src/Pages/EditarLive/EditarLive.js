@@ -28,6 +28,7 @@ export default function EditarLive(props) {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [link, setLink] = useState("");
+  const [courseId, setCourseId] = useState("");
 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
@@ -47,6 +48,7 @@ export default function EditarLive(props) {
       setDescription(response.data.description);
       setDate(response.data.date);
       setLink(response.data.link);
+      setCourseId(response.data.course_id);
     });
   }, []);
 
@@ -77,7 +79,7 @@ export default function EditarLive(props) {
       .put(`/live/${id}`, data, config)
       .then(() => {
         message.success("Live editada com sucesso!");
-        history.push(`/live/${id}`);
+        history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
         message.error("Não foi possiível editar a live!\n" + err);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Tabs, Table, Input, Popconfirm, Tooltip, Modal } from "antd";
+import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -299,7 +299,7 @@ export default function CursoAdmin(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Tooltip title="Adicionar Turma">
+                <Tooltip title="Adicionar Aula">
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>
@@ -323,7 +323,7 @@ export default function CursoAdmin(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Tooltip title="Adicionar Turma">
+                <Tooltip title="Adicionar Live">
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>

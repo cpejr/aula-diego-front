@@ -106,14 +106,13 @@ export default function Sidebar() {
       </div>
 
       <div className="sidebarPerfil">
-        {/* <img src={Foto} /> */}
         <br></br>
         <label>{session.user.name}</label>
         <br></br>
       </div>
 
       <div className="sidebarScore">
-        <p>{score}</p>
+        <p>{score} XP</p>
       </div>
 
       <div className="sidebarBody">
