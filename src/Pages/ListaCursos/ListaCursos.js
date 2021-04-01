@@ -10,7 +10,7 @@ import "./ListaCursos.css";
 
 
 export default function ListaOrganizacoes() {
-  const [organization, setOrganizations] = useState([]);
+  const [course, setCourse] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -23,64 +23,37 @@ export default function ListaOrganizacoes() {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: 'blob',
-  };
-
   useEffect(() => {
+    
+    if (session.user.type === "admin")
+      config.params = { organization_id: session.user.organization_id }
+
     api
       .get(`/course`, config)
       .then((response) => {
-        getLogo(response.data)
-          .then(response => {
-            setOrganizations(response);
-            setFiltered(response)
-            setLoading(false);
-          });
+        setCourse(response.data);
+        setFiltered(response.data)
+        setLoading(false);
       })
       .catch(() => {
-        message.error("Não foi possível carregar dados das organizações");
+        message.error("Não foi possível carregar dados dos cursos");
       });
-  }, []);
-
-  const getLogo = async (organizations) => {
-    const result = [];
-    console.log(organizations)
-    for (const organization of organizations) {
-      await api
-        .get(`/file_get/${organization.file_id}`, configFile)
-        .then(response => {
-          const img = URL.createObjectURL(response.data);
-          result.push({
-            ...organization,
-            logo: img
-          })
-        })
-        .catch((err) => {
-          message.error("Não foi possível carregar dados dos arquivos");
-        });
-    }
-
-    return result;
-  }
+  }, [session]);
 
   const columns = [
     {
-      title: <h5 style={{ "textAlign": "center" }}>Nome</h5>,
+      title: <h5>Nome</h5>,
       dataIndex: "name",
       width: "20%",
     },
     {
-      title: <h5 style={{ "textAlign": "center" }}>Descrição</h5>,
+      title: <h5>Descrição</h5>,
       dataIndex: "description",
     },
     {
-      title: <h5 style={{ "textAlign": "center" }}>Organização</h5>,
+      title: <h5>Organização</h5>,
       dataIndex: "organization",
-      width: "20%",
+      width: "25%",
       key: "tags",
       render: (tag) => {
         if (tag) {
@@ -95,7 +68,7 @@ export default function ListaOrganizacoes() {
               color={color}
               key={tag}
               className="clickable"
-              onClick={() => handleChange(tag)}
+              onClick={() => handleSearch(tag)}
             >
               {" "}
               {tag}{" "}
@@ -106,9 +79,9 @@ export default function ListaOrganizacoes() {
       }
     },
     {
-      title: <h5 style={{ "textAlign": "center" }}>Ações</h5>,
+      title: <h5>Ações</h5>,
       dataIndex: ("id"),
-      width: "10%",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton title="Editar" confirm="Editar organização?">
@@ -122,40 +95,33 @@ export default function ListaOrganizacoes() {
     },
   ];
 
-  function handleEdit() {
-    alert("EDIT ainda não faz nada. tururu");
-  }
-
   function handleSearch(value) {
     setFiltered(filtered.filter(data => {
       if (value === "") return data;
       return (
-        data.name.toLowerCase().includes(value.toLowerCase())
+        data.name.toLowerCase().includes(value.toLowerCase()) ||
+        data.description.toLowerCase().includes(value.toLowerCase()) ||
+        data.organization_name.toLowerCase().includes(value.toLowerCase())
       )
     }));
   }
 
-  function handleDelete(organization_id) {
+  function handleDelete(course_id) {
     setLoading(true);
     api
-      .delete(`/organization/${organization_id}`, config)
+      .delete(`/course/${course_id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api.get("/organization", config)
+        api
+          .get("/course", config)
           .then((response) => {
-            setOrganizations(response.data);
+            setCourse(response.data);
+            setFiltered(response.data);
+            setLoading(false);
           })
-          .then(setLoading(false));
+          .catch((err) => {message.error("Não foi possível excluir")});
       })
-      .catch((error) => {
-        message.error("Não foi possível excluir");
-        console.log(error);
-      }
-      );
-  }
-
-  function handleChange(value) {
-    setSearch(value);
+      .catch((err) => {message.error("Não foi possível excluir")});
   }
 
   return (
