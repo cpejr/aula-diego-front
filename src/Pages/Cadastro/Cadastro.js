@@ -5,19 +5,31 @@ import logo from "../../images/Logo2.png";
 import { Link, useHistory } from "react-router-dom";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ptBR from "date-fns/locale/pt-BR";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
+import { Select } from "antd";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
+  const [organizations, setOrganizations] = useState([]);
+  const [occupations, setOccupations] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const history = useHistory();
   const { session } = useSession();
 
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
+    api.get("/organization").then((res) => setOrganizations(res.data));
   }, []);
+
+  useEffect(() => {
+    if (!organizations) return;
+    api
+      .get("/occupation", {
+        params: { organization_id: inputValues["organization_id"] },
+      })
+      .then((res) => setOccupations(res.data));
+  }, [inputValues["organization_id"]]);
 
   function handleChange(e) {
     setInputValues({
@@ -47,8 +59,9 @@ export default function Cadastro(props) {
       return alert("Preencha todos os campos para se cadastrar");
 
     let data = inputValues;
-    data.phone = data.phone.replace(/[^\w]/gi, "");
+    data.phone = data.phone.replace(/[()\s-]/g, "");
     delete data.passwordConfirmation;
+    data.birthdate = startDate;
 
     api
       .post("/newuser", data)
@@ -120,17 +133,38 @@ export default function Cadastro(props) {
               />
             </div>
             <div className="form-group">
-              <input
-                type="text"
+              <select
                 className="form-control"
-                id="exampleInputTrabalho"
-                name="company"
-                value={inputValues["company"]}
+                name="organization_id"
+                value={inputValues["organization_id"]}
                 onChange={handleChange}
-                placeholder="Empresa"
-                spellCheck="false"
                 required
-              />
+              >
+                {organizations?.map((org) => {
+                  return (
+                    <option value={org.id} selected>
+                      {org.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="form-group">
+              <select
+                className="form-control"
+                name="occupation_id"
+                value={inputValues["occupation_id"]}
+                onChange={handleChange}
+                required
+              >
+                {occupations?.map((occup) => {
+                  return (
+                    <option value={occup.id} selected>
+                      {occup.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className="form-group">
               <DatePicker
@@ -144,44 +178,6 @@ export default function Cadastro(props) {
                 locale="br"
                 required
               />
-            </div>
-            <div className="form-group">
-              <select
-                className="form-control"
-                name="state"
-                value={inputValues["state"]}
-                onChange={handleChange}
-                required
-              >
-                <option value="UF">Selecione um Estado</option>
-                <option value="AC">Acre</option>
-                <option value="AL">Alagoas</option>
-                <option value="AP">Amapá</option>
-                <option value="AM">Amazonas</option>
-                <option value="BA">Bahia</option>
-                <option value="CE">Ceará</option>
-                <option value="DF">Distrito Federal</option>
-                <option value="ES">Espírito Santo</option>
-                <option value="GO">Goiás</option>
-                <option value="MA">Maranhão</option>
-                <option value="MT">Mato Grosso</option>
-                <option value="MS">Mato Grosso do Sul</option>
-                <option value="MG">Minas Gerais</option>
-                <option value="PA">Pará</option>
-                <option value="PB">Paraíba</option>
-                <option value="PR">Paraná</option>
-                <option value="PE">Pernambuco</option>
-                <option value="PI">Piauí</option>
-                <option value="RJ">Rio de Janeiro</option>
-                <option value="RN">Rio Grande do Norte</option>
-                <option value="RS">Rio Grande do Sul</option>
-                <option value="RO">Rondônia</option>
-                <option value="RR">Roraima</option>
-                <option value="SC">Santa Catarina</option>
-                <option value="SP">São Paulo</option>
-                <option value="SE">Sergipe</option>
-                <option value="TO">Tocantins</option>
-              </select>
             </div>
             <div className="form-group">
               <InputMask
