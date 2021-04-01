@@ -1,20 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, Message, message } from "antd";
+import { Form, DatePicker, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "./NewLive.css";
-
-const generateCode = () => {
-  let code = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-  for (let i = 0; i < 6; i++)
-    code += characters[Math.floor(Math.random() * characters.length)];
-
-  return code;
-};
+import "./EditarLive.css";
 
 const formItemLayout = {
   labelCol: {
@@ -31,21 +21,39 @@ const tailFormItemLayout = {
   },
 };
 
-export default function NewLive(props) {
-  const [live, setLive] = useState({});
+export default function EditarLive(props) {
+  const [live, setLive] = useState([]);
+  const [edit, setEdit] = useState({});
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [link, setLink] = useState("");
+  const [courseId, setCourseId] = useState("");
+
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
-  const [confirmation, setConfirmation] = useState(generateCode());
-  const course = props.location.search;
-  const course_id = course.split("=", 2)[1];
+  const id = props.match.params.id;
   const history = useHistory();
 
-  function handleChange(e) {
-    setLive({ ...live, [e.target.name]: e.target.value });
-  }
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  useEffect(() => {
+    api.get(`/live/${id}`, config).then((response) => {
+      setLive(response.data);
+      setName(response.data.name);
+      setDescription(response.data.description);
+      setDate(response.data.date);
+      setLink(response.data.link);
+      setCourseId(response.data.course_id);
+    });
+  }, []);
 
   function handleChangeDate(e) {
-    setLive({ ...live, date: e._d });
+    setEdit({ ...edit, date: e._d });
   }
 
   function handleSubmit(e) {
@@ -53,9 +61,12 @@ export default function NewLive(props) {
     setLoading(true);
 
     const data = {
-      ...live,
-      confirmation_code: confirmation,
-      course_id: course_id,
+      name: name,
+      description: description,
+      date: date,
+      link: link,
+      confirmation_code: live.confirmation_code,
+      course_id: live.course_id,
     };
 
     const config = {
@@ -65,18 +76,28 @@ export default function NewLive(props) {
     };
 
     api
-      .post("/live", data, config)
+      .put(`/live/${id}`, data, config)
       .then(() => {
-        setLoading(false);
-        message.success("Live criada com sucesso!");
-        history.push(`/curso/gerenciar/${course_id}`);
+        message.success("Live editada com sucesso!");
+        history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
-        setLoading(false);
-        message.error("Não foi possiível criar a live!");
-        console.log(data);
-        console.log(err);
+        message.error("Não foi possiível editar a live!\n" + err);
       });
+  }
+
+  function dateFormate(date) {
+    /*const data = new Date(date).toLocaleDateString([], {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return data;*/
+    const data = new Date(date);
+    data.toString().split("GMT")[0] + " UTC";
+    return new Date(data).toISOString().split(".")[0];
   }
 
   return (
@@ -88,42 +109,43 @@ export default function NewLive(props) {
               {...formItemLayout}
               name="newLive"
               className="liveForm"
-              initialValues={{ remember: true }}
               onFinish={handleSubmit}
               size={"large"}
-              scrollToFirstError
             >
               <Form.Item {...tailFormItemLayout}>
-                <h1>Nova Live</h1>
+                <h1>Editar Live</h1>
               </Form.Item>
               <Form.Item
-                name="name"
                 label={<label style={{ fontSize: "large" }}> Título </label>}
                 rules={[
                   {
                     required: true,
-                    message: "Por favor insira o título da live!",
+                    message: "Por favor insira o nome da live!",
                   },
                 ]}
               >
                 <Input
-                  placeholder="Título da live"
                   name="name"
-                  onChange={handleChange}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
-                name="description"
                 label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira a descrição da live!",
+                  },
+                ]}
               >
                 <Input
-                  placeholder="Descreva o temas que serão abordados na live"
                   name="description"
-                  onChange={handleChange}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
-                name="date"
                 label={<label style={{ fontSize: "large" }}> Data </label>}
                 rules={[
                   {
@@ -132,16 +154,18 @@ export default function NewLive(props) {
                   },
                 ]}
               >
-                <DatePicker
-                  placeholder="Selecione uma data"
-                  showTime
-                  format="DD-MM-YYYY HH:mm"
+                <Input
                   name="date"
-                  onChange={handleChangeDate}
+                  type="datetime-local"
+                  defaultValue={
+                    new Date(new Date().toString().split("GMT")[0] + " UTC")
+                      .toISOString()
+                      .split(".")[0]
+                  }
+                  onChange={(e) => setDate(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
-                name="link"
                 label={<label style={{ fontSize: "large" }}> Link </label>}
                 rules={[
                   {
@@ -151,15 +175,17 @@ export default function NewLive(props) {
                 ]}
               >
                 <Input
-                  placeholder="Insira o URL da página da live"
                   name="link"
-                  onChange={handleChange}
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
                 label={<label style={{ fontSize: "large" }}> Código </label>}
               >
-                <span className="confirmationCode">{confirmation}</span>
+                <span className="confirmationCode">
+                  {live.confirmation_code}
+                </span>
               </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button
@@ -168,7 +194,7 @@ export default function NewLive(props) {
                   style={{ fontSize: "large" }}
                   loading={loading}
                 >
-                  Criar Live
+                  Editar
                 </Button>
               </Form.Item>
             </Form>

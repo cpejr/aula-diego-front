@@ -36,12 +36,12 @@ export default function NovoCurso() {
   }
 
   function handleSubmit() {
-    setformData({
+    const data = {
       ...formData,
       organization_id: session.user.organization_id,
-    });
+    };
 
-    console.log(formData);
+    console.log(data);
 
     const config = {
       headers: {
@@ -50,7 +50,7 @@ export default function NovoCurso() {
     };
 
     api
-      .post(`/course`, formData, config)
+      .post(`/course`, data, config)
       .then(() => {
         message.success("Curso criado com sucesso!");
         history.push("/curso/lista");
@@ -85,7 +85,6 @@ export default function NovoCurso() {
                   placeholder="Nome do Curso"
                   size="large"
                   name="name"
-                  value={formData["name"]}
                   onChange={handleChange}
                 />
               </Form.Item>
@@ -99,7 +98,6 @@ export default function NovoCurso() {
                   placeholder="Descrição sobre o conteúdo do curso"
                   name="description"
                   autoSize={{ minRows: 2, maxRows: 6 }}
-                  value={formData["description"]}
                   onChange={handleChange}
                 />
               </Form.Item>

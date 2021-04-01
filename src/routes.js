@@ -31,6 +31,7 @@ import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 import Comentario from "./Pages/Comentario/Comentario";
+import EditarLive from "./Pages/EditarLive/EditarLive";
 
 const routes = () => {
   return (
@@ -89,6 +90,12 @@ const routes = () => {
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={Infolive}
           masterComponent={Infolive}
+        />
+        <PrivateRoute
+          path="/live/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={EditarLive}
+          masterComponent={EditarLive}
         />
         <PrivateRoute
           path="/live/presenca/:id"

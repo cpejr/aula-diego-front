@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Tabs, Table, Input, Popconfirm, Tooltip, Modal } from "antd";
-import {PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
+import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -154,8 +159,6 @@ export default function CursoAdmin(props) {
             key: lesson.id,
           })
         );
-        console.log({ lessons });
-        console.log(course_id);
 
         setLessons(lessons);
         setFiltered(lessons);
@@ -177,7 +180,6 @@ export default function CursoAdmin(props) {
           })
         );
 
-        console.log({ lives });
         setLives(lives);
         requestDone(lives);
       })
@@ -191,7 +193,6 @@ export default function CursoAdmin(props) {
         const classes = [];
         response.data.map((cl4ss) => classes.push({ ...cl4ss, key: cl4ss.id }));
 
-        console.log({ classes });
         setClasses(classes);
         requestDone(classes);
       })
@@ -255,6 +256,9 @@ export default function CursoAdmin(props) {
   }
 
   function handleEdit(id) {
+    const requests = ["aula", "live", "turma"];
+    history.push(`/${requests[activeTab]}/editar/${id}`);
+    /*console.log(id);
     let route;
     if (activeTab === 0) route = "/lesson";
     if (activeTab === 1) route = "/live";
@@ -272,7 +276,7 @@ export default function CursoAdmin(props) {
       .catch(() => {
         message.error("Não foi possível alterar dados.");
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false));*/
   }
 
   function handleVisit(id) {
@@ -282,7 +286,7 @@ export default function CursoAdmin(props) {
 
   return (
     <Base>
-      <div className="pageBody">
+      <div className="pageBodyCurso">
         {course !== undefined ? <h1>{course.name}</h1> : <></>}
         <h5>Gerenciar</h5>
         <div className="tabsWrapper">
@@ -295,7 +299,7 @@ export default function CursoAdmin(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Tooltip title="Adicionar Turma">
+                <Tooltip title="Adicionar Aula">
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>
@@ -319,7 +323,7 @@ export default function CursoAdmin(props) {
                   onChange={(e) => handleSearch(e.target.value)}
                   value={search}
                 />
-                <Tooltip title="Adicionar Turma">
+                <Tooltip title="Adicionar Live">
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>
@@ -363,7 +367,7 @@ export default function CursoAdmin(props) {
         </div>
       </div>
 
-      <Modal
+      {/*<Modal
         title={id}
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
@@ -381,7 +385,7 @@ export default function CursoAdmin(props) {
           value={editData["description"]}
           onChange={handleEditChange}
         />
-      </Modal>
+      </Modal>*/}
     </Base>
   );
 }

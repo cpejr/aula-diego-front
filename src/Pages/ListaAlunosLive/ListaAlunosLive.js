@@ -2,26 +2,58 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { Table, Input } from "antd";
+import { Table, Input, message } from "antd";
 import "./ListaAlunosLive.css";
 
 export default function ListaAlunoLIve(props) {
   const { session } = useSession();
   const [presentStudents, setPresentStudents] = useState([]);
   const [search, setSearch] = useState("");
+  const [turma, setTurma] = useState("");
+  const { id } = props.match.params;
+
+  function getClass(id) {
+    const config = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+      },
+      params: {
+        user_id: id,
+      },
+    };
+
+    api
+      .get(`/class/user`, config)
+      .then((response) => {
+        setTurma(response.data.class_name);
+        console.log(response.data.class_name);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar os dados das turmas!");
+      });
+
+    return turma;
+  }
+
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
     params: {
-      live_id: props.match.params.live_id,
+      live_id: id,
     },
   };
 
   useEffect(() => {
     api
-      .get("/presence/live", config)
-      .then((response) => setPresentStudents(response.data));
+      .get(`/presence/live`, config)
+      .then((response) => {
+        setPresentStudents(response.data);
+        console.log(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar a presença das lives!");
+      });
   }, []);
 
   const columns = [
@@ -30,7 +62,7 @@ export default function ListaAlunoLIve(props) {
       dataIndex: "user_name",
       render: (user_name) => (
         <p className="clickable" onClick={() => setSearch(user_name)}>
-          {user_name}
+          {user_name === null ? null : user_name}
         </p>
       ),
     },
@@ -54,18 +86,19 @@ export default function ListaAlunoLIve(props) {
     },
     {
       title: "Turma",
-      dataIndex: "class_name",
-      render: (course_name) => (
-        <p className="clickable" onClick={() => setSearch(course_name)}>
-          {course_name}
+      dataIndex: "user_id",
+      render: (user_id) => (
+        <p className="clickable" onClick={() => setSearch(user_id)}>
+          {getClass(user_id)}
         </p>
       ),
     },
   ];
+
   return (
     <Base>
-      <div className="page-container">
-        <h1 className="page-title">Lista de Presença da Live</h1>
+      <h1 className="page-title">Lista de Presença da Live:</h1>
+      <div className="table-container">
         <Input
           placeholder="Pesquise por nome, organização curso..."
           value={search}
