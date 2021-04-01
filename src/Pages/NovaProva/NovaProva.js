@@ -120,11 +120,11 @@ const Alternative = ({ name, required = true, message = "Campo obrigatório", va
 )
 
 const Alternatives = ({ name, label, onChange, required = true, message, field, fieldKey }) => {
-  const [alternatives, setAltenatives] = useState({})
+  const [alternatives, setAlternatives] = useState({correct: "A"})
   const [selected, setSelected] = useState("A");
 
-  const handleSelect = e => setSelected(e.target.value);
-  const handleAlternativeChange = (e, key) => setAltenatives({ ...alternatives, [key]: e.target.value })
+  const handleSelect = e => {setSelected(e.target.value); setAlternatives({...alternatives, correct: selected})};
+  const handleAlternativeChange = (e, key) => setAlternatives({ ...alternatives, [key]: e.target.value })
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -297,17 +297,18 @@ export default function NovaProva(props) {
     setQuestionType(questionType);
   }
 
-  const examSubmit = values => {
+  const examSubmit = async values => {
     const exam = {
       ...values,
-      'startDate': values['startDate'].format('YYYY-MM-DD HH:mm:ss'),
-      'endDate': values['endDate'].format('YYYY-MM-DD HH:mm:ss'),
-      'questions': questions
+      start_date: values['start_date'].format('YYYY-MM-DD HH:mm:ss'),
+      end_date: values['end_date'].format('YYYY-MM-DD HH:mm:ss'),
+      course_id: course,
+      body: questions
     }
 
-    const keys = Object.keys(images)
+    const keys = Object.keys(images);
 
-    for (const key of keys) {
+    for await (const key of keys) {
 
       const file = {
         user_id: session.user.id,
@@ -315,23 +316,33 @@ export default function NovaProva(props) {
         file_type: images[key].type
       }
 
-      api
+      await api
         .post("file", file, config)
         .then(fileId => {
-          console.log(fileId)
           const formData = new FormData();
           formData.append(fileId.data.file_id, images[key]);
 
           api
             .post("file_upload", formData, configFiles)
             .catch(err => {
-              message.error("Não foi possível criar a aula!");
+              message.error("Não foi possível criar a prova!");
             })
+
+          exam.body[key].image = fileId.data.file_id;
+
+          console.log(exam)
         })
         .catch(err => {
-          message.error("Não foi possível criar a aula!");
+          message.error("Não foi possível criar a prova!");
         })
     }
+
+    api
+      .post("exam", exam, config)
+      .then(message.success("Prova criada com sucesso!"))
+      .catch(err => {
+        message.error("Não foi possível criar a prova!");
+      })
   };
 
   return (
@@ -354,21 +365,20 @@ export default function NovaProva(props) {
               placeholder="Título da prova"
               message="Por favor, insira título da prova!"
             />
-            <Field name="startDate" label="Início" message="Por favor, insira início da prova!">
+            <Field name="start_date" label="Início" message="Por favor, insira início da prova!">
               <DatePicker
-                name="startDate"
+                name="start_date"
                 placeholder="Início da prova"
                 showTime
                 format="DD-MM-YYYY HH:mm"
-                name="startDate"
               />
             </Field>
-            <Field name="endDate" label="Término" message="Por favor, insira término da prova!">
+            <Field name="end_date" label="Término" message="Por favor, insira término da prova!">
               <DatePicker
+                name="end_date"
                 placeholder="Término da prova"
                 showTime
-                format="DD-MM-YYYY HH:mm"
-                name="startDate"
+                format="DD-MM-YYYY HH:mm"               
               />
             </Field>
             <Field label="Questões">
