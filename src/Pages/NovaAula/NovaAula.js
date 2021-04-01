@@ -11,12 +11,11 @@ export default function NovaAula(props) {
   const [lesson, setLesson] = useState({});
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const course = props.location.search;
-  const course_id = course.split("=", 2)[1];
   const { session } = useSession();
   const history = useHistory();
-  const course = new URLSearchParams(props.location.search);
 
+  const query = new URLSearchParams(props.location.search);
+  const course = query.get("course");
 
   const formLayout = {
     labelCol: {
@@ -60,7 +59,7 @@ export default function NovaAula(props) {
 
     const data = {
       ...lesson,
-      course_id: course_id,
+      course_id: course,
       user_id: session.user.id,
       files: files,
     };
@@ -82,8 +81,6 @@ export default function NovaAula(props) {
       },
     };
 
-    console.log(course.id);
-
     api
       .post("/lesson_create", data, config)
       .then((response) => {
@@ -100,7 +97,7 @@ export default function NovaAula(props) {
 
         setUploading(false);
         message.success("Aula criada com sucesso!");
-        history.push(`/curso/${course_id}`);
+        history.push(`/curso/${course}`);
       })
       .catch((err) => {
         message.error("Não foi possível criar a aula!");

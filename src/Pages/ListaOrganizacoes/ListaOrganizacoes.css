@@ -27,11 +27,12 @@
 }
 
 .actionButton {
+  font-size: 24px;
+  margin-right: 2%;
+}
+
+.actionButton:hover {
   cursor: pointer;
-  font-size: large;
-  margin: auto;
-  margin-left: 3%;
-  margin-right: 3%;
 }
 
 .logo {

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Table, Tag, Input, Tooltip, message, Popconfirm } from "antd";
+import { Table, Tag, Input, Tooltip, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import ActionButton from "../../Components/ActionButton/actionButton"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./ListaOrganizacoes.css";
@@ -115,18 +116,12 @@ export default function ListaOrganizacoes() {
       dataIndex: ("id"),
       render: (id) => (
         <>
-          <Popconfirm
-            title="Excluir item?"
-            onConfirm={() => handleDelete(id)}
-          >
-            <EditOutlined className="actionButton" onClick={handleEdit} />
-          </Popconfirm>
-          <Popconfirm
-            title="Excluir item?"
-            onConfirm={() => handleDelete(id)}
-          >
-            <DeleteOutlined className="actionButton" />
-          </Popconfirm>
+          <ActionButton title="Editar" confirm="Editar item?">
+            <EditOutlined />
+          </ActionButton> 
+          <ActionButton title="Editar" confirm="Editar item?" onConfirm={() => handleDelete(id)}>
+            <DeleteOutlined />
+          </ActionButton> 
         </>
       ),
     },

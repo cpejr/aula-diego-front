@@ -1,0 +1,8 @@
+.iconWrapper {
+  font-size: 24px;
+  margin-right: 2%;
+}
+
+.iconWrapper:hover {
+  cursor: pointer;
+}

@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
-import {
-  Table,
-  Tag,
-  Input,
-  Select,
-  message,
-  Popconfirm,
-  Tabs,
-  Button,
-} from "antd";
-import DeleteIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-import Supervisor from "@material-ui/icons/SupervisorAccount";
+import { Table, Tag, Input, Select, message, Popconfirm, Tabs, Tooltip } from "antd";
+import { CrownOutlined, EditOutlined, DeleteOutlined, CheckSquareTwoTone, CloseSquareTwoTone } from "@ant-design/icons";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./ListaAlunos.css";
@@ -36,11 +25,10 @@ export default function ListaAlunos() {
   const { TabPane } = Tabs;
 
   const organizationId = session.user.organization_id;
-  console.log(organizationId);
   const type = session.user.type;
-  console.log(type);
 
   useEffect(() => {
+
     var config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -48,7 +36,6 @@ export default function ListaAlunos() {
     };
 
     if (type === "admin") {
-      console.log("OLAAAAA É AQUI");
       config = {
         headers: {
           authorization: "BEARER " + session.accessToken,
@@ -57,12 +44,10 @@ export default function ListaAlunos() {
           organization_id: organizationId,
         },
       };
-      console.log({ config });
     }
 
     api.get("/user", config).then((data) => {
       setData(data.data);
-      console.log(data.data);
       setFilteredData(data.data);
     });
   }, []);
@@ -80,10 +65,16 @@ export default function ListaAlunos() {
     setStatus(value);
   }
 
-  function handleSubmit(user) {
+  function handleApprove(user, status) {
     api
       .put(`/user/${user.id}`, { status: status }, config)
-      .then(() => message.success(`Status do usuário alterado com sucesso!`))
+      .then(() => {
+        if (status == "approved")
+          message.success(`Usuário aprovado!`);
+
+        if (status == "refused")
+          message.success(`Usuário negado!`);
+      })
       .catch((err) =>
         message.error("Não foi possível alterar o status do usuário!")
       );
@@ -203,26 +194,31 @@ export default function ListaAlunos() {
       render: (id) => {
         return session.user.type === "master" ? (
           <>
-            <EditIcon
-              className="clickable icon icon-edit"
-              onClick={() => openEditModal(id)}
-            />
+            <Popconfirm
+              title="Excluir aluno?"
+              onConfirm={() => handleDelete(id)}
+            >
+              <EditOutlined
+                className="clickable icon icon-edit"
+                onClick={() => openEditModal(id)}
+              />
+            </Popconfirm>
             <span className="hint-edit hint">Editar</span>
             <Popconfirm
-              title="Tem certeza que deseja tornar este user admin?"
+              title="Tornar admim?"
               onConfirm={() => tournIntoAdmin(id)}
             >
-              <Supervisor
+              <CrownOutlined
                 className="clickable icon icon-admin"
                 aria-label="Tornar admin"
               />
               <span className="hint-admin hint">Tornar admin</span>
             </Popconfirm>
             <Popconfirm
-              title="Tem certeza que deseja excluir este item?"
+              title="Excluir aluno?"
               onConfirm={() => handleDelete(id)}
             >
-              <DeleteIcon className="clickable icon icon-delete" />
+              <DeleteOutlined className="clickable icon icon-delete" />
               <span className="hint-delete hint">Deletar</span>
             </Popconfirm>
           </>
@@ -273,6 +269,11 @@ export default function ListaAlunos() {
       },
     },
     {
+      title: "Matrícula",
+      dataIndex: "registration",
+      align: "left",
+    },
+    {
       title: "Ocupação",
       className: "column-turma",
       dataIndex: "occupation_name",
@@ -310,36 +311,20 @@ export default function ListaAlunos() {
     },
     {
       title: "Status",
-      dataIndex: "status",
-      render: (status, id) => {
+      dataIndex: ("id"),
+      render: (id) => {
         return (
           <>
-            <Select
-              style={{ width: "120px" }}
-              defaultValue={status}
-              size="small"
-              onChange={(e) => handleSelectChange(e)}
-            >
-              <Select.Option name="approved" value="approved">
-                Aprovado
-              </Select.Option>
-              <Select.Option name="pending" value="pending">
-                Pendente
-              </Select.Option>
-              <Select.Option name="refused" value="refused">
-                Reprovado
-              </Select.Option>
-            </Select>
-            <Button
-              type="primary"
-              size="small"
-              style={{ marginLeft: "5px" }}
-              onClick={() => {
-                handleSubmit(id);
-              }}
-            >
-              Ok
-            </Button>
+            <CheckSquareTwoTone
+              className="actionButton"
+              onClick={() => handleApprove(id, "approved")}
+              twoToneColor="limegreen"
+            />
+            <CloseSquareTwoTone
+              className="actionButton"
+              onClick={() => handleApprove(id, "refused")}
+              twoToneColor="red"
+            />
           </>
         );
       },
@@ -360,9 +345,9 @@ export default function ListaAlunos() {
   }
 
   function openEditModal(id) {
-    loadOrgs();
-    setEditUserId(id);
-    setIsModalEditVisible(true);
+    /*     loadOrgs();
+        setEditUserId(id);
+        setIsModalEditVisible(true); */
   }
 
   function handleDelete(id) {
@@ -393,8 +378,8 @@ export default function ListaAlunos() {
   }
 
   function handleCancel() {
-    setIsModalEditVisible(false);
-    return message.error("Operação cancelada");
+    /*     setIsModalEditVisible(false);
+        return message.error("Operação cancelada"); */
   }
 
   function handleTabChange(key) {
@@ -435,7 +420,7 @@ export default function ListaAlunos() {
             <Table columns={columns} dataSource={filteredData} />
           </TabPane>
           {session.user.type === "master" ? (
-            <TabPane tab="Aprovar Cadastro de Usuários" key="1">
+            <TabPane tab="Pendentes" key="1">
               <Input
                 className="search-input"
                 placeholder="procurar por nome, matricula, curso"

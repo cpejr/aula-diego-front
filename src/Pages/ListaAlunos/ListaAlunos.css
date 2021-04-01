@@ -12,6 +12,15 @@
   display: block;
 }
 
+.actionButton {
+  font-size: x-large;
+  margin-right: 2%;
+}
+
+.actionButton:hover {
+  cursor: pointer;
+}
+
 .hint {
   display: none;
   position: absolute;
