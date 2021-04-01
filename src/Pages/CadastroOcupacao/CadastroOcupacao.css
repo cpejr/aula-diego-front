@@ -43,3 +43,7 @@
   font-size: 1.3em;
   border-radius: 5px;
 }
+
+.ant-form-item-label label{
+  font-size: large;
+}

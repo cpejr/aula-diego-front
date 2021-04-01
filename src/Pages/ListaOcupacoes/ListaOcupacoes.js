@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import { Table, Input, Popconfirm, message, Tooltip } from "antd";
 import Base from "../../Components/Base/Base";
-import DeleteIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@material-ui/icons/Add';
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import ActionButton from "../../Components/ActionButton/actionButton"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./ListaOcupacoes.css";
@@ -39,7 +38,7 @@ export default function ListaOrganizacoes() {
       dataIndex: "name",
       render: (name) => {
         return (
-          <p className="clickable" onClick={() => handleChange(name)}>
+          <p className="clickable" onClick={() => handleSearch(name)}>
             {name}
           </p>
         );
@@ -50,7 +49,7 @@ export default function ListaOrganizacoes() {
       dataIndex: "description",
       render: (name) => {
         return (
-          <p className="clickable" onClick={() => handleChange(name)}>
+          <p className="clickable" onClick={() => handleSearch(name)}>
             {name}
           </p>
         );
@@ -61,7 +60,7 @@ export default function ListaOrganizacoes() {
       dataIndex: "organization_name",
       render: (name) => {
         return (
-          <p className="clickable" onClick={() => handleChange(name)}>
+          <p className="clickable" onClick={() => handleSearch(name)}>
             {name}
           </p>
         );
@@ -72,19 +71,18 @@ export default function ListaOrganizacoes() {
       dataIndex: ("id"),
       render: (id) => (
         <>
-          <EditIcon className="clickable" onClick={handleEdit} />{" "}
-          <Popconfirm
-            title="Tem certeza que deseja excluir este item?"
-            onConfirm={() => handleDelete(id)}
-          >
-            <DeleteIcon className="clickable"/>
-          </Popconfirm>
+          <ActionButton title="Editar" confirm="Editar ocupação?">
+            <EditOutlined />
+          </ActionButton>
+          <ActionButton title="Exluir" confirm="Excluir ocupação?" onConfirm={() => handleDelete(id)}>
+            <DeleteOutlined />
+          </ActionButton>
         </>
       ),
     },
   ];
 
-  const handleChange = (value) => {
+  const handleSearch = (value) => {
     setSearch(value);
     setFilteredData(
       occupations.filter((occupation) => {
@@ -106,8 +104,8 @@ export default function ListaOrganizacoes() {
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
         api.get("/occupation", config)
-          .then((response) => { 
-            setOccupations(response.data); 
+          .then((response) => {
+            setOccupations(response.data);
             setFilteredData(response.data);
           })
           .then(setLoading(false));
@@ -115,7 +113,7 @@ export default function ListaOrganizacoes() {
       .catch((error) => {
         message.error("Não foi possível exluir");
         console.log(error);
-        }
+      }
       );
   }
 
@@ -127,15 +125,18 @@ export default function ListaOrganizacoes() {
     <Base>
       <h1 className="page-title">Ocupações</h1>
       <div className="table-container">
-        <div style={{display:"flex"}}>
+        <div className="inputWrapper">
           <Input
-            className="search-input"
+            className="search"
             placeholder="Pesquisar..."
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             value={search}
           />
-          <Tooltip title="Adicionar Ocupação">
-            <AddIcon style={{height:"30px", width:"30px"}} className="clickable" onClick={() => history.push("/ocupacao/cadastro")} />
+          <Tooltip title="Nova Ocupação">
+            <PlusOutlined
+              className="addButton"
+              onClick={() => history.push('/ocupacao/cadastro')}
+            />
           </Tooltip>
         </div>
         <Table

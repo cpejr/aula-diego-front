@@ -116,10 +116,10 @@ export default function ListaOrganizacoes() {
       dataIndex: ("id"),
       render: (id) => (
         <>
-          <ActionButton title="Editar" confirm="Editar item?">
+          <ActionButton title="Editar" confirm="Editar organização?">
             <EditOutlined />
           </ActionButton> 
-          <ActionButton title="Editar" confirm="Editar item?" onConfirm={() => handleDelete(id)}>
+          <ActionButton title="Exluir" confirm="Excluir organização?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined />
           </ActionButton> 
         </>
@@ -177,9 +177,7 @@ export default function ListaOrganizacoes() {
           <Tooltip title="Nova Organização">
             <PlusOutlined
               className="addButton"
-              onClick={() =>
-                history.push('/organizacao/cadastro')
-              }
+              onClick={() => history.push('/organizacao/cadastro')}
             />
           </Tooltip>
         </div>

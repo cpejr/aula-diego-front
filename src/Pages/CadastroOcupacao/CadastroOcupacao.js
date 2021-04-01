@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Input, Button, message, Select } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./CadastroOcupacao.css";
@@ -13,9 +12,7 @@ export default function NovaAula(props) {
   const history = useHistory();
   const { session } = useSession();
   const [organizations, setOrganizations] = useState([]);
-  const [organization, setOrganization] = useState(
-    session.user.organization_id
-  );
+  const [organization, setOrganization] = useState(session.user.organization_id);
 
   const formLayout = {
     labelCol: {
@@ -55,7 +52,6 @@ export default function NovaAula(props) {
   }
 
   function handleOrgChange(value) {
-    console.log(value);
     setOccupation({ ...occupation, organization_id: value });
   }
 
@@ -63,20 +59,12 @@ export default function NovaAula(props) {
     e.preventDefault();
     setUploading(true);
 
-    console.log(occupation);
-    // console.log(organization.get("organization"));
-
-    const data = {
-      ...occupation,
-      organization_id: organization,
-    };
-
     api
-      .post("/occupation", data, config)
+      .post("/occupation", occupation, config)
       .then((response) => {
         setUploading(false);
         message.success("Ocupação criada com sucesso!");
-        history.push("/ocupacao/lista");
+        history.push("/ocupacao");
       })
       .catch((err) => {
         message.error("Não foi possível criar a ocupação!");
@@ -91,7 +79,7 @@ export default function NovaAula(props) {
           <div className="formWrapper">
             <Form
               {...formLayout}
-              name="newOccpation"
+              name="newOcupation"
               className="occupationForm"
               initialValues={{ remember: true }}
               onFinish={handleSubmit}
@@ -104,9 +92,7 @@ export default function NovaAula(props) {
               {session.user.type === "master" ? (
                 <Form.Item
                   name="organization_id"
-                  label={
-                    <label style={{ fontSize: "large" }}> Organização </label>
-                  }
+                  label="Organização"
                   rules={[
                     {
                       required: true,
@@ -134,7 +120,7 @@ export default function NovaAula(props) {
 
               <Form.Item
                 name="name"
-                label={<label style={{ fontSize: "large" }}> Nome </label>}
+                label="Nome"
                 rules={[
                   {
                     required: true,
@@ -150,7 +136,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="description"
-                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                label="Descrição"
               >
                 <Input
                   placeholder="Descreva a função da ocupação"

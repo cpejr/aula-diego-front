@@ -2,3 +2,7 @@
   width: 128px;
   height: 128px;
 }
+
+.ant-form-item-label label{
+  font-size: large;
+}

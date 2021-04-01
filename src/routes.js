@@ -131,16 +131,23 @@ const routes = () => {
           masterComponent={ListaAlunosTurma}
         />
           /* CURSO */
-          <PrivateRoute
+        <PrivateRoute
           path="/curso/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={NovoCurso}
           masterComponent={NovoCurso}
         />
         <PrivateRoute
-          path="/curso/lista"
+          path="/curso"
+          exact
           studentComponent={MeusCursos}
           adminComponent={MeusCursos}
+          masterComponent={MeusCursos}
+        />
+        <PrivateRoute
+          path="/curso/lista"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaCursos}
           masterComponent={ListaCursos}
         />
         <PrivateRoute

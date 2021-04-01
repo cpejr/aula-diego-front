@@ -116,7 +116,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="name"
-                label={<label style={{ fontSize: "large" }}> Título </label>}
+                label="Nome"
                 rules={[
                   {
                     required: true,
@@ -125,24 +125,24 @@ export default function NovaAula(props) {
                 ]}
               >
                 <Input
-                  placeholder="Título da aula"
+                  placeholder="Nome da organização"
                   name="name"
                   onChange={handleChange}
                 />
               </Form.Item>
               <Form.Item
                 name="description"
-                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                label="Descrição"
               >
                 <Input
-                  placeholder="Descreva o temas que serão abordados na aula"
+                  placeholder="Descreva a organização"
                   name="description"
                   onChange={handleChange}
                 />
               </Form.Item>
               <Form.Item
                 name="files"
-                label={<label style={{ fontSize: "large" }}> Logo </label>}
+                label="Logo"
                 rules={[
                   {
                     required: true,
@@ -169,7 +169,7 @@ export default function NovaAula(props) {
                   loading={loading}
                   style={{ fontSize: "large" }}
                 >
-                  {loading ? "Criando" : "Criar aula"}
+                  Criar
                 </Button>
               </Form.Item>
             </Form>
