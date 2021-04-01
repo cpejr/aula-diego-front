@@ -15,6 +15,8 @@ export default function NovaAula(props) {
   const course_id = course.split("=", 2)[1];
   const { session } = useSession();
   const history = useHistory();
+  const course = new URLSearchParams(props.location.search);
+
 
   const formLayout = {
     labelCol: {
@@ -62,8 +64,7 @@ export default function NovaAula(props) {
       user_id: session.user.id,
       files: files,
     };
-
-    console.log(data);
+    
     setUploading(true);
 
     const config = {

@@ -89,10 +89,10 @@ export default function Sidebar() {
           break;
       }
 
-      api
+      /* api
         .post("/score", { user_id: session.user.id }, config)
         .then((res) => setScore(res.data.score))
-        .catch(() => alert("Não foi possível receber pontuação do usuário."));
+        .catch(() => alert("Não foi possível receber pontuação do usuário.")); */
     }
   }, []);
   return (
