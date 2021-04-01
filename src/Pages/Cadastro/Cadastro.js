@@ -192,6 +192,7 @@ export default function Cadastro(props) {
                 required
               />
             </div>
+            {/* VISÃO EXTRA DO MASTER */}
             {session && session.accessToken ? (
               <>
                 <div className="form-group">
@@ -208,39 +209,6 @@ export default function Cadastro(props) {
                     <option value="student">student</option>
                     <option value="admin">admin</option>
                     <option value="master">master</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <select
-                    className="form-control"
-                    name="organization"
-                    value={inputValues["organization"]}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="none" selected disabled hidden>
-                      Organização
-                    </option>
-                    <option value="student">SAMU</option>
-                    <option value="admin">Bombeiros</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <select
-                    className="form-control"
-                    name="occupation"
-                    value={inputValues["occupation"]}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="none" selected disabled hidden>
-                      Ocupação
-                    </option>
-                    <option value="student">Médico</option>
-                    <option value="admin">Paramédico</option>
-                    <option value="master">Enfermeiro</option>
                   </select>
                 </div>
               </>
