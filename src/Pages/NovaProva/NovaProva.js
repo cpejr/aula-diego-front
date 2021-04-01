@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Input, InputNumber, Button, DatePicker, Upload, Checkbox, message, Radio } from 'antd';
@@ -11,20 +11,20 @@ const { TextArea } = Input
 
 const examLayout = {
   labelCol: { span: 2 },
-  wrapperCol: { span: 24 },
+  wrapperCol: { span: 20 },
 };
 
 const examTailLayout = {
-  wrapperCol: { offset: 2, span: 24 },
+  wrapperCol: { offset: 2, span: 20 },
 };
 
 const questionLayout = {
-  labelCol: { span: 3 },
-  wrapperCol: { span: 24 },
+  labelCol: { span: 4 },
+  wrapperCol: { span: 16 },
 };
 
 const questionTailLayout = {
-  wrapperCol: { offset: 3, span: 24 },
+  wrapperCol: { offset: 4, span: 16 },
 };
 
 const alternativeLayout = {
@@ -37,40 +37,40 @@ const alternativeTailLayout = {
 };
 
 const Field = ({ name, label, required = true, message = "Campo obrigatório", field, fieldKey, children }) => (
-  <div className="fieldWrapper">
-    <Form.Item
-      {...field}
-      className="formItem"
-      name={name}
-      label={label ? <label className="formLabel"> {label} </label> : null}
-      fieldKey={fieldKey}
-      rules={[
-        {
-          required: { required },
-          message: { message },
-        },
-      ]}
-    >
-      {children}
-    </Form.Item>
-  </div>
+  <Form.Item
+    {...field}
+    name={name}
+    label={label ? label : null}
+    fieldKey={fieldKey}
+    rules={[
+      {
+        required: { required },
+        message: { message },
+      },
+    ]}
+  >
+    {children}
+  </Form.Item>
 )
 
-const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, func, field, fieldKey }) => (
+const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, onChange = null, field, fieldKey }) => (
   <Field name={name} label={label} field={field} fieldKey={fieldKey} required={required} message={message}>
     <TextArea
       className="formInput"
       placeholder={placeholder}
-      onChange={func}
-      rows={1}
-      autoSize
+      onChange={onChange}
+      autoSize={{ minRows: 1, maxRows: 3 }}
     />
   </Field>
 )
 
-const ImageUpload = ({ name, label, func, field, fieldKey }) => {
+const ImageUpload = ({ name, label, imageChange, field, fieldKey }) => {
   const [preview, setPreview] = useState(false);
   const [file, setFile] = useState();
+
+  useEffect(() => {
+    imageChange(file);
+  }, [file])
 
   return (
     <Field name={name} label={label} field={field} fieldKey={fieldKey} required={false}>
@@ -99,7 +99,7 @@ const ImageUpload = ({ name, label, func, field, fieldKey }) => {
   )
 }
 
-const Alternative = ({ name, required = true, message = "Campo obrigatório", value, func, field, fieldKey }) => (
+const Alternative = ({ name, required = true, message = "Campo obrigatório", value, onChange, field, fieldKey }) => (
   <Field name={name} field={field} fieldKey={fieldKey} required={required} message={message}>
     <div className="alternativeWrapper">
       <Radio.Button
@@ -112,18 +112,29 @@ const Alternative = ({ name, required = true, message = "Campo obrigatório", va
       <Input
         name={name}
         placeholder="Alternartiva"
-        onChange={func}
         className="alternative"
+        onChange={(e) => onChange(e, value)}
       />
     </div>
   </Field>
 )
 
-const Alternatives = ({ name, label, required = true, message, func, field, fieldKey }) => {
-  const [value, setValue] = useState(0);
-  const handleChange = e => setValue(e.target.value);
+const Alternatives = ({ name, label, onChange, required = true, message, field, fieldKey }) => {
+  const [alternatives, setAltenatives] = useState({})
+  const [selected, setSelected] = useState("A");
+
+  const handleSelect = e => setSelected(e.target.value);
+  const handleAlternativeChange = (e, key) => setAltenatives({ ...alternatives, [key]: e.target.value })
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+  useEffect(() => {
+    const event = {};
+    event.target = {}
+    event.target.value = alternatives;
+
+    onChange(event);
+  }, [alternatives])
 
   return (
     <Field name={name} label={label} required={required} message={message} field={field} fieldKey={fieldKey}>
@@ -137,9 +148,9 @@ const Alternatives = ({ name, label, required = true, message, func, field, fiel
           name="alternatives"
         >
           {(fields, { add, remove }, { errors }) => (
-            <Radio.Group onChange={handleChange} style={{ "width": "100%" }} value={value}>
+            <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected} defaultValue={"A"}>
               {fields.map((field, index) => (
-                <Alternative field={field} value={letters[index]} />
+                <Alternative field={field} onChange={handleAlternativeChange} value={letters[index]} />
               ))}
               <Form.Item>
                 <Button type="dashed" onClick={() => { add() }} icon={<PlusOutlined />}>
@@ -154,7 +165,7 @@ const Alternatives = ({ name, label, required = true, message, func, field, fiel
   )
 }
 
-const QuestionText = ({ index, field, func }) => (
+const QuestionText = ({ index, field, onChange, imageChange, remove }) => (
   <div className="questionWrapper">
     <Form.Item {...questionTailLayout}>
       <h5>{`Questão ${index + 1}:`}</h5>
@@ -166,17 +177,28 @@ const QuestionText = ({ index, field, func }) => (
       fieldKey={[field.fieldKey, 'head']}
       placeholder="Enunciado da questão"
       message="Por favor, insira enunciado da questão!"
-      func={func}
+      onChange={(e) => onChange(e, field.fieldKey, 'header')}
     />
     <ImageUpload
       name={[field.name, 'image']}
       fieldKey={[field.fieldKey, 'image']}
       label="Imagem"
+      imageChange={(img) => imageChange(field.fieldKey, img)}
     />
+    <Form.Item {...questionTailLayout}>
+      <Button
+        type="dashed"
+        className="formButtonDelete"
+        onClick={() => remove()}
+        icon={<MinusCircleOutlined />}
+      >
+        Remover questão
+      </Button>
+    </Form.Item>
   </div>
 )
 
-const QuestionAlternatives = ({ index, field, func }) => (
+const QuestionAlternatives = ({ index, field, onChange, imageChange, remove }) => (
   <div className="questionWrapper">
     <Form.Item {...questionTailLayout}>
       <h5>{`Questão ${index + 1}:`}</h5>
@@ -188,46 +210,128 @@ const QuestionAlternatives = ({ index, field, func }) => (
       fieldKey={[field.fieldKey, 'head']}
       placeholder="Enunciado da questão"
       message="Por favor, insira enunciado da questão!"
-      func={func}
+      onChange={(e) => onChange(e, field.fieldKey, 'header')}
     />
     <Alternatives
       name={`alternative_${index + 1}`}
       label="Alternativas"
       fieldKey={[field.fieldKey, 'alternative']}
       message="Por favor, insira alteranativa!"
-      func={func}
+      onChange={(e) => onChange(e, field.fieldKey, 'alternatives')}
     />
     <ImageUpload
       name={`image_${index + 1}`}
       fieldKey={[field.fieldKey, 'image']}
       label="Imagem"
+      imageChange={(img) => imageChange(field.fieldKey, img)}
     />
+    <Form.Item {...questionTailLayout}>
+      <Button
+        {...questionTailLayout}
+        type="dashed"
+        className="formButtonDelete"
+        onClick={() => remove()}
+        icon={<MinusCircleOutlined />}
+      >
+        Remover questão
+      </Button>
+    </Form.Item>
   </div>
 )
 
 export default function NovaProva(props) {
   const [exam, setExam] = useState([])
-  const [questions, setQuestions] = useState([])
+  const [questions, setQuestions] = useState({})
   const [questionType, setQuestionType] = useState([])
+  const [images, setImages] = useState([]);
 
   const query = new URLSearchParams(props.location.search);
   const course = query.get("course")
 
-  function examChange(e) {
-    console.log(e)
-    /* setExam({ ...exam, [e.target.name]: e.target.value }); */
+  const { session } = useSession();
+
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  const configFiles = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+      "Content-Type": "multipart/form-data",
+      processData: false,
+      contentType: false,
+    },
+  };
+
+  function questionChange(e, key, section) {
+    const question = questions[key];
+
+    setQuestions({
+      ...questions,
+      [key]: {
+        ...question,
+        [section]: e.target.value
+      }
+    })
   }
 
-  function examChangeDate(e) {
-    console.log(e)
+  function imageChange(key, image) {
+    setImages({ ...images, [key]: image });
   }
 
-  function questionChange(e) {
-    console.log(e)
+  function questionAdd(add, type) {
+    add();
+    setQuestionType([...questionType, type]);
+  }
+
+  function questionDelete(remove, fieldName, index, key) {
+    delete questions[key];
+    delete images[key];
+    questionType.splice(index, 1);
+
+    remove(fieldName);
+    setQuestions(questions);
+    setImages(images);
+    setQuestionType(questionType);
   }
 
   const examSubmit = values => {
-    console.log(values)
+    const exam = {
+      ...values,
+      'startDate': values['startDate'].format('YYYY-MM-DD HH:mm:ss'),
+      'endDate': values['endDate'].format('YYYY-MM-DD HH:mm:ss'),
+      'questions': questions
+    }
+
+    const keys = Object.keys(images)
+
+    for (const key of keys) {
+
+      const file = {
+        user_id: session.user.id,
+        file_name: `${exam.name} ${key}`,
+        file_type: images[key].type
+      }
+
+      api
+        .post("file", file, config)
+        .then(fileId => {
+          console.log(fileId)
+          const formData = new FormData();
+          formData.append(fileId.data.file_id, images[key]);
+
+          api
+            .post("file_upload", formData, configFiles)
+            .catch(err => {
+              message.error("Não foi possível criar a aula!");
+            })
+        })
+        .catch(err => {
+          message.error("Não foi possível criar a aula!");
+        })
+    }
   };
 
   return (
@@ -249,15 +353,14 @@ export default function NovaProva(props) {
               label="Título"
               placeholder="Título da prova"
               message="Por favor, insira título da prova!"
-              func={examChange}
             />
             <Field name="startDate" label="Início" message="Por favor, insira início da prova!">
               <DatePicker
+                name="startDate"
                 placeholder="Início da prova"
                 showTime
                 format="DD-MM-YYYY HH:mm"
                 name="startDate"
-                onChange={examChangeDate}
               />
             </Field>
             <Field name="endDate" label="Término" message="Por favor, insira término da prova!">
@@ -266,7 +369,6 @@ export default function NovaProva(props) {
                 showTime
                 format="DD-MM-YYYY HH:mm"
                 name="startDate"
-                onChange={examChangeDate}
               />
             </Field>
             <Field label="Questões">
@@ -284,27 +386,43 @@ export default function NovaProva(props) {
                       <>
                         {fields.map((field, index) => {
                           if (questionType[index] === "text")
-                            return <QuestionText index={index} field={field} func={questionChange} />
+                            return <QuestionText
+                              index={index}
+                              field={field}
+                              onChange={questionChange}
+                              imageChange={imageChange}
+                              remove={() => questionDelete(remove, field.name, index, field.key)}
+                            />
 
                           if (questionType[index] === "alternatives")
-                            return <QuestionAlternatives index={index} field={field} func={questionChange} />
+                            return <QuestionAlternatives
+                              index={index}
+                              field={field}
+                              onChange={questionChange}
+                              imageChange={imageChange}
+                              remove={() => questionDelete(remove, field.name, index, field.key)}
+                            />
                         })}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => { add(); setQuestionType([...questionType, "text"]) }}
-                            icon={<PlusOutlined />}
-                            style={{ "margin-right": "2%" }}
-                          >
-                            Adicionar questão aberta
-                          </Button>
-                          <Button
-                            type="dashed"
-                            onClick={() => { add(); setQuestionType([...questionType, "alternatives"]) }}
-                            icon={<PlusOutlined />}
-                          >
-                            Adicionar questão fechada
-                          </Button>
+                        <Form.Item {...questionLayout}>
+                          <div className="addButtonsWrapper">
+                            <Button
+                              className="formButton"
+                              type="dashed"
+                              onClick={() => questionAdd(add, "text")}
+                              icon={<PlusOutlined />}
+                              style={{ "margin-right": "2%" }}
+                            >
+                              Adicionar questão aberta
+                            </Button>
+                            <Button
+                              className="formButton"
+                              type="dashed"
+                              onClick={() => questionAdd(add, "alternatives")}
+                              icon={<PlusOutlined />}
+                            >
+                              Adicionar questão fechada
+                            </Button>
+                          </div>
                           <Form.ErrorList errors={errors} />
                         </Form.Item>
                       </>

@@ -60,8 +60,7 @@ export default function NovaAula(props) {
       user_id: session.user.id,
       files: files,
     };
-
-    console.log(data);
+    
     setUploading(true);
 
     const config = {
