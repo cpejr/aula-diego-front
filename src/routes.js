@@ -33,7 +33,7 @@ import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 import NovaProva from "./Pages/NovaProva/NovaProva";
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
-
+import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
 const routes = () => {
   return (
     <BrowserRouter>
@@ -131,16 +131,23 @@ const routes = () => {
           masterComponent={ListaAlunosTurma}
         />
           /* CURSO */
-          <PrivateRoute
+        <PrivateRoute
           path="/curso/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={NovoCurso}
           masterComponent={NovoCurso}
         />
         <PrivateRoute
-          path="/curso/lista"
+          path="/curso"
+          exact
           studentComponent={MeusCursos}
           adminComponent={MeusCursos}
+          masterComponent={MeusCursos}
+        />
+        <PrivateRoute
+          path="/curso/lista"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaCursos}
           masterComponent={ListaCursos}
         />
         <PrivateRoute
@@ -193,6 +200,12 @@ const routes = () => {
           masterComponent={ListaOrganizacao}
         />
           /* OCUPAÇÃO */
+          <PrivateRoute
+          path="/ocupacao/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={EditarOcupacao}
+          masterComponent={EditarOcupacao}
+        />
           <PrivateRoute
           path="/ocupacao/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}

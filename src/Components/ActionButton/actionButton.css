@@ -1,0 +1,13 @@
+.iconWrapper {
+  display: inline-block;
+  margin-right: 3%;
+}
+
+.iconWrapper svg {
+  font-size: 22px;
+}
+
+
+.iconWrapper:hover {
+  cursor: pointer;
+}

@@ -1,197 +1,193 @@
-.pageCadastro{
-    display: flex;
-    width: 100%;    
-    background: rgb(41,0,67);
-    background: linear-gradient(180deg, rgba(41,0,67,1) 0%, rgba(177,23,52,1) 200%);
-    align-items: center;
-    justify-content: center;
-    height: 187%;
+.pageCadastro {
+  display: flex;
+  width: 100%;
+  background: rgb(41, 0, 67);
+  background: linear-gradient(
+    180deg,
+    rgba(41, 0, 67, 1) 0%,
+    rgba(177, 23, 52, 1) 200%
+  );
+  align-items: center;
+  justify-content: center;
+  height: 187%;
 }
 
-
-.blocoCadastro{
-    width: 400px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(13, 10, 14, 0.6);
-    border-radius: 20px;
-    color: white;
-    padding: 15px;
+.blocoCadastro {
+  width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(13, 10, 14, 0.6);
+  border-radius: 20px;
+  color: white;
+  padding: 15px;
 }
 
-.entrarCadastro{
-    font-size: xx-large;
-    color : rgb(244, 232, 242);
-    margin-top: 5%;
-    margin-bottom: 7%;
+.entrarCadastro {
+  font-size: xx-large;
+  color: rgb(244, 232, 242);
+  margin-top: 5%;
+  margin-bottom: 7%;
 }
 
-.insiraCadastro{
-    font-size: medium;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: 	rgb(244, 232, 242)
+.insiraCadastro {
+  font-size: medium;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: rgb(244, 232, 242);
 }
 
- 
-.entrarButtonCadastro{
-    margin-top: 15px; 
-    border-radius: 8px;
-    height: 50px;
-    width: 100%;
-    background-color: rgb(198, 53, 84);
-    border: 2px solid #B11734;
-    color : rgb(244, 232, 242);
-    outline:none;
-    border:none;
-
+.entrarButtonCadastro {
+  margin-top: 15px;
+  border-radius: 8px;
+  height: 50px;
+  width: 100%;
+  background-color: rgb(198, 53, 84);
+  border: 2px solid #b11734;
+  color: rgb(244, 232, 242);
+  outline: none;
+  border: none;
 }
 
 .entrarButtonCadastro :focus {
-    outline: none;
-    border:none;
+  outline: none;
+  border: none;
 }
 
-.googleText{
-    margin: auto auto auto auto;
-    color: grey;
+.googleText {
+  margin: auto auto auto auto;
+  color: grey;
 }
 
-.esqueceuCadastro{
-    font-size: small;
+.esqueceuCadastro {
+  font-size: small;
 }
 
 .esqueceuCadastroDiv {
-    width: 100%;
+  width: 100%;
 }
 
-.naotemCadastro{
-    font-size: medium;
-    margin-top: 2px;
+.naotemCadastro {
+  font-size: medium;
+  margin-top: 2px;
 }
 
-.resgateCadastro{
-    margin-top: 3px;
-    display: flex;
-    margin-left: 2px;
-    margin-bottom: 2px;
+.resgateCadastro {
+  margin-top: 3px;
+  display: flex;
+  margin-left: 2px;
+  margin-bottom: 2px;
 }
 
-.cadastreCadastro{
-    margin-top: 1px;
-    font-size: medium;
-    margin-left: 10px;
+.cadastreCadastro {
+  margin-top: 1px;
+  font-size: medium;
+  margin-left: 10px;
 }
 
 .form-group input {
-    background-color: rgb(48, 33, 54);
-    border: 1.5px solid rgb(63, 55, 73);
-    height: 50px;
-    border-radius: 10px;
-    margin-bottom: 0.3rem;
-    color: white;
+  background-color: rgb(48, 33, 54);
+  border: 1.5px solid rgb(63, 55, 73);
+  min-height: 50px;
+  border-radius: 10px;
+  margin-bottom: 0.3rem;
+  color: white;
 }
 
 .form-group textarea {
-    background-color: rgb(48, 33, 54);
-    border: 1.5px solid rgb(63, 55, 73);
-    height: 50px;
-    border-radius: 10px;
-    margin-bottom: 0.3rem;
-    color: white;
-    resize: none;
+  background-color: rgb(48, 33, 54);
+  border: 1.5px solid rgb(63, 55, 73);
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 0.3rem;
+  color: white;
+  resize: none;
 }
 
 .form-group select {
-    background-color: rgb(48, 33, 54);
-    border: 1.5px solid rgb(63, 55, 73);
-    height: 50px;
-    border-radius: 10px;
-    margin-bottom: 0.3rem;
-    color: white;
+  background-color: rgb(48, 33, 54);
+  border: 1.5px solid rgb(63, 55, 73);
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 0.3rem;
+  color: white;
 }
 
 .CadastroImg {
-    width: 400px;
-    margin-bottom: 40px;
+  width: 400px;
+  margin-bottom: 40px;
 }
 
-input:focus, input:active{
-    border-color: #FF0000;
-    outline:0px !important;
-    -webkit-appearance:none;
-    box-shadow: none !important;
-  }
+input:focus,
+input:active {
+  border-color: #ff0000;
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+}
 .jatemLogin {
-    font-size: medium;
-    
+  font-size: medium;
 }
-.logincadastro{
-    margin-left: 8px;
+.logincadastro {
+  margin-left: 8px;
 }
-.irLogin{
-    margin-top: 10px;
-    display: flex;
-    margin-left: 2px;
-    margin-bottom: 2px;
+.irLogin {
+  margin-top: 10px;
+  display: flex;
+  margin-left: 2px;
+  margin-bottom: 2px;
 }
 input[type="date"]::before {
-	color: #999999;
-    content: attr(placeholder);
-    margin-left: 10px;
-    margin-top: 5px;
-    margin-right: 3px;
+  color: #999999;
+  content: attr(placeholder);
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-right: 3px;
 }
 input[type="date"] {
-	color: #ffffff;
+  color: #ffffff;
 }
 input[type="date"]:focus,
 input[type="date"]:valid {
-	color: white;
+  color: white;
 }
 input[type="date"]:focus::before,
 input[type="date"]:valid::before {
-	content: "" !important;
+  content: "" !important;
 }
-input[type=date]:required:invalid::-webkit-datetime-edit {
-    color: transparent;
+input[type="date"]:required:invalid::-webkit-datetime-edit {
+  color: transparent;
 }
-input[type=date]:focus::-webkit-datetime-edit {
-    color:#666666 !important;
+input[type="date"]:focus::-webkit-datetime-edit {
+  color: #666666 !important;
 }
-
 
 .react-datepicker {
-    color: yellow;
-    float: right
+  color: yellow;
+  float: right;
 }
 .react-datepicker-wrapper {
-    width: 100%
+  width: 100%;
 }
 
 @media (max-width: 600px) {
-    dis
-    .pageCadastro{
-        display: block;
-    }
-    .blocoCadastro {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(13, 10, 14, 0.3);
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-        max-width: 90%
-    }
+  dis .pageCadastro {
+    display: block;
+  }
+  .blocoCadastro {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 10, 14, 0.3);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    max-width: 90%;
+  }
 
-    .CadastroImg {
-        padding: 5%;
-        width: 100%;
-        margin-bottom: 0rem;
-        max-width: 400px
-    }
-
-    
-
+  .CadastroImg {
+    padding: 5%;
+    width: 100%;
+    margin-bottom: 0rem;
+    max-width: 400px;
+  }
 }
