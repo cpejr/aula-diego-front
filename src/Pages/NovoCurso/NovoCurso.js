@@ -25,32 +25,38 @@ const formTailLayout = {
 
 export default function NovoCurso() {
   const [formData, setformData] = useState([]);
+  const [organization, setOrganization] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
   const history = useHistory();
   const { session } = useSession();
 
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
+
+  useEffect(() => {
+
+    setformData({ ...formData, organization_id: session.user.organization_id });
+
+    api
+      .get("/organization", config)
+      .then((res) => setOrganizations(res.data))
+      .catch((err) => {message.error("Não foi possível criar a ocupação!")});
+  }, [session]);
+
   function handleChange(e) {
-    setformData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setformData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function handleOrgChange(id) {
+    setformData({ ...formData, organization_id: id });
   }
 
   function handleSubmit() {
-    const data = {
-      ...formData,
-      organization_id: session.user.organization_id,
-    };
-
-    console.log(data);
-
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-    };
-
     api
-      .post(`/course`, data, config)
+      .post(`/course`, formData, config)
       .then(() => {
         message.success("Curso criado com sucesso!");
         history.push("/curso/lista");
@@ -77,9 +83,40 @@ export default function NovoCurso() {
               <Form.Item {...formTailLayout}>
                 <h1>Novo Curso</h1>
               </Form.Item>
+              {session.user.type === "master"
+                ?
+                <Form.Item
+                  name="organization_id"
+                  label="Organização"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor insira o nome da ocupação!",
+                    },
+                  ]}
+                >
+                  <Select
+                    onChange={handleOrgChange}
+                    defaultValue={session.user.organization_id}
+                  >
+                    {organizations.map((organizations) => {
+                      return (
+                        <Select.Option
+                          key={organizations.id}
+                          value={organizations.id}
+                        >
+                          {organizations.name}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+                :
+                null
+              }
               <Form.Item
                 name="name"
-                label={<label style={{ fontSize: "large" }}> Nome </label>}
+                label="Nome"
               >
                 <Input
                   placeholder="Nome do Curso"
@@ -90,7 +127,7 @@ export default function NovoCurso() {
               </Form.Item>
               <Form.Item
                 name="description"
-                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                label="Descrição"
               >
                 <TextArea
                   onChange={handleChange}
