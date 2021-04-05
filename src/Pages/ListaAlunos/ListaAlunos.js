@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
-import { Table, Tag, Input, Select, message, Popconfirm, Tabs, Tooltip } from "antd";
-import { CrownOutlined, EditOutlined, DeleteOutlined, CheckSquareTwoTone, CloseSquareTwoTone } from "@ant-design/icons";
+import {
+  Table,
+  Tag,
+  Input,
+  Select,
+  message,
+  Popconfirm,
+  Tabs,
+  Tooltip,
+} from "antd";
+import {
+  CrownOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  CheckSquareTwoTone,
+  CloseSquareTwoTone,
+} from "@ant-design/icons";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./ListaAlunos.css";
@@ -28,7 +43,6 @@ export default function ListaAlunos() {
   const type = session.user.type;
 
   useEffect(() => {
-
     var config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -36,11 +50,13 @@ export default function ListaAlunos() {
     };
 
     if (type === "admin") {
+      console.log("AQUIIIII");
+      console.log(organizationId);
       config = {
         headers: {
           authorization: "BEARER " + session.accessToken,
         },
-        query: {
+        params: {
           organization_id: organizationId,
         },
       };
@@ -69,11 +85,9 @@ export default function ListaAlunos() {
     api
       .put(`/user/${user.id}`, { status: status }, config)
       .then(() => {
-        if (status == "approved")
-          message.success(`Usuário aprovado!`);
+        if (status == "approved") message.success(`Usuário aprovado!`);
 
-        if (status == "refused")
-          message.success(`Usuário negado!`);
+        if (status == "refused") message.success(`Usuário negado!`);
       })
       .catch((err) =>
         message.error("Não foi possível alterar o status do usuário!")
@@ -311,7 +325,7 @@ export default function ListaAlunos() {
     },
     {
       title: "Status",
-      dataIndex: ("id"),
+      dataIndex: "id",
       render: (id) => {
         return (
           <>
@@ -407,6 +421,7 @@ export default function ListaAlunos() {
   }
   return (
     <Base>
+      {console.log(data)}
       <h1 className="page-title">Lista de Alunos</h1>
       <div className="table-container">
         <Tabs defaultActiveKey="0" onChange={handleTabChange}>
