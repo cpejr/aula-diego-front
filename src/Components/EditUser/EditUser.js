@@ -191,7 +191,7 @@ export default function EditUser() {
               <Input
                 name="phone"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setPhone(console.log(e.target.value))}
               />
             </Card>
           </Col>
