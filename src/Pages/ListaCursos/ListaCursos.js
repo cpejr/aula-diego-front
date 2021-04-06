@@ -64,7 +64,7 @@ export default function ListaOrganizacoes() {
           <ActionButton title="Editar" confirm="Editar organização?">
             <EditOutlined />
           </ActionButton>
-          <ActionButton title="Exluir" confirm="Excluir organização?" onConfirm={() => handleDelete(id)}>
+          <ActionButton title="Exluir" confirm="Excluir curso?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined />
           </ActionButton>
         </>

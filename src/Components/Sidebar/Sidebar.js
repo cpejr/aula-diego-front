@@ -41,10 +41,6 @@ export default function Sidebar() {
 
   const masterLinks = [
     {
-      title: "Novo Usuário",
-      path: "/cadastro",
-    },
-    {
       title: "Alunos",
       path: "/aluno",
     },
