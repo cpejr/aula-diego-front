@@ -33,7 +33,7 @@ export default function CursoAdmin(props) {
   const requestDone = (data) => {
     requests += 1;
 
-    if (requests == 4) setDone(true);
+    if (requests == 3) setDone(true);
   };
 
   useEffect(() => {
@@ -143,16 +143,6 @@ export default function CursoAdmin(props) {
     setLoading(true);
 
     api
-      .get(`/course/${course_id}`, config)
-      .then((response) => {
-        setCourse(response.data);
-        requestDone();
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar curso");
-      });
-
-    api
       .get(`/lesson`, configTables)
       .then((response) => {
         const lessons = [];
@@ -206,7 +196,21 @@ export default function CursoAdmin(props) {
   }
 
   useEffect(() => {
-    getData();
+    api
+    .get(`/course/${course_id}`, config)
+    .then((response) => {
+      if (session.user.type !== "master" && response.data.organization_id === session.user.organization_id) {
+        setCourse(response.data);
+        getData();
+      }
+      else {
+        message.error("Você não tem permissão para ver esse curso");
+        history.push("/")
+      }
+    })
+    .catch(() => {
+      message.error("Não foi possível carregar curso");
+    });
   }, []);
 
   function handleSearch(value) {
