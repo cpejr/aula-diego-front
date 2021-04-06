@@ -30,7 +30,11 @@ export default function Login() {
       })
       .then(() => redirect("/dashboard"))
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.data) {
+          message.error(error.response.data.message);
+          if (error.response.status === 403) return;
+        }
+
         history.push({
           pathname: "/cadastro",
           state: {

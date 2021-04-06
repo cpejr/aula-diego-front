@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Table, Tag, Input, Select, message, Popconfirm, Tabs, Tooltip, } from "antd";
-import { CrownOutlined, EditOutlined, DeleteOutlined, CheckSquareTwoTone, CloseSquareTwoTone, } from "@ant-design/icons";
+import { Table, Input, message, Tabs } from "antd";
+import {
+  CrownOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  CheckSquareTwoTone,
+} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
-import ActionButton from "../../Components/ActionButton/actionButton"
-import userEvent from "@testing-library/user-event";
+import ActionButton from "../../Components/ActionButton/actionButton";
+
 import "./ListaAlunos.css";
-import { setDefaultLocale } from "react-datepicker";
-import { getDate } from "date-fns";
 
 export default function ListaAlunos() {
   const [students, setStudents] = useState([]);
   const [pending, setPending] = useState([]);
-  
+
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,7 @@ export default function ListaAlunos() {
   const organizationId = session.user.organization_id;
   const type = session.user.type;
 
-  const config = {
+  let config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
@@ -40,14 +43,16 @@ export default function ListaAlunos() {
       };
     }
 
-    api
-      .get("/user", config)
-      .then(res => {
-        setStudents(res.data.filter(user => user.status === "approved"));
-        setPending(res.data.filter(user => user.status === "pending"));
-        setFiltered(res.data.filter(user => user.status === (tab === 0 ? "approved" : "pending")));
-      });
-  }
+    api.get("/user", config).then((res) => {
+      setStudents(res.data.filter((user) => user.status === "approved"));
+      setPending(res.data.filter((user) => user.status === "pending"));
+      setFiltered(
+        res.data.filter(
+          (user) => user.status === (tab === 0 ? "approved" : "pending")
+        )
+      );
+    });
+  };
 
   useEffect(() => {
     getData(0);
@@ -55,11 +60,11 @@ export default function ListaAlunos() {
 
   useEffect(() => {
     setFiltered(students);
-  }, [students])
+  }, [students]);
 
   useEffect(() => {
     setLoading(false);
-  }, [filtered])
+  }, [filtered]);
 
   const columns = [
     {
@@ -84,7 +89,7 @@ export default function ListaAlunos() {
       className: "column-turma",
       dataIndex: "occupation_name",
       with: "25%",
-    }
+    },
   ];
 
   const studentsTable = [
@@ -97,20 +102,28 @@ export default function ListaAlunos() {
       render: (id) => {
         return type === "master" ? (
           <>
-            <ActionButton title="Promover" confirm="Promover para admin?" onConfirm={() => handlePromote(id)}>
+            <ActionButton
+              title="Promover"
+              confirm="Promover para admin?"
+              onConfirm={() => handlePromote(id)}
+            >
               <CrownOutlined className="actionButton" />
             </ActionButton>
             <ActionButton title="Editar" confirm="Editar turma?">
               <EditOutlined className="actionButton" />
             </ActionButton>
-            <ActionButton title="Deletar" confirm="Deletar turma?" onConfirm={() => handleDelete(id)}>
+            <ActionButton
+              title="Deletar"
+              confirm="Deletar turma?"
+              onConfirm={() => handleDelete(id)}
+            >
               <DeleteOutlined className="actionButton" />
             </ActionButton>
           </>
         ) : null;
       },
     },
-  ]
+  ];
 
   const pendingTable = [
     ...columns,
@@ -121,11 +134,19 @@ export default function ListaAlunos() {
       render: (id) => {
         return (
           <>
-            <ActionButton title="Aprovar" confirm="Aprovar usuário?" onConfirm={() => handleApprove(id, "approved")}>
-              <CheckSquareTwoTone twoToneColor="limeGreen"/>
+            <ActionButton
+              title="Aprovar"
+              confirm="Aprovar usuário?"
+              onConfirm={() => handleApprove(id, "approved")}
+            >
+              <CheckSquareTwoTone twoToneColor="limeGreen" />
             </ActionButton>
-            <ActionButton title="Negar" confirm="Negar usuário?" onConfirm={() => handleApprove(id, "refused")}>
-              <CheckSquareTwoTone twoToneColor="red"/>
+            <ActionButton
+              title="Negar"
+              confirm="Negar usuário?"
+              onConfirm={() => handleApprove(id, "refused")}
+            >
+              <CheckSquareTwoTone twoToneColor="red" />
             </ActionButton>
           </>
         );
@@ -155,7 +176,7 @@ export default function ListaAlunos() {
         getData();
       })
       .catch((err) => {
-        message.error("Não foi possível alterar o status do usuário!")
+        message.error("Não foi possível alterar o status do usuário!");
       });
   }
 
@@ -163,7 +184,11 @@ export default function ListaAlunos() {
     api
       .delete(`/user/${id}`, config)
       .then(() => message.success(`Usuário deletado com sucesso`))
-      .catch((err) => message.error("Não foi possível deletar usuário. Tente novamente mais tarde"));
+      .catch((err) =>
+        message.error(
+          "Não foi possível deletar usuário. Tente novamente mais tarde"
+        )
+      );
   }
 
   function handleSearch(value, key) {
@@ -176,7 +201,9 @@ export default function ListaAlunos() {
         return (
           student.name.toLowerCase().includes(value.toLowerCase()) ||
           student.registration.toString().includes(value.toLowerCase()) ||
-          student.organization_name.toLowerCase().includes(value.toLowerCase()) ||
+          student.organization_name
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
           student.occupation_name.toLowerCase().includes(value.toLowerCase())
         );
       })
@@ -184,9 +211,7 @@ export default function ListaAlunos() {
   }
   return (
     <Base>
-      <h1 className="page-title">
-        Lista de Alunos
-      </h1>
+      <h1 className="page-title">Lista de Alunos</h1>
       <div className="table-container">
         <Tabs defaultActiveKey="0" onChange={handleTabChange}>
           <TabPane tab="Alunos" key="0">
@@ -196,7 +221,11 @@ export default function ListaAlunos() {
               onChange={(e) => handleSearch(e.target.value, 0)}
               value={search}
             />
-            <Table columns={studentsTable} dataSource={filtered} loading={loading} />
+            <Table
+              columns={studentsTable}
+              dataSource={filtered}
+              loading={loading}
+            />
           </TabPane>
           {type === "master" ? (
             <TabPane tab="Pendentes" key="1">
@@ -206,7 +235,11 @@ export default function ListaAlunos() {
                 onChange={(e) => handleSearch(e.target.value, 1)}
                 value={search}
               />
-              <Table columns={pendingTable} dataSource={filtered} loading={loading} />
+              <Table
+                columns={pendingTable}
+                dataSource={filtered}
+                loading={loading}
+              />
             </TabPane>
           ) : null}
         </Tabs>
