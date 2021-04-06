@@ -7,6 +7,8 @@ import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaAula.css";
 
+const { TextArea } = Input
+
 export default function NovaAula(props) {
   const [lesson, setLesson] = useState({});
   const [files, setFiles] = useState([]);
@@ -55,14 +57,18 @@ export default function NovaAula(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    const fileNames = files.map(file => file.name);
+
     const fileIds = [];
 
     const data = {
       ...lesson,
       course_id: course,
       user_id: session.user.id,
-      files: files,
+      file_names: fileNames
     };
+
+    console.log(data)
     
     setUploading(true);
 
@@ -125,7 +131,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="name"
-                label={<label style={{ fontSize: "large" }}> Título </label>}
+                label="Título"
                 rules={[
                   {
                     required: true,
@@ -141,17 +147,27 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="description"
-                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                label="Descrição"
               >
                 <Input
-                  placeholder="Descreva o temas que serão abordados na aula"
+                  placeholder="Temas que serão abordados"
                   name="description"
                   onChange={handleChange}
                 />
               </Form.Item>
               <Form.Item
+                name="text"
+                label="Texto"
+              >
+                <TextArea
+                  placeholder="Conteúdo da aula"
+                  onChange={handleChange}
+                  autoSize={{ minRows: 3 }}
+                />
+              </Form.Item>
+              <Form.Item
                 name="files"
-                label={<label style={{ fontSize: "large" }}> Arquivos </label>}
+                label="Arquivos"
                 rules={[
                   {
                     required: true,
