@@ -66,11 +66,14 @@ export default function NovaAula(props) {
     e.preventDefault();
     setLoading(true);
 
+    console.log(file)
+
     const data = {
       ...organization,
       user_id: session.user.id,
       file_name: organization.name,
-      file_type: file.type
+      file_type: file.type,
+      file_original: file.name
     }
 
     api

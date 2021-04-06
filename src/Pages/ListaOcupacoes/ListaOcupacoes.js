@@ -28,6 +28,7 @@ export default function ListaOrganizacoes() {
         setOccupations(occupations.data);
         setFilteredData(occupations.data);
         setLoading(false);
+        console.log(occupations);
       })
       .catch(err => { console.log(err) });
   }, []);
@@ -71,7 +72,7 @@ export default function ListaOrganizacoes() {
       dataIndex: ("id"),
       render: (id) => (
         <>
-          <ActionButton title="Editar" confirm="Editar ocupação?">
+          <ActionButton title="Editar" confirm="Editar ocupação?" onConfirm = {() => history.push(`ocupacao/editar/${id}`)}>
             <EditOutlined />
           </ActionButton>
           <ActionButton title="Exluir" confirm="Excluir ocupação?" onConfirm={() => handleDelete(id)}>
