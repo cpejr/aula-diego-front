@@ -8,6 +8,7 @@ import ActionButton from "../../Components/ActionButton/actionButton"
 import userEvent from "@testing-library/user-event";
 import "./ListaAlunos.css";
 import { setDefaultLocale } from "react-datepicker";
+import { getDate } from "date-fns";
 
 export default function ListaAlunos() {
   const [students, setStudents] = useState([]);
@@ -29,7 +30,7 @@ export default function ListaAlunos() {
     },
   };
 
-  useEffect(() => {
+  const getData = (tab) => {
     if (type === "admin") {
       config = {
         ...config,
@@ -44,7 +45,12 @@ export default function ListaAlunos() {
       .then(res => {
         setStudents(res.data.filter(user => user.status === "approved"));
         setPending(res.data.filter(user => user.status === "pending"));
+        setFiltered(res.data.filter(user => user.status === (tab === 0 ? "approved" : "pending")));
       });
+  }
+
+  useEffect(() => {
+    getData(0);
   }, []);
 
   useEffect(() => {
@@ -144,28 +150,9 @@ export default function ListaAlunos() {
     api
       .put(`/user/${id}`, { status: status }, config)
       .then(() => {
-        if (status === "approved") {
-          const index = pending.findIndex(user => user.id === id);
-
-          students.push(pending[index]);
-          setStudents(students);
-
-          pending.splice(index, 1);
-          setPending(pending);
-          setFiltered(pending);
-
-          message.success(`Usuário aprovado!`);
-        }
-
-        if (status === "refused") {
-          const index = pending.findIndex(user => user.id === id);
-
-          pending.splice(index, 1);
-          setPending(pending);
-          setFiltered(pending);
-
-          message.success(`Usuário negado!`);
-        }
+        if (status === "approved") message.success(`Usuário aprovado!`);
+        if (status === "refused") message.success(`Usuário negado!`);
+        getData();
       })
       .catch((err) => {
         message.error("Não foi possível alterar o status do usuário!")
