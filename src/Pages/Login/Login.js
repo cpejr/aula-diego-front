@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { message } from "antd";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
@@ -57,7 +58,7 @@ export default function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     if (!validateForm())
-      return alert("Preencha todos os campos para fazer login");
+      return message.error("Preencha todos os campos para fazer login");
 
     api
       .post("/login", { ...state })
@@ -68,11 +69,10 @@ export default function Login() {
         });
         redirect("/dashboard");
       })
-      .catch((error) =>
-        alert(
-          "não foi possível fazer login, verifique os dados e tente novamente"
-        )
-      );
+      .catch((error) => {
+        if (error.response && error.response.data)
+          message.error(error.response.data.message);
+      });
   }
 
   function redirect(path) {
