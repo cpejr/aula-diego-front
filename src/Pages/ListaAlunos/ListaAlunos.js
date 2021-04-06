@@ -7,6 +7,7 @@ import { useSession } from "../../Context/SessionContext";
 import ActionButton from "../../Components/ActionButton/actionButton"
 import userEvent from "@testing-library/user-event";
 import "./ListaAlunos.css";
+import { setDefaultLocale } from "react-datepicker";
 
 export default function ListaAlunos() {
   const [students, setStudents] = useState([]);
@@ -14,6 +15,7 @@ export default function ListaAlunos() {
   
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { session } = useSession();
   const { TabPane } = Tabs;
@@ -48,6 +50,10 @@ export default function ListaAlunos() {
   useEffect(() => {
     setFiltered(students);
   }, [students])
+
+  useEffect(() => {
+    setLoading(false);
+  }, [filtered])
 
   const columns = [
     {
@@ -112,7 +118,7 @@ export default function ListaAlunos() {
             <ActionButton title="Aprovar" confirm="Aprovar usuário?" onConfirm={() => handleApprove(id, "approved")}>
               <CheckSquareTwoTone twoToneColor="limeGreen"/>
             </ActionButton>
-            <ActionButton title="Negar" confirm="Negar usuário?" onConfirm={() => handleDelete(id, "refused")}>
+            <ActionButton title="Negar" confirm="Negar usuário?" onConfirm={() => handleApprove(id, "refused")}>
               <CheckSquareTwoTone twoToneColor="red"/>
             </ActionButton>
           </>
@@ -122,7 +128,7 @@ export default function ListaAlunos() {
   ];
 
   function handleTabChange(key) {
-    setFiltered(key === "0" ? students : pending)
+    setFiltered(key === "0" ? students : pending);
   }
 
   function handlePromote(id) {
@@ -132,16 +138,38 @@ export default function ListaAlunos() {
       .catch((err) => message.error("não foi possível tornar usuário admin"));
   }
 
-  function handleApprove(user, status) {
+  function handleApprove(id, status) {
+    setLoading(true);
+
     api
-      .put(`/user/${user.id}`, { status: status }, config)
+      .put(`/user/${id}`, { status: status }, config)
       .then(() => {
-        if (status == "approved") message.success(`Usuário aprovado!`);
-        if (status == "refused") message.success(`Usuário negado!`);
+        if (status === "approved") {
+          const index = pending.findIndex(user => user.id === id);
+
+          students.push(pending[index]);
+          setStudents(students);
+
+          pending.splice(index, 1);
+          setPending(pending);
+          setFiltered(pending);
+
+          message.success(`Usuário aprovado!`);
+        }
+
+        if (status === "refused") {
+          const index = pending.findIndex(user => user.id === id);
+
+          pending.splice(index, 1);
+          setPending(pending);
+          setFiltered(pending);
+
+          message.success(`Usuário negado!`);
+        }
       })
-      .catch((err) =>
+      .catch((err) => {
         message.error("Não foi possível alterar o status do usuário!")
-      );
+      });
   }
 
   function handleDelete(id) {
@@ -151,10 +179,12 @@ export default function ListaAlunos() {
       .catch((err) => message.error("Não foi possível deletar usuário. Tente novamente mais tarde"));
   }
 
-  function handleSearch(value) {
+  function handleSearch(value, key) {
     setSearch(value);
+    const source = [students, pending];
+
     setFiltered(
-      students.filter((student) => {
+      source[key].filter((student) => {
         if (value === "") return student;
         return (
           student.name.toLowerCase().includes(value.toLowerCase()) ||
@@ -176,20 +206,20 @@ export default function ListaAlunos() {
             <Input
               className="search-input"
               placeholder="Pesquisar..."
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value, 0)}
               value={search}
             />
-            <Table columns={studentsTable} dataSource={filtered} />
+            <Table columns={studentsTable} dataSource={filtered} loading={loading} />
           </TabPane>
           {type === "master" ? (
             <TabPane tab="Pendentes" key="1">
               <Input
                 className="search-input"
                 placeholder="Pesquisar..."
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value, 1)}
                 value={search}
               />
-              <Table columns={pendingTable} dataSource={filtered} />
+              <Table columns={pendingTable} dataSource={filtered} loading={loading} />
             </TabPane>
           ) : null}
         </Tabs>
