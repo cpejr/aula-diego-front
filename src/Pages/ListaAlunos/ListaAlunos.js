@@ -65,25 +65,25 @@ export default function ListaAlunos() {
     {
       title: "Nome",
       dataIndex: "name",
-      with: "25%",
+      width: "25%",
     },
     {
       title: "Matrícula",
       dataIndex: "registration",
       align: "left",
-      with: "20%",
+      width: "20%",
     },
     {
       title: "Organização",
       className: "column-organization",
       dataIndex: "organization_name",
-      with: "20%",
+      width: "20%",
     },
     {
       title: "Ocupação",
       className: "column-turma",
       dataIndex: "occupation_name",
-      with: "25%",
+      width: "25%",
     }
   ];
 
@@ -92,7 +92,6 @@ export default function ListaAlunos() {
     {
       title: "Ações",
       dataIndex: "id",
-      with: "10%",
       className: type === "master" ? "" : "hide",
       render: (id) => {
         return type === "master" ? (
@@ -117,7 +116,6 @@ export default function ListaAlunos() {
     {
       title: "Aprovar",
       dataIndex: "id",
-      with: "10%",
       render: (id) => {
         return (
           <>
