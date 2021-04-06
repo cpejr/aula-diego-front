@@ -67,20 +67,20 @@ export default function CursoAdmin(props) {
     {
       title: "Descrição",
       dataIndex: "description",
-      width: "35%"
-    },
-    {
-      title: "Data",
-      dataIndex: "date",
-      width: "20%"
     },
   ]
 
   const lessonTable = [
     ...generalTable,
     {
+      title: "Data",
+      dataIndex: "date",
+      width: "20%"
+    },
+    {
       title: "Ações",
       dataIndex: "id",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => handleVisit(id)}>
@@ -100,8 +100,14 @@ export default function CursoAdmin(props) {
   const liveTable = [
     ...generalTable,
     {
+      title: "Data",
+      dataIndex: "date",
+      width: "20%"
+    },
+    {
       title: "Ações",
       dataIndex: "id",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => handleVisit(id)}>
@@ -123,6 +129,7 @@ export default function CursoAdmin(props) {
     {
       title: "Ações",
       dataIndex: "id",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => handleVisit(id)}>
