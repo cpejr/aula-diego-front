@@ -160,7 +160,7 @@ export default function ListaAlunos() {
 
   function handlePromote(id) {
     api
-      .put(`/user/${id}`, { type: "admin" }, config)
+      .put(`/user/`, { id, type: "admin" }, config)
       .then(() => message.success(`O usuário agora é admin`))
       .catch((err) => message.error("não foi possível tornar usuário admin"));
   }
@@ -169,7 +169,7 @@ export default function ListaAlunos() {
     setLoading(true);
 
     api
-      .put(`/user/${id}`, { status: status }, config)
+      .put(`/user`, { id, status: status }, config)
       .then(() => {
         if (status === "approved") message.success(`Usuário aprovado!`);
         if (status === "refused") message.success(`Usuário negado!`);
@@ -181,8 +181,9 @@ export default function ListaAlunos() {
   }
 
   function handleDelete(id) {
+    console.log(config);
     api
-      .delete(`/user/${id}`, config)
+      .put(`/user/${id}`, {}, config)
       .then(() => message.success(`Usuário deletado com sucesso`))
       .catch((err) =>
         message.error(

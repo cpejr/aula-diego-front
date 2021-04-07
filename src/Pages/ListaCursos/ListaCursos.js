@@ -3,11 +3,10 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Tag, Input, Tooltip, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import ActionButton from "../../Components/ActionButton/actionButton"
+import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./ListaCursos.css";
-
 
 export default function ListaOrganizacoes() {
   const [course, setCourse] = useState([]);
@@ -23,20 +22,19 @@ export default function ListaOrganizacoes() {
   };
 
   useEffect(() => {
-    
     if (session.user.type === "admin")
-      config.params = { organization_id: session.user.organization_id }
+      config.params = { organization_id: session.user.organization_id };
 
     api
       .get(`/course`, config)
       .then((response) => {
         setCourse(response.data);
-        setFiltered(response.data)
-        setLoading(false);
+        setFiltered(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados dos cursos");
-      });
+      })
+      .finally(() => setLoading(false));
   }, [session]);
 
   const columns = [
@@ -57,14 +55,18 @@ export default function ListaOrganizacoes() {
     },
     {
       title: <h5>Ações</h5>,
-      dataIndex: ("id"),
+      dataIndex: "id",
       width: "15%",
       render: (id) => (
         <>
           <ActionButton title="Editar" confirm="Editar curso?" onConfirm = {() => history.push(`editar/${id}`)}>
             <EditOutlined />
           </ActionButton>
-          <ActionButton title="Exluir" confirm="Excluir curso?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Exluir"
+            confirm="Excluir curso?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined />
           </ActionButton>
         </>
@@ -73,20 +75,22 @@ export default function ListaOrganizacoes() {
   ];
 
   function handleSearch(value) {
-    setFiltered(course.filter(data => {
-      if (value === "") return data;
-      return (
-        data.name.toLowerCase().includes(value.toLowerCase()) ||
-        data.description.toLowerCase().includes(value.toLowerCase()) ||
-        data.organization_name.toLowerCase().includes(value.toLowerCase())
-      )
-    }));
+    setFiltered(
+      course.filter((data) => {
+        if (value === "") return data;
+        return (
+          data.name.toLowerCase().includes(value.toLowerCase()) ||
+          data.description.toLowerCase().includes(value.toLowerCase()) ||
+          data.organization_name.toLowerCase().includes(value.toLowerCase())
+        );
+      })
+    );
   }
 
   function handleDelete(course_id) {
     setLoading(true);
     api
-      .delete(`/course/${course_id}`, config)
+      .put(`/course/${course_id}`, {}, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
         api
@@ -96,9 +100,14 @@ export default function ListaOrganizacoes() {
             setFiltered(response.data);
             setLoading(false);
           })
-          .catch((err) => {message.error("Não foi possível excluir")});
+          .catch((err) => {
+            message.error("Não foi possível excluir");
+          });
       })
-      .catch((err) => {message.error("Não foi possível excluir")});
+      .catch((err) => {
+        message.error("Não foi possível excluir");
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -114,15 +123,11 @@ export default function ListaOrganizacoes() {
           <Tooltip title="Novo Curso">
             <PlusOutlined
               className="addButton"
-              onClick={() => history.push('/curso/cadastro')}
+              onClick={() => history.push("/curso/cadastro")}
             />
           </Tooltip>
         </div>
-        <Table
-          columns={columns}
-          dataSource={filtered}
-          loading={loading}
-        />
+        <Table columns={columns} dataSource={filtered} loading={loading} />
       </div>
     </Base>
   );

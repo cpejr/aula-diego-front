@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import Logo from "../../images/logoTeste.png";
 import { useSession } from "../../Context/SessionContext";
-import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
 import api from "../../services/api";
+import { message } from "antd";
 
 export default function Sidebar() {
   const history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
-  const [score, setScore] = useState("0 XP");
+  const [score, setScore] = useState(0);
 
-  const config = {
+  let config = {
     headers: {
       authorization: "Bearer " + session.accessToken,
     },
@@ -85,10 +85,12 @@ export default function Sidebar() {
           break;
       }
 
-      /* api
+      api
         .post("/score", { user_id: session.user.id }, config)
         .then((res) => setScore(res.data.score))
-        .catch(() => alert("Não foi possível receber pontuação do usuário.")); */
+        .catch(() =>
+          message.error("Não foi possível receber pontuação do usuário.")
+        );
     }
   }, []);
   return (
