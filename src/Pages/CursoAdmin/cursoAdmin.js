@@ -128,7 +128,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => handleVisit(id)}>
             <EyeOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar turma?">
+          <ActionButton title="Editar" confirm="Editar turma?" onConfirm = {() => history.push(`/turma/editar/${id}`)}>
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Deletar" confirm="Deletar turma?" onConfirm={() => handleDelete(id)}>
@@ -146,6 +146,7 @@ export default function CursoAdmin(props) {
       .get(`/lesson`, configTables)
       .then((response) => {
         const lessons = [];
+        console.log(response);
         response.data.map((lesson) =>
           lessons.push({
             ...lesson,
@@ -185,7 +186,12 @@ export default function CursoAdmin(props) {
       .get(`/class`, configTables)
       .then((response) => {
         const classes = [];
-        response.data.map((cl4ss) => classes.push({ ...cl4ss, key: cl4ss.id }));
+        console.log(response);
+        response.data.map((cl4ss) => 
+        classes.push({ 
+          ...cl4ss,
+          date: new Date(cl4ss.created_at).toLocaleDateString("pt-BR"),
+          key: cl4ss.id }));
 
         setClasses(classes);
         requestDone(classes);

@@ -82,7 +82,7 @@ export default function EditarLive(props) {
         history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
-        message.error("Não foi possiível editar a live!\n" + err);
+        message.error("Não foi possível editar a live!\n" + err);
       });
   }
 

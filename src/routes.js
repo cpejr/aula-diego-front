@@ -35,6 +35,7 @@ import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
 import EditarCurso from "./Pages/EditarCurso/EditarCurso";
+import EditarTurma from "./Pages/EditarTurma/EditarTurma";
 
 const routes = () => {
   return (
@@ -114,6 +115,12 @@ const routes = () => {
           masterComponent={EditarLive}
         />
           /* TURMA */
+          <PrivateRoute
+          path="/turma/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={EditarTurma}
+          masterComponent={EditarTurma}
+        />
           <PrivateRoute
           path="/turma/lista"
           studentComponent={() => <Redirect to="/dashboard" />}
