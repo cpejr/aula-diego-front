@@ -34,6 +34,8 @@ import NovaProva from "./Pages/NovaProva/NovaProva";
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
+import EditarCurso from "./Pages/EditarCurso/EditarCurso";
+
 const routes = () => {
   return (
     <BrowserRouter>
@@ -131,6 +133,12 @@ const routes = () => {
           masterComponent={ListaAlunosTurma}
         />
           /* CURSO */
+          <PrivateRoute
+          path="/curso/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={EditarCurso}
+          masterComponent={EditarCurso}
+        />
         <PrivateRoute
           path="/curso/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
