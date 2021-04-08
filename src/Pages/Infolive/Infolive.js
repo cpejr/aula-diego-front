@@ -199,7 +199,7 @@ export default function Infolive() {
             className="search-input"
             placeholder="procurar por nome, matricula, curso"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
           />
           <Tooltip title="Criar Live">
             <AddIcon
