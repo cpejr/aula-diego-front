@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
@@ -14,12 +14,13 @@ export default function Infolive() {
   const [lives, setLives] = useState([]);
   const [audience, setAudience] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [spec, setSpec] = useState({});
   const { session } = useSession();
   const history = useHistory();
 
   function dateFormate(date) {
     var data = new Date(date);
-    return data.toLocaleDateString([], { dateStyle: "short" });
+    return data.toLocaleDateString("pt-BR");
   }
 
   const config = {
@@ -40,35 +41,6 @@ export default function Infolive() {
         message.error("Não foi possível carregar dados das lives");
       });
   }, []);
-
-  function espectadores(id) {
-    let cont = 0;
-
-    const configPresence = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-      params: {
-        confirmation: true,
-      },
-    };
-
-    api
-      .get(`/presence/live/${id}`, configPresence)
-      .then((count) => {
-        console.log(count.data);
-        cont = count.length;
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da presença das lives");
-      });
-
-    setAudience(cont);
-    console.log(id);
-    console.log(cont);
-
-    return audience;
-  }
 
   const columns = [
     {
@@ -119,17 +91,7 @@ export default function Infolive() {
         return <p>{dateFormate(date)}</p>;
       },
     },
-    {
-      title: "Nº espectadores",
-      dataIndex: "id",
-      align: "left",
-      className: "column-numEspec",
-      render: (id) => {
-        {
-          return espectadores(id);
-        }
-      },
-    },
+
     {
       title: "Curso",
       dataIndex: "course_name",
@@ -183,8 +145,14 @@ export default function Infolive() {
         if (value === "") return live;
         return (
           live.name.toLowerCase().includes(value.toLowerCase()) ||
-          live.organization_name.toString().includes(value.toLowerCase()) ||
-          live.course_name.toLowerCase().includes(value.toLowerCase())
+          live.organization_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          live.course_name
+            .toLowerCase()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         );
       })
     );
