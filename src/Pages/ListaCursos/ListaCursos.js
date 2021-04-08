@@ -61,10 +61,10 @@ export default function ListaOrganizacoes() {
       width: "15%",
       render: (id) => (
         <>
-          <ActionButton title="Editar" confirm="Editar organização?">
+          <ActionButton title="Editar" confirm="Editar curso?" onConfirm={() => history.push(`/curso/gerenciar/${id}`)}>
             <EditOutlined />
           </ActionButton>
-          <ActionButton title="Exluir" confirm="Excluir organização?" onConfirm={() => handleDelete(id)}>
+          <ActionButton title="Exluir" confirm="Excluir curso?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined />
           </ActionButton>
         </>

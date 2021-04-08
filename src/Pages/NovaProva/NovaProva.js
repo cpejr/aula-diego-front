@@ -309,32 +309,34 @@ export default function NovaProva(props) {
     const keys = Object.keys(images);
 
     for await (const key of keys) {
-
-      const file = {
-        user_id: session.user.id,
-        file_name: `${exam.name} ${key}`,
-        file_type: images[key].type
+      if (images[key] !== undefined) {
+        const file = {
+          user_id: session.user.id,
+          file_name: `${exam.name} ${key}`,
+          file_type: images[key].type,
+          file_original: images[key].name
+        }
+  
+        await api
+          .post("file", file, config)
+          .then(fileId => {
+            const formData = new FormData();
+            formData.append(fileId.data.file_id, images[key]);
+  
+            api
+              .post("file_upload", formData, configFiles)
+              .catch(err => {
+                message.error("Não foi possível criar a prova!");
+              })
+  
+            exam.body[key].image = fileId.data.file_id;
+  
+            console.log(exam)
+          })
+          .catch(err => {
+            message.error("Não foi possível criar a prova!");
+          })
       }
-
-      await api
-        .post("file", file, config)
-        .then(fileId => {
-          const formData = new FormData();
-          formData.append(fileId.data.file_id, images[key]);
-
-          api
-            .post("file_upload", formData, configFiles)
-            .catch(err => {
-              message.error("Não foi possível criar a prova!");
-            })
-
-          exam.body[key].image = fileId.data.file_id;
-
-          console.log(exam)
-        })
-        .catch(err => {
-          message.error("Não foi possível criar a prova!");
-        })
     }
 
     api

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { message, Tabs, Table, Input, Tag, Tooltip } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton"
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
@@ -13,6 +13,7 @@ export default function CursoAdmin(props) {
   const [lessons, setLessons] = useState([]);
   const [lives, setLives] = useState([]);
   const [classes, setClasses] = useState([]);
+  const [exams, setExams] = useState([]);
 
   const [done, setDone] = useState(false);
   const [tabs, setTabs] = useState([]);
@@ -33,12 +34,12 @@ export default function CursoAdmin(props) {
   const requestDone = (data) => {
     requests += 1;
 
-    if (requests == 3) setDone(true);
+    if (requests == 4) setDone(true);
   };
 
   useEffect(() => {
     if (done === true) {
-      setTabs([lessons, lives, classes]);
+      setTabs([lessons, lives, exams, classes]);
       setLoading(false);
     }
   }, [done]);
@@ -146,6 +147,75 @@ export default function CursoAdmin(props) {
     }
   ];
 
+  const examTable = [
+    {
+      title: <h5>Nome</h5>,
+      dataIndex: "name",
+      width: "20%",
+    },
+    {
+      title: <h5>Curso</h5>,
+      dataIndex: "course_name",
+      width: "20%",
+    },
+    {
+      title: <h5>Início</h5>,
+      dataIndex: "start_date",
+      width: "15%",
+    },
+    {
+      title: <h5>Término</h5>,
+      dataIndex: "end_date",
+      width: "15%",
+    },
+    {
+      title: <h5>Status</h5>,
+      dataIndex: "status",
+      width: "15%",
+      render: (status) => (
+        <>
+          {status === "open" &&
+            <Tag color="green">Aberta</Tag>
+          }
+          {status === "hidden" &&
+            <Tag color="default">Oculta</Tag>
+          }
+          {status === "closed" &&
+            <Tag color="red">Finalizada</Tag>
+          }
+        </>
+      )
+    },
+    {
+      title: <h5>Ações</h5>,
+      dataIndex: ("id"),
+      width: "15%",
+      render: (id, exam) => (
+        <>
+          {exam.status === "hidden" &&
+            <ActionButton title="Publicar" confirm="Publicar prova?" /* onConfirm={() => handlePublish(id)} */>
+              <CheckCircleOutlined />
+            </ActionButton>
+          }
+          {exam.status === "open" &&
+            <ActionButton title="Fechar" confirm="Fechar prova?" /* onConfirm={() => handlePublish(id)} */>
+              <CloseCircleOutlined />
+            </ActionButton>
+          }
+          <ActionButton title="Visualizar" confirm="Visualizar prova?" onConfirm={() => history.push(`/prova/${id}`)}>
+            <EyeOutlined />
+          </ActionButton>
+          <ActionButton title="Editar" confirm="Editar prova?" onConfirm={() => history.push(`/prova/editar/${id}`)}>
+            <EditOutlined />
+          </ActionButton>
+          <ActionButton title="Exluir" confirm="Excluir prova?" onConfirm={() => handleDelete(id)}>
+            <DeleteOutlined />
+          </ActionButton>
+        </>
+      ),
+    },
+  ];
+
   function getData() {
     setLoading(true);
 
@@ -200,24 +270,53 @@ export default function CursoAdmin(props) {
       .catch(() => {
         message.error("Não foi possível carregar dados das aulas");
       });
+
+    api
+      .get(`/exam`, config)
+      .then((response) => {
+        const exams = []
+
+        response.data.map(exam => {
+          const now = Date.now();
+          const end = new Date(exam.end_date);
+
+          let status = exam.open ? "open" : "hidden";
+
+          if (Date.parse(end) < now)
+            status = "closed";
+
+          exams.push({
+            ...exam,
+            start_date: new Date(exam.start_date).toLocaleDateString("pt-BR"),
+            end_date: new Date(exam.end_date).toLocaleDateString("pt-BR"),
+            status: status
+          })
+        });
+
+        setExams(exams);
+        requestDone(exams);
+      })
+      .catch((err) => {
+        message.error("Não foi possível carregar dados das provas");
+      });
   }
 
   useEffect(() => {
     api
-    .get(`/course/${course_id}`, config)
-    .then((response) => {
-      if (session.user.type !== "master" && response.data.organization_id === session.user.organization_id) {
-        setCourse(response.data);
-        getData();
-      }
-      else {
-        message.error("Você não tem permissão para ver esse curso");
-        history.push("/")
-      }
-    })
-    .catch(() => {
-      message.error("Não foi possível carregar curso");
-    });
+      .get(`/course/${course_id}`, config)
+      .then((response) => {
+        if (session.user.type !== "master" && response.data.organization_id === session.user.organization_id) {
+          setCourse(response.data);
+          getData();
+        }
+        else {
+          message.error("Você não tem permissão para ver esse curso");
+          history.push("/")
+        }
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar curso");
+      });
   }, []);
 
   function handleSearch(value) {
@@ -326,7 +425,31 @@ export default function CursoAdmin(props) {
                 loading={loading}
               />
             </TabPane>
-            <TabPane tab="Turmas" key="2">
+            <TabPane tab="Provas" key="2">
+              <div className="inputWrapper">
+                <Input
+                  className="search"
+                  placeholder="Pesquisar..."
+                  onChange={(e) => handleSearch(e.target.value)}
+                  value={search}
+                />
+                <Tooltip title="Adicionar prova">
+                  <PlusOutlined
+                    className="addButton"
+                    onClick={() =>
+                      history.push(`/prova/cadastro?course=${course.id}`)
+                    }
+                  />
+                </Tooltip>
+              </div>
+              <Table
+                rowSelection={selected}
+                columns={examTable}
+                dataSource={filtered}
+                loading={loading}
+              />
+            </TabPane>
+            <TabPane tab="Turmas" key="3">
               <div className="inputWrapper">
                 <Input
                   className="search"

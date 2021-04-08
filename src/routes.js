@@ -31,9 +31,11 @@ import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 import NovaProva from "./Pages/NovaProva/NovaProva";
+import ListaProva from "./Pages/ListaProva/ListaProva";
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
+
 const routes = () => {
   return (
     <BrowserRouter>
@@ -178,12 +180,20 @@ const routes = () => {
           adminComponent={Aula}
           masterComponent={Aula}
         />
+          /* PROVA */
         <PrivateRoute
           path="/prova/cadastro"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={NovaProva}
           masterComponent={NovaProva}
+        />
+        <PrivateRoute
+          path="/prova/lista"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaProva}
+          masterComponent={ListaProva}
         />
           /* ORGANIZAÇÃO */
           <PrivateRoute
