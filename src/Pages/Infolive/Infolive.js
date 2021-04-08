@@ -48,16 +48,13 @@ export default function Infolive() {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
-      params: {
-        confirmation: true,
-      },
     };
 
     api
       .get(`/presence/live/${id}`, configPresence)
       .then((count) => {
         console.log(count.data);
-        cont = count.length;
+        cont = count.count.data;
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da presença das lives");
@@ -201,13 +198,6 @@ export default function Infolive() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Tooltip title="Criar Live">
-            <AddIcon
-              style={{ height: "30px", width: "30px" }}
-              className="clickable"
-              onClick={() => history.push("/live/cadastro")}
-            />
-          </Tooltip>
         </div>
         <Table
           // title={() => `Lista de Ocupações da empresa ${organization}`}
