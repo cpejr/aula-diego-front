@@ -7,7 +7,6 @@ import {
   EditOutlined,
   DeleteOutlined,
   CheckSquareTwoTone,
-  DeleteTwoTone,
   CloseSquareTwoTone,
 } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
