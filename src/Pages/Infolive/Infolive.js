@@ -6,13 +6,11 @@ import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
 import { Table, Tag, Input, Tooltip, message } from "antd";
-import AddIcon from "@material-ui/icons/Add";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
-  const [audience, setAudience] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [spec, setSpec] = useState({});
   const { session } = useSession();
@@ -91,7 +89,6 @@ export default function Infolive() {
         return <p>{dateFormate(date)}</p>;
       },
     },
-
     {
       title: "Curso",
       dataIndex: "course_name",
@@ -169,13 +166,6 @@ export default function Infolive() {
             value={search}
             onChange={(e) => handleChange(e.target.value)}
           />
-          <Tooltip title="Criar Live">
-            <AddIcon
-              style={{ height: "30px", width: "30px" }}
-              className="clickable"
-              onClick={() => history.push("/live/cadastro")}
-            />
-          </Tooltip>
         </div>
         <Table
           // title={() => `Lista de Ocupações da empresa ${organization}`}

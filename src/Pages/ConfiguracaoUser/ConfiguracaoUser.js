@@ -4,7 +4,7 @@ import api from "../../services/api";
 import "./ConfiguracaoUser.css";
 import EditUser from "../../Components/EditUser/EditUser";
 import Base from "../../Components/Base/Base";
-import { message, Card, Col, Row, Input, Select, Form, DatePicker } from "antd";
+import { message, Card, Col, Row, Button } from "antd";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState([]);
@@ -123,9 +123,9 @@ export default function ConfiguracaoAluno(props) {
           </Row>
         </Card>
         <div className="acessarConfigAluno">
-          <button className="buttonConfigAluno" onClick={handleEditOpen}>
+          <Button type="primary" size="large" onClick={handleEditOpen}>
             Editar
-          </button>
+          </Button>
         </div>
       </>
     );
@@ -136,10 +136,10 @@ export default function ConfiguracaoAluno(props) {
       <Base>
         <div className="configUser">
           <EditUser />
-          <div className="acessarConfigAluno">
-            <button className="buttonVoltarAluno" onClick={handleClose}>
+          <div className="btnVoltar">
+            <Button size="large" onClick={handleClose}>
               Voltar
-            </button>
+            </Button>
           </div>
         </div>
       </Base>
