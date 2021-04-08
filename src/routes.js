@@ -36,6 +36,7 @@ import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
 import EditarCurso from "./Pages/EditarCurso/EditarCurso";
 import EditarTurma from "./Pages/EditarTurma/EditarTurma";
+import EditarAula from "./Pages/EditarAula/EditarAula";
 
 const routes = () => {
   return (
@@ -180,6 +181,12 @@ const routes = () => {
           masterComponent={CursoAdmin}
         />
           /* AULA */
+          <PrivateRoute
+          path="/aula/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={EditarAula}
+          masterComponent={EditarAula}
+        />
           <PrivateRoute
           path="/aula/cadastro"
           studentComponent={NovaAula}

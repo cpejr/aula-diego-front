@@ -86,7 +86,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => handleVisit(id)}>
             <EyeOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar aula?">
+          <ActionButton title="Editar" confirm="Editar aula?" onConfirm = {() => history.push(`/aula/editar/${id}`)}>
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Deletar" confirm="Deletar aula?" onConfirm={() => handleDelete(id)}>
@@ -107,7 +107,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => handleVisit(id)}>
             <EyeOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar live?">
+          <ActionButton title="Editar" confirm="Editar live?" onConfirm = {() => history.push(`/live/editar/${id}`)}>
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Deletar" confirm="Deletar live?" onConfirm={() => handleDelete(id)}>
@@ -167,6 +167,7 @@ export default function CursoAdmin(props) {
       .get(`/live`, configTables)
       .then((response) => {
         const lives = [];
+        console.log(response.data);
         response.data.map((live) =>
           lives.push({
             ...live,
