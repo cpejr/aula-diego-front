@@ -104,10 +104,11 @@ export default function Sidebar() {
         <label>{session.user.name}</label>
         <br></br>
       </div>
-
-      <div className="sidebarScore">
-        <p>{score} XP</p>
-      </div>
+      {session.user.type === "student" ? (
+        <div className="sidebarScore">
+          <p>{score} XP</p>
+        </div>
+      ) : null}
 
       <div className="sidebarBody">
         <ul>
