@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Comment.css";
 
 export default function Comment({
@@ -9,7 +9,9 @@ export default function Comment({
   linkSrc,
   linkText,
   onClick,
+  displayLink,
 }) {
+  const history = useHistory();
   return (
     <div class="comment" onClick={onClick}>
       <p>
@@ -19,9 +21,18 @@ export default function Comment({
       </p>
       <div class="comment__content">
         <p class="comment__text">{text}</p>
-        <Link to={linkSrc} class="comment__parent-link">
-          {linkText}
-        </Link>
+        {displayLink ? (
+          <Link
+            to={linkSrc}
+            onClick={() => {
+              history.push(linkSrc);
+              window.location.reload();
+            }}
+            class="comment__parent-link"
+          >
+            {linkText}
+          </Link>
+        ) : null}
       </div>
     </div>
   );
