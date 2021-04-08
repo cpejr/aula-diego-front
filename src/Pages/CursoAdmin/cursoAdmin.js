@@ -74,6 +74,10 @@ export default function CursoAdmin(props) {
       dataIndex: "description",
       width: "35%",
     },
+  ]
+
+  const lessonTable = [
+    ...generalTable,
     {
       title: "Data",
       dataIndex: "date",
@@ -86,6 +90,7 @@ export default function CursoAdmin(props) {
     {
       title: "Ações",
       dataIndex: "id",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton
@@ -117,8 +122,14 @@ export default function CursoAdmin(props) {
   const liveTable = [
     ...generalTable,
     {
+      title: "Data",
+      dataIndex: "date",
+      width: "20%"
+    },
+    {
       title: "Ações",
       dataIndex: "id",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton
@@ -152,6 +163,7 @@ export default function CursoAdmin(props) {
     {
       title: "Ações",
       dataIndex: "id",
+      width: "15%",
       render: (id) => (
         <>
           <ActionButton
