@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Tag, Tooltip } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined, SelectOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton"
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
@@ -84,8 +84,8 @@ export default function CursoAdmin(props) {
       width: "15%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => handleVisit(id)}>
-            <EyeOutlined className="actionButton" />
+          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={history.push(`/aula/${id}`)}>
+            <SelectOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Editar" confirm="Editar aula?">
             <EditOutlined className="actionButton" />
@@ -111,8 +111,8 @@ export default function CursoAdmin(props) {
       width: "15%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => handleVisit(id)}>
-            <EyeOutlined className="actionButton" />
+          <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => history.push(`/live/${id}`)}>
+            <SelectOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Editar" confirm="Editar live?">
             <EditOutlined className="actionButton" />
@@ -133,8 +133,8 @@ export default function CursoAdmin(props) {
       width: "15%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => handleVisit(id)}>
-            <EyeOutlined className="actionButton" />
+          <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => history.push(`/turma/${id}`)}>
+            <SelectOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Editar" confirm="Editar turma?">
             <EditOutlined className="actionButton" />
@@ -202,8 +202,13 @@ export default function CursoAdmin(props) {
               <CloseCircleOutlined />
             </ActionButton>
           }
+          {exam.status === "closed" &&
+            <ActionButton title="Extender" confirm="Extender tempo de prova?" /* onConfirm={() => handlePublish(id)} */>
+              <ClockCircleOutlined />
+            </ActionButton>
+          }
           <ActionButton title="Visualizar" confirm="Visualizar prova?" onConfirm={() => history.push(`/prova/${id}`)}>
-            <EyeOutlined />
+            <SelectOutlined />
           </ActionButton>
           <ActionButton title="Editar" confirm="Editar prova?" onConfirm={() => history.push(`/prova/editar/${id}`)}>
             <EditOutlined />
@@ -347,7 +352,7 @@ export default function CursoAdmin(props) {
     setLoading(true);
     setDone(false);
 
-    const requests = ["lesson", "live", "class"];
+    const requests = ["lesson", "live", "exam", "class"];
     const method = [setLessons, setLives, setClasses];
 
     api
@@ -365,9 +370,20 @@ export default function CursoAdmin(props) {
       });
   }
 
-  function handleVisit(id) {
-    const requests = ["aula", "live", "turma"];
-    history.push(`/${requests[activeTab]}/${id}`);
+  function handlePublish(id) {
+    api
+      .put(`/exam/${id}`, {open: true}, config)
+      .then(() => message.success("Deletado com sucesso"))
+      .then(() => {
+        const content = tabs[activeTab].filter((elem) => elem.id !== id);
+
+        method[activeTab](content);
+        setFiltered(content);
+        setDone(true);
+      })
+      .catch((error) => {
+        message.error("Não foi possível exluir");
+      });
   }
 
   return (

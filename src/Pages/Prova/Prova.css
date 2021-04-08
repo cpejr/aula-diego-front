@@ -1,0 +1,82 @@
+.formWrapper {
+  width: 100%;
+  padding-top: 6%;
+  padding: 4%;
+}
+
+.formButton {
+  display: flex;
+  align-items: center;
+}
+
+.formButton:focus{
+  border-color: lightgray;
+  color: initial
+}
+
+.formButtonDelete {
+  display: flex;
+  align-items: center;
+}
+
+.formButtonDelete:hover {
+  border-color: red;
+  color: red
+}
+
+.formButtonDelete:focus {
+  border-color: lightgray;
+  color: initial
+}
+
+.addButtonsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fieldTitleWrapper {
+  width: 60%;
+}
+
+.questionsWrapper {
+  border: 1px dashed lightgray;
+  padding-top: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.questionWrapper {
+  padding: 2%;
+  padding-right: 10%;
+  margin-bottom: 2%;
+  border: 1px dashed lightgray;
+}
+
+.alternativeWrapper {
+  display: flex;
+}
+
+.alternative {
+  height: 40px;
+  border-radius: 0px;
+}
+
+
+
+/* ANT DESIGN */
+
+.ant-form-item-label label{
+  font-size: large;
+}
+
+.ant-form-item-control-input-content {
+  height: auto;
+}
+
+.ant-form-item-control-input-content textarea.ant-input {
+  line-height: 34px;
+}
+
+.ant-input-lg {
+  padding: 3.5px 11px;
+}

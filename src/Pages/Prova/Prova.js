@@ -5,7 +5,7 @@ import { Form, Input, Button, DatePicker, Upload, message, Radio } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "./NovaProva.css";
+import "./Prova.css";
 
 const { TextArea } = Input
 
