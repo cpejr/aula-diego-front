@@ -3,16 +3,15 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Tag, Input, Tooltip, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import ActionButton from "../../Components/ActionButton/actionButton"
+import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./ListaOrganizacoes.css";
 
-
 export default function ListaOrganizacoes() {
-  const [organization, setOrganizations] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const { session } = useSession();
   const history = useHistory();
@@ -27,19 +26,18 @@ export default function ListaOrganizacoes() {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-    responseType: 'blob',
+    responseType: "blob",
   };
 
   useEffect(() => {
     api
       .get(`/organization`, config)
       .then((response) => {
-        getLogo(response.data)
-          .then(response => {
-            setOrganizations(response);
-            setFiltered(response)
-            setLoading(false);
-          });
+        getLogo(response.data).then((response) => {
+          setOrganizations(response);
+          setFiltered(response);
+          setLoading(false);
+        });
       })
       .catch(() => {
         message.error("Não foi possível carregar dados das organizações");
@@ -48,16 +46,16 @@ export default function ListaOrganizacoes() {
 
   const getLogo = async (organizations) => {
     const result = [];
-    console.log(organizations)
+    console.log(organizations);
     for (const organization of organizations) {
       await api
         .get(`/file_get/${organization.file_id}`, configFile)
-        .then(response => {
+        .then((response) => {
           const img = URL.createObjectURL(response.data);
           result.push({
             ...organization,
-            logo: img
-          })
+            logo: img,
+          });
         })
         .catch((err) => {
           message.error("Não foi possível carregar dados dos arquivos");
@@ -65,20 +63,18 @@ export default function ListaOrganizacoes() {
     }
 
     return result;
-  }
+  };
 
   const columns = [
     {
-      title: <h5 style={{ "textAlign": "center" }}>Logo</h5>,
+      title: <h5 style={{ textAlign: "center" }}>Logo</h5>,
       dataIndex: "logo",
       width: "10%",
       render: (logo) => (
         <div className="logo">
-          <img
-            src={logo}
-          />
+          <img src={logo} />
         </div>
-      )
+      ),
     },
     {
       title: <h5>Organização</h5>,
@@ -113,15 +109,19 @@ export default function ListaOrganizacoes() {
     },
     {
       title: <h5>Ações</h5>,
-      dataIndex: ("id"),
+      dataIndex: "id",
       render: (id) => (
         <>
           <ActionButton title="Editar" confirm="Editar organização?">
             <EditOutlined />
-          </ActionButton> 
-          <ActionButton title="Exluir" confirm="Excluir organização?" onConfirm={() => handleDelete(id)}>
+          </ActionButton>
+          <ActionButton
+            title="Exluir"
+            confirm="Excluir organização?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined />
-          </ActionButton> 
+          </ActionButton>
         </>
       ),
     },
@@ -132,12 +132,16 @@ export default function ListaOrganizacoes() {
   }
 
   function handleSearch(value) {
-    setFiltered(filtered.filter(data => {
-      if (value === "") return data;
-      return (
-        data.name.toLowerCase().includes(value.toLowerCase())
-      )
-    }));
+    setSearch(value);
+    setFiltered(
+      organizations.filter((data) => {
+        if (value === "") return data;
+        return (
+          data?.name?.toLowerCase().includes(value.toLowerCase()) ||
+          data?.description?.toLowerCase().includes(value.toLowerCase())
+        );
+      })
+    );
   }
 
   function handleDelete(organization_id) {
@@ -146,7 +150,8 @@ export default function ListaOrganizacoes() {
       .delete(`/organization/${organization_id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api.get("/organization", config)
+        api
+          .get("/organization", config)
           .then((response) => {
             setOrganizations(response.data);
           })
@@ -155,8 +160,7 @@ export default function ListaOrganizacoes() {
       .catch((error) => {
         message.error("Não foi possível excluir");
         console.log(error);
-      }
-      );
+      });
   }
 
   function handleChange(value) {
@@ -177,15 +181,11 @@ export default function ListaOrganizacoes() {
           <Tooltip title="Nova Organização">
             <PlusOutlined
               className="addButton"
-              onClick={() => history.push('/organizacao/cadastro')}
+              onClick={() => history.push("/organizacao/cadastro")}
             />
           </Tooltip>
         </div>
-        <Table
-          columns={columns}
-          dataSource={filtered}
-          loading={loading}
-        />
+        <Table columns={columns} dataSource={filtered} loading={loading} />
       </div>
     </Base>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
@@ -6,19 +6,19 @@ import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
 import { Table, Tag, Input, Tooltip, message } from "antd";
-import AddIcon from "@material-ui/icons/Add";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [spec, setSpec] = useState({});
   const { session } = useSession();
   const history = useHistory();
 
   function dateFormate(date) {
     var data = new Date(date);
-    return data.toLocaleDateString([], { dateStyle: "short" });
+    return data.toLocaleDateString("pt-BR");
   }
 
   const config = {
@@ -39,32 +39,6 @@ export default function Infolive() {
         message.error("Não foi possível carregar dados das lives");
       });
   }, []);
-
-  function espectadores(id) {
-    const [audience, setAudience] = useState("");
-
-    const configPresence = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-      params: {
-        live_id: id,
-        confirmation: true,
-      },
-    };
-
-    api
-      .get(`/presence/live/${id}`, configPresence)
-      .then((count) => {
-        setAudience(count.data[0].count);
-        console.log(audience);
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da presença das lives");
-      });
-
-    return audience;
-  }
 
   const columns = [
     {
@@ -113,16 +87,6 @@ export default function Infolive() {
       align: "left",
       render: (date) => {
         return <p>{dateFormate(date)}</p>;
-      },
-    },
-    {
-      title: "Nº espectadores",
-      dataIndex: "id",
-      align: "left",
-      render: (id) => {
-        {
-          return <p>{espectadores(id)}</p>;
-        }
       },
     },
     {
@@ -178,8 +142,14 @@ export default function Infolive() {
         if (value === "") return live;
         return (
           live.name.toLowerCase().includes(value.toLowerCase()) ||
-          live.organization_name.toString().includes(value.toLowerCase()) ||
-          live.course_name.toLowerCase().includes(value.toLowerCase())
+          live.organization_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          live.course_name
+            .toLowerCase()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         );
       })
     );
@@ -194,7 +164,7 @@ export default function Infolive() {
             className="search-input"
             placeholder="procurar por nome, matricula, curso"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
           />
         </div>
         <Table

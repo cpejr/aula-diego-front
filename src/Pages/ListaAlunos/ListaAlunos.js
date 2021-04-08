@@ -7,6 +7,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   CheckSquareTwoTone,
+  CloseSquareTwoTone,
 } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import ActionButton from "../../Components/ActionButton/actionButton";
@@ -140,7 +141,7 @@ export default function ListaAlunos() {
               confirm="Negar usuário?"
               onConfirm={() => handleApprove(id, "refused")}
             >
-              <CheckSquareTwoTone twoToneColor="red" />
+              <CloseSquareTwoTone twoToneColor="red" />
             </ActionButton>
           </>
         );
