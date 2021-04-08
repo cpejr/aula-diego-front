@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { Table, Input, message } from "antd";
+import { Table, Input, message, Statistic } from "antd";
+import { BsPeople } from 'react-icons/bs'
 import "./ListaAlunosLive.css";
 
 export default function ListaAlunoLIve(props) {
@@ -101,7 +102,8 @@ export default function ListaAlunoLIve(props) {
       <h1 className="page-title">Lista de Presença da Live:</h1>
       <div className="table-container">
         <h5 className="greyish">
-          Nº de Espectadores: {presentStudents.length}
+          
+          <Statistic title="Nº de Espectadores" value={presentStudents.length} prefix={<BsPeople />} />
         </h5>
         <Input
           placeholder="Pesquise por nome, organização curso..."
