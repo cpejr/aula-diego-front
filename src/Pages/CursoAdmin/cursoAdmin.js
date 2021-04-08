@@ -3,8 +3,13 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Popconfirm, Tooltip } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import ActionButton from "../../Components/ActionButton/actionButton"
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
+import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -62,19 +67,19 @@ export default function CursoAdmin(props) {
     {
       title: "Título",
       dataIndex: "name",
-      width: "25%"
+      width: "25%",
     },
     {
       title: "Descrição",
       dataIndex: "description",
-      width: "35%"
+      width: "35%",
     },
     {
       title: "Data",
       dataIndex: "date",
-      width: "20%"
+      width: "20%",
     },
-  ]
+  ];
 
   const lessonTable = [
     ...generalTable,
@@ -83,18 +88,30 @@ export default function CursoAdmin(props) {
       dataIndex: "id",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => handleVisit(id)}>
+          <ActionButton
+            title="Visitar"
+            confirm="Visitar aula?"
+            onConfirm={() => handleVisit(id)}
+          >
             <EyeOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar aula?">
+          <ActionButton
+            title="Editar"
+            confirm="Editar aula?"
+            onConfirm={() => handleEdit(id)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Deletar" confirm="Deletar aula?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Deletar"
+            confirm="Deletar aula?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined className="actionButton" />
           </ActionButton>
         </>
       ),
-    }
+    },
   ];
 
   const liveTable = [
@@ -104,18 +121,30 @@ export default function CursoAdmin(props) {
       dataIndex: "id",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => handleVisit(id)}>
+          <ActionButton
+            title="Visitar"
+            confirm="Visitar live?"
+            onConfirm={() => handleVisit(id)}
+          >
             <EyeOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar live?">
+          <ActionButton
+            title="Editar"
+            confirm="Editar live?"
+            onConfirm={() => handleEdit(id)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Deletar" confirm="Deletar live?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Deletar"
+            confirm="Deletar live?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined className="actionButton" />
           </ActionButton>
         </>
       ),
-    }
+    },
   ];
 
   const classTable = [
@@ -125,18 +154,23 @@ export default function CursoAdmin(props) {
       dataIndex: "id",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => handleVisit(id)}>
-            <EyeOutlined className="actionButton" />
-          </ActionButton>
-          <ActionButton title="Editar" confirm="Editar turma?">
+          <ActionButton
+            title="Editar"
+            confirm="Editar turma?"
+            onConfirm={() => handleEdit(id)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Deletar" confirm="Deletar turma?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Deletar"
+            confirm="Deletar turma?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined className="actionButton" />
           </ActionButton>
         </>
       ),
-    }
+    },
   ];
 
   function getData() {
@@ -197,20 +231,22 @@ export default function CursoAdmin(props) {
 
   useEffect(() => {
     api
-    .get(`/course/${course_id}`, config)
-    .then((response) => {
-      if (session.user.type !== "master" && response.data.organization_id === session.user.organization_id) {
-        setCourse(response.data);
-        getData();
-      }
-      else {
-        message.error("Você não tem permissão para ver esse curso");
-        history.push("/")
-      }
-    })
-    .catch(() => {
-      message.error("Não foi possível carregar curso");
-    });
+      .get(`/course/${course_id}`, config)
+      .then((response) => {
+        if (
+          session.user.type !== "master" &&
+          response.data.organization_id === session.user.organization_id
+        ) {
+          setCourse(response.data);
+          getData();
+        } else {
+          message.error("Você não tem permissão para ver esse curso");
+          history.push("/");
+        }
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar curso");
+      });
   }, []);
 
   function handleSearch(value) {
@@ -262,6 +298,11 @@ export default function CursoAdmin(props) {
   function handleVisit(id) {
     const requests = ["aula", "live", "turma"];
     history.push(`/${requests[activeTab]}/${id}`);
+  }
+
+  function handleEdit(id) {
+    const requests = ["aula", "live", "turma"];
+    history.push(`/${requests[activeTab]}/editar/${id}`);
   }
 
   return (

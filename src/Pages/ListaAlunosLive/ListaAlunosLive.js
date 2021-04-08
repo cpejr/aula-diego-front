@@ -10,6 +10,7 @@ export default function ListaAlunoLIve(props) {
   const [presentStudents, setPresentStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [turma, setTurma] = useState("");
+  const [setLiveName, liveName] = useState("");
   const { id } = props.match.params;
 
   function getClass(id) {
@@ -23,9 +24,9 @@ export default function ListaAlunoLIve(props) {
     };
 
     api
-      .get(`/class/user`, config)
+      .get(`/class_user`, config)
       .then((response) => {
-        setTurma(response.data.class_name);
+        setTurma(response.data[0].class_name);
         console.log(response.data.class_name);
       })
       .catch(() => {

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Tag, Input, Tooltip, message } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -47,6 +52,7 @@ export default function ListaOrganizacoes() {
     },
     {
       title: <h5>Descrição</h5>,
+      className: "column-description",
       dataIndex: "description",
     },
     {
@@ -58,9 +64,17 @@ export default function ListaOrganizacoes() {
     {
       title: <h5>Ações</h5>,
       dataIndex: "id",
-      width: "15%",
+      className: "column-action",
+      width: "35%",
       render: (id) => (
         <>
+          <ActionButton
+            title="Ver Curso"
+            confirm="Ver Curso?"
+            onConfirm={() => history.push(`gerenciar/${id}`)}
+          >
+            <EyeOutlined />
+          </ActionButton>
           <ActionButton
             title="Editar"
             confirm="Editar curso?"

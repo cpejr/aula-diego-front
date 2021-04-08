@@ -36,7 +36,7 @@ export default function ListaAlunos() {
 
   const getData = (tab) => {
     if (session.user.type === "admin")
-      config.params = { organization_id: session.user.organization_id };
+      config.params = { "user.organization_id": session.user.organization_id };
 
     api.get("/user", config).then((res) => {
       setStudents(res.data.filter((user) => user.status === "approved"));
