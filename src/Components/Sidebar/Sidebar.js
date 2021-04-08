@@ -49,10 +49,6 @@ export default function Sidebar() {
       path: "/live/info",
     },
     {
-      title: "Turmas",
-      path: "/turma/lista",
-    },
-    {
       title: "Cursos",
       path: "/curso/lista",
     },
