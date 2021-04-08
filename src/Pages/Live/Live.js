@@ -47,20 +47,21 @@ export default function Live(props) {
       .get(`/live/${id}`, config)
       .then((response) => {
         setLive(response.data);
-
-        api
-          .get("/class_user", {
-            ...config,
-            params: {
-              "class.course_id": response.data.course_id,
-              "user_class.user_id": session.user.id,
-            },
-          })
-          .then((response) => console.log(response.data))
-          .catch((error) => {
-            history.push("/");
-            message.error("Você não tem permissão para assistir a essa live");
-          });
+        if (session.user.type === "student") {
+          api
+            .get("/class_user", {
+              ...config,
+              params: {
+                "class.course_id": response.data.course_id,
+                "user_class.user_id": session.user.id,
+              },
+            })
+            .then((response) => console.log(response.data))
+            .catch((error) => {
+              history.push("/");
+              message.error("Você não tem permissão para assistir a essa live");
+            });
+        }
       })
       .catch((err) => {});
   }, []);
