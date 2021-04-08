@@ -99,6 +99,9 @@ export default function ListaAlunoLIve(props) {
     <Base>
       <h1 className="page-title">Lista de Presença da Live:</h1>
       <div className="table-container">
+        <h5 className="greyish">
+          Nº de Espectadores: {presentStudents.length}
+        </h5>
         <Input
           placeholder="Pesquise por nome, organização curso..."
           value={search}
@@ -106,7 +109,7 @@ export default function ListaAlunoLIve(props) {
         />
         <Table
           columns={columns}
-          dataSource={presentStudents.map((row) => {
+          dataSource={presentStudents.filter((row) => {
             if (search === "" || !search) return row;
             if (
               row.user_name
