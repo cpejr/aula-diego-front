@@ -25,6 +25,8 @@ export default function ListaOrganizacoes() {
     if (session.user.type === "admin")
       config.params = { organization_id: session.user.organization_id };
 
+    console.log(config);
+
     api
       .get(`/course`, config)
       .then((response) => {
@@ -59,11 +61,15 @@ export default function ListaOrganizacoes() {
       width: "15%",
       render: (id) => (
         <>
-          <ActionButton title="Editar" confirm="Editar curso?" onConfirm = {() => history.push(`editar/${id}`)}>
+          <ActionButton
+            title="Editar"
+            confirm="Editar curso?"
+            onConfirm={() => history.push(`editar/${id}`)}
+          >
             <EditOutlined />
           </ActionButton>
           <ActionButton
-            title="Exluir"
+            title="Excluir"
             confirm="Excluir curso?"
             onConfirm={() => handleDelete(id)}
           >
@@ -90,9 +96,12 @@ export default function ListaOrganizacoes() {
   function handleDelete(course_id) {
     setLoading(true);
     api
-      .put(`/course/${course_id}`, {}, config)
+      .delete(`/course/${course_id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
+        if (session.user.type === "admin")
+          config.params = { organization_id: session.user.organization_id };
+
         api
           .get("/course", config)
           .then((response) => {

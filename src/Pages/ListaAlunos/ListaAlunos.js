@@ -27,21 +27,15 @@ export default function ListaAlunos() {
   const organizationId = session.user.organization_id;
   const type = session.user.type;
 
-  let config = {
+  const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
   };
 
   const getData = (tab) => {
-    if (type === "admin") {
-      config = {
-        ...config,
-        params: {
-          organization_id: organizationId,
-        },
-      };
-    }
+    if (session.user.type === "admin")
+      config.params = { organization_id: session.user.organization_id };
 
     api.get("/user", config).then((res) => {
       setStudents(res.data.filter((user) => user.status === "approved"));

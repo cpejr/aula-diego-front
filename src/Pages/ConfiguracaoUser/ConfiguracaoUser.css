@@ -36,6 +36,13 @@
   text-align: right;
 }
 
+.btnVoltar {
+  margin-top: 2%;
+  text-align: right;
+  margin-top: -4.2%;
+  margin-right: 13%;
+}
+
 .buttonConfigAluno {
   background-color: #c63756;
   border: none;
@@ -114,6 +121,15 @@
   }
   .tituloConfigAluno {
     font-size: large;
+  }
+
+  .btnVoltar {
+    margin-top: -21.5%;
+    margin-right: 35%;
+  }
+
+  .acessarConfigAluno {
+    padding: 10%;
   }
 }
 
