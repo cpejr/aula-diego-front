@@ -97,7 +97,7 @@ export default function EditUser() {
       .put(`/user/${session.user.id}`, data, config)
       .then(() => {
         message.success("Usuário alterado com sucesso");
-        location.reload();
+        history.push(`/config`);
       })
       .catch((error) =>
         message.error("Não foi possível editar o usuário\n" + error)

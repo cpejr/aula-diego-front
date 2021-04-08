@@ -74,7 +74,7 @@ export default function CursoAdmin(props) {
       dataIndex: "description",
       width: "35%",
     },
-  ]
+  ];
 
   const lessonTable = [
     ...generalTable,
@@ -83,10 +83,7 @@ export default function CursoAdmin(props) {
       dataIndex: "date",
       width: "20%",
     },
-  ];
 
-  const lessonTable = [
-    ...generalTable,
     {
       title: "Ações",
       dataIndex: "id",
@@ -124,7 +121,7 @@ export default function CursoAdmin(props) {
     {
       title: "Data",
       dataIndex: "date",
-      width: "20%"
+      width: "20%",
     },
     {
       title: "Ações",
