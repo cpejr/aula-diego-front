@@ -12,7 +12,6 @@ export default function Infolive() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
-  const [audience, setAudience] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const { session } = useSession();
   const history = useHistory();
@@ -42,27 +41,27 @@ export default function Infolive() {
   }, []);
 
   function espectadores(id) {
-    let cont = 0;
+    const [audience, setAudience] = useState("");
 
     const configPresence = {
       headers: {
         authorization: "BEARER " + session.accessToken,
+      },
+      params: {
+        live_id: id,
+        confirmation: true,
       },
     };
 
     api
       .get(`/presence/live/${id}`, configPresence)
       .then((count) => {
-        console.log(count.data);
-        cont = count.count.data;
+        setAudience(count.data[0].count);
+        console.log(audience);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da presença das lives");
       });
-
-    setAudience(cont);
-    console.log(id);
-    console.log(cont);
 
     return audience;
   }
@@ -120,10 +119,9 @@ export default function Infolive() {
       title: "Nº espectadores",
       dataIndex: "id",
       align: "left",
-      className: "column-numEspec",
       render: (id) => {
         {
-          return espectadores(id);
+          return <p>{espectadores(id)}</p>;
         }
       },
     },
