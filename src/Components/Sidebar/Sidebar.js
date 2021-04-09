@@ -119,6 +119,11 @@ export default function Sidebar() {
               </li>
             );
           })}
+          <div className="configSidebar">
+            <li className="ul-link">
+              <Link to="/config">Configurações</Link>
+            </li>
+          </div>
         </ul>
         <div className="sidebarButtonContainer">
           <button
