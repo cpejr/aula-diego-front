@@ -12,11 +12,9 @@ import { Modal, Input } from "antd";
 export default function Live(props) {
   const history = useHistory();
   const [live, setLive] = useState([]);
-  const [url, setUrl] = useState("");
   const [confirmation_code, setConfirmation_code] = useState("");
   const [toggleViewInfo, setToggleViewInfo] = useState(true);
   const [toggleViewVideo, setToggleViewVideo] = useState(false);
-  const [toggleView3, setToggleView3] = useState(false);
   const { session } = useSession();
   const { id } = props.match.params;
 
@@ -102,7 +100,12 @@ export default function Live(props) {
             )}
             {toggleViewVideo && (
               <div className="videoFrame">
-                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
+                <VideoFrame
+                  url={
+                    "https://www.youtube.com/embed/" +
+                    live.link.replace(/&.*/gi, "")
+                  }
+                />
               </div>
             )}
           </div>
