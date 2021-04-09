@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Upload, Input, Button, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaAula.css";
@@ -10,7 +10,7 @@ import "./NovaAula.css";
 const { TextArea } = Input
 
 export default function NovaAula(props) {
-  const [lesson, setLesson] = useState({});
+  const [lesson, setLesson] = useState({videos: []});
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const { session } = useSession();
@@ -54,6 +54,23 @@ export default function NovaAula(props) {
     setLesson({ ...lesson, [e.target.name]: e.target.value });
   }
 
+  function addVideo() {
+    lesson.videos.push("");
+    setLesson(lesson);
+  }
+
+  function removeVideo() {
+    lesson.videos.pop();
+    setLesson(lesson);
+  }
+
+  function handleChangeVideo(e, index) {
+    lesson.videos[index] = e.target.value;
+    setLesson(lesson);
+  }
+
+  console.log(lesson)
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -68,8 +85,6 @@ export default function NovaAula(props) {
       file_names: fileNames
     };
 
-    console.log(data)
-    
     setUploading(true);
 
     const config = {
@@ -165,6 +180,30 @@ export default function NovaAula(props) {
                   autoSize={{ minRows: 3 }}
                 />
               </Form.Item>
+              <Form.List name="videos" >
+                {(fields, { add, remove }) => (
+                  <Form.Item {...formLayout} label="Vídeos" >
+                    {fields.map((field, index) => (
+                      <div className="inputVideoWrapper">
+                        <Form.Item
+                          {...field}
+                          className="inputURL"
+                          onChange={(e) => handleChangeVideo(e, index)}
+                          rules={[{ required: true, message: 'Insira URL do vídeo' }]}
+                        >
+                          <Input placeholder="URL do vídeo" />
+                        </Form.Item>
+                        <MinusCircleOutlined style={{fontSize: "large"}} onClick={() => {remove(index); removeVideo()}} />
+                      </div>
+                    ))}
+                    <Form.Item>
+                      <Button type="dashed" onClick={() => {add(); addVideo()}} icon={<PlusOutlined />}>
+                        Adicionar vídeo
+                      </Button>
+                    </Form.Item>
+                  </Form.Item>
+                )}
+              </Form.List>
               <Form.Item
                 name="files"
                 label="Arquivos"

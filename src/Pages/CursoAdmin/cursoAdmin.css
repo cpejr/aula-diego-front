@@ -1,5 +1,5 @@
 .pageBodyCurso {
-  margin: 5%;
+  padding: 5%;
 }
 
 .pageBody h5 {
@@ -7,7 +7,6 @@
 }
 
 .tabsWrapper {
-  width: 80%;
   margin-top: 2%;
 }
 
