@@ -93,6 +93,10 @@ ul a:hover {
   margin-left: 40px;
 }
 
+.configSidebar {
+  display: none;
+}
+
 @media (max-width: 780px) {
   .sidebarPerfil {
     display: none;
@@ -109,6 +113,9 @@ ul a:hover {
   .sidebarContainer {
     height: 100vh;
     width: 100vw;
+  }
 
+  .configSidebar {
+    display: block;
   }
 }

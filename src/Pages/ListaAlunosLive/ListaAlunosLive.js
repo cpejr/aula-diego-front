@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { Table, Input, message } from "antd";
+import { Table, Input, message, Statistic } from "antd";
+import { BsPeople } from 'react-icons/bs'
 import "./ListaAlunosLive.css";
 
 export default function ListaAlunoLIve(props) {
@@ -10,6 +11,7 @@ export default function ListaAlunoLIve(props) {
   const [presentStudents, setPresentStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [turma, setTurma] = useState("");
+  const [setLiveName, liveName] = useState("");
   const { id } = props.match.params;
 
   function getClass(id) {
@@ -23,9 +25,9 @@ export default function ListaAlunoLIve(props) {
     };
 
     api
-      .get(`/class/user`, config)
+      .get(`/class_user`, config)
       .then((response) => {
-        setTurma(response.data.class_name);
+        setTurma(response.data[0].class_name);
         console.log(response.data.class_name);
       })
       .catch(() => {
@@ -99,6 +101,10 @@ export default function ListaAlunoLIve(props) {
     <Base>
       <h1 className="page-title">Lista de Presença da Live:</h1>
       <div className="table-container">
+        <h5 className="greyish">
+          
+          <Statistic title="Nº de Espectadores" value={presentStudents.length} prefix={<BsPeople />} />
+        </h5>
         <Input
           placeholder="Pesquise por nome, organização curso..."
           value={search}
@@ -106,7 +112,7 @@ export default function ListaAlunoLIve(props) {
         />
         <Table
           columns={columns}
-          dataSource={presentStudents.map((row) => {
+          dataSource={presentStudents.filter((row) => {
             if (search === "" || !search) return row;
             if (
               row.user_name

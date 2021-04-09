@@ -66,21 +66,23 @@ export default function CursoAdmin(props) {
     {
       title: <h5>Título</h5>,
       dataIndex: "name",
-      width: "25%"
+      width: "25%",
     },
     {
       title: <h5>Descrição</h5>,
       dataIndex: "description",
+      width: "35%",
     },
-  ]
+  ];
 
   const lessonTable = [
     ...generalTable,
     {
       title: <h5>Data</h5>,
       dataIndex: "date",
-      width: "20%"
+      width: "20%",
     },
+
     {
       title: <h5>Ações</h5>,
       dataIndex: "id",
@@ -90,15 +92,23 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => history.push(`/aula/${id}`)}>
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar aula?">
+          <ActionButton
+            title="Editar"
+            confirm="Editar aula?"
+            onConfirm={() => handleEdit(id)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Deletar" confirm="Deletar aula?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Deletar"
+            confirm="Deletar aula?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined className="actionButton" />
           </ActionButton>
         </>
       ),
-    }
+    },
   ];
 
   const liveTable = [
@@ -106,7 +116,7 @@ export default function CursoAdmin(props) {
     {
       title: <h5>Data</h5>,
       dataIndex: "date",
-      width: "20%"
+      width: "20%",
     },
     {
       title: <h5>Ações</h5>,
@@ -117,15 +127,23 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => history.push(`/live/${id}`)}>
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar live?">
+          <ActionButton
+            title="Editar"
+            confirm="Editar live?"
+            onConfirm={() => handleEdit(id)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Deletar" confirm="Deletar live?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Deletar"
+            confirm="Deletar live?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined className="actionButton" />
           </ActionButton>
         </>
       ),
-    }
+    },
   ];
 
   const classTable = [
@@ -142,12 +160,16 @@ export default function CursoAdmin(props) {
           <ActionButton title="Editar" confirm="Editar turma?">
             <EditOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Deletar" confirm="Deletar turma?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Deletar"
+            confirm="Deletar turma?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined className="actionButton" />
           </ActionButton>
         </>
       ),
-    }
+    },
   ];
 
   const examTable = [
@@ -255,7 +277,7 @@ export default function CursoAdmin(props) {
         response.data.map((live) =>
           lives.push({
             ...live,
-            date: new Date(live.created_at).toLocaleDateString("pt-BR"),
+            date: new Date(live.date).toLocaleDateString("pt-BR"),
             key: live.id,
           })
         );
@@ -402,6 +424,11 @@ export default function CursoAdmin(props) {
     now = now.replace('T', ' ')
     console.log(now)
   } */
+
+  function handleEdit(id) {
+    const requests = ["aula", "live", "prova", "turma"];
+    history.push(`/${requests[activeTab]}/editar/${id}`);
+  }
 
   return (
     <Base>

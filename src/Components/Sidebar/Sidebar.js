@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-import Logo from "../../images/logoTeste.png";
+import Logo from "../../images/reclas.svg";
 import { useSession } from "../../Context/SessionContext";
-import Foto from "../../images/foto.jpg";
 import { Link, useHistory } from "react-router-dom";
 import api from "../../services/api";
+import { message } from "antd";
 
 export default function Sidebar() {
   const history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
-  const [score, setScore] = useState("0 XP");
+  const [score, setScore] = useState(0);
 
-  const config = {
+  let config = {
     headers: {
       authorization: "Bearer " + session.accessToken,
     },
@@ -41,20 +41,12 @@ export default function Sidebar() {
 
   const masterLinks = [
     {
-      title: "Novo Usuário",
-      path: "/cadastro",
-    },
-    {
       title: "Alunos",
       path: "/aluno",
     },
     {
       title: "Informações sobre a live",
       path: "/live/info",
-    },
-    {
-      title: "Turmas",
-      path: "/turma/lista",
     },
     {
       title: "Cursos",
@@ -89,10 +81,12 @@ export default function Sidebar() {
           break;
       }
 
-      /* api
+      api
         .post("/score", { user_id: session.user.id }, config)
         .then((res) => setScore(res.data.score))
-        .catch(() => alert("Não foi possível receber pontuação do usuário.")); */
+        .catch(() =>
+          message.error("Não foi possível receber pontuação do usuário.")
+        );
     }
   }, []);
   return (
@@ -110,10 +104,11 @@ export default function Sidebar() {
         <label>{session.user.name}</label>
         <br></br>
       </div>
-
-      <div className="sidebarScore">
-        <p>{score} XP</p>
-      </div>
+      {session.user.type === "student" ? (
+        <div className="sidebarScore">
+          <p>{score} XP</p>
+        </div>
+      ) : null}
 
       <div className="sidebarBody">
         <ul>
@@ -124,6 +119,11 @@ export default function Sidebar() {
               </li>
             );
           })}
+          <div className="configSidebar">
+            <li className="ul-link">
+              <Link to="/config">Configurações</Link>
+            </li>
+          </div>
         </ul>
         <div className="sidebarButtonContainer">
           <button

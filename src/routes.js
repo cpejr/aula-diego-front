@@ -27,6 +27,7 @@ import Curso from "./Pages/Curso/curso";
 import MeusCursos from "./Pages/MeusCursos/MeusCursos";
 import Aula from "./Pages/Aula/Aula";
 import NovaAula from "./Pages/NovaAula/NovaAula";
+import EditarAula from "./Pages/EditarAula/EditarAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
@@ -35,6 +36,8 @@ import Prova from "./Pages/Prova/Prova";
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
+import EditarCurso from "./Pages/EditarCurso/EditarCurso";
+
 
 const routes = () => {
   return (
@@ -81,7 +84,7 @@ const routes = () => {
           adminComponent={ConfigUser}
           masterComponent={ConfigUser}
         />
-          /* LIVE */
+        /* LIVE */
         <PrivateRoute
           path="/live/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
@@ -113,8 +116,8 @@ const routes = () => {
           adminComponent={EditarLive}
           masterComponent={EditarLive}
         />
-          /* TURMA */
-          <PrivateRoute
+        /* TURMA */
+        <PrivateRoute
           path="/turma/lista"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaTurma}
@@ -132,7 +135,13 @@ const routes = () => {
           adminComponent={ListaAlunosTurma}
           masterComponent={ListaAlunosTurma}
         />
-          /* CURSO */
+        /* CURSO */
+        <PrivateRoute
+          path="/curso/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={EditarCurso}
+          masterComponent={EditarCurso}
+        />
         <PrivateRoute
           path="/curso/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
@@ -166,8 +175,8 @@ const routes = () => {
           adminComponent={CursoAdmin}
           masterComponent={CursoAdmin}
         />
-          /* AULA */
-          <PrivateRoute
+        /* AULA */
+        <PrivateRoute
           path="/aula/cadastro"
           studentComponent={NovaAula}
           adminComponent={NovaAula}
@@ -182,6 +191,13 @@ const routes = () => {
         />
           /* PROVA */
         <PrivateRoute
+          path="/aula/editar/:id"
+          exact
+          studentComponent={Dashboard}
+          adminComponent={EditarAula}
+          masterComponent={EditarAula}
+        />
+        <PrivateRoute
           path="/prova/cadastro"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
@@ -195,8 +211,8 @@ const routes = () => {
           adminComponent={Prova}
           masterComponent={Prova}
         />
-          /* ORGANIZAÇÃO */
-          <PrivateRoute
+        /* ORGANIZAÇÃO */
+        <PrivateRoute
           path="/organizacao/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={() => <Redirect to="/dashboard" />}
@@ -209,14 +225,14 @@ const routes = () => {
           adminComponent={() => <Redirect to="/dashboard" />}
           masterComponent={ListaOrganizacao}
         />
-          /* OCUPAÇÃO */
-          <PrivateRoute
+        /* OCUPAÇÃO */
+        <PrivateRoute
           path="/ocupacao/editar/:id"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={EditarOcupacao}
           masterComponent={EditarOcupacao}
         />
-          <PrivateRoute
+        <PrivateRoute
           path="/ocupacao/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={() => <Redirect to="/dashboard" />}

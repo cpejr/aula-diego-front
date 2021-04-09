@@ -9,7 +9,7 @@ import "./styles.css";
 export default function CommentsContainer({
   parent_id,
   parent_name,
-  links_preffix,
+  parent_path,
   title = "Comentários",
 }) {
   const { session } = useSession();
@@ -49,12 +49,13 @@ export default function CommentsContainer({
           parent_id,
           parent_name,
           question,
+          parent_path,
         },
         config
       )
       .then(() => getData());
   }
-  
+
   return (
     <div className="comments__container">
       <h3>{title}</h3>
@@ -85,7 +86,7 @@ export default function CommentsContainer({
             author={q.user_name}
             date={new Date(q.created_at).toLocaleDateString("pt-BR")}
             text={q.question}
-            linkSrc={`${links_preffix}${parent_id}`}
+            linkSrc={q.parent_path}
             linkText={parent_name}
           />
         );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
@@ -6,20 +6,21 @@ import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
 import { Table, Tag, Input, Tooltip, message } from "antd";
-import AddIcon from "@material-ui/icons/Add";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
-  const [audience, setAudience] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [spec, setSpec] = useState({});
   const { session } = useSession();
   const history = useHistory();
 
   function dateFormate(date) {
     var data = new Date(date);
-    return data.toLocaleDateString([], { dateStyle: "short" });
+    return data.toLocaleDateString([], {
+      dateStyle: "short",
+    });
   }
 
   const config = {
@@ -40,35 +41,6 @@ export default function Infolive() {
         message.error("Não foi possível carregar dados das lives");
       });
   }, []);
-
-  function espectadores(id) {
-    let cont = 0;
-
-    const configPresence = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-      params: {
-        confirmation: true,
-      },
-    };
-
-    api
-      .get(`/presence/live/${id}`, configPresence)
-      .then((count) => {
-        console.log(count.data);
-        cont = count.length;
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da presença das lives");
-      });
-
-    setAudience(cont);
-    console.log(id);
-    console.log(cont);
-
-    return audience;
-  }
 
   const columns = [
     {
@@ -114,25 +86,16 @@ export default function Infolive() {
     {
       title: "Data",
       dataIndex: "date",
+      className: "column-date_live",
       align: "left",
       render: (date) => {
         return <p>{dateFormate(date)}</p>;
       },
     },
     {
-      title: "Nº espectadores",
-      dataIndex: "id",
-      align: "left",
-      className: "column-numEspec",
-      render: (id) => {
-        {
-          return espectadores(id);
-        }
-      },
-    },
-    {
       title: "Curso",
       dataIndex: "course_name",
+      className: "column-course_name",
       align: "left",
       key: "tags",
       render: (tag) => {
@@ -183,8 +146,14 @@ export default function Infolive() {
         if (value === "") return live;
         return (
           live.name.toLowerCase().includes(value.toLowerCase()) ||
-          live.organization_name.toString().includes(value.toLowerCase()) ||
-          live.course_name.toLowerCase().includes(value.toLowerCase())
+          live.organization_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          live.course_name
+            .toLowerCase()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         );
       })
     );
@@ -193,21 +162,14 @@ export default function Infolive() {
   return (
     <Base>
       <h1 className="page-title">Informações sobre as Lives:</h1>
-      <div className="table-container">
+      <div className="table-container-infolive">
         <div style={{ display: "flex" }}>
           <Input
             className="search-input"
             placeholder="procurar por nome, matricula, curso"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
           />
-          <Tooltip title="Criar Live">
-            <AddIcon
-              style={{ height: "30px", width: "30px" }}
-              className="clickable"
-              onClick={() => history.push("/live/cadastro")}
-            />
-          </Tooltip>
         </div>
         <Table
           // title={() => `Lista de Ocupações da empresa ${organization}`}

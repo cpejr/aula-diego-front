@@ -4,6 +4,7 @@ import {
   SnippetsOutlined,
   InboxOutlined,
   DownloadOutlined,
+  IdcardFilled,
 } from "@ant-design/icons";
 import { Upload, message, Divider, Button } from "antd";
 import VideoFrame from "../../Components/VideoFrame/VideoFrame";
@@ -142,7 +143,7 @@ export default function Aula(props) {
       <CommentsContainer
         parent_id={id}
         parent_name={lesson?.name}
-        links_preffix="/aula/"
+        parent_path={`/aula/${id}`}
       />
       </div>
     </Base>

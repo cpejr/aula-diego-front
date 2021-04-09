@@ -1,5 +1,20 @@
+.table-container-infolive {
+  width: 80%;
+  margin: auto;
+  margin-top: 5%;
+}
+
 @media (max-width: 600px) {
-  .column-numEspec {
+  .column-course_name {
+    display: none;
+  }
+  .column-date_live {
+    table-layout: wid;
+  }
+  .table-info-live {
+    margin: 0;
+  }
+  .column-date_live {
     display: none;
   }
 }

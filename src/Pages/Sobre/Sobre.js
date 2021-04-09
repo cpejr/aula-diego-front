@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const imgdark = () => {
     document.querySelector(".logodark").classList.remove("block");
-    document.querySelector(".logo").classList.add("block");
+    document.querySelector(".about-logo").classList.add("block");
 
     document.querySelector(".contentWave").classList.replace("contentWave","waveTopDark");
     document.querySelector(".contentWaveBottom").classList.replace("contentWaveBottom","waveBottomDark");
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const imglight = () => {
     document.querySelector(".logodark").classList.add("block");
-    document.querySelector(".logo").classList.remove("block");
+    document.querySelector(".about-logo").classList.remove("block");
 
     document.querySelector(".waveTopDark").classList.replace("waveTopDark","contentWave");
     document.querySelector(".waveBottomDark").classList.replace("waveBottomDark","contentWaveBottom");
@@ -57,11 +57,11 @@ export default function Sobre() {
                 <div className="headerHome">
                     <div className="imgLogo">
                         <Link to="/dashboard">
-                            <img className="logo" src={Logo}></img>
+                            <img className="about-logo" src={Logo}></img>
                         </Link>
                         <Link to="/dashboard">
                             <img className="logodark block" src={LogoDark}></img>    
-                        </Link>
+                        </Link> 
                     </div>
                     <div className="btns">
                         <Link to="/login">
