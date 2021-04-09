@@ -212,7 +212,7 @@ export default function CursoAdmin(props) {
         response.data.map((live) =>
           lives.push({
             ...live,
-            date: new Date(live.created_at).toLocaleDateString("pt-BR"),
+            date: new Date(live.date).toLocaleDateString("pt-BR"),
             key: live.id,
           })
         );
