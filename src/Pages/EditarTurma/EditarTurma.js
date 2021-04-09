@@ -30,8 +30,8 @@ export default function EditarTurma(props) {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredStudents, setFilteredStudents] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+ 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const id = props.match.params.id;
@@ -50,7 +50,14 @@ export default function EditarTurma(props) {
       "user.type": "student",
     },
   };
-  
+  const configUserClass = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    params: {
+      class_id: id,
+    },
+  };
   useEffect(() => {
     api.get("/user", configStudents)
         .then((users) => {
@@ -68,17 +75,40 @@ export default function EditarTurma(props) {
           console.log(err);
         });
         
-    api.get(`/class/${id}`, config).then((response) => {
-      SetClasses(response.data);
-      SetName(response.data.name);
-      SetDescription(response.data.description);
-      setCourseId(response.data.course_id);
-      console.log(response.data);
-      console.log(response.data.name);
-      // setFilteredData(response.data);
-      
-    });
-  }, []);
+        api
+        .get(`/class/${id}`, config).then((response) => {
+          SetClasses(response.data);
+          SetName(response.data.name);
+          SetDescription(response.data.description);
+          setCourseId(response.data.course_id);
+          console.log(response.data);
+          console.log(response.data.name);
+          // setFilteredData(response.data);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        
+       
+        
+        api
+        .get("/class_user", configUserClass)
+        .then((response) => {
+          const students = [];
+          console.log(response.data);
+          for ( let student of response.data){
+            students.push(student.user_id);
+            console.log(student);
+          }
+        
+          setSelectedRowKeys(students);
+        })
+        .catch((err) => {
+          message.error("Não foi possível editar a turma!\n" + err);
+        });
+        
+    }, []);
   const studentsTable = [
     {
       title: "Nome",
@@ -94,9 +124,10 @@ export default function EditarTurma(props) {
     },
   ];
 
-  const selectedRows = {
+  const rowSelection = {
+    selectedRowKeys,
     onChange: (selected) => {
-      setSelectedStudents(selected);
+      setSelectedRowKeys(selected);
     },
   };
   
@@ -133,6 +164,9 @@ export default function EditarTurma(props) {
       },
     };
     
+    
+    
+
     api
       .put(`/class`, data, config)
       .then(() => {
@@ -143,6 +177,7 @@ export default function EditarTurma(props) {
         message.error("Não foi possível editar a turma!\n" + err);
       });
   }
+  console.log(selectedRowKeys);
   return (
     <Base>
       <div className="pageRoot">
@@ -204,7 +239,7 @@ export default function EditarTurma(props) {
                   value={search}
                 />
                 <Table
-                  rowSelection={selectedRows}
+                  rowSelection={rowSelection}
                   columns={studentsTable}
                   dataSource={filteredStudents}
                   loading={loading}
