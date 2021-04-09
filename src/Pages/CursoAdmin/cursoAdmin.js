@@ -17,7 +17,7 @@ export default function CursoAdmin(props) {
 
   const [done, setDone] = useState(false);
   const [tabs, setTabs] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
@@ -39,7 +39,10 @@ export default function CursoAdmin(props) {
 
   useEffect(() => {
     if (done === true) {
-      setTabs([lessons, lives, exams, classes]);
+      const tabs = [lessons, lives, exams, classes];
+
+      setTabs(tabs);
+      setFiltered(tabs[activeTab]);
       setLoading(false);
     }
   }, [done]);
@@ -61,12 +64,12 @@ export default function CursoAdmin(props) {
 
   const generalTable = [
     {
-      title: "Título",
+      title: <h5>Título</h5>,
       dataIndex: "name",
       width: "25%"
     },
     {
-      title: "Descrição",
+      title: <h5>Descrição</h5>,
       dataIndex: "description",
     },
   ]
@@ -74,17 +77,17 @@ export default function CursoAdmin(props) {
   const lessonTable = [
     ...generalTable,
     {
-      title: "Data",
+      title: <h5>Data</h5>,
       dataIndex: "date",
       width: "20%"
     },
     {
-      title: "Ações",
+      title: <h5>Ações</h5>,
       dataIndex: "id",
       width: "15%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={history.push(`/aula/${id}`)}>
+          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => history.push(`/aula/${id}`)}>
             <SelectOutlined className="actionButton" />
           </ActionButton>
           <ActionButton title="Editar" confirm="Editar aula?">
@@ -101,12 +104,12 @@ export default function CursoAdmin(props) {
   const liveTable = [
     ...generalTable,
     {
-      title: "Data",
+      title: <h5>Data</h5>,
       dataIndex: "date",
       width: "20%"
     },
     {
-      title: "Ações",
+      title: <h5>Ações</h5>,
       dataIndex: "id",
       width: "15%",
       render: (id) => (
@@ -149,7 +152,7 @@ export default function CursoAdmin(props) {
 
   const examTable = [
     {
-      title: <h5>Nome</h5>,
+      title: <h5>Título</h5>,
       dataIndex: "name",
       width: "20%",
     },
@@ -193,12 +196,12 @@ export default function CursoAdmin(props) {
       render: (id, exam) => (
         <>
           {exam.status === "hidden" &&
-            <ActionButton title="Publicar" confirm="Publicar prova?" /* onConfirm={() => handlePublish(id)} */>
+            <ActionButton title="Publicar" confirm="Publicar prova?" onConfirm={() => handlePublish(id)}>
               <CheckCircleOutlined />
             </ActionButton>
           }
           {exam.status === "open" &&
-            <ActionButton title="Fechar" confirm="Fechar prova?" /* onConfirm={() => handlePublish(id)} */>
+            <ActionButton title="Fechar" confirm="Fechar prova?" onConfirm={() => handleClose(id)}>
               <CloseCircleOutlined />
             </ActionButton>
           }
@@ -222,7 +225,9 @@ export default function CursoAdmin(props) {
   ];
 
   function getData() {
+    requests = 0;
     setLoading(true);
+    setDone(false);
 
     api
       .get(`/lesson`, configTables)
@@ -237,7 +242,6 @@ export default function CursoAdmin(props) {
         );
 
         setLessons(lessons);
-        setFiltered(lessons);
         requestDone(lessons);
       })
       .catch(() => {
@@ -310,13 +314,13 @@ export default function CursoAdmin(props) {
     api
       .get(`/course/${course_id}`, config)
       .then((response) => {
-        if (session.user.type !== "master" && response.data.organization_id === session.user.organization_id) {
-          setCourse(response.data);
-          getData();
-        }
-        else {
+        if (session.user.type === "student" || response.data.organization_id !== session.user.organization_id) {
           message.error("Você não tem permissão para ver esse curso");
           history.push("/")
+        }
+        else {
+          setCourse(response.data);
+          getData();
         }
       })
       .catch(() => {
@@ -349,21 +353,16 @@ export default function CursoAdmin(props) {
   }
 
   function handleDelete(id) {
-    setLoading(true);
-    setDone(false);
 
     const requests = ["lesson", "live", "exam", "class"];
     const method = [setLessons, setLives, setClasses];
+    setLoading(true);
 
     api
       .delete(`/${requests[activeTab]}/${id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        const content = tabs[activeTab].filter((elem) => elem.id !== id);
-
-        method[activeTab](content);
-        setFiltered(content);
-        setDone(true);
+        getData();
       })
       .catch((error) => {
         message.error("Não foi possível exluir");
@@ -371,20 +370,38 @@ export default function CursoAdmin(props) {
   }
 
   function handlePublish(id) {
+
+    setLoading(true);
+
     api
       .put(`/exam/${id}`, {open: true}, config)
-      .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        const content = tabs[activeTab].filter((elem) => elem.id !== id);
-
-        method[activeTab](content);
-        setFiltered(content);
-        setDone(true);
+        message.success("Prova publicada com sucesso");
+        getData();
       })
-      .catch((error) => {
-        message.error("Não foi possível exluir");
-      });
+      .catch((err) => message.error("Não foi possível publicar a prova"));
   }
+
+  function handleClose(id) {
+
+    console.log(new Date(Date.now()).toISOString())
+
+    /* api
+      .put(`/exam/close/${id}`, {}, config)
+      .then(() => {
+        message.success("Prova fechada com sucesso");
+        getData();
+      })
+      .catch((err) => message.error("Não foi possível fechar a prova")); */
+  }
+
+  /* function getNow() {
+    let now = new Date(Date.now()).toISOString();
+    console.log(now)
+    now = now.slice(0, -5)
+    now = now.replace('T', ' ')
+    console.log(now)
+  } */
 
   return (
     <Base>

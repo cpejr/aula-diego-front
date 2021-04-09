@@ -14,21 +14,6 @@
   color: initial
 }
 
-.formButtonDelete {
-  display: flex;
-  align-items: center;
-}
-
-.formButtonDelete:hover {
-  border-color: red;
-  color: red
-}
-
-.formButtonDelete:focus {
-  border-color: lightgray;
-  color: initial
-}
-
 .addButtonsWrapper {
   display: flex;
   flex-wrap: wrap;
@@ -44,24 +29,6 @@
   padding-left: 2%;
   padding-right: 2%;
 }
-
-.questionWrapper {
-  padding: 2%;
-  padding-right: 10%;
-  margin-bottom: 2%;
-  border: 1px dashed lightgray;
-}
-
-.alternativeWrapper {
-  display: flex;
-}
-
-.alternative {
-  height: 40px;
-  border-radius: 0px;
-}
-
-
 
 /* ANT DESIGN */
 
