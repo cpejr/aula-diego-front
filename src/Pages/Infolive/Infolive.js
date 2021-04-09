@@ -18,7 +18,9 @@ export default function Infolive() {
 
   function dateFormate(date) {
     var data = new Date(date);
-    return data.toLocaleDateString("pt-BR");
+    return data.toLocaleDateString([], {
+      dateStyle: "short",
+    });
   }
 
   const config = {
@@ -84,6 +86,7 @@ export default function Infolive() {
     {
       title: "Data",
       dataIndex: "date",
+      className: "column-date_live",
       align: "left",
       render: (date) => {
         return <p>{dateFormate(date)}</p>;
@@ -92,6 +95,7 @@ export default function Infolive() {
     {
       title: "Curso",
       dataIndex: "course_name",
+      className: "column-course_name",
       align: "left",
       key: "tags",
       render: (tag) => {
@@ -158,7 +162,7 @@ export default function Infolive() {
   return (
     <Base>
       <h1 className="page-title">Informações sobre as Lives:</h1>
-      <div className="table-container">
+      <div className="table-container-infolive">
         <div style={{ display: "flex" }}>
           <Input
             className="search-input"
