@@ -242,10 +242,8 @@ export default function CursoAdmin(props) {
     api
       .get(`/course/${course_id}`, config)
       .then((response) => {
-        if (
-          session.user.type !== "master" &&
-          response.data.organization_id === session.user.organization_id
-        ) {
+        if (session.user.type === "master") return;
+        if (response.data.organization_id === session.user.organization_id) {
           setCourse(response.data);
           getData();
         } else {
