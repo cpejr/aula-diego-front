@@ -97,7 +97,7 @@ export default function EditarTurma(props) {
         .then((response) => {
           const students = [];
           console.log(response.data);
-          for ( let student of response.data){
+          for (let student of response.data){
             students.push(student.user_id);
             console.log(student);
           }
@@ -169,13 +169,19 @@ export default function EditarTurma(props) {
 
     api
       .put(`/class`, data, config)
-      .then(() => {
+      .then((response) => {
+        if(selectedRowKeys.length === 0){
+          message.error("A turma não pode ser vazia!\n" );  
+          return;
+        }
+        setSelectedRowKeys(response.data);
         message.success("Turma editada com sucesso!");
         history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
         message.error("Não foi possível editar a turma!\n" + err);
       });
+      setLoading(false);
   }
   console.log(selectedRowKeys);
   return (
