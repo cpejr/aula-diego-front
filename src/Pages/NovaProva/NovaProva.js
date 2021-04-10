@@ -183,7 +183,6 @@ export default function NovaProva(props) {
                           if (questionType[index] === "text")
                             return <QuestionText
                               index={index}
-                              field={field}
                               onChange={questionChange}
                               imageChange={imageChange}
                               remove={() => questionDelete(remove, field.name, index, field.key)}

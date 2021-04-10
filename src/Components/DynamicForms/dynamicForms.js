@@ -40,13 +40,13 @@ export const Field = ({ name, label, required = true, message = "Campo obrigató
   </Form.Item>
 )
 
-export const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, onChange = null, field, fieldKey }) => (
+export const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, onChange = null, field, fieldKey, size = { minRows: 1, maxRows: 3 } }) => (
   <Field name={name} label={label} field={field} fieldKey={fieldKey} required={required} message={message}>
     <TextArea
       className="formInput"
       placeholder={placeholder}
       onChange={onChange}
-      autoSize={{ minRows: 1, maxRows: 3 }}
+      autoSize={size}
     />
   </Field>
 )
@@ -86,7 +86,7 @@ export const ImageUpload = ({ name, label, imageChange, field, fieldKey }) => {
   )
 }
 
-export const Alternative = ({ name, required = true, message = "Campo obrigatório", value, onChange, field, fieldKey }) => (
+const Alternative = ({ name, required = true, message = "Campo obrigatório", value, onChange, field, fieldKey }) => (
   <Field name={name} field={field} fieldKey={fieldKey} required={required} message={message}>
     <div className="alternativeWrapper">
       <Radio.Button
@@ -225,3 +225,54 @@ export const QuestionAlternatives = ({ index, field, onChange, imageChange, remo
     </Form.Item>
   </div>
 )
+
+export const AnswerText = ({ index, header = "", size = { minRows: 3, maxRows: 10 }, onChange }) => (
+  <div className="questionWrapper">
+    <Form.Item {...questionTailLayout} className="answerHeader" >
+      {header}
+    </Form.Item>
+    <InputField
+      name={index}
+      field={questionLayout}
+      label="Resposta"
+      placeholder="Insira a resposta da questão"
+      message="Insira resposta da questão!"
+      onChange={(e) => onChange(e)}
+      size={size}
+    />
+  </div>
+)
+
+export const AnswerAlternatives = ({ index, header = "", alternatives, onChange }) => {
+
+  const [selected, setSelected] = useState(null);
+  const entries = Object.entries(alternatives);
+
+  const handleSelect = e => setSelected(e.target.value);
+
+  return (
+    <div className="questionWrapper">
+      <Form.Item {...questionTailLayout} className="answerHeader" >
+        {header}
+      </Form.Item>
+      <Form.Item {...questionLayout} label={`Alternativas`}>
+        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected}>
+          {entries.map(alternative => (
+            <div className="alternativeWrapper">
+              <Radio.Button
+                type="default"
+                value={alternative[0]}
+                className="alternative"
+              >
+                {alternative[0]}
+              </Radio.Button>
+              <span>
+                {alternative[1]}
+              </span>
+            </div>
+          ))}
+        </Radio.Group>
+      </Form.Item>
+    </div>
+  )
+}

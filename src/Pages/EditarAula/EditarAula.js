@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+/* import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Upload, Input, Button, message } from "antd";
@@ -240,3 +240,4 @@ export default function EditarAula(props) {
     </Base>
   );
 }
+ */

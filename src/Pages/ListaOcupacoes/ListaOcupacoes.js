@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/* import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import { Table, Input, Popconfirm, message, Tooltip } from "antd";
 import Base from "../../Components/Base/Base";
@@ -145,3 +145,4 @@ export default function ListaOrganizacoes() {
     </Base>
   );
 }
+ */

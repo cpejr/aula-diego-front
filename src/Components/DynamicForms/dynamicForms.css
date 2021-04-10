@@ -28,3 +28,23 @@
   border-color: lightgray;
   color: initial
 }
+
+.answerHeader {
+  font-size: x-large;
+}
+
+.ant-form-item-label label{
+  font-size: large;
+}
+
+.ant-form-item-control-input-content {
+  height: auto;
+}
+
+.ant-form-item-control-input-content textarea.ant-input {
+  line-height: 34px;
+}
+
+.ant-input-lg {
+  padding: 3.5px 11px;
+}

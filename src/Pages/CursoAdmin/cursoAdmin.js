@@ -149,6 +149,11 @@ export default function CursoAdmin(props) {
   const classTable = [
     ...generalTable,
     {
+      title: <h5>Data</h5>,
+      dataIndex: "date",
+      width: "20%",
+    },
+    {
       title: "Ações",
       dataIndex: "id",
       width: "15%",
