@@ -127,10 +127,6 @@ export default function ListaOrganizacoes() {
     },
   ];
 
-  function handleEdit() {
-    alert("EDIT ainda não faz nada. tururu");
-  }
-
   function handleSearch(value) {
     setSearch(value);
     setFiltered(
@@ -153,7 +149,11 @@ export default function ListaOrganizacoes() {
         api
           .get("/organization", config)
           .then((response) => {
-            setOrganizations(response.data);
+            getLogo(response.data).then((response) => {
+              setOrganizations(response);
+              setFiltered(response);
+              setLoading(false);
+            });
           })
           .then(setLoading(false));
       })
