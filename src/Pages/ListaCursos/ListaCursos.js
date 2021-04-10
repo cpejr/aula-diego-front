@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Tag, Input, Tooltip, message } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -68,25 +63,10 @@ export default function ListaOrganizacoes() {
       width: "35%",
       render: (id) => (
         <>
-          <ActionButton
-            title="Ver Curso"
-            confirm="Ver Curso?"
-            onConfirm={() => history.push(`gerenciar/${id}`)}
-          >
-            <EyeOutlined />
-          </ActionButton>
-          <ActionButton
-            title="Editar"
-            confirm="Editar curso?"
-            onConfirm={() => history.push(`editar/${id}`)}
-          >
+          <ActionButton title="Editar" confirm="Editar curso?" onConfirm={() => history.push(`/curso/gerenciar/${id}`)}>
             <EditOutlined />
           </ActionButton>
-          <ActionButton
-            title="Excluir"
-            confirm="Excluir curso?"
-            onConfirm={() => handleDelete(id)}
-          >
+          <ActionButton title="Exluir" confirm="Excluir curso?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined />
           </ActionButton>
         </>

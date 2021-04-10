@@ -1,5 +1,7 @@
-.pageBody {
-  width: 90%;
+.body {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
 }
 
 .title {
@@ -18,12 +20,22 @@
   color: gray;
   font-size: large;
   margin-top: 5px;
-  margin-left: 3%;
+  margin-left: 5%;
 }
 
 .text {
   width: 95%;
   margin: auto;
+}
+
+.inputVideoWrapper {
+  display: flex;
+  align-items: baseline;
+}
+
+.inputURL {
+  width: 90%;
+  margin-right: 10px;
 }
 
 .downloadLabel {

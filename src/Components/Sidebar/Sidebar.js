@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-import Logo from "../../images/logoTeste.png";
+import Logo from "../../images/reclas.svg";
 import { useSession } from "../../Context/SessionContext";
 import { Link, useHistory } from "react-router-dom";
 import api from "../../services/api";
@@ -119,6 +119,11 @@ export default function Sidebar() {
               </li>
             );
           })}
+          <div className="configSidebar">
+            <li className="ul-link">
+              <Link to="/config">Configurações</Link>
+            </li>
+          </div>
         </ul>
         <div className="sidebarButtonContainer">
           <button

@@ -106,6 +106,7 @@ export default function ListaOrganizacoes() {
     {
       title: <h5>Descrição</h5>,
       dataIndex: "description",
+      className: "column-description",
     },
     {
       title: <h5>Ações</h5>,

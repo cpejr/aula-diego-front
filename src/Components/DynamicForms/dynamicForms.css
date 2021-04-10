@@ -1,0 +1,30 @@
+.alternativeWrapper {
+  display: flex;
+}
+
+.alternative {
+  height: 40px;
+  border-radius: 0px;
+}
+
+.questionWrapper {
+  padding: 2%;
+  padding-right: 10%;
+  margin-bottom: 2%;
+  border: 1px dashed lightgray;
+}
+
+.formButtonDelete {
+  display: flex;
+  align-items: center;
+}
+
+.formButtonDelete:hover {
+  border-color: red;
+  color: red
+}
+
+.formButtonDelete:focus {
+  border-color: lightgray;
+  color: initial
+}

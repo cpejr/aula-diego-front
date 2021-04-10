@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Input, Button, message } from "antd";
+import { Form, Upload, Input, Button, message } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "../EditarLive/EditarLive.css";
@@ -25,6 +26,7 @@ const tailFormItemLayout = {
 
 export default function EditarAula(props) {
   const [lesson, setLesson] = useState([]);
+  const [files, setFiles] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [text, setText] = useState("");
@@ -34,6 +36,22 @@ export default function EditarAula(props) {
   const { session } = useSession();
   const id = props.match.params.id;
   const history = useHistory();
+
+  const fileProps = {
+    name: "file",
+    multiple: "true",
+    onRemove: (file) => {
+      const index = files.indexOf(file);
+      const newFiles = files;
+      newFiles.splice(index, 1);
+      setFiles(newFiles);
+    },
+    beforeUpload: (file) => {
+      setFiles([...files, file]);
+      return false;
+    },
+    files,
+  };
 
   const config = {
     headers: {
@@ -77,6 +95,54 @@ export default function EditarAula(props) {
       })
       .catch((err) => {
         message.error("Não foi possiível editar a aula!\n" + err);
+      });
+
+    const fileNames = files.map((file) => file.name);
+
+    const fileIds = [];
+
+    const dataFile = {
+      ...lesson,
+      course_id: course,
+      user_id: session.user.id,
+      file_names: fileNames,
+    };
+
+    console.log(dataFile);
+
+    setUploading(true);
+
+    const configFiles = {
+      headers: {
+        authorization: "BEARER " + session.accessToken,
+        "Content-Type": "multipart/form-data",
+        processData: false,
+        contentType: false,
+      },
+    };
+
+    api
+      .post("/lesson_create", data, config)
+      .then((response) => {
+        fileIds.push(response.data);
+
+        for (let i = 0; i < fileIds.length; i++) {
+          const formData = new FormData();
+          formData.append(fileIds[i], files[i]);
+
+          api.post("file_upload", formData, configFiles).catch((err) => {
+            message.error("Não foi possível criar a aula!");
+          });
+        }
+
+        setUploading(false);
+        message.success("Aula criada com sucesso!");
+        history.push(`/curso/${course}`);
+      })
+      .catch((err) => {
+        message.error("Não foi possível criar a aula!");
+        console.log(course.id);
+        setUploading(false);
       });
   }
 
@@ -142,6 +208,20 @@ export default function EditarAula(props) {
                   size="large"
                   autoSize={{ minRows: 2, maxRows: 6 }}
                 />
+              </Form.Item>
+              <Form.Item
+                name="files"
+                label="Arquivos"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor insira no mínimo um arquivo!",
+                  },
+                ]}
+              >
+                <Upload {...fileProps}>
+                  <Button icon={<UploadOutlined />}>Upload</Button>
+                </Upload>
               </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button

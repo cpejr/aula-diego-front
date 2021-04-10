@@ -3,7 +3,6 @@ import './AdmCard.css'
 import {useHistory} from 'react-router-dom'
 import AddIcon from '@material-ui/icons/Add';
 
-
 export default function AdmCard({Icon, title, route}) {
 
     const history = useHistory();
