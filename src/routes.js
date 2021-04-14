@@ -27,7 +27,6 @@ import Curso from "./Pages/Curso/curso";
 import MeusCursos from "./Pages/MeusCursos/MeusCursos";
 import Aula from "./Pages/Aula/Aula";
 import NovaAula from "./Pages/NovaAula/NovaAula";
-import EditarAula from "./Pages/EditarAula/EditarAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
