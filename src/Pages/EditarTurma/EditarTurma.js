@@ -128,7 +128,9 @@ export default function EditarTurma(props) {
     selectedRowKeys,
     onChange: (selected) => {
       setSelectedRowKeys(selected);
+      console.log("opa\n\n", selectedRowKeys);
     },
+    
   };
   
   function handleChangeDate(e) {
@@ -157,6 +159,7 @@ export default function EditarTurma(props) {
       name: name,
       description: description,
       course_id: classes.course_id,
+      students: selectedRowKeys,
     };
     const config = {
       headers: {
@@ -183,7 +186,7 @@ export default function EditarTurma(props) {
       });
       setLoading(false);
   }
-  console.log(selectedRowKeys);
+  console.log("SelectedRowkeys", selectedRowKeys);
   return (
     <Base>
       <div className="pageRoot">

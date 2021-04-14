@@ -114,7 +114,7 @@ export default function NovaAula(props) {
       course_id: course.get("course"),
       organization_id: session.user.organization_id,
     };
-
+    console.log("selectedstudents", selectedStudents);
     api
       .post("/class_create", data, config)
       .then((response) => {
