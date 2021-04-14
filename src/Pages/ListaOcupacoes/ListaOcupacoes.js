@@ -16,7 +16,7 @@ export default function ListaOrganizacoes() {
   const { session } = useSession();
   const history = useHistory();
 
-  let size = screen.width;
+  // let size = screen.width;
 
   const config = {
     headers: {
@@ -96,7 +96,19 @@ export default function ListaOrganizacoes() {
       ),
     },
   ];
-
+  function handleSearch(value) {
+    setSearch(value);
+    setFilteredData(
+      occupations.filter((occupation) => {
+        if (value === "") return occupation;
+        return (
+          occupation.name.toLowerCase().includes(value.toLowerCase()) ||
+          occupation.registration.toString().includes(value) ||
+          occupation.organization_name.toLowerCase().includes(value.toLowerCase())
+        );
+      })
+    );
+  }
   function handleDelete(occupation_id) {
     setLoading(true);
 
