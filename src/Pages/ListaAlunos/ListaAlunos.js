@@ -7,6 +7,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   CheckSquareTwoTone,
+  CloseSquareTwoTone,
 } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import ActionButton from "../../Components/ActionButton/actionButton";
@@ -27,21 +28,15 @@ export default function ListaAlunos() {
   const organizationId = session.user.organization_id;
   const type = session.user.type;
 
-  let config = {
+  const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
   };
 
   const getData = (tab) => {
-    if (type === "admin") {
-      config = {
-        ...config,
-        params: {
-          organization_id: organizationId,
-        },
-      };
-    }
+    if (session.user.type === "admin")
+      config.params = { "user.organization_id": session.user.organization_id };
 
     api.get("/user", config).then((res) => {
       setStudents(res.data.filter((user) => user.status === "approved"));
@@ -70,26 +65,26 @@ export default function ListaAlunos() {
     {
       title: "Nome",
       dataIndex: "name",
-      with: "25%",
+      width: "25%",
     },
     {
       title: "Matrícula",
       dataIndex: "registration",
       align: "left",
-      with: "20%",
+      width: "20%",
     },
     {
       title: "Organização",
       className: "column-organization",
       dataIndex: "organization_name",
-      with: "20%",
+      width: "20%",
     },
     {
       title: "Ocupação",
       className: "column-turma",
       dataIndex: "occupation_name",
-      with: "25%",
-    },
+      width: "25%",
+    }
   ];
 
   const studentsTable = [
@@ -97,7 +92,6 @@ export default function ListaAlunos() {
     {
       title: "Ações",
       dataIndex: "id",
-      with: "10%",
       className: type === "master" ? "" : "hide",
       render: (id) => {
         return type === "master" ? (
@@ -130,7 +124,6 @@ export default function ListaAlunos() {
     {
       title: "Aprovar",
       dataIndex: "id",
-      with: "10%",
       render: (id) => {
         return (
           <>
@@ -146,7 +139,7 @@ export default function ListaAlunos() {
               confirm="Negar usuário?"
               onConfirm={() => handleApprove(id, "refused")}
             >
-              <CheckSquareTwoTone twoToneColor="red" />
+              <CloseSquareTwoTone twoToneColor="red" />
             </ActionButton>
           </>
         );

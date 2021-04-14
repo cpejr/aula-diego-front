@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Tag, Input, Tooltip, message } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -25,6 +25,8 @@ export default function ListaOrganizacoes() {
     if (session.user.type === "admin")
       config.params = { organization_id: session.user.organization_id };
 
+    console.log(config);
+
     api
       .get(`/course`, config)
       .then((response) => {
@@ -45,6 +47,7 @@ export default function ListaOrganizacoes() {
     },
     {
       title: <h5>Descrição</h5>,
+      className: "column-description",
       dataIndex: "description",
     },
     {
@@ -56,17 +59,14 @@ export default function ListaOrganizacoes() {
     {
       title: <h5>Ações</h5>,
       dataIndex: "id",
-      width: "15%",
+      className: "column-action",
+      width: "35%",
       render: (id) => (
         <>
-          <ActionButton title="Editar" confirm="Editar curso?" onConfirm = {() => history.push(`editar/${id}`)}>
+          <ActionButton title="Editar" confirm="Editar curso?" onConfirm={() => history.push(`/curso/gerenciar/${id}`)}>
             <EditOutlined />
           </ActionButton>
-          <ActionButton
-            title="Exluir"
-            confirm="Excluir curso?"
-            onConfirm={() => handleDelete(id)}
-          >
+          <ActionButton title="Exluir" confirm="Excluir curso?" onConfirm={() => handleDelete(id)}>
             <DeleteOutlined />
           </ActionButton>
         </>
@@ -90,9 +90,12 @@ export default function ListaOrganizacoes() {
   function handleDelete(course_id) {
     setLoading(true);
     api
-      .put(`/course/${course_id}`, {}, config)
+      .delete(`/course/${course_id}`, config)
       .then(() => message.success("Deletado com sucesso"))
       .then(() => {
+        if (session.user.type === "admin")
+          config.params = { organization_id: session.user.organization_id };
+
         api
           .get("/course", config)
           .then((response) => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import TempoLive from "../../Components/TempoLive/TempoLive.js";
@@ -9,12 +10,11 @@ import { message } from "antd";
 import { Modal, Input } from "antd";
 
 export default function Live(props) {
+  const history = useHistory();
   const [live, setLive] = useState([]);
-  const [url, setUrl] = useState("");
   const [confirmation_code, setConfirmation_code] = useState("");
   const [toggleViewInfo, setToggleViewInfo] = useState(true);
   const [toggleViewVideo, setToggleViewVideo] = useState(false);
-  const [toggleView3, setToggleView3] = useState(false);
   const { session } = useSession();
   const { id } = props.match.params;
 
@@ -36,16 +36,30 @@ export default function Live(props) {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-    query: {
-      course_id: id,
-    },
   };
 
   useEffect(() => {
+    console.log(session.user.id);
+
     api
       .get(`/live/${id}`, config)
       .then((response) => {
         setLive(response.data);
+        if (session.user.type === "student") {
+          api
+            .get("/class_user", {
+              ...config,
+              params: {
+                "class.course_id": response.data.course_id,
+                "user_class.user_id": session.user.id,
+              },
+            })
+            .then((response) => console.log(response.data))
+            .catch((error) => {
+              history.push("/");
+              message.error("Você não tem permissão para assistir a essa live");
+            });
+        }
       })
       .catch((err) => {});
   }, []);
@@ -86,7 +100,12 @@ export default function Live(props) {
             )}
             {toggleViewVideo && (
               <div className="videoFrame">
-                <VideoFrame url={"https://www.youtube.com/embed/" + url} />
+                <VideoFrame
+                  url={
+                    "https://www.youtube.com/embed/" +
+                    live.link.replace(/&.*/gi, "")
+                  }
+                />
               </div>
             )}
           </div>

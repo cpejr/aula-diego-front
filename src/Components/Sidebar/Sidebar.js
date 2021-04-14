@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-import Logo from "../../images/logoTeste.png";
+import Logo from "../../images/reclas.svg";
 import { useSession } from "../../Context/SessionContext";
 import { Link, useHistory } from "react-router-dom";
 import api from "../../services/api";
@@ -47,10 +47,6 @@ export default function Sidebar() {
     {
       title: "Informações sobre a live",
       path: "/live/info",
-    },
-    {
-      title: "Turmas",
-      path: "/turma/lista",
     },
     {
       title: "Cursos",
@@ -108,10 +104,11 @@ export default function Sidebar() {
         <label>{session.user.name}</label>
         <br></br>
       </div>
-
-      <div className="sidebarScore">
-        <p>{score} XP</p>
-      </div>
+      {session.user.type === "student" ? (
+        <div className="sidebarScore">
+          <p>{score} XP</p>
+        </div>
+      ) : null}
 
       <div className="sidebarBody">
         <ul>
@@ -122,6 +119,11 @@ export default function Sidebar() {
               </li>
             );
           })}
+          <div className="configSidebar">
+            <li className="ul-link">
+              <Link to="/config">Configurações</Link>
+            </li>
+          </div>
         </ul>
         <div className="sidebarButtonContainer">
           <button

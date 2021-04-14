@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Upload, Input, Button, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaAula.css";
 
+const { TextArea } = Input
+
 export default function NovaAula(props) {
-  const [lesson, setLesson] = useState({});
+  const [lesson, setLesson] = useState({videos: []});
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const { session } = useSession();
@@ -52,8 +54,27 @@ export default function NovaAula(props) {
     setLesson({ ...lesson, [e.target.name]: e.target.value });
   }
 
+  function addVideo() {
+    lesson.videos.push("");
+    setLesson(lesson);
+  }
+
+  function removeVideo() {
+    lesson.videos.pop();
+    setLesson(lesson);
+  }
+
+  function handleChangeVideo(e, index) {
+    lesson.videos[index] = e.target.value;
+    setLesson(lesson);
+  }
+
+  console.log(lesson)
+
   function handleSubmit(e) {
     e.preventDefault();
+
+    const fileNames = files.map(file => file.name);
 
     const fileIds = [];
 
@@ -61,9 +82,9 @@ export default function NovaAula(props) {
       ...lesson,
       course_id: course,
       user_id: session.user.id,
-      files: files,
+      file_names: fileNames
     };
-    
+
     setUploading(true);
 
     const config = {
@@ -125,7 +146,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="name"
-                label={<label style={{ fontSize: "large" }}> Título </label>}
+                label="Título"
                 rules={[
                   {
                     required: true,
@@ -141,17 +162,51 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item
                 name="description"
-                label={<label style={{ fontSize: "large" }}> Descrição </label>}
+                label="Descrição"
               >
                 <Input
-                  placeholder="Descreva o temas que serão abordados na aula"
+                  placeholder="Temas que serão abordados"
                   name="description"
                   onChange={handleChange}
                 />
               </Form.Item>
               <Form.Item
+                name="text"
+                label="Texto"
+              >
+                <TextArea
+                  placeholder="Conteúdo da aula"
+                  onChange={handleChange}
+                  autoSize={{ minRows: 3 }}
+                />
+              </Form.Item>
+              <Form.List name="videos" >
+                {(fields, { add, remove }) => (
+                  <Form.Item {...formLayout} label="Vídeos" >
+                    {fields.map((field, index) => (
+                      <div className="inputVideoWrapper">
+                        <Form.Item
+                          {...field}
+                          className="inputURL"
+                          onChange={(e) => handleChangeVideo(e, index)}
+                          rules={[{ required: true, message: 'Insira URL do vídeo' }]}
+                        >
+                          <Input placeholder="URL do vídeo" />
+                        </Form.Item>
+                        <MinusCircleOutlined style={{fontSize: "large"}} onClick={() => {remove(index); removeVideo()}} />
+                      </div>
+                    ))}
+                    <Form.Item>
+                      <Button type="dashed" onClick={() => {add(); addVideo()}} icon={<PlusOutlined />}>
+                        Adicionar vídeo
+                      </Button>
+                    </Form.Item>
+                  </Form.Item>
+                )}
+              </Form.List>
+              <Form.Item
                 name="files"
-                label={<label style={{ fontSize: "large" }}> Arquivos </label>}
+                label="Arquivos"
                 rules={[
                   {
                     required: true,

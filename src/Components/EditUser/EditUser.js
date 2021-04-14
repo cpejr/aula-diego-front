@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "../../Context/SessionContext";
 import { UTCToLocal } from "../../utils/convertDate";
 import api from "../../services/api";
-import { message, Card, Col, Row, Input, Select } from "antd";
+import { message, Card, Col, Row, Input, Select, Button } from "antd";
+import ActionButton from "../../Components/ActionButton/actionButton";
+import { useHistory } from "react-router-dom";
 
 export default function EditUser() {
   const [dataAluno, setDataAluno] = useState([]);
@@ -14,6 +16,7 @@ export default function EditUser() {
   const [email, setEmail] = useState("");
 
   const { session } = useSession();
+  const history = useHistory();
   const [formData, setFormData] = useState([]);
 
   const config = {
@@ -24,19 +27,10 @@ export default function EditUser() {
 
   useEffect(() => {
     api.get(`/user/${session.user.id}`, config).then((response) => {
-      const phone = response.data.phone.replace(/[^\w\s]/gi, ""); // essa regex remove todos os caracteres especiais
-      const formattedPhone = `(${phone.slice(0, 2)}) ${phone.slice(
-        2,
-        7
-      )}-${phone.slice(7, 11)}`;
-
-      setDataAluno({
-        ...response.data,
-        phone: formattedPhone,
-      });
+      setDataAluno(response.data);
       setName(response.data.name);
       setBirthdate(response.data.birthdate);
-      setPhone(phone);
+      setPhone(response.data.phone);
       setEmail(response.data.email);
     });
 
@@ -91,7 +85,7 @@ export default function EditUser() {
     addToData("occupation_id", formData["occupation_id"]);
     addToData("email", email);
 
-    console.log(data);
+    console.log(data["phone"]);
 
     const config = {
       headers: {
@@ -99,13 +93,12 @@ export default function EditUser() {
       },
     };
 
-    const wantsToEdit = window.confirm(
-      "Você tem certeza que deseja alterar suas informações?"
-    );
-    if (!wantsToEdit) return message.error("Operação cancelada");
     api
       .put(`/user/${session.user.id}`, data, config)
-      .then(() => message.success("usuário alterado com sucesso"))
+      .then(() => {
+        message.success("Usuário alterado com sucesso");
+        history.push(`/config`);
+      })
       .catch((error) =>
         message.error("Não foi possível editar o usuário\n" + error)
       );
@@ -125,7 +118,7 @@ export default function EditUser() {
 
   return (
     <>
-      <Card title={<h2>Editar as suas Informações:</h2>}>
+      <Card title={<h4>Editar as suas Informações:</h4>}>
         <Row gutter={26}>
           <Col span={12}>
             <Card type="inner" title="Nome" bordered={true}>
@@ -191,7 +184,7 @@ export default function EditUser() {
               <Input
                 name="phone"
                 value={phone}
-                onChange={(e) => setPhone(console.log(e.target.value))}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </Card>
           </Col>
@@ -212,9 +205,14 @@ export default function EditUser() {
         </Row>
       </Card>
       <div className="acessarConfigAluno">
-        <button className="buttonConfigAluno" onClick={handleSubmit}>
-          Salvar
-        </button>
+        <ActionButton
+          confirm="Deseja alterar as informações?"
+          onConfirm={() => handleSubmit()}
+        >
+          <Button type="primary" size="large" className="actionButton">
+            Salvar
+          </Button>
+        </ActionButton>
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import {
   SnippetsOutlined,
   InboxOutlined,
   DownloadOutlined,
+  IdcardFilled,
 } from "@ant-design/icons";
 import { Upload, message, Divider, Button } from "antd";
 import VideoFrame from "../../Components/VideoFrame/VideoFrame";
@@ -15,23 +16,6 @@ import "./Aula.css";
 import CommentsContainer from "../../Components/CommentsContainer";
 
 const { Dragger } = Upload;
-
-const props = {
-  name: "file",
-  multiple: true,
-  action: "endereço pra onde envia",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
 
 export default function Aula(props) {
   const [course, setCourse] = useState();
@@ -115,14 +99,14 @@ export default function Aula(props) {
 
   return (
     <Base>
-      <div className="pageBody">
+      <div className="body">
         <div className="title">
           <SnippetsOutlined />
           <span>{lesson && lesson.name}</span>
         </div>
         <div className="description">{lesson && lesson.description}</div>
         <Divider />
-        <div className="text">{lesson && lesson.content}</div>
+        <div className="text">{lesson && lesson.text}</div>
         {videos.map((video) => {
           return (
             <>
@@ -136,7 +120,7 @@ export default function Aula(props) {
         {files && (
           <div style={{ margin: "3%" }}>
             <Divider />
-            <span className="downloadLabel">Download:</span>
+            <span className="downloadLabel">Arquivos:</span>
           </div>
         )}
         {files.map((file) => {
@@ -155,74 +139,13 @@ export default function Aula(props) {
         })}
         <Divider style={{ "margin-bottom": "3%" }} />
         <FormEmail />
-      </div>
+      
       <CommentsContainer
         parent_id={id}
         parent_name={lesson?.name}
-        links_preffix="/aula/"
+        parent_path={`/aula/${id}`}
       />
-      <div class="spacing"></div> {/* criada para dar um respiro à pagina */}
+      </div>
     </Base>
-  );
-}
-/* 
-function VideoAula({ title, video_url, description }) {
-  return (
-    <>
-      <div className="AulaVideoContainer">
-        <h1 className="TitleVideo">{title}</h1>
-        <div className="videoAula">
-          <VideoFrame url={video_url} />
-          <h6 className="descriptionText">{description}</h6>
-        </div>
-      </div>
-      <FormEmail />
-    </>
-  );
-} */
-
-function Arquivo({ title, arquivo_url, description }) {
-  return (
-    <>
-      <div className="AulaVideoContainer">
-        <h1 className="TitleVideo">{title}</h1>
-        <div className="videoAula">
-          <iframe src={arquivo_url} frameborder="0" width="100%" height="480" />
-          <h6 className="descriptionText">{description}</h6>
-        </div>
-      </div>
-      <FormEmail />
-    </>
-  );
-}
-
-function EnviarTarefa() {
-  return (
-    <>
-      <div className="AulaVideoContainer">
-        <h1 className="TitleVideo">Envio de tarefa:</h1>
-        <div className="videoAula">
-          <Dragger {...props}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">
-              {" "}
-              Clique ou arraste os arquivos para essa área para enviar
-            </p>
-            <p className="ant-upload-hint">
-              Support for a single or bulk upload. Strictly prohibit from
-              uploading company data or other band files
-            </p>
-          </Dragger>
-        </div>
-        <button className="btnEnviarTarefa">Enviar</button>
-      </div>
-      <div className="formDuvidas">
-        <h6 className="TitleVideo">
-          *Serão aceitos arquivos em pdf, jpg e png apenas
-        </h6>
-      </div>
-    </>
   );
 }
