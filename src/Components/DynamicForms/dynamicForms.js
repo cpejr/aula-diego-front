@@ -258,7 +258,7 @@ export const AnswerAlternatives = ({ index, header = "", alternatives, onChange 
       <Form.Item {...questionLayout} label={`Alternativas`}>
         <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected}>
           {entries.map(alternative => (
-            <div className="alternativeWrapper">
+            <div className="alternativeAnswerWrapper">
               <Radio.Button
                 type="default"
                 value={alternative[0]}
@@ -266,9 +266,11 @@ export const AnswerAlternatives = ({ index, header = "", alternatives, onChange 
               >
                 {alternative[0]}
               </Radio.Button>
-              <span>
-                {alternative[1]}
-              </span>
+              <Input
+                value={alternative[1]}
+                className="alternative"
+                disabled
+              />
             </div>
           ))}
         </Radio.Group>

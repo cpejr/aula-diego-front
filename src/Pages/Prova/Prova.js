@@ -83,6 +83,8 @@ export default function NovaProva(props) {
               scrollToFirstError
             >
               {exam && Object.values(exam.body).map((question, index) => {
+                
+
                 if (question.alternatives === undefined)
                   return <AnswerText
                     index={index}

@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.alternativeAnswerWrapper {
+  display: flex;
+}
+
 .alternative {
   height: 40px;
   border-radius: 0px;
