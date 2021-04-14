@@ -8,12 +8,12 @@ import { useHistory } from "react-router-dom";
 import "./Prova.css";
 
 const examLayout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 20 },
+  labelCol: { span: 3 },
+  wrapperCol: { span: 16 },
 };
 
 const examTailLayout = {
-  wrapperCol: { offset: 2, span: 20 },
+  wrapperCol: { offset: 3, span: 16 },
 };
 
 export default function NovaProva(props) {
@@ -32,21 +32,38 @@ export default function NovaProva(props) {
     },
   };
 
+  const configFile = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    responseType: "blob",
+  };
+
   useEffect(() => {
     api
       .get(`/exam/${exam_id}`, config)
-      .then(response => {
+      .then(async response => {
+        let exam = response.data;
 
         if (session.user.type === "student" && response.data.status !== "open") {
           message.error("Você não tem permissão para ver essa prova!");
           history.push("/dashboard");
         }
 
-        setExam(response.data);
-      })
-      .catch(() => {
+        const keys = Object.keys(response.data.body);
 
-      });
+        for (const key of keys) {
+          if (exam.body[key].image !== undefined)
+            await api
+              .get(`/file_get/${exam.body[key].image}`, configFile)
+              .then(response => {
+                exam.body[key].image = URL.createObjectURL(response.data);
+              });
+        }
+
+        setExam(exam);
+      })
+      .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
   }, [])
 
@@ -57,23 +74,25 @@ export default function NovaProva(props) {
       answers,
     }
 
-    api
+    console.log(answer)
+
+    /* api
       .post("exam/answer", exam, config)
       .then(message.success("Prova criada com sucesso!"))
       .catch(err => {
         message.error("Não foi possível criar a prova!");
-      })
+      }) */
   };
 
   const handleChange = (e) => {
-    console.log(e)
+    setAnswers({ ...answers, [e.target.name]: e.target.value })
   }
 
   return (
     <Base>
-      <div className="pageRoot">
+      <div className="examRoot">
         <div className="formWrapper">
-          <h1 className="examTitle">{exam && exam.name}</h1>
+          <text className="examTitle">{exam && exam.name}</text>
           {exam &&
             <Form
               {...examLayout}
@@ -83,26 +102,30 @@ export default function NovaProva(props) {
               scrollToFirstError
             >
               {exam && Object.values(exam.body).map((question, index) => {
-                
-
                 if (question.alternatives === undefined)
                   return <AnswerText
                     index={index}
                     header={question.header}
+                    image={question.image}
                     onChange={handleChange}
+                    layout={examLayout}
+                    tailLayout={examTailLayout}
                   />
 
                 else
                   return <AnswerAlternatives
                     index={index}
                     header={question.header}
+                    image={question.image}
                     alternatives={question.alternatives}
                     onChange={handleChange}
+                    layout={examLayout}
+                    tailLayout={examTailLayout}
                   />
               })}
               <Form.Item {...examTailLayout}>
                 <Button type="primary" htmlType="submit">
-                  Criar
+                  Enviar
                 </Button>
               </Form.Item>
             </Form>

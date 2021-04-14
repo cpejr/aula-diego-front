@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Upload, Radio } from 'antd';
+import { Form, Input, Button, Upload, Radio, Tag, Image } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import "./dynamicForms.css";
 
@@ -40,9 +40,20 @@ export const Field = ({ name, label, required = true, message = "Campo obrigató
   </Form.Item>
 )
 
-export const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, onChange = null, field, fieldKey, size = { minRows: 1, maxRows: 3 } }) => (
+export const InputField = ({
+  name,
+  label,
+  required = true,
+  message = "Campo obrigatório",
+  placeholder,
+  onChange = null,
+  field,
+  fieldKey,
+  size = { minRows: 1, maxRows: 3 }
+}) => (
   <Field name={name} label={label} field={field} fieldKey={fieldKey} required={required} message={message}>
     <TextArea
+      name={name}
       className="formInput"
       placeholder={placeholder}
       onChange={onChange}
@@ -226,55 +237,96 @@ export const QuestionAlternatives = ({ index, field, onChange, imageChange, remo
   </div>
 )
 
-export const AnswerText = ({ index, header = "", size = { minRows: 3, maxRows: 10 }, onChange }) => (
-  <div className="questionWrapper">
-    <Form.Item {...questionTailLayout} className="answerHeader" >
-      {header}
-    </Form.Item>
-    <InputField
-      name={index}
-      field={questionLayout}
-      label="Resposta"
-      placeholder="Insira a resposta da questão"
-      message="Insira resposta da questão!"
-      onChange={(e) => onChange(e)}
-      size={size}
-    />
-  </div>
+export const AnswerText = ({
+  index,
+  header = "",
+  image = false,
+  size = { minRows: 3, maxRows: 10 },
+  onChange,
+  layout = questionLayout,
+  tailLayout = questionTailLayout
+}) => (
+  <>
+    <h3 className="answerTitle">
+      {`Questão ${index + 1}:`}
+    </h3>
+    <div className="questionWrapper">
+      <Form.Item {...tailLayout} className="answerHeader" >
+        {header}
+      </Form.Item>
+      {image &&
+        <Form.Item {...tailLayout}>
+          <div className="answerImage">
+            <Image src={image} />
+          </div>
+        </Form.Item>
+      }
+      <InputField
+        name={index}
+        field={layout}
+        label="Resposta"
+        placeholder="Insira a resposta da questão"
+        message="Insira resposta da questão!"
+        onChange={(e) => onChange(e)}
+        size={size}
+      />
+    </div>
+  </>
 )
 
-export const AnswerAlternatives = ({ index, header = "", alternatives, onChange }) => {
+export const AnswerAlternatives = ({
+  index,
+  header = "",
+  image = false,
+  alternatives,
+  onChange,
+  layout = questionLayout,
+  tailLayout = questionTailLayout
+}) => {
 
   const [selected, setSelected] = useState(null);
   const entries = Object.entries(alternatives);
 
-  const handleSelect = e => setSelected(e.target.value);
+  const handleSelect = e => {
+    onChange(e);
+    setSelected(e.target.value);
+  }
 
   return (
-    <div className="questionWrapper">
-      <Form.Item {...questionTailLayout} className="answerHeader" >
-        {header}
-      </Form.Item>
-      <Form.Item {...questionLayout} label={`Alternativas`}>
-        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected}>
-          {entries.map(alternative => (
-            <div className="alternativeAnswerWrapper">
-              <Radio.Button
-                type="default"
-                value={alternative[0]}
-                className="alternative"
-              >
-                {alternative[0]}
-              </Radio.Button>
-              <Input
-                value={alternative[1]}
-                className="alternative"
-                disabled
-              />
+    <>
+      <h3 className="answerTitle">
+        {`Questão ${index + 1}:`}
+      </h3>
+      <div className="questionWrapper">
+        <Form.Item {...tailLayout} className="answerHeader" >
+          {header}
+        </Form.Item>
+        {image &&
+          <Form.Item {...tailLayout}>
+            <div className="answerImage">
+              <Image src={image} />
             </div>
-          ))}
-        </Radio.Group>
-      </Form.Item>
-    </div>
+          </Form.Item>
+        }
+        <Form.Item {...layout} label={`Alternativas`}>
+          <Radio.Group onChange={handleSelect} name={index} style={{ "width": "100%" }} value={selected}>
+            {entries.map((alternative, idx) => (
+              <div className="alternativeAnswerWrapper" key={idx}>
+                <Radio.Button
+                  type="default"
+                  value={alternative[0]}
+                  className="alternative"
+                >
+                  {alternative[0]}
+                </Radio.Button>
+                <Tag className="alternativeText">
+                  {alternative[1]}
+                </Tag>
+              </div>
+            ))}
+          </Radio.Group>
+        </Form.Item>
+      </div>
+    </>
   )
 }

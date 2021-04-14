@@ -10,12 +10,12 @@ import pt_BR from 'antd/es/date-picker/locale/pt_BR';
 import "./NovaProva.css";
 
 const examLayout = {
-  labelCol: { span: 2 },
+  labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 };
 
 const examTailLayout = {
-  wrapperCol: { offset: 2, span: 20 },
+  wrapperCol: { offset: 4, span: 20 },
 };
 
 export default function NovaProva(props) {
@@ -130,7 +130,7 @@ export default function NovaProva(props) {
 
   return (
     <Base>
-      <div className="pageRoot">
+      <div className="newExamRoot">
         <div className="formWrapper">
           <Form
             {...examLayout}
@@ -183,6 +183,7 @@ export default function NovaProva(props) {
                           if (questionType[index] === "text")
                             return <QuestionText
                               index={index}
+                              field={field}
                               onChange={questionChange}
                               imageChange={imageChange}
                               remove={() => questionDelete(remove, field.name, index, field.key)}
