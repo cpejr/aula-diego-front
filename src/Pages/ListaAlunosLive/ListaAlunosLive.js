@@ -3,7 +3,7 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { Table, Input, message, Statistic } from "antd";
-import { BsPeople } from 'react-icons/bs'
+import { BsPeople } from "react-icons/bs";
 import "./ListaAlunosLive.css";
 
 export default function ListaAlunoLIve(props) {
@@ -30,7 +30,8 @@ export default function ListaAlunoLIve(props) {
         setTurma(response.data[0].class_name);
         console.log(response.data.class_name);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         message.error("Não foi possível carregar os dados das turmas!");
       });
 
@@ -43,6 +44,7 @@ export default function ListaAlunoLIve(props) {
     },
     params: {
       live_id: id,
+      "user.type": "student",
     },
   };
 
@@ -51,7 +53,6 @@ export default function ListaAlunoLIve(props) {
       .get(`/presence/live`, config)
       .then((response) => {
         setPresentStudents(response.data);
-        console.log(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar a presença das lives!");
@@ -102,8 +103,11 @@ export default function ListaAlunoLIve(props) {
       <h1 className="page-title">Lista de Presença da Live:</h1>
       <div className="table-container">
         <h5 className="greyish">
-          
-          <Statistic title="Nº de Espectadores" value={presentStudents.length} prefix={<BsPeople />} />
+          <Statistic
+            title="Nº de Espectadores"
+            value={presentStudents.length}
+            prefix={<BsPeople />}
+          />
         </h5>
         <Input
           placeholder="Pesquise por nome, organização curso..."

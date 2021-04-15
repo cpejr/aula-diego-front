@@ -333,8 +333,14 @@ export default function CursoAdmin(props) {
       .get(`/course/${course_id}`, config)
       .then((response) => {
         if (session.user.type === "student" || response.data.organization_id !== session.user.organization_id) {
-          message.error("Você não tem permissão para ver esse curso");
-          history.push("/")
+          if(session.user.type === "master"){
+            setCourse(response.data);
+            getData();
+          }
+          else{
+            message.error("Você não tem permissão para ver esse curso");
+            history.push("/")
+          }
         }
         else {
           setCourse(response.data);
