@@ -50,14 +50,14 @@ export default function NovaProva(props) {
           history.push("/dashboard");
         }
 
-        const keys = Object.keys(response.data.body);
+        const keys = Object.keys(response.data.questions);
 
         for (const key of keys) {
-          if (exam.body[key].image !== undefined)
+          if (exam.questions[key].image !== undefined)
             await api
-              .get(`/file_get/${exam.body[key].image}`, configFile)
+              .get(`/file_get/${exam.questions[key].image}`, configFile)
               .then(response => {
-                exam.body[key].image = URL.createObjectURL(response.data);
+                exam.questions[key].image = URL.createObjectURL(response.data);
               });
         }
 
@@ -101,7 +101,7 @@ export default function NovaProva(props) {
               size={"large"}
               scrollToFirstError
             >
-              {exam && Object.values(exam.body).map((question, index) => {
+              {exam && Object.values(exam.questions).map((question, index) => {
                 if (question.alternatives === undefined)
                   return <AnswerText
                     index={index}

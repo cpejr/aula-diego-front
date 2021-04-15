@@ -11,11 +11,11 @@ import "./NovaProva.css";
 
 const examLayout = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 20 },
+  wrapperCol: { span: 24 },
 };
 
 const examTailLayout = {
-  wrapperCol: { offset: 4, span: 20 },
+  wrapperCol: { offset: 4, span: 24 },
 };
 
 export default function NovaProva(props) {
@@ -84,7 +84,7 @@ export default function NovaProva(props) {
       start_date: values['start_date'].format('YYYY-MM-DD HH:mm:ss'),
       end_date: values['end_date'].format('YYYY-MM-DD HH:mm:ss'),
       course_id: course,
-      body: questions
+      questions: questions
     }
 
     const keys = Object.keys(images);
@@ -110,7 +110,7 @@ export default function NovaProva(props) {
                 message.error("Não foi possível criar a prova!");
               })
   
-            exam.body[key].image = fileId.data.file_id;
+            exam.questions[key].image = fileId.data.file_id;
   
             console.log(exam)
           })
