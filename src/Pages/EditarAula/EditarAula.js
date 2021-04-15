@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Upload, Input, Button, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Form, DatePicker, Input, Button, message, Upload } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "../EditarLive/EditarLive.css";
-
-const { TextArea } = Input;
+import "./EditarAula.css";
+import { UploadOutlined } from "@ant-design/icons";
 
 const formItemLayout = {
   labelCol: {
@@ -25,18 +23,24 @@ const tailFormItemLayout = {
 };
 
 export default function EditarAula(props) {
-  const [lesson, setLesson] = useState([]);
-  const [files, setFiles] = useState([]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [text, setText] = useState("");
+  const [lesson, SetLesson] = useState([]);
+  const [edit, setEdit] = useState({});
+  const [name, SetName] = useState("");
+  const [description, SetDescription] = useState("");
   const [courseId, setCourseId] = useState("");
+  const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const id = props.match.params.id;
   const history = useHistory();
 
+  const config = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
   const fileProps = {
     name: "file",
     multiple: "true",
@@ -52,35 +56,39 @@ export default function EditarAula(props) {
     },
     files,
   };
-
-  const config = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-  };
-
+  
+  
+  
   useEffect(() => {
     api.get(`/lesson/${id}`, config).then((response) => {
-      setLesson(response.data);
-      setName(response.data.name);
-      setDescription(response.data.description);
-      setText(response.data.text);
+      SetLesson(response.data);
+      SetName(response.data.name);
+      SetDescription(response.data.description);
       setCourseId(response.data.course_id);
+      console.log(response.data.description);
+      console.log(response.data.files);
+      // setFilteredData(response.data);
+      
     });
   }, []);
 
+  function handleChangeDate(e) {
+    setEdit({ ...edit, date: e._d });
+  }
+
+  
   function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
     const data = {
+      id,
       name: name,
       description: description,
-      text: text,
+      course_id: lesson.course_id,
     };
-
-    console.log(data);
-
+    setUploading(true);
+    console.log(lesson);
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -88,64 +96,15 @@ export default function EditarAula(props) {
     };
 
     api
-      .put(`/lesson/${id}`, data, config)
+      .put(`/lesson`, data, config)
       .then(() => {
         message.success("Aula editada com sucesso!");
         history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
-        message.error("Não foi possiível editar a aula!\n" + err);
-      });
-
-    const fileNames = files.map((file) => file.name);
-
-    const fileIds = [];
-
-    const dataFile = {
-      ...lesson,
-      course_id: course,
-      user_id: session.user.id,
-      file_names: fileNames,
-    };
-
-    console.log(dataFile);
-
-    setUploading(true);
-
-    const configFiles = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-        "Content-Type": "multipart/form-data",
-        processData: false,
-        contentType: false,
-      },
-    };
-
-    api
-      .post("/lesson_create", data, config)
-      .then((response) => {
-        fileIds.push(response.data);
-
-        for (let i = 0; i < fileIds.length; i++) {
-          const formData = new FormData();
-          formData.append(fileIds[i], files[i]);
-
-          api.post("file_upload", formData, configFiles).catch((err) => {
-            message.error("Não foi possível criar a aula!");
-          });
-        }
-
-        setUploading(false);
-        message.success("Aula criada com sucesso!");
-        history.push(`/curso/${course}`);
-      })
-      .catch((err) => {
-        message.error("Não foi possível criar a aula!");
-        console.log(course.id);
-        setUploading(false);
+        message.error("Não foi possível editar a aula!\n" + err);
       });
   }
-
   return (
     <Base>
       <div className="pageRoot">
@@ -153,8 +112,8 @@ export default function EditarAula(props) {
           <div className="formWrapper">
             <Form
               {...formItemLayout}
-              name="newLive"
-              className="liveForm"
+              name="newClass"
+              className="ClassForm"
               onFinish={handleSubmit}
               size={"large"}
             >
@@ -166,14 +125,14 @@ export default function EditarAula(props) {
                 rules={[
                   {
                     required: true,
-                    message: "Por favor insira o nome da live!",
+                    message: "Por favor insira o nome da aula!",
                   },
                 ]}
               >
                 <Input
                   name="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => SetName(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
@@ -181,37 +140,19 @@ export default function EditarAula(props) {
                 rules={[
                   {
                     required: true,
-                    message: "Por favor insira a descrição da live!",
+                    message: "Por favor insira a descrição da aula!",
                   },
                 ]}
               >
                 <Input
                   name="description"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => SetDescription(e.target.value)}
                 />
-              </Form.Item>
-
-              <Form.Item
-                label={<label style={{ fontSize: "large" }}> Texto </label>}
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor insira o texto da aula!",
-                  },
-                ]}
-              >
-                <TextArea
-                  name="text"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  size="large"
-                  autoSize={{ minRows: 2, maxRows: 6 }}
-                />
-              </Form.Item>
+              </Form.Item>   
               <Form.Item
                 name="files"
-                label="Arquivos"
+                label={<label style={{ fontSize: "large" }}> Arquivos </label>}
                 rules={[
                   {
                     required: true,
@@ -219,7 +160,7 @@ export default function EditarAula(props) {
                   },
                 ]}
               >
-                <Upload {...fileProps}>
+                <Upload {...fileProps} >
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </Form.Item>

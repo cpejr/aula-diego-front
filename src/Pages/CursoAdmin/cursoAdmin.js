@@ -92,11 +92,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => history.push(`/aula/${id}`)}>
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton
-            title="Editar"
-            confirm="Editar aula?"
-            onConfirm={() => handleEdit(id)}
-          >
+          <ActionButton title="Editar" confirm="Editar aula?" onConfirm = {() => history.push(`/aula/editar/${id}`)}>
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton
@@ -127,11 +123,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => history.push(`/live/${id}`)}>
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton
-            title="Editar"
-            confirm="Editar live?"
-            onConfirm={() => handleEdit(id)}
-          >
+          <ActionButton title="Editar" confirm="Editar live?" onConfirm = {() => history.push(`/live/editar/${id}`)}>
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton
@@ -157,7 +149,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => history.push(`/turma/${id}`)}>
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar turma?">
+          <ActionButton title="Editar" confirm="Editar turma?" onConfirm = {() => history.push(`/turma/editar/${id}`)}>
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton
@@ -293,7 +285,11 @@ export default function CursoAdmin(props) {
       .get(`/class`, configTables)
       .then((response) => {
         const classes = [];
-        response.data.map((cl4ss) => classes.push({ ...cl4ss, key: cl4ss.id }));
+        response.data.map((cl4ss) => 
+        classes.push({ 
+          ...cl4ss,
+          date: new Date(cl4ss.created_at).toLocaleDateString("pt-BR"),
+          key: cl4ss.id }));
 
         setClasses(classes);
         requestDone(classes);
