@@ -33,6 +33,8 @@ import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 import NovaProva from "./Pages/NovaProva/NovaProva";
 import Prova from "./Pages/Prova/Prova";
+import ListaProva from "./Pages/ListaProva/ListaProva"
+import Avaliar from "./Pages/Avaliar/Avaliar"
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
@@ -171,7 +173,7 @@ const routes = () => {
         <PrivateRoute
           path="/curso/gerenciar/:id"
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
+          studentComponent={Dashboard}
           adminComponent={CursoAdmin}
           masterComponent={CursoAdmin}
         />
@@ -200,12 +202,40 @@ const routes = () => {
         <PrivateRoute
           path="/prova/cadastro"
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
+          studentComponent={Dashboard}
           adminComponent={NovaProva}
           masterComponent={NovaProva}
         />
         <PrivateRoute
-          path="/prova/:id"
+          path="/prova/lista"
+          exact
+          studentComponent={Dashboard}
+          adminComponent={ListaProva}
+          masterComponent={ListaProva}
+        />
+        {/* <PrivateRoute
+          path="/prova/respostas/:id"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={ListaRespostas}
+          masterComponent={ListaRespostas}
+        /> */}
+        <PrivateRoute
+          path="/prova/responder/:id"
+          exact
+          studentComponent={Prova}
+          adminComponent={Prova}
+          masterComponent={Prova}
+        />
+        <PrivateRoute
+          path="/prova/avaliar/:id"
+          exact
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={Avaliar}
+          masterComponent={Avaliar}
+        />
+        <PrivateRoute
+          path="/prova/responder/:id"
           exact
           studentComponent={Prova}
           adminComponent={Prova}

@@ -1,0 +1,50 @@
+.examRoot {
+  padding-right: 10%;
+}
+
+.formWrapper {
+  width: 100%;
+  padding-top: 6%;
+  padding: 4%;
+}
+
+.formButton {
+  display: flex;
+  align-items: center;
+}
+
+.formButton:focus{
+  border-color: lightgray;
+  color: initial
+}
+
+.examTitle {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  font-size: 48px;
+}
+
+/* DYNAMIC FORMS*/
+
+.questionWrapper {
+  margin-bottom: 4%;
+}
+
+
+/* ANT DESIGN */
+
+.ant-form-item-label label{
+  font-size: large;
+}
+
+.ant-form-item-control-input-content {
+  height: auto;
+}
+
+.ant-form-item-control-input-content textarea.ant-input {
+  line-height: 34px;
+}
+
+.ant-input-lg {
+  padding: 3.5px 11px;
+}

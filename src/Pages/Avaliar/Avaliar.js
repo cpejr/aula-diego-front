@@ -5,7 +5,8 @@ import { Form, Button, DatePicker, message } from 'antd';
 import { AnswerText, AnswerAlternatives } from "../../Components/DynamicForms/dynamicForms"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "./Prova.css";
+import "./Avaliar.css";
+import { CompassOutlined } from "@ant-design/icons";
 
 const examLayout = {
   labelCol: { span: 3 },
@@ -19,12 +20,11 @@ const examTailLayout = {
 export default function NovaProva(props) {
 
   const [exam, setExam] = useState(false);
-  const [answers, setAnswers] = useState([])
 
   const { session } = useSession();
   const { history } = useHistory();
 
-  const exam_id = props.match.params.id;
+  const answer_id = props.match.params.id;
 
   const config = {
     headers: {
@@ -41,16 +41,10 @@ export default function NovaProva(props) {
 
   useEffect(() => {
     api
-      .get(`/exam/${exam_id}`, config)
+      .get(`/answer/${answer_id}`, config)
       .then(async response => {
         let exam = response.data;
-
-        if (session.user.type === "student" && response.data.status !== "open") {
-          message.error("Você não tem permissão para ver essa prova!");
-          history.push("/dashboard");
-        }
-
-        const keys = Object.keys(response.data.questions);
+        const keys = Object.keys(exam.questions);
 
         for (const key of keys) {
           if (exam.questions[key].image !== undefined)
@@ -59,15 +53,17 @@ export default function NovaProva(props) {
               .then(response => {
                 exam.questions[key].image = URL.createObjectURL(response.data);
               });
+
+          exam.questions[key].answer = exam.answers[key];
         }
 
         setExam(exam);
       })
-      .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
+      .catch((err) => { console.log(err);message.error("Não foi possível carregar dados da prova!") });
 
   }, [session])
 
-  const answerSubmit = async () => {
+  /* const answerSubmit = async () => {
     const answer = {
       exam_id: exam.id,
       user_id: session.user.id,
@@ -78,11 +74,13 @@ export default function NovaProva(props) {
       .post("answer", answer, config)
       .then(() => message.success("Resposta enviada com sucesso!"))
       .catch(err => {message.error("Não foi possível criar a prova!");})
-  };
+  }; */
 
-  const handleChange = (e) => {
+  /* const handleChange = (e) => {
     setAnswers({ ...answers, [e.target.name]: e.target.value })
-  }
+  } */
+
+  console.log(exam)
 
   return (
     <Base>
@@ -93,7 +91,7 @@ export default function NovaProva(props) {
             <Form
               {...examLayout}
               name="answerForm"
-              onFinish={answerSubmit}
+              /* onFinish={answerSubmit} */
               size={"large"}
               scrollToFirstError
             >
@@ -103,9 +101,11 @@ export default function NovaProva(props) {
                     index={index}
                     header={question.header}
                     image={question.image}
-                    onChange={handleChange}
+                    value={question.answer}
+                    /* onChange={handleChange} */
                     layout={examLayout}
                     tailLayout={examTailLayout}
+                    disabled
                   />
 
                 else
@@ -113,10 +113,12 @@ export default function NovaProva(props) {
                     index={index}
                     header={question.header}
                     image={question.image}
+                    value={question.answer}
                     alternatives={question.alternatives}
-                    onChange={handleChange}
+                    /* onChange={handleChange} */
                     layout={examLayout}
                     tailLayout={examTailLayout}
+                    disabled
                   />
               })}
               <Form.Item {...examTailLayout}>

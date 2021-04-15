@@ -46,10 +46,12 @@ export const InputField = ({
   required = true,
   message = "Campo obrigatório",
   placeholder,
+  value,
   onChange = null,
   field,
   fieldKey,
-  size = { minRows: 1, maxRows: 3 }
+  size = { minRows: 1, maxRows: 3 },
+  disabled = false,
 }) => (
   <Field name={name} label={label} field={field} fieldKey={fieldKey} required={required} message={message}>
     <TextArea
@@ -58,6 +60,8 @@ export const InputField = ({
       placeholder={placeholder}
       onChange={onChange}
       autoSize={size}
+      defaultValue={value}
+      disabled={disabled}
     />
   </Field>
 )
@@ -241,10 +245,12 @@ export const AnswerText = ({
   index,
   header = "",
   image = false,
+  value,
   size = { minRows: 3, maxRows: 10 },
   onChange,
   layout = questionLayout,
-  tailLayout = questionTailLayout
+  tailLayout = questionTailLayout,
+  disabled = false
 }) => (
   <>
     <h3 className="answerTitle">
@@ -267,8 +273,10 @@ export const AnswerText = ({
         label="Resposta"
         placeholder="Insira a resposta da questão"
         message="Insira resposta da questão!"
+        value={value}
         onChange={(e) => onChange(e)}
         size={size}
+        disabled={disabled}
       />
     </div>
   </>
@@ -279,12 +287,16 @@ export const AnswerAlternatives = ({
   header = "",
   image = false,
   alternatives,
+  value = null,
   onChange,
   layout = questionLayout,
-  tailLayout = questionTailLayout
+  tailLayout = questionTailLayout,
+  disabled = false
 }) => {
 
-  const [selected, setSelected] = useState(null);
+  console.log(value)
+
+  const [selected, setSelected] = useState(value);
   const entries = Object.entries(alternatives);
 
   const handleSelect = e => {
@@ -309,7 +321,7 @@ export const AnswerAlternatives = ({
           </Form.Item>
         }
         <Form.Item {...layout} label={`Alternativas`}>
-          <Radio.Group onChange={handleSelect} name={index} style={{ "width": "100%" }} value={selected}>
+          <Radio.Group onChange={handleSelect} name={index} style={{ "width": "100%" }} value={selected} disabled={disabled}>
             {entries.map((alternative, idx) => (
               <div className="alternativeAnswerWrapper" key={idx}>
                 <Radio.Button
