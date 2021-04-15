@@ -81,8 +81,6 @@ export default function EditarTurma(props) {
           SetName(response.data.name);
           SetDescription(response.data.description);
           setCourseId(response.data.course_id);
-          console.log(response.data);
-          console.log(response.data.name);
           // setFilteredData(response.data);
           
         })
@@ -96,10 +94,8 @@ export default function EditarTurma(props) {
         .get("/class_user", configUserClass)
         .then((response) => {
           const students = [];
-          console.log(response.data);
           for (let student of response.data){
             students.push(student.user_id);
-            console.log(student);
           }
         
           setSelectedRowKeys(students);
@@ -128,7 +124,6 @@ export default function EditarTurma(props) {
     selectedRowKeys,
     onChange: (selected) => {
       setSelectedRowKeys(selected);
-      console.log("opa\n\n", selectedRowKeys);
     },
     
   };
@@ -166,17 +161,18 @@ export default function EditarTurma(props) {
         authorization: "BEARER " + session.accessToken,
       },
     };
-    
+    if(selectedRowKeys.length === 0){
+      message.error("A turma não pode ser vazia!\n" );  
+      setLoading(false);
+      return;
+    }
     
     
 
     api
       .put(`/class`, data, config)
       .then((response) => {
-        if(selectedRowKeys.length === 0){
-          message.error("A turma não pode ser vazia!\n" );  
-          return;
-        }
+        
         setSelectedRowKeys(response.data);
         message.success("Turma editada com sucesso!");
         history.push(`/curso/gerenciar/${courseId}`);
@@ -186,7 +182,7 @@ export default function EditarTurma(props) {
       });
       setLoading(false);
   }
-  console.log("SelectedRowkeys", selectedRowKeys);
+  
   return (
     <Base>
       <div className="pageRoot">

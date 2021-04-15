@@ -247,7 +247,6 @@ export default function CursoAdmin(props) {
       .get(`/lesson`, configTables)
       .then((response) => {
         const lessons = [];
-        console.log(response);
         response.data.map((lesson) =>
           lessons.push({
             ...lesson,
@@ -267,7 +266,6 @@ export default function CursoAdmin(props) {
       .get(`/live`, configTables)
       .then((response) => {
         const lives = [];
-        console.log(response.data);
         response.data.map((live) =>
           lives.push({
             ...live,
@@ -287,7 +285,6 @@ export default function CursoAdmin(props) {
       .get(`/class`, configTables)
       .then((response) => {
         const classes = [];
-        console.log(response);
         response.data.map((cl4ss) => 
         classes.push({ 
           ...cl4ss,
