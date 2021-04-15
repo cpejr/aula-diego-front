@@ -37,6 +37,7 @@ export default function ListaOrganizacoes() {
           setOrganizations(response);
           setFiltered(response);
           setLoading(false);
+          console.log(response);
         });
       })
       .catch(() => {
@@ -58,6 +59,7 @@ export default function ListaOrganizacoes() {
           });
         })
         .catch((err) => {
+          console.log(err);
           message.error("Não foi possível carregar dados dos arquivos");
         });
     }
@@ -113,7 +115,11 @@ export default function ListaOrganizacoes() {
       dataIndex: "id",
       render: (id) => (
         <>
-          <ActionButton title="Editar" confirm="Editar organização?">
+          <ActionButton 
+          title="Editar" 
+          confirm="Editar organização?"
+          onConfirm={() => history.push(`organizacao/editar/${id}`)}
+          >
             <EditOutlined />
           </ActionButton>
           <ActionButton

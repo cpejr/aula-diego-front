@@ -50,7 +50,7 @@ function ForgottenPassword() {
                         </button>
                         <div className = "voltarlogin">
                             <h5 className = "textologin" >Clicou aqui por engano?</h5>
-                            <Link className="voltarlink" to="/">
+                            <Link className="voltarlink" to="/login">
                                 Ir para login
                             </Link>
                         </div>    

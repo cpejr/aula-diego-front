@@ -1,0 +1,18 @@
+.pageRoot {
+  display: flex;
+}
+
+.pageBody {
+  margin-top: 3%;
+  width: 100%;
+}
+
+.classForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.formWrapper {
+  margin-top: 3%;
+}
+

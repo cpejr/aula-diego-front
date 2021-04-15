@@ -38,6 +38,7 @@ import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
 import EditarCurso from "./Pages/EditarCurso/EditarCurso";
 import EditarTurma from "./Pages/EditarTurma/EditarTurma";
 import EditarAula from "./Pages/EditarAula/EditarAula";
+import EditarOrganizacao from "./Pages/EditarOrganizacao/EditarOrganizacao";
 
 
 const routes = () => {
@@ -225,6 +226,12 @@ const routes = () => {
           masterComponent={Prova}
         />
         /* ORGANIZAÇÃO */
+        <PrivateRoute
+          path="/organizacao/editar/:id"
+          studentComponent={() => <Redirect to="/dashboard" />}
+          adminComponent={() => <Redirect to="/dashboard" />}
+          masterComponent={EditarOrganizacao}
+        />
         <PrivateRoute
           path="/organizacao/cadastro"
           studentComponent={() => <Redirect to="/dashboard" />}
