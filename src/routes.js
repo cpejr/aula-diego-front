@@ -31,8 +31,8 @@ import EditarAula from "./Pages/EditarAula/EditarAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
-import NovaProva from "./Pages/NovaProva/NovaProva";
-import Prova from "./Pages/Prova/Prova";
+import NovaProva from "./Pages/NovaAtividade/NovaAtividade";
+import Prova from "./Pages/Atividade/Atividade";
 import ListaProva from "./Pages/ListaProva/ListaProva"
 import Avaliar from "./Pages/Avaliar/Avaliar"
 import Comentario from "./Pages/Comentario/Comentario";
@@ -200,42 +200,42 @@ const routes = () => {
           masterComponent={EditarAula}
         />
         <PrivateRoute
-          path="/prova/cadastro"
+          path="/atividade/cadastro"
           exact
           studentComponent={Dashboard}
           adminComponent={NovaProva}
           masterComponent={NovaProva}
         />
         <PrivateRoute
-          path="/prova/lista"
+          path="/atividade/lista"
           exact
           studentComponent={Dashboard}
           adminComponent={ListaProva}
           masterComponent={ListaProva}
         />
         {/* <PrivateRoute
-          path="/prova/respostas/:id"
+          path="/atividade/respostas/:id"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaRespostas}
           masterComponent={ListaRespostas}
         /> */}
         <PrivateRoute
-          path="/prova/responder/:id"
+          path="/atividade/responder/:id"
           exact
           studentComponent={Prova}
           adminComponent={Prova}
           masterComponent={Prova}
         />
         <PrivateRoute
-          path="/prova/avaliar/:id"
+          path="/atividade/avaliar/:id"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={Avaliar}
           masterComponent={Avaliar}
         />
         <PrivateRoute
-          path="/prova/responder/:id"
+          path="/atividade/responder/:id"
           exact
           studentComponent={Prova}
           adminComponent={Prova}

@@ -5,7 +5,7 @@ import { Form, Button, DatePicker, message } from 'antd';
 import { AnswerText, AnswerAlternatives } from "../../Components/DynamicForms/dynamicForms"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "./Prova.css";
+import "./Atividade.css";
 
 const examLayout = {
   labelCol: { span: 3 },

@@ -80,8 +80,6 @@ export default function NovaProva(props) {
     setAnswers({ ...answers, [e.target.name]: e.target.value })
   } */
 
-  console.log(exam)
-
   return (
     <Base>
       <div className="examRoot">
