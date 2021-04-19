@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Upload, Radio, Tag, Image } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined, RadiusUprightOutlined } from '@ant-design/icons';
 import "./dynamicForms.css";
 
 const { TextArea } = Input
 
 const questionLayout = {
-  labelCol: { span: 4 },
+  labelCol: { span: 5 },
   wrapperCol: { span: 16 },
 };
 
 const questionTailLayout = {
-  wrapperCol: { offset: 4, span: 16 },
+  wrapperCol: { offset: 5, span: 16 },
 };
 
 const alternativeLayout = {
@@ -31,6 +31,8 @@ export const Field = ({
   message = "Campo obrigatório",
   children,
   layout,
+  value,
+  initialValue,
 }) => (
 
   <Form.Item
@@ -38,6 +40,8 @@ export const Field = ({
     {...field}
     name={name}
     label={label ? label : null}
+    value={value}
+    initialValue={initialValue}
     rules={[
       {
         required: required,
@@ -131,43 +135,6 @@ export const ImageUpload = ({
   )
 }
 
-const Alternative = ({
-  name,
-  field,
-  required = true,
-  message = "Campo obrigatório",
-  value,
-  onChange,
-  layout
-}) => (
-
-  <Field layout={layout}>
-    <div className="alternativeWrapper">
-      <Radio.Button
-        className="alternative"
-        type="default"
-        value={value}
-      >
-        {value}
-      </Radio.Button>
-      <Field
-        name={name}
-        field={field}
-        requiered={required}
-        message={message}
-      >
-        <Input
-          className="alternative"
-          name={name}
-          placeholder="Alternartiva"
-          onChange={(e) => onChange(e, value)}
-        />
-      </Field>
-    </div>
-  </Field>
-
-)
-
 export const Alternatives = ({
   name,
   field,
@@ -180,27 +147,12 @@ export const Alternatives = ({
   optionLayout
 }) => {
 
-  const [alternatives, setAlternatives] = useState({ correct: "A" })
+
   const [selected, setSelected] = useState("A");
 
-  const handleSelect = e => {
-    setSelected(e.target.value);
-    setAlternatives({ ...alternatives, correct: e.target.value })
-  };
-
-  const handleAlternativeChange = (e, key) => {
-    setAlternatives({ ...alternatives, [key]: e.target.value });
-  };
+  const handleSelect = e => { setSelected(e.target.value); };
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-  useEffect(() => {
-    const event = {};
-    event.target = {}
-    event.target.value = alternatives;
-
-    onChange(event);
-  }, [alternatives])
 
   return (
     <Field
@@ -211,27 +163,48 @@ export const Alternatives = ({
       message={message}
       layout={layout}
     >
-      <Form.List name="alternatives">
-        {(fields, { add, remove }, { errors }) => (
+      <Form.List name={name}>
+        {(fields, { add, remove }) => (
           <Radio.Group
-            onChange={handleSelect}
-            style={{ "width": "100%" }}
             value={selected}
-            defaultValue={"A"}
+            onChange={handleSelect}
+            defaultValue={selected}
           >
-            {fields.map((field, index) => (
-              <Alternative
-                name={letters[index]}
-                field={field}
-                value={letters[index]}
-                onChange={handleAlternativeChange}
-                layout={optionLayout}
-              />
-            ))}
+            {fields.map((field, index) => {
+              console.log(selected)
+              return (
+                <div className="alternativeWrapper">
+                  <Radio.Button
+                    className="alternative"
+                    value={letters[index]}
+                  >
+                    {letters[index]}
+                  </Radio.Button>
+                  <Field
+                    field={field}
+                    fieldKey={[field.fieldKey, letters[index]]}
+                    name={field.name}
+                    layout={optionLayout}
+                  >
+                    <Input
+                      className="alternative"
+                      placeholder="Alternativa"
+                    />
+                  </Field>
+                  <MinusCircleOutlined
+                    className="alternative-delete"
+                    onClick={() => remove(field.name)}
+                  />
+                </div>
+              )
+            })}
             <Field layout={layout}>
-              <Button type="dashed" onClick={() => { add() }} icon={<PlusOutlined />}>
+              <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                 Adicionar alternativa
               </Button>
+            </Field>
+            <Field layout={layout} name='correct' value={selected}>
+              <Input value={selected} />
             </Field>
           </Radio.Group>
         )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Switch, Button, DatePicker, message } from 'antd';
+import { Form, Switch, Button, DatePicker, message, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useSession } from "../../Context/SessionContext";
 import { Field, InputField, QuestionText, QuestionAlternatives, questionLayout } from "../../Components/DynamicForms/dynamicForms"
@@ -142,13 +142,16 @@ export default function NovaProva(props) {
             <Form.Item {...exerciseTailLayout}>
               <h1>Nova Atividade</h1>
             </Form.Item>
+            <Form.Item>
+              <Input name="test" />
+            </Form.Item>
             <InputField
               name="name"
               label="Título"
               placeholder="Título da atividade"
               message="Por favor, insira título da atividade!"
             />
-            <Field name="start_date" label="Início" message="Por favor, insira início da atividade!">
+            {/* <Field name="start_date" label="Início" message="Por favor, insira início da atividade!">
               <DatePicker
                 name="start_date"
                 placeholder="Início da atividade"
@@ -165,8 +168,8 @@ export default function NovaProva(props) {
                 showTime
                 format="DD-MM-YYYY HH:mm"
               />
-            </Field>
-            <Field name="evaluate" label="Avaliativa" required={false}>
+            </Field> */}
+            <Field name="evaluate" label="Avaliativa" required={false} initialValues={false}>
               <Switch />
             </Field>
             <Field label="Questões" >
@@ -175,7 +178,6 @@ export default function NovaProva(props) {
                   {(fields, { add, remove }, { errors }) => (
                     <>
                       {fields.map((field, index) => {
-                        console.log(field)
                         if (questionType[index] === "text")
                           return <QuestionText
                             name={index}
