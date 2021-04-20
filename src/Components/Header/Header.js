@@ -3,29 +3,29 @@ import Sidebar from "../Sidebar/Sidebar";
 import Burger from "../Burger/Burger";
 import "./Header.css";
 import Foto from "../../images/foto.jpg";
-import { useHistory } from "react-router-dom";
+import { Link, Switch, useHistory } from "react-router-dom";
+import { useSession } from "../../Context/SessionContext";
 
 const Header = () => {
   let history = useHistory();
+  const { session } = useSession();
 
   function redirect(path) {
     history.push(path);
   }
   return (
     <>
-      <div className="Sidebar">
-        <Sidebar />
-      </div>
-      <div className="headerContainer">
+      {session.user.type != "student" ? (
+        <div>
+          <Sidebar />
+        </div>
+      ) : null}
+      <div className="headerBase">
         <Burger />
-        <div className="HeaderElementsContainer">
-          <div className="LabelContainer">
-            <label className="LabelHeader">Minha Conta</label>
-            <a className="aHeader" onClick={() => redirect("/config")}>
-              Configurações
-            </a>
-          </div>
-          <img className="HeaderImg" src={Foto}></img>
+        <div className="headerAlign">
+          <a className="aHeader" onClick={() => redirect("/config")}>
+            Minhas Informações
+          </a>
         </div>
       </div>
     </>

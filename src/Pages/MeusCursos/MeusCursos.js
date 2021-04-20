@@ -34,7 +34,7 @@ export default function MeusCursos() {
       });
   }, []);
 
-  function classesUser(value) {
+  /*function classesUser(value) {
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -54,7 +54,7 @@ export default function MeusCursos() {
           message.error("Não foi possível carregar dados das turmas");
         });
     }
-  }
+  }*/
 
   return (
     <Base>

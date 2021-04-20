@@ -1,4 +1,30 @@
-.Sidebar {
+.headerBase {
+  height: 70px;
+  display: flex;
+  background-color: #25003c;
+  align-items: center;
+}
+
+.headerAlign {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  align-items: center;
+  margin: 2vh;
+}
+
+.buttonHeader {
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  height: 50px;
+  background-color: #c63756;
+  color: white;
+  border-radius: 5px;
+  font-size: 24;
+  font-weight: 500;
 }
 
 .active {
@@ -69,5 +95,9 @@
   }
   .HeaderImg {
     display: flex;
+  }
+
+  .headerAlign {
+    display: none;
   }
 }

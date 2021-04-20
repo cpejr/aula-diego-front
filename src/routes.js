@@ -40,7 +40,6 @@ import EditarTurma from "./Pages/EditarTurma/EditarTurma";
 import EditarAula from "./Pages/EditarAula/EditarAula";
 import EditarOrganizacao from "./Pages/EditarOrganizacao/EditarOrganizacao";
 
-
 const routes = () => {
   return (
     <BrowserRouter>
@@ -203,7 +202,7 @@ const routes = () => {
           adminComponent={Aula}
           masterComponent={Aula}
         />
-          /* PROVA */
+        /* PROVA */
         <PrivateRoute
           path="/aula/editar/:id"
           exact

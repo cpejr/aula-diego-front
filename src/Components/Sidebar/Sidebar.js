@@ -21,7 +21,7 @@ export default function Sidebar() {
   const studentList = [
     {
       title: "Meus Cursos",
-      path: "/curso/lista",
+      path: "/curso",
     },
   ];
   const adminLinks = [
