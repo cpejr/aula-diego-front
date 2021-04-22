@@ -2,12 +2,6 @@
   margin-top: 5vh;
 }
 
-.containerCursos {
-  display: flex;
-  flex-direction: column;
-  margin-right: 5vh;
-}
-
 .title {
   display: flex;
   padding-top: 3%;
@@ -39,17 +33,20 @@
   margin: 8vh;
   margin-bottom: 0;
   border-radius: 20px;
+  margin-right: 0;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   display: flex;
   background-image: linear-gradient(to right, #290043 73%, #b11734);
   justify-content: center;
   height: 3vh;
+  width: 300px;
 }
 
 .CardCursoBottom {
   padding: 5vh 5vh;
   margin: 8vh;
+  margin-right: 0;
   margin-bottom: 3vh;
   margin-top: 0;
   border-radius: 20px;
@@ -59,7 +56,8 @@
   flex-direction: column;
   background-color: #0f1123;
   justify-content: right;
-  max-height: 40vh;
+  height: 230px;
+  width: 300px;
 }
 
 .descriptionCurso {
@@ -70,7 +68,7 @@
 .btnVerCurso {
   border-radius: 8px;
   height: 50px;
-  width: 15vw;
+  width: 100px;
   background-color: rgb(198, 53, 84);
   border: 2px solid #b11734;
   color: rgb(244, 232, 242);
@@ -97,11 +95,5 @@
     padding: 5vh 5vh;
     margin: 2vh;
     margin-top: 0vh;
-  }
-
-  .btnVerCurso {
-    margin-left: 45vw;
-    height: 3vh;
-    width: 25vw;
   }
 }
