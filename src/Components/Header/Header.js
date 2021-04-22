@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Burger from "../Burger/Burger";
 import "./Header.css";
-import Foto from "../../images/foto.jpg";
+import LogoDark from "../../images/Logo2.png";
 import { Link, Switch, useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
+import api from "../../services/api";
+import { message } from "antd";
 
 const Header = () => {
   let history = useHistory();
   const { session } = useSession();
+  const { handleLogout } = useSession();
+  const [score, setScore] = useState(0);
+
+  let config = {
+    headers: {
+      authorization: "Bearer " + session.accessToken,
+    },
+  };
+
+  useEffect(() => {
+    api
+      .post("/score", { user_id: session.user.id }, config)
+      .then((res) => setScore(res.data.score))
+      .catch(() =>
+        message.error("Não foi possível receber pontuação do usuário.")
+      );
+  }, []);
 
   function redirect(path) {
     history.push(path);
@@ -16,16 +35,48 @@ const Header = () => {
   return (
     <>
       {session.user.type != "student" ? (
-        <div>
+        <div className="Sidebar">
           <Sidebar />
         </div>
-      ) : null}
+      ) : (
+        <div className="Sidebar show">
+          <Sidebar />
+        </div>
+      )}
       <div className="headerBase">
         <Burger />
+        {session.user.type === "student" ? (
+          <>
+            <Link to="/dashboard">
+              <img
+                style={{ marginLeft: "2vw", height: "50px" }}
+                className="headerLogo"
+                src={LogoDark}
+              ></img>
+            </Link>
+            {/*<div className="headerScore">
+              <label>{session.user.name}</label>
+              <p>{score} XP</p>
+        </div>*/}
+          </>
+        ) : null}
         <div className="headerAlign">
           <a className="aHeader" onClick={() => redirect("/config")}>
             Minhas Informações
           </a>
+          {session.user.type === "student" ? (
+            <>
+              <button
+                className="buttonHeader"
+                onClick={() => {
+                  handleLogout();
+                  history.push("/login");
+                }}
+              >
+                SAIR
+              </button>
+            </>
+          ) : null}
         </div>
       </div>
     </>

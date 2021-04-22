@@ -121,7 +121,7 @@ export default function Sidebar() {
           })}
           <div className="configSidebar">
             <li className="ul-link">
-              <Link to="/config">Configurações</Link>
+              <Link to="/config">Minhas Informações</Link>
             </li>
           </div>
         </ul>
