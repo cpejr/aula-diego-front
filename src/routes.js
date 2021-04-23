@@ -30,8 +30,11 @@ import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
-import NovaProva from "./Pages/NovaProva/NovaProva";
-import Prova from "./Pages/Prova/Prova";
+import NovaAtividade from "./Pages/NovaAtividade/NovaAtividade";
+import Atividade from "./Pages/Atividade/Atividade";
+import AtividadeResultado from "./Pages/AtividadeResultado/AtividadeResultado";
+import AtividadeResposta from "./Pages/AtividadeResposta/AtividadeResposta"
+import AtividadeLista from "./Pages/AtividadeLista/AtividadeLista"
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
@@ -179,7 +182,7 @@ const routes = () => {
         <PrivateRoute
           path="/curso/gerenciar/:id"
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
+          studentComponent={Dashboard}
           adminComponent={CursoAdmin}
           masterComponent={CursoAdmin}
         />
@@ -212,18 +215,39 @@ const routes = () => {
           masterComponent={EditarAula}
         />
         <PrivateRoute
-          path="/prova/cadastro"
+          path="/atividade/cadastro"
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={NovaProva}
-          masterComponent={NovaProva}
+          studentComponent={Dashboard}
+          adminComponent={NovaAtividade}
+          masterComponent={NovaAtividade}
         />
         <PrivateRoute
-          path="/prova/:id"
+          path="/atividade/resposta/:id"
           exact
-          studentComponent={Prova}
-          adminComponent={Prova}
-          masterComponent={Prova}
+          studentComponent={Dashboard}
+          adminComponent={AtividadeResposta}
+          masterComponent={AtividadeResposta}
+        />
+        <PrivateRoute
+          path="/atividade/responder/:id"
+          exact
+          studentComponent={Atividade}
+          adminComponent={Atividade}
+          masterComponent={Atividade}
+        />
+        <PrivateRoute
+          path="/atividade/resultado/:id"
+          exact
+          studentComponent={AtividadeResultado}
+          adminComponent={AtividadeResultado}
+          masterComponent={AtividadeResultado}
+        />
+        <PrivateRoute
+          path="/atividade/lista/:id"
+          exact
+          studentComponent={AtividadeLista}
+          adminComponent={AtividadeLista}
+          masterComponent={AtividadeLista}
         />
         /* ORGANIZAÇÃO */
         <PrivateRoute

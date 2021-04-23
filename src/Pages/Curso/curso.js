@@ -99,8 +99,8 @@ export default function Curso(props) {
 
   return (
     <Base>
-      <div className="pageBody">
-        {course !== undefined ? <h1>{course.name}</h1> : <></>}
+      <div className="cursoBody">
+        {course && <h1 className="cursoTitle">{course.name}</h1>}
         {months.map((month, idx) => {
           if (sorted !== undefined) {
             const found = true ? sorted.find(m => m.date.getMonth() === idx) !== undefined : false

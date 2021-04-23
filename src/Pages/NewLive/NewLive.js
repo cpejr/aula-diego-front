@@ -74,8 +74,6 @@ export default function NewLive(props) {
       .catch((err) => {
         setLoading(false);
         message.error("Não foi possiível criar a live!");
-        console.log(data);
-        console.log(err);
       });
   }
 

@@ -2,14 +2,62 @@
   display: flex;
 }
 
+.alternativeAnswerWrapper {
+  display: flex;
+  margin-bottom: 16px;
+}
+
 .alternative {
   height: 40px;
   border-radius: 0px;
 }
 
+.alternative-delete {
+  display: flex;
+  align-items: center;
+  margin-left: 4%;
+  font-size: x-large;
+  height: 40px;
+}
+
+.alternative-delete:hover{
+  color: red;
+}
+
+.alternativeText {
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  width: 100%;
+  height: 40px;
+  border-radius: 0px;
+  font-size: large;
+  color: #242424; 
+}
+
+.answerTitle {
+  margin-bottom: 16px;
+  margin-left: 16px;
+  font-weight: bold;
+}
+
+.answerImage {
+  width: 150px;
+  height: 150px;
+  border: 1px dashed lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.answerImage img {
+  max-width: 150px;
+  max-height: 150px;
+}
+
 .questionWrapper {
-  padding: 2%;
-  padding-right: 10%;
+  width: 100%;
+  padding-top: 2%;
   margin-bottom: 2%;
   border: 1px dashed lightgray;
 }
@@ -27,4 +75,24 @@
 .formButtonDelete:focus {
   border-color: lightgray;
   color: initial
+}
+
+.answerHeading {
+  font-size: x-large;
+}
+
+.ant-form-item-label label{
+  font-size: large;
+}
+
+.ant-form-item-control-input-content {
+  height: auto;
+}
+
+.ant-form-item-control-input-content textarea.ant-input {
+  line-height: 34px;
+}
+
+.ant-input-lg {
+  padding: 3.5px 11px;
 }

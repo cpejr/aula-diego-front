@@ -69,8 +69,6 @@ export default function NovaAula(props) {
     setLesson(lesson);
   }
 
-  console.log(lesson)
-
   function handleSubmit(e) {
     e.preventDefault();
 

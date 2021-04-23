@@ -1,0 +1,37 @@
+.resultRoot {
+  padding: 5% 10%;
+}
+
+.resultTitle {
+  margin-top: 2%;
+  margin-bottom: 36px;
+  font-size: 48px;
+}
+
+.resultProgressWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  border: 1px dashed lightgray;
+}
+
+.resultProgressTitle {
+  display: block;
+  margin-bottom: 36px;
+  font-size: 24px;
+}
+
+.resultButtonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 26px;
+}
+
+.resultButton {
+  width: 25%;
+  margin: 2%
+}

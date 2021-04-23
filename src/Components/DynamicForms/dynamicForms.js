@@ -1,37 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Upload, Radio } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Upload, Radio, Tag, Image } from 'antd';
+import { Html5Filled, MinusCircleOutlined, PlusOutlined, RadiusUprightOutlined } from '@ant-design/icons';
 import "./dynamicForms.css";
 
 const { TextArea } = Input
 
-export const questionLayout = {
-  labelCol: { span: 4 },
+const questionLayout = {
+  labelCol: { span: 5 },
   wrapperCol: { span: 16 },
 };
 
-export const questionTailLayout = {
-  wrapperCol: { offset: 4, span: 16 },
+const questionTailLayout = {
+  wrapperCol: { offset: 5, span: 16 },
 };
 
-export const alternativeLayout = {
+const alternativeLayout = {
   labelCol: { span: 3 },
   wrapperCol: { span: 24 },
 };
 
-export const alternativeTailLayout = {
+const alternativeTailLayout = {
   wrapperCol: { offset: 3, span: 24 },
 };
 
-export const Field = ({ name, label, required = true, message = "Campo obrigatório", field, fieldKey, children }) => (
+export const Field = ({
+  name,
+  field,
+  label,
+  required = true,
+  message = "Campo obrigatório",
+  initialValue,
+  children,
+  layout,
+}) => (
+
   <Form.Item
+    {...layout}
     {...field}
     name={name}
     label={label ? label : null}
-    fieldKey={fieldKey}
+    initialValue={initialValue}
     rules={[
       {
-        required: { required },
+        required: required,
         message: { message },
       },
     ]}
@@ -40,27 +51,61 @@ export const Field = ({ name, label, required = true, message = "Campo obrigató
   </Form.Item>
 )
 
-export const InputField = ({ name, label, required = true, message = "Campo obrigatório", placeholder, onChange = null, field, fieldKey }) => (
-  <Field name={name} label={label} field={field} fieldKey={fieldKey} required={required} message={message}>
+export const InputField = ({
+  name,
+  field,
+  label,
+  required = true,
+  message = "Campo obrigatório",
+  placeholder,
+  value,
+  onChange = null,
+  layout,
+  size = { minRows: 1, maxRows: 3 },
+  disabled = false,
+}) => (
+  <Field
+    name={name}
+    label={label}
+    required={required}
+    message={message}
+    field={field}
+    layout={layout}
+    initialValue={value}
+  >
     <TextArea
+      name={name}
       className="formInput"
       placeholder={placeholder}
-      onChange={onChange}
-      autoSize={{ minRows: 1, maxRows: 3 }}
+      onChange={e => onChange(e.target.value)}
+      autoSize={size}
+      disabled={disabled}
     />
   </Field>
 )
 
-export const ImageUpload = ({ name, label, imageChange, field, fieldKey }) => {
+export const ImageUpload = ({
+  name,
+  field,
+  label,
+  required = true,
+  onChange = null,
+  layout
+}) => {
+
   const [preview, setPreview] = useState(false);
   const [file, setFile] = useState();
 
-  useEffect(() => {
-    imageChange(file);
-  }, [file])
+  useEffect(() => onChange(file), [file]);
 
   return (
-    <Field name={name} label={label} field={field} fieldKey={fieldKey} required={false}>
+    <Field
+      name={name}
+      field={field}
+      label={label}
+      required={required}
+      layout={layout}
+    >
       <Upload
         name="file"
         listType="picture-card"
@@ -74,7 +119,7 @@ export const ImageUpload = ({ name, label, imageChange, field, fieldKey }) => {
       >
         {preview
           ?
-          <img src={preview} alt="avatar" style={{ width: '100%' }} />
+          <img src={preview} alt="avatar" style={{ maxWidth: '100%', maxHeight: '100%' }} />
           :
           <div>
             <PlusOutlined />
@@ -86,142 +131,292 @@ export const ImageUpload = ({ name, label, imageChange, field, fieldKey }) => {
   )
 }
 
-export const Alternative = ({ name, required = true, message = "Campo obrigatório", value, onChange, field, fieldKey }) => (
-  <Field name={name} field={field} fieldKey={fieldKey} required={required} message={message}>
-    <div className="alternativeWrapper">
-      <Radio.Button
-        type="default"
-        value={value}
-        className="alternative"
-      >
-        {value}
-      </Radio.Button>
-      <Input
-        name={name}
-        placeholder="Alternartiva"
-        className="alternative"
-        onChange={(e) => onChange(e, value)}
-      />
-    </div>
-  </Field>
-)
+export const Alternatives = ({
+  name,
+  field,
+  label,
+  onChange = null,
+  correctChange = null,
+  required = true,
+  message,
+  layout,
+  tailLayout,
+  optionLayout
+}) => {
 
-export const Alternatives = ({ name, label, onChange, required = true, message, field, fieldKey }) => {
-  const [alternatives, setAlternatives] = useState({ correct: "A" })
   const [selected, setSelected] = useState("A");
+  const [alternatives, setAlternatives] = useState({});
 
-  const handleSelect = e => { setSelected(e.target.value); setAlternatives({ ...alternatives, correct: selected }) };
-  const handleAlternativeChange = (e, key) => setAlternatives({ ...alternatives, [key]: e.target.value })
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const handleSelect = e => { setSelected(e.target.value); correctChange(e.target.value) };
+  const alternativeChange = (e, index) => setAlternatives({ ...alternatives, [index]: e.target.value });
 
-  useEffect(() => {
-    const event = {};
-    event.target = {}
-    event.target.value = alternatives;
-
-    onChange(event);
-  }, [alternatives])
+  useEffect(() => onChange(alternatives), [alternatives]);
 
   return (
-    <Field name={name} label={label} required={required} message={message} field={field} fieldKey={fieldKey}>
-      <Form
-        {...alternativeLayout}
-        name="questionsForm"
-        size={"large"}
-        scrollToFirstError
-      >
-        <Form.List
-          name="alternatives"
-        >
-          {(fields, { add, remove }, { errors }) => (
-            <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected} defaultValue={"A"}>
-              {fields.map((field, index) => (
-                <Alternative field={field} onChange={handleAlternativeChange} value={letters[index]} />
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => { add() }} icon={<PlusOutlined />}>
-                  Adicionar alternativa
+    <Field
+      name={name}
+      field={field}
+      label={label}
+      required={required}
+      message={message}
+      layout={layout}
+    >
+      <Form.List name={name}>
+        {(fields, { add, remove }) => (
+          <Radio.Group
+            value={selected}
+            onChange={handleSelect}
+            defaultValue={selected}
+          >
+            {fields.map((field, index) => (
+              <div className="alternativeWrapper">
+                <Radio.Button
+                  className="alternative"
+                  value={letters[index]}
+                >
+                  {letters[index]}
+                </Radio.Button>
+                <Field
+                  field={field}
+                  fieldKey={[field.fieldKey, letters[index]]}
+                  name={field.name}
+                  layout={optionLayout}
+                >
+                  <Input
+                    className="alternative"
+                    placeholder="Alternativa"
+                    onChange={(e) => alternativeChange(e, letters[index])}
+                  />
+                </Field>
+                <MinusCircleOutlined
+                  className="alternative-delete"
+                  onClick={() => remove(field.name)}
+                />
+              </div>
+            ))}
+            <Field layout={layout} >
+              <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                Adicionar alternativa
               </Button>
-              </Form.Item>
-            </Radio.Group>
-          )}
-        </Form.List>
-      </Form>
+            </Field>
+          </Radio.Group>
+        )}
+      </Form.List>
     </Field>
   )
 }
 
-export const QuestionText = ({ index, field, onChange, imageChange, remove }) => (
-  <div className="questionWrapper">
-    <Form.Item {...questionTailLayout}>
-      <h5>{`Questão ${index + 1}:`}</h5>
-    </Form.Item>
-    <InputField
-      name={[field.name, 'head']}
-      label="Enunciado"
-      field={field}
-      fieldKey={[field.fieldKey, 'head']}
-      placeholder="Enunciado da questão"
-      message="Por favor, insira enunciado da questão!"
-      onChange={(e) => onChange(e, field.fieldKey, 'header')}
-    />
-    <ImageUpload
-      name={[field.name, 'image']}
-      fieldKey={[field.fieldKey, 'image']}
-      label="Imagem"
-      imageChange={(img) => imageChange(field.fieldKey, img)}
-    />
-    <Form.Item {...questionTailLayout}>
-      <Button
-        type="dashed"
-        className="formButtonDelete"
-        onClick={() => remove()}
-        icon={<MinusCircleOutlined />}
-      >
-        Remover questão
+export const QuestionText = ({
+  name,
+  index,
+  field,
+  layout = questionLayout,
+  tailLayout = questionTailLayout,
+  onChange = null,
+  remove,
+}) => {
+
+  const [question, setQuestion] = useState({});
+
+  const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
+
+  useEffect(() => onChange(question), [question])
+
+  return (
+    <div className="questionWrapper">
+      <Field layout={tailLayout}>
+        <h5>{`Questão ${index + 1}:`}</h5>
+      </Field>
+      <InputField
+        name={[name, 'heading']}
+        field={field}
+        label="Enunciado"
+        placeholder="Enunciado da questão"
+        message="Por favor, insira enunciado da questão!"
+        layout={layout}
+        onChange={(value) => questionChange('heading', value)}
+      />
+      <ImageUpload
+        name={[name, 'image']}
+        field={field}
+        label="Imagem"
+        required={false}
+        layout={layout}
+        onChange={(value) => questionChange('image', value)}
+      />
+      <Field layout={tailLayout}>
+        <Button
+          type="dashed"
+          className="formButtonDelete"
+          onClick={() => remove()}
+          icon={<MinusCircleOutlined />}
+        >
+          Remover questão
       </Button>
-    </Form.Item>
+      </Field>
+    </div>
+  )
+}
+
+export const QuestionAlternatives = ({
+  name,
+  index,
+  field,
+  layout = questionLayout,
+  tailLayout = questionTailLayout,
+  optionLayout = alternativeLayout,
+  onChange = () => { },
+  remove,
+}) => {
+
+  const [question, setQuestion] = useState({ correct: 'A' });
+
+  const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
+
+  useEffect(() => onChange(question), [question])
+
+  return (
+    <div className="questionWrapper">
+      <Field layout={tailLayout}>
+        <h5>{`Questão ${index + 1}:`}</h5>
+      </Field>
+      <InputField
+        name={[name, 'heading']}
+        field={field}
+        label="Enunciado"
+        placeholder="Enunciado da questão"
+        message="Por favor, insira enunciado da questão!"
+        layout={layout}
+        onChange={(value) => questionChange('heading', value)}
+      />
+      <Alternatives
+        name={[name, 'alternatives']}
+        field={field}
+        label="Alternativas"
+        message="Por favor, insira alteranativa!"
+        layout={layout}
+        tailLayout={tailLayout}
+        optionLayout={optionLayout}
+        onChange={(value) => questionChange('alternatives', value)}
+        correctChange={(value) => questionChange('correct', value)}
+      />
+      <ImageUpload
+        name={[name, 'image']}
+        field={field}
+        label="Imagem"
+        required={false}
+        layout={layout}
+        onChange={(value) => questionChange('image', value)}
+      />
+      <Field layout={tailLayout}>
+        <Button
+          type="dashed"
+          className="formButtonDelete"
+          onClick={() => remove()}
+          icon={<MinusCircleOutlined />}
+        >
+          Remover questão
+      </Button>
+      </Field>
+    </div>
+  )
+}
+
+export const AnswerText = ({
+  index,
+  heading = "",
+  image = false,
+  value,
+  size = { minRows: 3, maxRows: 10 },
+  onChange = null,
+  layout = questionLayout,
+  tailLayout = questionTailLayout,
+  disabled = false
+}) => (
+
+  <div className="questionWrapper">
+    <h5 className="answerTitle">
+      {`Questão ${index + 1}:`}
+    </h5>
+    <Field layout={tailLayout}>
+      <span className="answerHeading">{heading}</span>
+    </Field>
+    {image &&
+      <Field layout={tailLayout}>
+        <div className="answerImage">
+          <Image src={image} />
+        </div>
+      </Field>
+    }
+    <InputField
+      name={index}
+      field={layout}
+      label="Resposta"
+      placeholder="Insira a resposta da questão"
+      message="Insira resposta da questão!"
+      value={value}
+      onChange={value => onChange(index, value)}
+      size={size}
+      disabled={disabled}
+    />
   </div>
+
 )
 
-export const QuestionAlternatives = ({ index, field, onChange, imageChange, remove }) => (
-  <div className="questionWrapper">
-    <Form.Item {...questionTailLayout}>
-      <h5>{`Questão ${index + 1}:`}</h5>
-    </Form.Item>
-    <InputField
-      name={[field.name, 'head']}
-      label="Enunciado"
-      field={field}
-      fieldKey={[field.fieldKey, 'head']}
-      placeholder="Enunciado da questão"
-      message="Por favor, insira enunciado da questão!"
-      onChange={(e) => onChange(e, field.fieldKey, 'header')}
-    />
-    <Alternatives
-      name={`alternative_${index + 1}`}
-      label="Alternativas"
-      fieldKey={[field.fieldKey, 'alternative']}
-      message="Por favor, insira alteranativa!"
-      onChange={(e) => onChange(e, field.fieldKey, 'alternatives')}
-    />
-    <ImageUpload
-      name={`image_${index + 1}`}
-      fieldKey={[field.fieldKey, 'image']}
-      label="Imagem"
-      imageChange={(img) => imageChange(field.fieldKey, img)}
-    />
-    <Form.Item {...questionTailLayout}>
-      <Button
-        {...questionTailLayout}
-        type="dashed"
-        className="formButtonDelete"
-        onClick={() => remove()}
-        icon={<MinusCircleOutlined />}
-      >
-        Remover questão
-      </Button>
-    </Form.Item>
-  </div>
-)
+export const AnswerAlternatives = ({
+  index,
+  heading = "",
+  image = false,
+  alternatives,
+  value = null,
+  onChange = null,
+  layout = questionLayout,
+  tailLayout = questionTailLayout,
+  disabled = false
+}) => {
+
+  const [selected, setSelected] = useState(value);
+  const entries = Object.entries(alternatives);
+
+  const handleSelect = e => {setSelected(e.target.value); onChange(index, e.target.value);}
+
+  return (
+
+    <div className="questionWrapper">
+      <h5 className="answerTitle">
+        {`Questão ${index + 1}:`}
+      </h5>
+      <Field layout={tailLayout}>
+        <span className="answerHeading">{heading}</span>
+      </Field>
+      {image &&
+        <Field layout={tailLayout}>
+          <div className="answerImage">
+            <Image src={image} />
+          </div>
+        </Field>
+      }
+      <Field layout={layout} label={`Alternativas`} name={index} initialValue={value}>
+        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected} disabled={disabled}>
+          {entries.map((alternative, idx) => (
+            <div className="alternativeAnswerWrapper" key={idx}>
+              <Radio.Button
+                type="default"
+                value={alternative[0]}
+                className="alternative"
+              >
+                {alternative[0]}
+              </Radio.Button>
+              <Tag className="alternativeText">
+                {alternative[1]}
+              </Tag>
+            </div>
+          ))}
+        </Radio.Group>
+      </Field>
+    </div>
+
+  )
+}
