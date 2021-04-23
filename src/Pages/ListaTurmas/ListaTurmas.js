@@ -78,15 +78,14 @@ export default function ListaOrganizacoes() {
       dataIndex: "id",
       render: (id) => (
         <>
-          <EditIcon
-            className="clickable"
-            onClick={() => {
-              setEditIsVisible(true);
-              setId(id);
-            }}
-          />{" "}
           <Popconfirm
-            title="Tem certeza que deseja excluir este item?"
+            title="Deseja editar esta turma?"
+            onConfirm = {() => history.push(`/turma/editar/${id}`)}
+          >
+            <EditIcon className="clickable" />
+          </Popconfirm>
+          <Popconfirm
+            title="Tem certeza que deseja excluir esta turma?"
             onConfirm={() => handleDelete(id)}
           >
             <DeleteIcon className="clickable" />

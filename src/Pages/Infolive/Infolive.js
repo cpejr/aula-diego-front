@@ -23,13 +23,20 @@ export default function Infolive() {
     });
   }
 
-  const config = {
+  let config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
   };
 
   useEffect(() => {
+    if (session.user.type !== "master")
+      config = {
+        ...config,
+        params: {
+          organization_id: session.user.organization_id,
+        },
+      };
     api
       .get(`/live`, config)
       .then((lives) => {
@@ -46,9 +53,11 @@ export default function Infolive() {
     {
       title: "Organização",
       dataIndex: "organization_name",
+      className: session.user.type === "master" ? "" : "hide",
       align: "left",
       key: "tags",
       render: (tag) => {
+        if (session.user.type !== "master") return;
         if (tag) {
           let color = tag.length > 3 ? "geekblue" : "green";
           color = tag.length > 4 ? "coral" : color;

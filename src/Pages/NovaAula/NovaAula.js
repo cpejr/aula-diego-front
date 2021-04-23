@@ -135,7 +135,6 @@ export default function NovaAula(props) {
               name="newClass"
               className="classForm"
               initialValues={{ remember: true }}
-              onFinish={handleSubmit}
               size={"large"}
               scrollToFirstError
             >

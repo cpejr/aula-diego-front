@@ -114,12 +114,18 @@ export default function NovaAula(props) {
       course_id: course.get("course"),
       organization_id: session.user.organization_id,
     };
-
+    
+    if(data.students.length === 0){
+      message.error("Não se pode criar uma turma vazia!");
+      return;
+    };
+    
     api
       .post("/class_create", data, config)
       .then((response) => {
+        
         message.success("Turma criada com sucesso!");
-        history.push("/turma/lista");
+        history.push(`/curso/gerenciar/${data.course_id}`);
       })
       .catch((err) => {
         console.log(err);

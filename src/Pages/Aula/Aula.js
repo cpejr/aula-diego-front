@@ -99,7 +99,7 @@ export default function Aula(props) {
 
   return (
     <Base>
-      <div className="body">
+      <div className="class-body">
         <div className="title">
           <SnippetsOutlined />
           <span>{lesson && lesson.name}</span>
