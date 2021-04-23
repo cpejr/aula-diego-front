@@ -35,12 +35,13 @@ export default function AtividadeResposta(props) {
       .then(async response => {
         Promise.all(
           Object.values(response.data.questions).map(question => question.image).map(async (image, index) => {
-            await api
-              .get(`/file_get/${image}`, configFile)
-              .then(file => {
-                response.data.questions[index].image = URL.createObjectURL(file.data);
-                Promise.resolve("");
-              });
+            if (image !== undefined)
+              await api
+                .get(`/file_get/${image}`, configFile)
+                .then(file => {
+                  response.data.questions[index].image = URL.createObjectURL(file.data);
+                  Promise.resolve("");
+                });
           })
         )
         .then(() => setAnswer(response.data));

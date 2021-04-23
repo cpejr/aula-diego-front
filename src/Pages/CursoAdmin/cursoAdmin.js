@@ -13,7 +13,7 @@ export default function CursoAdmin(props) {
   const [lessons, setLessons] = useState([]);
   const [lives, setLives] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [exams, setExams] = useState([]);
+  const [exercises, setExercises] = useState([]);
 
   const [done, setDone] = useState(false);
   const [tabs, setTabs] = useState([]);
@@ -39,7 +39,7 @@ export default function CursoAdmin(props) {
 
   useEffect(() => {
     if (done === true) {
-      const tabs = [lessons, lives, exams, classes];
+      const tabs = [lessons, lives, exercises, classes];
 
       setTabs(tabs);
       setFiltered(tabs[activeTab]);
@@ -169,7 +169,7 @@ export default function CursoAdmin(props) {
     },
   ];
 
-  const examTable = [
+  const exerciseTable = [
     {
       title: <h5>Título</h5>,
       dataIndex: "name",
@@ -212,19 +212,19 @@ export default function CursoAdmin(props) {
       title: <h5>Ações</h5>,
       dataIndex: ("id"),
       width: "15%",
-      render: (id, exam) => (
+      render: (id, exercise) => (
         <>
-          {exam.status === "hidden" &&
+          {exercise.status === "hidden" &&
             <ActionButton title="Publicar" confirm="Publicar prova?" onConfirm={() => handlePublish(id)}>
               <CheckCircleOutlined />
             </ActionButton>
           }
-          {exam.status === "open" &&
+          {exercise.status === "open" &&
             <ActionButton title="Fechar" confirm="Fechar prova?" onConfirm={() => handleClose(id)}>
               <CloseCircleOutlined />
             </ActionButton>
           }
-          {exam.status === "closed" &&
+          {exercise.status === "closed" &&
             <ActionButton title="Extender" confirm="Extender tempo de prova?" /* onConfirm={() => handlePublish(id)} */>
               <ClockCircleOutlined />
             </ActionButton>
@@ -304,29 +304,29 @@ export default function CursoAdmin(props) {
       });
 
     api
-      .get(`/exam`, config)
+      .get(`/exercise`, config)
       .then((response) => {
-        const exams = []
+        const exercises = []
 
-        response.data.map(exam => {
+        response.data.map(exercise => {
           const now = Date.now();
-          const end = new Date(exam.end_date);
+          const end = new Date(exercise.end_date);
 
-          let status = exam.open ? "open" : "hidden";
+          let status = exercise.open ? "open" : "hidden";
 
           if (Date.parse(end) < now)
             status = "closed";
 
-          exams.push({
-            ...exam,
-            start_date: new Date(exam.start_date).toLocaleDateString("pt-BR"),
-            end_date: new Date(exam.end_date).toLocaleDateString("pt-BR"),
+          exercises.push({
+            ...exercise,
+            start_date: new Date(exercise.start_date).toLocaleDateString("pt-BR"),
+            end_date: new Date(exercise.end_date).toLocaleDateString("pt-BR"),
             status: status
           })
         });
 
-        setExams(exams);
-        requestDone(exams);
+        setExercises(exercises);
+        requestDone(exercises);
       })
       .catch((err) => {
         message.error("Não foi possível carregar dados das provas");
@@ -383,7 +383,7 @@ export default function CursoAdmin(props) {
 
   function handleDelete(id) {
 
-    const requests = ["lesson", "live", "exam", "class"];
+    const requests = ["lesson", "live", "exercise", "class"];
     const method = [setLessons, setLives, setClasses];
     setLoading(true);
 
@@ -403,7 +403,7 @@ export default function CursoAdmin(props) {
     setLoading(true);
 
     api
-      .put(`/exam/${id}`, {open: true}, config)
+      .put(`/exercise/${id}`, {open: true}, config)
       .then(() => {
         message.success("Prova publicada com sucesso");
         getData();
@@ -416,7 +416,7 @@ export default function CursoAdmin(props) {
     console.log(new Date(Date.now()).toISOString())
 
     /* api
-      .put(`/exam/close/${id}`, {}, config)
+      .put(`/exercise/close/${id}`, {}, config)
       .then(() => {
         message.success("Prova fechada com sucesso");
         getData();
@@ -511,7 +511,7 @@ export default function CursoAdmin(props) {
               </div>
               <Table
                 rowSelection={selected}
-                columns={examTable}
+                columns={exerciseTable}
                 dataSource={filtered}
                 loading={loading}
               />

@@ -37,7 +37,7 @@ export default function AtividadeLista(props) {
         response.data.map(answer => {
           answers.push({
             ...answer,
-            date: new Date(answer.start_date).toLocaleDateString("pt-BR"),
+            date: new Date(answer.created_at).toLocaleDateString("pt-BR"),
           })
         });
 
@@ -93,19 +93,13 @@ export default function AtividadeLista(props) {
     <Base>
       <div className="exerciseListRoot">
         <h1 className="exerciseListTitle">Respostas</h1>
-        <div className="table-container">
+        <div className="exerciseListWrapper">
           <div className="inputWrapper">
             <Input
               className="search"
               placeholder="Pesquisar..."
               onChange={(e) => handleSearch(e.target.value)}
             />
-            <Tooltip title="Novo Curso">
-              <PlusOutlined
-                className="addButton"
-                onClick={() => history.push('/curso/cadastro')}
-              />
-            </Tooltip>
           </div>
           <Table
             columns={columns}
