@@ -1,4 +1,5 @@
 .examRoot {
+  padding-left: 10%;
   padding-right: 10%;
 }
 
@@ -18,9 +19,10 @@
   color: initial
 }
 
-.examTitle {
+.exerciseTitle {
+  display: block;
   margin-top: 2%;
-  margin-bottom: 2%;
+  margin-bottom: 36px;
   font-size: 48px;
 }
 

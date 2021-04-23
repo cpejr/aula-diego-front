@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Upload, Radio, Tag, Image } from 'antd';
-import { MinusCircleOutlined, PlusOutlined, RadiusUprightOutlined } from '@ant-design/icons';
+import { Html5Filled, MinusCircleOutlined, PlusOutlined, RadiusUprightOutlined } from '@ant-design/icons';
 import "./dynamicForms.css";
 
 const { TextArea } = Input
@@ -29,10 +29,9 @@ export const Field = ({
   label,
   required = true,
   message = "Campo obrigatório",
+  initialValue,
   children,
   layout,
-  value,
-  initialValue,
 }) => (
 
   <Form.Item
@@ -40,7 +39,6 @@ export const Field = ({
     {...field}
     name={name}
     label={label ? label : null}
-    value={value}
     initialValue={initialValue}
     rules={[
       {
@@ -78,7 +76,7 @@ export const InputField = ({
       name={name}
       className="formInput"
       placeholder={placeholder}
-      onChange={onChange}
+      onChange={e => onChange(e.target.value)}
       autoSize={size}
       defaultValue={value}
       disabled={disabled}
@@ -91,16 +89,14 @@ export const ImageUpload = ({
   field,
   label,
   required = true,
-  imageChange,
+  onChange = null,
   layout
 }) => {
 
   const [preview, setPreview] = useState(false);
   const [file, setFile] = useState();
 
-  useEffect(() => {
-    imageChange(file);
-  }, [file])
+  useEffect(() => onChange(file), [file]);
 
   return (
     <Field
@@ -123,7 +119,7 @@ export const ImageUpload = ({
       >
         {preview
           ?
-          <img src={preview} alt="avatar" style={{ width: '100%' }} />
+          <img src={preview} alt="avatar" style={{ maxWidth: '100%', maxHeight: '100%' }} />
           :
           <div>
             <PlusOutlined />
@@ -139,7 +135,8 @@ export const Alternatives = ({
   name,
   field,
   label,
-  onChange,
+  onChange = null,
+  correctChange = null,
   required = true,
   message,
   layout,
@@ -147,12 +144,15 @@ export const Alternatives = ({
   optionLayout
 }) => {
 
-
   const [selected, setSelected] = useState("A");
+  const [alternatives, setAlternatives] = useState({});
 
-  const handleSelect = e => { setSelected(e.target.value); };
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const handleSelect = e => { setSelected(e.target.value); correctChange(e.target.value) };
+  const alternativeChange = (e, index) => setAlternatives({ ...alternatives, [index]: e.target.value });
+
+  useEffect(() => onChange(alternatives), [alternatives]);
 
   return (
     <Field
@@ -170,41 +170,36 @@ export const Alternatives = ({
             onChange={handleSelect}
             defaultValue={selected}
           >
-            {fields.map((field, index) => {
-              console.log(selected)
-              return (
-                <div className="alternativeWrapper">
-                  <Radio.Button
+            {fields.map((field, index) => (
+              <div className="alternativeWrapper">
+                <Radio.Button
+                  className="alternative"
+                  value={letters[index]}
+                >
+                  {letters[index]}
+                </Radio.Button>
+                <Field
+                  field={field}
+                  fieldKey={[field.fieldKey, letters[index]]}
+                  name={field.name}
+                  layout={optionLayout}
+                >
+                  <Input
                     className="alternative"
-                    value={letters[index]}
-                  >
-                    {letters[index]}
-                  </Radio.Button>
-                  <Field
-                    field={field}
-                    fieldKey={[field.fieldKey, letters[index]]}
-                    name={field.name}
-                    layout={optionLayout}
-                  >
-                    <Input
-                      className="alternative"
-                      placeholder="Alternativa"
-                    />
-                  </Field>
-                  <MinusCircleOutlined
-                    className="alternative-delete"
-                    onClick={() => remove(field.name)}
+                    placeholder="Alternativa"
+                    onChange={(e) => alternativeChange(e, letters[index])}
                   />
-                </div>
-              )
-            })}
-            <Field layout={layout}>
+                </Field>
+                <MinusCircleOutlined
+                  className="alternative-delete"
+                  onClick={() => remove(field.name)}
+                />
+              </div>
+            ))}
+            <Field layout={layout} >
               <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                 Adicionar alternativa
               </Button>
-            </Field>
-            <Field layout={layout} name='correct' value={selected}>
-              <Input value={selected} />
             </Field>
           </Radio.Group>
         )}
@@ -219,44 +214,51 @@ export const QuestionText = ({
   field,
   layout = questionLayout,
   tailLayout = questionTailLayout,
-  onChange = () => { },
-  imageChange,
+  onChange = null,
   remove,
-}) => (
+}) => {
 
-  <div className="questionWrapper">
-    <Field layout={tailLayout}>
-      <h5>{`Questão ${index + 1}:`}</h5>
-    </Field>
-    <InputField
-      name={[name, 'head']}
-      field={field}
-      label="Enunciado"
-      placeholder="Enunciado da questão"
-      message="Por favor, insira enunciado da questão!"
-      layout={layout}
-      onChange={(e) => onChange(e, index, 'header')}
-    />
-    <ImageUpload
-      name={[name, 'image']}
-      field={field}
-      label="Imagem"
-      required={false}
-      layout={layout}
-      imageChange={(img) => imageChange(img, index)}
-    />
-    <Field layout={tailLayout}>
-      <Button
-        type="dashed"
-        className="formButtonDelete"
-        onClick={() => remove()}
-        icon={<MinusCircleOutlined />}
-      >
-        Remover questão
+  const [question, setQuestion] = useState({});
+
+  const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
+
+  useEffect(() => onChange(question), [question])
+
+  return (
+    <div className="questionWrapper">
+      <Field layout={tailLayout}>
+        <h5>{`Questão ${index + 1}:`}</h5>
+      </Field>
+      <InputField
+        name={[name, 'heading']}
+        field={field}
+        label="Enunciado"
+        placeholder="Enunciado da questão"
+        message="Por favor, insira enunciado da questão!"
+        layout={layout}
+        onChange={(value) => questionChange('heading', value)}
+      />
+      <ImageUpload
+        name={[name, 'image']}
+        field={field}
+        label="Imagem"
+        required={false}
+        layout={layout}
+        onChange={(value) => questionChange('image', value)}
+      />
+      <Field layout={tailLayout}>
+        <Button
+          type="dashed"
+          className="formButtonDelete"
+          onClick={() => remove()}
+          icon={<MinusCircleOutlined />}
+        >
+          Remover questão
       </Button>
-    </Field>
-  </div>
-)
+      </Field>
+    </div>
+  )
+}
 
 export const QuestionAlternatives = ({
   name,
@@ -266,102 +268,110 @@ export const QuestionAlternatives = ({
   tailLayout = questionTailLayout,
   optionLayout = alternativeLayout,
   onChange = () => { },
-  imageChange,
   remove,
-}) => (
+}) => {
 
-  <div className="questionWrapper">
-    <Field layout={tailLayout}>
-      <h5>{`Questão ${index + 1}:`}</h5>
-    </Field>
-    <InputField
-      name={[name, 'head']}
-      field={field}
-      label="Enunciado"
-      placeholder="Enunciado da questão"
-      message="Por favor, insira enunciado da questão!"
-      layout={layout}
-      onChange={(e) => onChange(e, index, 'header')}
-    />
-    <Alternatives
-      name={[name, 'alternatives']}
-      field={field}
-      label="Alternativas"
-      message="Por favor, insira alteranativa!"
-      layout={layout}
-      tailLayout={tailLayout}
-      optionLayout={optionLayout}
-      onChange={(e) => onChange(e, index, 'alternatives')}
-    />
-    <ImageUpload
-      name={[name, 'image']}
-      field={field}
-      label="Imagem"
-      required={false}
-      layout={layout}
-      imageChange={(img) => imageChange(img, index)}
-    />
-    <Field layout={tailLayout}>
-      <Button
-        type="dashed"
-        className="formButtonDelete"
-        onClick={() => remove()}
-        icon={<MinusCircleOutlined />}
-      >
-        Remover questão
+  const [question, setQuestion] = useState({ correct: 'A' });
+
+  const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
+
+  useEffect(() => onChange(question), [question])
+
+  return (
+    <div className="questionWrapper">
+      <Field layout={tailLayout}>
+        <h5>{`Questão ${index + 1}:`}</h5>
+      </Field>
+      <InputField
+        name={[name, 'heading']}
+        field={field}
+        label="Enunciado"
+        placeholder="Enunciado da questão"
+        message="Por favor, insira enunciado da questão!"
+        layout={layout}
+        onChange={(value) => questionChange('heading', value)}
+      />
+      <Alternatives
+        name={[name, 'alternatives']}
+        field={field}
+        label="Alternativas"
+        message="Por favor, insira alteranativa!"
+        layout={layout}
+        tailLayout={tailLayout}
+        optionLayout={optionLayout}
+        onChange={(value) => questionChange('alternatives', value)}
+        correctChange={(value) => questionChange('correct', value)}
+      />
+      <ImageUpload
+        name={[name, 'image']}
+        field={field}
+        label="Imagem"
+        required={false}
+        layout={layout}
+        onChange={(value) => questionChange('image', value)}
+      />
+      <Field layout={tailLayout}>
+        <Button
+          type="dashed"
+          className="formButtonDelete"
+          onClick={() => remove()}
+          icon={<MinusCircleOutlined />}
+        >
+          Remover questão
       </Button>
-    </Field>
-  </div>
-)
+      </Field>
+    </div>
+  )
+}
 
 export const AnswerText = ({
   index,
-  header = "",
+  heading = "",
   image = false,
   value,
   size = { minRows: 3, maxRows: 10 },
-  onChange,
+  onChange = null,
   layout = questionLayout,
   tailLayout = questionTailLayout,
   disabled = false
 }) => (
-  <>
-    <h3 className="answerTitle">
+
+  <div className="questionWrapper">
+    <h5 className="answerTitle">
       {`Questão ${index + 1}:`}
-    </h3>
-    <div className="questionWrapper">
-      <Field layout={tailLayout} className="answerHeader" >
-        {header}
+    </h5>
+    <Field layout={tailLayout}>
+      <span className="answerHeading">{heading}</span>
+    </Field>
+    {image &&
+      <Field layout={tailLayout}>
+        <div className="answerImage">
+          <Image src={image} />
+        </div>
       </Field>
-      {image &&
-        <Field layout={tailLayout}>
-          <div className="answerImage">
-            <Image src={image} />
-          </div>
-        </Field>
-      }
-      <InputField
-        name={index}
-        field={layout}
-        label="Resposta"
-        placeholder="Insira a resposta da questão"
-        message="Insira resposta da questão!"
-        value={value}
-        onChange={(e) => onChange(e)}
-        size={size}
-        disabled={disabled}
-      />
-    </div>
-  </>
+    }
+    <InputField
+      name={index}
+      field={layout}
+      label="Resposta"
+      placeholder="Insira a resposta da questão"
+      message="Insira resposta da questão!"
+      value={value}
+      onChange={value => onChange(index, value)}
+      size={size}
+      disabled={disabled}
+    />
+  </div>
+
 )
 
 export const AnswerAlternatives = ({
   index,
-  header = "",
+  heading = "",
   image = false,
   alternatives,
   value = null,
-  onChange,
+  onChange = null,
   layout = questionLayout,
   tailLayout = questionTailLayout,
   disabled = false
@@ -370,46 +380,43 @@ export const AnswerAlternatives = ({
   const [selected, setSelected] = useState(value);
   const entries = Object.entries(alternatives);
 
-  const handleSelect = e => {
-    onChange(e);
-    setSelected(e.target.value);
-  }
+  const handleSelect = e => {setSelected(e.target.value); onChange(index, e.target.value);}
 
   return (
-    <>
-      <h3 className="answerTitle">
+
+    <div className="questionWrapper">
+      <h5 className="answerTitle">
         {`Questão ${index + 1}:`}
-      </h3>
-      <div className="questionWrapper">
-        <Field layout={tailLayout} className="answerHeader" >
-          {header}
+      </h5>
+      <Field layout={tailLayout}>
+        <span className="answerHeading">{heading}</span>
+      </Field>
+      {image &&
+        <Field layout={tailLayout}>
+          <div className="answerImage">
+            <Image src={image} />
+          </div>
         </Field>
-        {image &&
-          <Field layout={tailLayout}>
-            <div className="answerImage">
-              <Image src={image} />
+      }
+      <Field layout={layout} label={`Alternativas`} name={index}>
+        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected}>
+          {entries.map((alternative, idx) => (
+            <div className="alternativeAnswerWrapper" key={idx}>
+              <Radio.Button
+                type="default"
+                value={alternative[0]}
+                className="alternative"
+              >
+                {alternative[0]}
+              </Radio.Button>
+              <Tag className="alternativeText">
+                {alternative[1]}
+              </Tag>
             </div>
-          </Field>
-        }
-        <Field layout={layout} label={`Alternativas`}>
-          <Radio.Group onChange={handleSelect} name={index} style={{ "width": "100%" }} value={selected} disabled={disabled}>
-            {entries.map((alternative, idx) => (
-              <div className="alternativeAnswerWrapper" key={idx}>
-                <Radio.Button
-                  type="default"
-                  value={alternative[0]}
-                  className="alternative"
-                >
-                  {alternative[0]}
-                </Radio.Button>
-                <Tag className="alternativeText">
-                  {alternative[1]}
-                </Tag>
-              </div>
-            ))}
-          </Radio.Group>
-        </Field>
-      </div>
-    </>
+          ))}
+        </Radio.Group>
+      </Field>
+    </div>
+
   )
 }

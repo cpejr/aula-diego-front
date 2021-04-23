@@ -31,10 +31,11 @@ import EditarAula from "./Pages/EditarAula/EditarAula";
 import Sobre from "./Pages/Sobre/Sobre";
 import ListaOrganizacao from "./Pages/ListaOrganizacoes/ListaOrganizacoes";
 import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
-import NovaProva from "./Pages/NovaAtividade/NovaAtividade";
-import Prova from "./Pages/Atividade/Atividade";
+import NovaAtividade from "./Pages/NovaAtividade/NovaAtividade";
+import Atividade from "./Pages/Atividade/Atividade";
+import AtividadeResultado from "./Pages/AtividadeResultado/AtividadeResultado";
 import ListaProva from "./Pages/ListaProva/ListaProva"
-import Avaliar from "./Pages/Avaliar/Avaliar"
+import Avaliar from "./Pages/AtividadeResultado/AtividadeResultado"
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
@@ -203,8 +204,8 @@ const routes = () => {
           path="/atividade/cadastro"
           exact
           studentComponent={Dashboard}
-          adminComponent={NovaProva}
-          masterComponent={NovaProva}
+          adminComponent={NovaAtividade}
+          masterComponent={NovaAtividade}
         />
         <PrivateRoute
           path="/atividade/lista"
@@ -223,23 +224,16 @@ const routes = () => {
         <PrivateRoute
           path="/atividade/responder/:id"
           exact
-          studentComponent={Prova}
-          adminComponent={Prova}
-          masterComponent={Prova}
+          studentComponent={Atividade}
+          adminComponent={Atividade}
+          masterComponent={Atividade}
         />
         <PrivateRoute
-          path="/atividade/avaliar/:id"
+          path="/atividade/resultado/:id"
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={Avaliar}
-          masterComponent={Avaliar}
-        />
-        <PrivateRoute
-          path="/atividade/responder/:id"
-          exact
-          studentComponent={Prova}
-          adminComponent={Prova}
-          masterComponent={Prova}
+          studentComponent={AtividadeResultado}
+          adminComponent={AtividadeResultado}
+          masterComponent={AtividadeResultado}
         />
         /* ORGANIZAÇÃO */
         <PrivateRoute

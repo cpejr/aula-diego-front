@@ -16,15 +16,15 @@ const examTailLayout = {
   wrapperCol: { offset: 3, span: 16 },
 };
 
-export default function NovaProva(props) {
+export default function Atividade(props) {
 
-  const [exam, setExam] = useState(false);
-  const [answers, setAnswers] = useState([])
+  const [exercise, setExercise] = useState(false);
+  const [submit, setSubmit] = useState({})
 
   const { session } = useSession();
-  const { history } = useHistory();
+  const history = useHistory();
 
-  const exam_id = props.match.params.id;
+  const exercise_id = props.match.params.id;
 
   const config = {
     headers: {
@@ -41,9 +41,9 @@ export default function NovaProva(props) {
 
   useEffect(() => {
     api
-      .get(`/exam/${exam_id}`, config)
+      .get(`/exercise/${exercise_id}`, config)
       .then(async response => {
-        let exam = response.data;
+        let exercise = response.data;
 
         if (session.user.type === "student" && response.data.status !== "open") {
           message.error("Você não tem permissão para ver essa prova!");
@@ -53,43 +53,45 @@ export default function NovaProva(props) {
         const keys = Object.keys(response.data.questions);
 
         for (const key of keys) {
-          if (exam.questions[key].image !== undefined)
+          if (exercise.questions[key].image !== undefined)
             await api
-              .get(`/file_get/${exam.questions[key].image}`, configFile)
+              .get(`/file_get/${exercise.questions[key].image}`, configFile)
               .then(response => {
-                exam.questions[key].image = URL.createObjectURL(response.data);
+                exercise.questions[key].image = URL.createObjectURL(response.data);
               });
         }
 
-        setExam(exam);
+        setExercise(exercise);
+        setSubmit({
+          user_id: session.user.id,
+          exercise_id: exercise_id,
+          evaluate: exercise.evaluate,
+        })
       })
       .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
   }, [session])
 
+  const handleChange = (index, value) => setSubmit({ ...submit, answers: {...submit.answers, [index]: value }})
+
   const answerSubmit = async () => {
-    const answer = {
-      exam_id: exam.id,
-      user_id: session.user.id,
-      answers,
-    }
 
     api
-      .post("answer", answer, config)
-      .then(() => message.success("Resposta enviada com sucesso!"))
-      .catch(err => {message.error("Não foi possível criar a prova!");})
+      .post("answer", submit, config)
+      .then(response => {
+        console.log(response.data.id)
+        message.success("Resposta enviada com sucesso!");
+        history.push(`/atividade/resultado/${response.data.id}`)
+      })
+      .catch(err => {console.log(err);message.error("Não foi possível criar a prova!");})
   };
-
-  const handleChange = (e) => {
-    setAnswers({ ...answers, [e.target.name]: e.target.value })
-  }
 
   return (
     <Base>
       <div className="examRoot">
         <div className="formWrapper">
-          <text className="examTitle">{exam && exam.name}</text>
-          {exam &&
+          <h3 className="exerciseTitle">{exercise && exercise.name}</h3>
+          {exercise &&
             <Form
               {...examLayout}
               name="answerForm"
@@ -97,26 +99,22 @@ export default function NovaProva(props) {
               size={"large"}
               scrollToFirstError
             >
-              {exam && Object.values(exam.questions).map((question, index) => {
+              {exercise && Object.values(exercise.questions).map((question, index) => {
                 if (question.alternatives === undefined)
                   return <AnswerText
                     index={index}
-                    header={question.header}
+                    heading={question.heading}
                     image={question.image}
                     onChange={handleChange}
-                    layout={examLayout}
-                    tailLayout={examTailLayout}
                   />
 
                 else
                   return <AnswerAlternatives
                     index={index}
-                    header={question.header}
+                    heading={question.heading}
                     image={question.image}
                     alternatives={question.alternatives}
                     onChange={handleChange}
-                    layout={examLayout}
-                    tailLayout={examTailLayout}
                   />
               })}
               <Form.Item {...examTailLayout}>
