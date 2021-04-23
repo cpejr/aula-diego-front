@@ -52,7 +52,7 @@ export default function AtividadeResultado(props) {
       })
       .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
-  })
+  }, [])
 
   return (
     <Base>

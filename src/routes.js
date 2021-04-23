@@ -34,8 +34,8 @@ import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 import NovaAtividade from "./Pages/NovaAtividade/NovaAtividade";
 import Atividade from "./Pages/Atividade/Atividade";
 import AtividadeResultado from "./Pages/AtividadeResultado/AtividadeResultado";
-import ListaProva from "./Pages/ListaProva/ListaProva"
-import Avaliar from "./Pages/AtividadeResultado/AtividadeResultado"
+import AtividadeResposta from "./Pages/AtividadeResposta/AtividadeResposta"
+import AtividadeLista from "./Pages/AtividadeLista/AtividadeLista"
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
@@ -208,19 +208,12 @@ const routes = () => {
           masterComponent={NovaAtividade}
         />
         <PrivateRoute
-          path="/atividade/lista"
+          path="/atividade/resposta/:id"
           exact
           studentComponent={Dashboard}
-          adminComponent={ListaProva}
-          masterComponent={ListaProva}
+          adminComponent={AtividadeResposta}
+          masterComponent={AtividadeResposta}
         />
-        {/* <PrivateRoute
-          path="/atividade/respostas/:id"
-          exact
-          studentComponent={() => <Redirect to="/dashboard" />}
-          adminComponent={ListaRespostas}
-          masterComponent={ListaRespostas}
-        /> */}
         <PrivateRoute
           path="/atividade/responder/:id"
           exact
@@ -234,6 +227,13 @@ const routes = () => {
           studentComponent={AtividadeResultado}
           adminComponent={AtividadeResultado}
           masterComponent={AtividadeResultado}
+        />
+        <PrivateRoute
+          path="/atividade/lista/:id"
+          exact
+          studentComponent={AtividadeLista}
+          adminComponent={AtividadeLista}
+          masterComponent={AtividadeLista}
         />
         /* ORGANIZAÇÃO */
         <PrivateRoute

@@ -1,3 +1,11 @@
+.exerciseListRoot {
+  padding: 10% 5%;
+}
+
+.exerciseListTitle {
+  text-align: center;
+}
+
 .new-course-btn {
   margin-left: 10%;
 }

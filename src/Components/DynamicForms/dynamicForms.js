@@ -71,6 +71,7 @@ export const InputField = ({
     message={message}
     field={field}
     layout={layout}
+    initialValue={value}
   >
     <TextArea
       name={name}
@@ -78,7 +79,6 @@ export const InputField = ({
       placeholder={placeholder}
       onChange={e => onChange(e.target.value)}
       autoSize={size}
-      defaultValue={value}
       disabled={disabled}
     />
   </Field>
@@ -398,8 +398,8 @@ export const AnswerAlternatives = ({
           </div>
         </Field>
       }
-      <Field layout={layout} label={`Alternativas`} name={index}>
-        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected}>
+      <Field layout={layout} label={`Alternativas`} name={index} initialValue={value}>
+        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected} disabled={disabled}>
           {entries.map((alternative, idx) => (
             <div className="alternativeAnswerWrapper" key={idx}>
               <Radio.Button
