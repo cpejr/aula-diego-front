@@ -38,6 +38,7 @@ export default function AtividadeLista(props) {
           answers.push({
             ...answer,
             date: new Date(answer.created_at).toLocaleDateString("pt-BR"),
+            grade: answer.grade !== null ? answer.grade : 'Não avaliativa'
           })
         });
 
