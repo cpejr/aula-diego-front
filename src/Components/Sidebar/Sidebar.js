@@ -10,7 +10,6 @@ export default function Sidebar() {
   const history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
-  const [score, setScore] = useState(0);
 
   let config = {
     headers: {
@@ -80,13 +79,6 @@ export default function Sidebar() {
           setLinksList(studentList);
           break;
       }
-
-      api
-        .post("/score", { user_id: session.user.id }, config)
-        .then((res) => setScore(res.data.score))
-        .catch(() =>
-          message.error("Não foi possível receber pontuação do usuário.")
-        );
     }
   }, []);
   return (
@@ -106,7 +98,7 @@ export default function Sidebar() {
       </div>
       {session.user.type === "student" ? (
         <div className="sidebarScore">
-          <p>{score} XP</p>
+          <p>{session.user.score * 20} XP</p>
         </div>
       ) : null}
 

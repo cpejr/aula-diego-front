@@ -109,7 +109,7 @@ export default function Live(props) {
               </div>
             )}
           </div>
-          {toggleViewVideo && (
+          {toggleViewVideo && session.user.type === "student" && (
             <div className="certificateWrapper">
               <TempoLive />
               <Input

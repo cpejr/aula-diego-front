@@ -33,8 +33,8 @@ import usuariosPendentes from "./Pages/UsuariosPendentes/usuariosPendentes";
 import NovaAtividade from "./Pages/NovaAtividade/NovaAtividade";
 import Atividade from "./Pages/Atividade/Atividade";
 import AtividadeResultado from "./Pages/AtividadeResultado/AtividadeResultado";
-import AtividadeResposta from "./Pages/AtividadeResposta/AtividadeResposta"
-import AtividadeLista from "./Pages/AtividadeLista/AtividadeLista"
+import AtividadeResposta from "./Pages/AtividadeResposta/AtividadeResposta";
+import AtividadeLista from "./Pages/AtividadeLista/AtividadeLista";
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
@@ -42,7 +42,6 @@ import EditarCurso from "./Pages/EditarCurso/EditarCurso";
 import EditarTurma from "./Pages/EditarTurma/EditarTurma";
 import EditarAula from "./Pages/EditarAula/EditarAula";
 import EditarOrganizacao from "./Pages/EditarOrganizacao/EditarOrganizacao";
-
 
 const routes = () => {
   return (
@@ -121,14 +120,14 @@ const routes = () => {
           adminComponent={EditarLive}
           masterComponent={EditarLive}
         />
-          /* TURMA */
-          <PrivateRoute
+        /* TURMA */
+        <PrivateRoute
           path="/turma/editar/:id"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={EditarTurma}
           masterComponent={EditarTurma}
         />
-          <PrivateRoute
+        <PrivateRoute
           path="/turma/lista"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={ListaTurma}
@@ -186,14 +185,14 @@ const routes = () => {
           adminComponent={CursoAdmin}
           masterComponent={CursoAdmin}
         />
-          /* AULA */
-          <PrivateRoute
+        /* AULA */
+        <PrivateRoute
           path="/aula/editar/:id"
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={EditarAula}
           masterComponent={EditarAula}
         />
-          <PrivateRoute
+        <PrivateRoute
           path="/aula/cadastro"
           studentComponent={NovaAula}
           adminComponent={NovaAula}
@@ -206,7 +205,7 @@ const routes = () => {
           adminComponent={Aula}
           masterComponent={Aula}
         />
-          /* PROVA */
+        /* PROVA */
         <PrivateRoute
           path="/aula/editar/:id"
           exact
@@ -292,7 +291,7 @@ const routes = () => {
         <PrivateRoute
           path="/aluno"
           exact
-          studentComponent={() => <Redirect to="/dashboard" />}
+          studentComponent={ListaAlunos}
           adminComponent={ListaAlunos}
           masterComponent={ListaAlunos}
         />

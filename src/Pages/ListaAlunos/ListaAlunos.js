@@ -1,95 +1,109 @@
-import React, { useState, useEffect } from 'react'
-import Base from '../../Components/Base/Base'
-import api from '../../services/api'
-import { Table, Input, message, Tabs } from 'antd'
+import React, { useState, useEffect } from "react";
+import Base from "../../Components/Base/Base";
+import api from "../../services/api";
+import { Table, Input, message, Tabs, Statistic } from "antd";
 import {
   CrownOutlined,
   EditOutlined,
   DeleteOutlined,
   CheckSquareTwoTone,
-  CloseSquareTwoTone
-} from '@ant-design/icons'
-import { useSession } from '../../Context/SessionContext'
-import ActionButton from '../../Components/ActionButton/actionButton'
+  CloseSquareTwoTone,
+} from "@ant-design/icons";
+import { useSession } from "../../Context/SessionContext";
+import ActionButton from "../../Components/ActionButton/actionButton";
 
-import './ListaAlunos.css'
+import "./ListaAlunos.css";
+import { BsPeople } from "react-icons/bs";
 
 export default function ListaAlunos() {
-  const [students, setStudents] = useState([])
-  const [pending, setPending] = useState([])
+  const [students, setStudents] = useState([]);
+  const [pending, setPending] = useState([]);
 
-  const [search, setSearch] = useState('')
-  const [filtered, setFiltered] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("");
+  const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const { session } = useSession()
-  const { TabPane } = Tabs
+  const { session } = useSession();
+  const { TabPane } = Tabs;
 
-  const organizationId = session.user.organization_id
-  const type = session.user.type
+  const organizationId = session.user.organization_id;
+  const type = session.user.type;
 
   const config = {
     headers: {
-      authorization: 'BEARER ' + session.accessToken
-    }
-  }
+      authorization: "BEARER " + session.accessToken,
+    },
+  };
 
-  const getData = tab => {
-    if (session.user.type === 'admin')
-      config.params = { 'user.organization_id': session.user.organization_id }
+  const getData = (tab) => {
+    if (session.user.type !== "master")
+      config.params = { "user.organization_id": session.user.organization_id };
 
-    api.get('/user', config).then(res => {
-      setStudents(res.data.filter(user => user.status === 'approved'))
-      setPending(res.data.filter(user => user.status === 'pending'))
+    api.get("/user", config).then((res) => {
+      setStudents(
+        res.data
+          .filter((user) => user.status === "approved")
+          .sort((a, b) => b.score - a.score)
+      );
+      setPending(res.data.filter((user) => user.status === "pending"));
       setFiltered(
-        res.data.filter(
-          user => user.status === (tab === 0 ? 'approved' : 'pending')
-        )
-      )
-    })
-  }
+        res.data
+          .filter(
+            (user) => user.status === (tab === 0 ? "approved" : "pending")
+          )
+          .sort((a, b) => b.score - a.score)
+      );
+    });
+  };
 
   useEffect(() => {
-    getData(0)
-  }, [])
+    getData(0);
+  }, []);
 
   useEffect(() => {
-    setFiltered(students)
-  }, [students])
+    setFiltered(students);
+  }, [students]);
 
   useEffect(() => {
-    setLoading(false)
-  }, [filtered])
+    setLoading(false);
+  }, [filtered]);
 
   const columns = [
     {
-      title: 'Nome',
-      dataIndex: 'name',
-      width: '25%'
+      title: "Nome",
+      dataIndex: "name",
+      width: "25%",
     },
     {
-      title: 'Matrícula',
-      dataIndex: 'registration',
-      align: 'left',
-      width: '20%'
+      title: "Matrícula",
+      dataIndex: "registration",
+      className: type === "student" ? "hide" : "",
+      align: "left",
+      width: "20%",
+      render: (registration) =>
+        type === "student" ? null : <p>{registration}</p>,
     },
     {
-      title: 'Organização',
-      className: 'column-organization',
-      dataIndex: 'organization_name',
-      width: '20%'
+      title: "Organização",
+      className: type === "master" ? "column-organization" : "hide",
+      dataIndex: "organization_name",
+      width: "20%",
+      render: (registration) =>
+        type === "master" ? <p>{registration}</p> : null,
     },
     {
-      title: 'Ocupação',
-      className: 'column-turma',
-      dataIndex: 'occupation_name',
-      width: '25%'
-    }
-  ]
+      title: "Ocupação",
+      className: type === "student" ? "hide" : "column-turma",
+      dataIndex: "occupation_name",
+      width: "25%",
+      render: (registration) =>
+        type === "student" ? null : <p>{registration}</p>,
+    },
+  ];
 
   function isAdmin(id) {
-    const user = filtered.filter(x => x.id == id)
-    if (user[0].type == 'admin' || user[0].type == 'master') {
+    const user = filtered.filter((x) => x.id == id);
+    if (user[0].type == "admin" || user[0].type == "master") {
       return (
         <ActionButton
           title="Rebaixar"
@@ -98,10 +112,10 @@ export default function ListaAlunos() {
         >
           <CrownOutlined
             className="actionButton"
-            style={{ color: '#f0a500' }}
+            style={{ color: "#f0a500" }}
           />
         </ActionButton>
-      )
+      );
     } else {
       return (
         <ActionButton
@@ -111,18 +125,29 @@ export default function ListaAlunos() {
         >
           <CrownOutlined className="actionButton" />
         </ActionButton>
-      )
+      );
     }
   }
 
   const studentsTable = [
+    {
+      title: "Posição",
+      dataIndex: "id",
+      width: "10%",
+      render: (id) => <p>{findPositionById(id)}º</p>,
+    },
     ...columns,
     {
-      title: 'Ações',
-      dataIndex: 'id',
-      className: type === 'master' ? '' : 'hide',
-      render: id => {
-        return type === 'master' ? (
+      title: "Pontuação",
+      dataIndex: "score",
+      render: (score) => <p>{score * 20} XP</p>,
+    },
+    {
+      title: "Ações",
+      dataIndex: "id",
+      className: type === "master" ? "" : "hide",
+      render: (id) => {
+        return type === "master" ? (
           <>
             {isAdmin(id)}
             {/* <ActionButton title="Editar" confirm="Editar turma?">
@@ -136,91 +161,93 @@ export default function ListaAlunos() {
               <DeleteOutlined className="actionButton" />
             </ActionButton>
           </>
-        ) : null
-      }
-    }
-  ]
+        ) : null;
+      },
+    },
+  ];
 
   const pendingTable = [
     ...columns,
     {
-      title: 'Aprovar',
-      dataIndex: 'id',
-      render: id => {
+      title: "Aprovar",
+      dataIndex: "id",
+      render: (id) => {
         return (
           <>
             <ActionButton
               title="Aprovar"
               confirm="Aprovar usuário?"
-              onConfirm={() => handleApprove(id, 'approved')}
+              onConfirm={() => handleApprove(id, "approved")}
             >
               <CheckSquareTwoTone twoToneColor="limeGreen" />
             </ActionButton>
             <ActionButton
               title="Negar"
               confirm="Negar usuário?"
-              onConfirm={() => handleApprove(id, 'refused')}
+              onConfirm={() => handleApprove(id, "refused")}
             >
               <CloseSquareTwoTone twoToneColor="red" />
             </ActionButton>
           </>
-        )
-      }
-    }
-  ]
+        );
+      },
+    },
+  ];
 
   function handleTabChange(key) {
-    setFiltered(key === '0' ? students : pending)
+    setFiltered(key === "0" ? students : pending);
   }
 
   function handlePromote(id) {
     api
-      .put(`/user/`, { id, type: 'admin' }, config)
+      .put(`/user/`, { id, type: "admin" }, config)
       .then(() => message.success(`O usuário agora é admin`))
-      .catch(err => message.error('não foi possível tornar usuário admin'))
+      .catch((err) => message.error("não foi possível tornar usuário admin"));
   }
 
   function handleDemote(id) {
     api
-      .put(`user/${id}`, { id, type: 'student' }, config)
+      .put(`user/${id}`, { id, type: "student" }, config)
       .then(() => message.success(`O usuário agora é estudante`))
-      .catch(err => message.error('não foi possível tornar usuário estudante'))
+      .catch((err) =>
+        message.error("não foi possível tornar usuário estudante")
+      );
   }
 
   function handleApprove(id, status) {
-    setLoading(true)
+    setLoading(true);
 
     api
       .put(`/user`, { id, status: status }, config)
       .then(() => {
-        if (status === 'approved') message.success(`Usuário aprovado!`)
-        if (status === 'refused') message.success(`Usuário negado!`)
-        getData()
+        if (status === "approved") message.success(`Usuário aprovado!`);
+        if (status === "refused") message.success(`Usuário negado!`);
+        getData();
       })
-      .catch(err => {
-        message.error('Não foi possível alterar o status do usuário!')
-      })
+      .catch((err) => {
+        message.error("Não foi possível alterar o status do usuário!");
+      });
   }
 
   function handleDelete(id) {
-    console.log(config)
+    console.log(config);
     api
       .put(`/user/${id}`, {}, config)
       .then(() => message.success(`Usuário deletado com sucesso`))
-      .catch(err =>
+      .catch((err) =>
         message.error(
-          'Não foi possível deletar usuário. Tente novamente mais tarde'
+          "Não foi possível deletar usuário. Tente novamente mais tarde"
         )
-      )
+      );
   }
 
   function handleSearch(value, key) {
-    setSearch(value)
-    const source = [students, pending]
+    setSearch(value);
+    const source = [students, pending];
 
     setFiltered(
-      source[key].filter(student => {
-        if (value === '') return student
+      source[key].filter((student) => {
+        if (value === "") return student;
         return (
           student.name.toLowerCase().includes(value.toLowerCase()) ||
           student.registration.toString().includes(value.toLowerCase()) ||
@@ -228,20 +255,39 @@ export default function ListaAlunos() {
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           student.occupation_name.toLowerCase().includes(value.toLowerCase())
-        )
+        );
       })
-    )
+    );
+  }
+
+  function findPositionById(id) {
+    let position = -1;
+    students.forEach((element, index) => {
+      if (element.id === id) position = index + 1;
+    });
+    return position;
   }
   return (
     <Base>
-      <h1 className="page-title">Lista de Alunos</h1>
+      <h1 className="page-title">
+        {session.user.type === "student" ? "Ranking" : "Lista de Alunos"}
+      </h1>
       <div className="table-container">
+        {session.user.type === "student" && (
+          <h5 className="greyish">
+            <Statistic
+              title="Minha posição"
+              value={findPositionById(session.user.id) + "º"}
+              prefix={<BsPeople />}
+            />
+          </h5>
+        )}
         <Tabs defaultActiveKey="0" onChange={handleTabChange}>
           <TabPane tab="Alunos" key="0">
             <Input
               className="search-input"
               placeholder="Pesquisar..."
-              onChange={e => handleSearch(e.target.value, 0)}
+              onChange={(e) => handleSearch(e.target.value, 0)}
               value={search}
             />
             <Table
@@ -250,12 +296,12 @@ export default function ListaAlunos() {
               loading={loading}
             />
           </TabPane>
-          {type === 'master' ? (
+          {type === "master" ? (
             <TabPane tab="Pendentes" key="1">
               <Input
                 className="search-input"
                 placeholder="Pesquisar..."
-                onChange={e => handleSearch(e.target.value, 1)}
+                onChange={(e) => handleSearch(e.target.value, 1)}
                 value={search}
               />
               <Table
@@ -268,5 +314,5 @@ export default function ListaAlunos() {
         </Tabs>
       </div>
     </Base>
-  )
+  );
 }
