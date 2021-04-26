@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
-import Cards from "../../Components/Cards/Cards";
+import CardCurso from "../../Components/CardCurso/CardCurso";
 import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
 import "./index.css";
 import { useSession } from "../../Context/SessionContext";
-import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { message } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
@@ -89,6 +88,7 @@ export default function Dashboard(props) {
 
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
+
           <div className="cursosContainer">
             <CardCurso
               title="Novo Curso"
@@ -109,8 +109,9 @@ export default function Dashboard(props) {
               path="/dashboard"
             />
           </div>
-
-          <div className="DashboardCardContainer">
+        </div>
+      </Base>
+      {/*<div className="DashboardCardContainer">
             <Cards
               title="SAMU"
               cardColor1="#A564E5"
@@ -133,37 +134,7 @@ export default function Dashboard(props) {
               date="20/10/2020"
               hour="20:00"
             />
-          </div>
-          <TabelaAtividades
-            type="Lista 1"
-            module="3"
-            name="SAMU"
-            date="22/11/2020"
-            status={true}
-          />
-        </div>
-      </Base>
+          </div> */}
     </>
-  );
-}
-
-function CardCurso({ title, organization, description, path }) {
-  const history = useHistory();
-  return (
-    <div className="containerCursos">
-      <div className="CardCursoTop">
-        <h4 className="descriptionCurso"></h4>
-      </div>
-      <div className="CardCursoBottom">
-        <h3 className="TitleCurso">{title}</h3>
-        <h5 className="subTitleCurso">{organization}</h5>
-        <h6 className="subTitleCurso">{description}</h6>
-        <div style={{ textAlign: "right", marginTop: "auto" }}>
-          <button className="btnVerCurso" onClick={() => history.push(path)}>
-            Ver Curso
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }

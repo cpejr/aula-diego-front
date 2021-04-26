@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Burger from "../Burger/Burger";
 import "./Header.css";
-import LogoDark from "../../images/Logo2.png";
+import LogoAluno from "../../images/reclass-aluno.svg";
 import { Link, Switch, useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
@@ -49,9 +49,9 @@ const Header = () => {
           <>
             <Link to="/dashboard">
               <img
-                style={{ marginLeft: "2vw", height: "50px" }}
+                style={{ marginLeft: "2vw", height: "100px" }}
                 className="headerLogo"
-                src={LogoDark}
+                src={LogoAluno}
               ></img>
             </Link>
             {/*<div className="headerScore">
