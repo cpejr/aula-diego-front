@@ -136,11 +136,19 @@ export default function ConfiguracaoAluno(props) {
       <Base>
         <div className="configUser">
           <EditUser />
-          <div className="btnVoltar">
-            <Button size="large" onClick={handleClose}>
-              Voltar
-            </Button>
-          </div>
+          {session.user.type != "student" ? (
+            <div className="btnVoltar">
+              <Button size="large" onClick={handleClose}>
+                Voltar
+              </Button>
+            </div>
+          ) : (
+            <div className="btnVoltar2">
+              <Button size="large" onClick={handleClose}>
+                Voltar
+              </Button>
+            </div>
+          )}
         </div>
       </Base>
     );

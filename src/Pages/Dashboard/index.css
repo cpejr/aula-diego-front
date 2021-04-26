@@ -1,6 +1,22 @@
 .pageWrapper {
-  background-color: #fafafa;
   min-width: 100vw;
+}
+.DashboardTitle {
+  display: flex;
+  flex: 1;
+}
+.DashboardContainer {
+  margin: 0px 100px 0px 100px;
+}
+.cursosContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 4fr));
+}
+.DashboardSubTitle {
+  display: flex;
+  flex: 1;
+  margin-left: 3%;
+  margin-top: 2%;
 }
 .dashboardCardContainer {
   display: flex;
@@ -9,7 +25,6 @@
   vertical-align: middle;
   align-items: center;
   justify-content: center;
-  background-color: #fafafa;
 }
 .DashboardTitle {
   display: flex;
@@ -17,17 +32,13 @@
   justify-content: flex-start;
   align-items: center;
   color: #707070;
-  background-color: #fafafa;
-  margin-top: 5%;
+  margin-top: 2%;
 }
 .TitleImg {
   display: flex;
   width: 65px;
   height: 65px;
-  border-radius: 100%;
-  border-radius: 200;
   margin-left: 5%;
-  margin-right: 3%;
 }
 
 @media (max-width: 600px) {
@@ -41,5 +52,9 @@
 
   .pageWrapper {
     margin-left: 0%;
+  }
+
+  .DashboardContainer {
+    margin: 0;
   }
 }

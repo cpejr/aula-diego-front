@@ -1,6 +1,53 @@
 .Sidebar {
 }
 
+.headerBase {
+  height: 70px;
+  display: flex;
+  background-color: #25003c;
+  align-items: center;
+}
+
+.headerAlign {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  align-items: center;
+  margin: 2%;
+}
+
+.buttonHeader {
+  border-radius: 8px;
+  height: 50px;
+  width: 120px;
+  background-color: rgb(198, 53, 84);
+  border: 2px solid #b11734;
+  color: #ffffff;
+  outline: none;
+  border: none;
+  font-weight: 600;
+  margin: 2%;
+}
+
+.buttonHeader :focus {
+  outline: none;
+  border: none;
+}
+
+.headerScore {
+  margin-top: 1%;
+  margin-left: 2%;
+  align-items: center;
+  color: #ffffff;
+}
+
+.Sidebar {
+}
+
+.show {
+  display: none;
+}
+
 .active {
   position: fixed;
   height: 90vh;
@@ -63,11 +110,18 @@
   }
 }
 
-@media (max-width: 1025px) {
+@media (max-width: 785px) {
   .LabelContainer {
     display: none;
   }
   .HeaderImg {
     display: flex;
+  }
+  .headerLogo {
+    display: none;
+  }
+
+  .headerAlign {
+    display: none;
   }
 }

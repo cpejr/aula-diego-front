@@ -43,6 +43,13 @@
   margin-right: 13%;
 }
 
+.btnVoltar2 {
+  margin-top: 2%;
+  text-align: right;
+  margin-top: -3.4%;
+  margin-right: 13%;
+}
+
 .buttonConfigAluno {
   background-color: #c63756;
   border: none;
@@ -124,6 +131,11 @@
   }
 
   .btnVoltar {
+    margin-top: -21.5%;
+    margin-right: 35%;
+  }
+
+  .btnVoltar2 {
     margin-top: -21.5%;
     margin-right: 35%;
   }

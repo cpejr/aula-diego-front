@@ -20,7 +20,7 @@ export default function Sidebar() {
   const studentList = [
     {
       title: "Meus Cursos",
-      path: "/curso/lista",
+      path: "/curso",
     },
   ];
   const adminLinks = [
@@ -113,7 +113,7 @@ export default function Sidebar() {
           })}
           <div className="configSidebar">
             <li className="ul-link">
-              <Link to="/config">Configurações</Link>
+              <Link to="/config">Minhas Informações</Link>
             </li>
           </div>
         </ul>
