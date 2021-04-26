@@ -5,7 +5,7 @@ import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades
 import "./index.css";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
-import { message } from "antd";
+import { message, Carousel, Timeline } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -13,6 +13,29 @@ export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
   const [score, setScore] = useState(0);
   const { session } = useSession();
+  const [courses, setCourses] = useState([]);
+  const [classes, setClasses] = useState([]);
+
+  const configCourse = {
+    headers: {
+      authorization: "BEARER " + session.accessToken,
+    },
+    params: {
+      "course.organization_id": session.user.organization_id,
+    },
+  };
+
+  useEffect(() => {
+    api
+      .get(`/course/user/${session.user.id}`, configCourse)
+      .then((response) => {
+        console.log(response);
+        setCourses(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados dos cursos");
+      });
+  }, []);
 
   const config = {
     headers: {
@@ -88,27 +111,54 @@ export default function Dashboard(props) {
 
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-
           <div className="cursosContainer">
-            <CardCurso
-              title="Novo Curso"
-              organization="ANBU"
-              description="Como se tornar um ninja"
-              path="/dashboard"
-            />
-            <CardCurso
-              title="Novo Curso"
-              organization="ANBU"
-              description="Como se tornar um ninja"
-              path="/dashboard"
-            />
-            <CardCurso
-              title="Novo Curso"
-              organization="ANBU"
-              description="Como se tornar um ninja"
-              path="/dashboard"
-            />
+            {courses
+              ? courses.map((course) => {
+                  return (
+                    <CardCurso
+                      title={course.course_name}
+                      organization={course.organization_name}
+                      description={course.course_description}
+                      path={
+                        session.user.type === "student"
+                          ? `/curso/${course.course_id}`
+                          : `/curso/gerenciar/${course.course_id}`
+                      }
+                    />
+                  );
+                })
+              : null}
           </div>
+
+          <h3 className="DashboardSubTitle">Próximas Atividades</h3>
+          <Timeline style={{ margin: "3%", fontSize: "100px" }}>
+            <Timeline.Item color="green">
+              Create a services site 2015-09-01
+            </Timeline.Item>
+            <Timeline.Item color="green">
+              Create a services site 2015-09-01
+            </Timeline.Item>
+            <Timeline.Item color="red">
+              <p>Solve initial network problems 1</p>
+              <p>Solve initial network problems 2</p>
+              <p>Solve initial network problems 3 2015-09-01</p>
+            </Timeline.Item>
+            <Timeline.Item>
+              <p>Technical testing 1</p>
+              <p>Technical testing 2</p>
+              <p>Technical testing 3 2015-09-01</p>
+            </Timeline.Item>
+            <Timeline.Item color="gray">
+              <p>Technical testing 1</p>
+              <p>Technical testing 2</p>
+              <p>Technical testing 3 2015-09-01</p>
+            </Timeline.Item>
+            <Timeline.Item color="gray">
+              <p>Technical testing 1</p>
+              <p>Technical testing 2</p>
+              <p>Technical testing 3 2015-09-01</p>
+            </Timeline.Item>
+          </Timeline>
         </div>
       </Base>
       {/*<div className="DashboardCardContainer">
