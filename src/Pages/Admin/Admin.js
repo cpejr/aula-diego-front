@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message } from "antd";
+import { message, Timeline, Divider } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
@@ -11,7 +11,8 @@ export default function Admin() {
 
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [activities, setActivities] = useState([]);
+  const [past, setPast] = useState(false);
+  const [future, setFuture] = useState(false);
 
   const { session } = useSession();
   const history = useHistory();
@@ -31,34 +32,89 @@ export default function Admin() {
 
   useEffect(() => {
     api
-      .get(`/user`, {...config, params: { "user.organization_id": session.user.organization_id }})
+      .get(`/user`, { ...config, params: { "user.organization_id": session.user.organization_id } })
       .then(response => setStudents(response.data))
       .catch(err => { message.error("Não foi possível carregar dados das aulas"); })
 
-    api
-      .get(`/course`, {...config, params: { organization_id: session.user.organization_id }})
-      .then(response => {
-        const list = []
+    const list = []
 
-        Promise.allSettled(response.data.map(course => course.id).map(id => {
-          api
+    api
+      .get(`/course`, { ...config, params: { organization_id: session.user.organization_id } })
+      .then(response => {
+        Promise.all(response.data.map(course => course.id).map(async id => {
+          await api
             .get(`/course/${id}/all`, config)
-            .then(response => { list.push(...response.data); Promise.resolve() })
+            .then(response => { list.push(...response.data); Promise.resolve("") })
             .catch(err => { message.error("Não foi possível carregar dados das aulas"); })
         }))
-        .then(() => {setActivities(/* list.map(item => new Date(item.created_at)) */list)})
-        
+          .then(() => {
+            const sorted = (
+              list.map(item => {
+                let color = 'RoyalBlue'
+                if (item.type === 'live') color = 'Purple'
+
+                if (item.type === "exercise-start")
+                  return {
+                    ...item,
+                    name: `${item.name} - Início`,
+                    time: new Date(item.date).getTime(),
+                    date: new Date(item.date).toLocaleDateString("pt-BR"),
+                    color: 'Pink'
+                  }
+
+                if (item.type === "exercise-end")
+                  return {
+                    ...item,
+                    name: `${item.name} - Fim`,
+                    time: new Date(item.date).getTime(),
+                    date: new Date(item.date).toLocaleDateString("pt-BR"),
+                    color: 'PaleVioletRed'
+                  }
+
+                return {
+                  ...item,
+                  time: new Date(item.date).getTime(),
+                  date: new Date(item.date).toLocaleDateString("pt-BR"),
+                  color: color
+                }
+              })
+                .sort((a, b) => (a.time - b.time))
+                .filter(item => item.type === 'class' ? false : true)
+                .slice(0, 20)
+            )
+
+            const now = Date.now();
+
+            setPast(sorted.filter(item => item.time < now ? true : false));
+            setFuture(sorted.filter(item => item.time > now ? true : false));
+          })
+
         setCourses(response.data);
       })
       .catch(err => { message.error("Não foi possível carregar dados das aulas"); })
 
   }, []);
 
-  console.log(courses)
-  console.log(activities)
-
   return (
     <Base>
+      <div className='adminRoot'>
+        <h4>Últimas atualizações</h4>
+        <div className="adminTimelineFuture">
+          <Timeline mode={'left'} reverse={true}>
+            {future && future.map(item => (
+              <Timeline.Item label={`${item.date} - ${item.course_name}`} color={item.color}>{item.name}</Timeline.Item>
+            ))}
+          </Timeline>
+        </div>
+        <Divider />
+        <div className="adminTimelinePast">
+          <Timeline mode={'right'} reverse={true}>
+            {past && past.map(item => (
+              <Timeline.Item label={`${item.course_name} - ${item.date}`} color={item.color}>{item.name}</Timeline.Item>
+            ))}
+          </Timeline>
+        </div>
+      </div>
     </Base>
   );
 }
