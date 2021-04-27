@@ -9,6 +9,7 @@
   margin: 0px 100px 0px 100px;
 }
 .cursosContainer {
+  align-items: center;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 4fr));
 }
@@ -39,6 +40,17 @@
   width: 65px;
   height: 65px;
   margin-left: 5%;
+}
+.slick-arrow .slick-prev::before {
+  content: " ";
+}
+
+.ant-carousel .slick-next::before {
+  content: " ";
+}
+
+.ant-carousel .slick-next::before {
+  content: " ";
 }
 
 @media (max-width: 600px) {

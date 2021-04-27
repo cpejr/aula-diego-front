@@ -7,7 +7,7 @@ import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
 import { message, Carousel, Timeline } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
-import { UserOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined, UserOutlined } from "@ant-design/icons";
 
 export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
@@ -15,6 +15,47 @@ export default function Dashboard(props) {
   const { session } = useSession();
   const [courses, setCourses] = useState([]);
   const [classes, setClasses] = useState([]);
+
+  const SampleNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          color: "black",
+          fontSize: "15px",
+          lineHeight: "1.5715",
+        }}
+        onClick={onClick}
+      >
+        <RightOutlined />
+      </div>
+    );
+  };
+
+  const SamplePrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          color: "black",
+          fontSize: "15px",
+          lineHeight: "1.5715",
+        }}
+        onClick={onClick}
+      >
+        <LeftOutlined />
+      </div>
+    );
+  };
+
+  const settings = {
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+  };
 
   const configCourse = {
     headers: {
@@ -100,7 +141,9 @@ export default function Dashboard(props) {
       <Base>
         <div className="DashboardTitle">
           <img src={organization.logo} className="TitleImg" />
-          <h1 style={{ fontWeight: 600 }}>{organization.name}</h1>
+          <h1 style={{ fontWeight: 600, marginLeft: "15px" }}>
+            {organization.name}
+          </h1>
           <div
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
@@ -111,23 +154,84 @@ export default function Dashboard(props) {
 
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <div className="cursosContainer">
-            {courses
-              ? courses.map((course) => {
-                  return (
+          <div>
+            <Carousel arrows {...settings}>
+              <div className="cursosContainer">
+                <div style={{ display: "flex", margin: "0% 5%" }}>
+                  <div>
                     <CardCurso
-                      title={course.course_name}
-                      organization={course.organization_name}
-                      description={course.course_description}
-                      path={
-                        session.user.type === "student"
-                          ? `/curso/${course.course_id}`
-                          : `/curso/gerenciar/${course.course_id}`
-                      }
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
                     />
-                  );
-                })
-              : null}
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="cursosContainer">
+                <div style={{ display: "flex" }}>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="cursosContainer">
+                <div style={{ display: "flex" }}>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Carousel>
           </div>
 
           <h3 className="DashboardSubTitle">Próximas Atividades</h3>
@@ -160,31 +264,24 @@ export default function Dashboard(props) {
             </Timeline.Item>
           </Timeline>
         </div>
+
+        {courses
+          ? courses.map((course) => {
+              return (
+                <CardCurso
+                  title={course.course_name}
+                  organization={course.organization_name}
+                  description={course.course_description}
+                  path={
+                    session.user.type === "student"
+                      ? `/curso/${course.course_id}`
+                      : `/curso/gerenciar/${course.course_id}`
+                  }
+                />
+              );
+            })
+          : null}
       </Base>
-      {/*<div className="DashboardCardContainer">
-            <Cards
-              title="SAMU"
-              cardColor1="#A564E5"
-              cardColor2="#9244E3"
-              date="20/10/2020"
-              hour="20:00"
-              path={`/cadastrar/aula?course=3acce2d3-f52a-4cf0-bdc3-38c2621e46ca`}
-            />
-            <Cards
-              title="UPA"
-              cardColor1="#6AA1E4"
-              cardColor2="#686AE9"
-              date="20/10/2020"
-              hour="20:00"
-            />
-            <Cards
-              title="Bombeiros"
-              cardColor1="#FD88A4"
-              cardColor2="#EE3763"
-              date="20/10/2020"
-              hour="20:00"
-            />
-          </div> */}
     </>
   );
 }
