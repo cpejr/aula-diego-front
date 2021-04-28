@@ -24,7 +24,7 @@ export default function Dashboard(props) {
         style={{
           ...style,
           color: "black",
-          fontSize: "15px",
+          fontSize: "25px",
           lineHeight: "1.5715",
         }}
         onClick={onClick}
@@ -42,7 +42,7 @@ export default function Dashboard(props) {
         style={{
           ...style,
           color: "black",
-          fontSize: "15px",
+          fontSize: "25px",
           lineHeight: "1.5715",
         }}
         onClick={onClick}
@@ -154,8 +154,97 @@ export default function Dashboard(props) {
 
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <div>
-            <Carousel arrows {...settings}>
+          <Carousel
+            arrows
+            {...settings}
+            dots={false}
+            className="carouselMobile"
+          >
+            <div className="cursosContainer">
+              <div className="centralize">
+                {courses
+                  ? courses.map((course) => {
+                      return (
+                        <CardCurso
+                          title={course.course_name}
+                          organization={course.organization_name}
+                          description={course.course_description}
+                          path={
+                            session.user.type === "student"
+                              ? `/curso/${course.course_id}`
+                              : `/curso/gerenciar/${course.course_id}`
+                          }
+                        />
+                      );
+                    })
+                  : null}
+                <CardCurso
+                  title="{course.course_name}"
+                  organization="{course. organization_ name}"
+                  description="{course.course_description}"
+                />
+                <CardCurso
+                  title="{course.course_name}"
+                  organization="{course.organization_name}"
+                  description="{course.course_description}"
+                />
+              </div>
+            </div>
+            <div className="cursosContainer">
+              <div className="centralize">
+                {courses
+                  ? courses.map((course) => {
+                      return (
+                        <CardCurso
+                          title={course.course_name}
+                          organization={course.organization_name}
+                          description={course.course_description}
+                          path={
+                            session.user.type === "student"
+                              ? `/curso/${course.course_id}`
+                              : `/curso/gerenciar/${course.course_id}`
+                          }
+                        />
+                      );
+                    })
+                  : null}
+                <CardCurso
+                  title="{course.course_name}"
+                  organization="{course.organization_name}"
+                  description="{course.course_description}"
+                />
+                <CardCurso
+                  title="{course.course_name}"
+                  organization="{course.organization_name}"
+                  description="{course.course_description}"
+                />
+              </div>
+            </div>
+            {/*<div className="cursosContainer">
+                <div style={{ display: "flex", margin: "0% 5%" }}>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                  <div>
+                    <CardCurso
+                      title="{course.course_name}"
+                      organization="{course.organization_name}"
+                      description="{course.course_description}"
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="cursosContainer">
                 <div style={{ display: "flex", margin: "0% 5%" }}>
                   <div>
@@ -182,7 +271,7 @@ export default function Dashboard(props) {
                 </div>
               </div>
               <div className="cursosContainer">
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", margin: "0% 5%" }}>
                   <div>
                     <CardCurso
                       title="{course.course_name}"
@@ -205,34 +294,8 @@ export default function Dashboard(props) {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="cursosContainer">
-                <div style={{ display: "flex" }}>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>
-            </Carousel>
-          </div>
+              </div>*/}
+          </Carousel>
 
           <h3 className="DashboardSubTitle">Próximas Atividades</h3>
           <Timeline style={{ margin: "3%", fontSize: "100px" }}>
@@ -264,23 +327,6 @@ export default function Dashboard(props) {
             </Timeline.Item>
           </Timeline>
         </div>
-
-        {courses
-          ? courses.map((course) => {
-              return (
-                <CardCurso
-                  title={course.course_name}
-                  organization={course.organization_name}
-                  description={course.course_description}
-                  path={
-                    session.user.type === "student"
-                      ? `/curso/${course.course_id}`
-                      : `/curso/gerenciar/${course.course_id}`
-                  }
-                />
-              );
-            })
-          : null}
       </Base>
     </>
   );

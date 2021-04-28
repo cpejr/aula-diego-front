@@ -8,11 +8,6 @@
 .DashboardContainer {
   margin: 0px 100px 0px 100px;
 }
-.cursosContainer {
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 4fr));
-}
 .DashboardSubTitle {
   display: flex;
   flex: 1;
@@ -41,6 +36,10 @@
   height: 65px;
   margin-left: 5%;
 }
+.centralize {
+  display: flex;
+  margin: 0% 5%;
+}
 .slick-arrow .slick-prev::before {
   content: " ";
 }
@@ -68,5 +67,19 @@
 
   .DashboardContainer {
     margin: 0;
+  }
+
+  .centralize {
+    margin: 0%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .carouselMobile {
+    width: 90vw;
+  }
+
+  .DashboardContainer {
+    margin: 0px;
   }
 }

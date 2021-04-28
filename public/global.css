@@ -6,5 +6,5 @@ body {
 }
 
 .ant-carousel .slick-prev::before {
-  content: " ";
+  content: ">";
 }
