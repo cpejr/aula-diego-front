@@ -24,7 +24,6 @@ import CadastroOcupacao from "./Pages/CadastroOcupacao/CadastroOcupacao";
 import ListaOcupacoes from "./Pages/ListaOcupacoes/ListaOcupacoes";
 import ListaCursos from "./Pages/ListaCursos/ListaCursos";
 import Curso from "./Pages/Curso/curso";
-import MeusCursos from "./Pages/MeusCursos/MeusCursos";
 import Aula from "./Pages/Aula/Aula";
 import NovaAula from "./Pages/NovaAula/NovaAula";
 import Sobre from "./Pages/Sobre/Sobre";
@@ -157,13 +156,6 @@ const routes = () => {
           studentComponent={() => <Redirect to="/dashboard" />}
           adminComponent={NovoCurso}
           masterComponent={NovoCurso}
-        />
-        <PrivateRoute
-          path="/curso"
-          exact
-          studentComponent={MeusCursos}
-          adminComponent={MeusCursos}
-          masterComponent={MeusCursos}
         />
         <PrivateRoute
           path="/curso/lista"

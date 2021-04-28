@@ -1,31 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Burger from "../Burger/Burger";
 import "./Header.css";
-import Foto from "../../images/foto.jpg";
-import { useHistory } from "react-router-dom";
+import LogoAluno from "../../images/reclass-aluno.svg";
+import { Link, Switch, useHistory } from "react-router-dom";
+import { useSession } from "../../Context/SessionContext";
+import api from "../../services/api";
+import { message } from "antd";
 
 const Header = () => {
   let history = useHistory();
+  const { session } = useSession();
+  const { handleLogout } = useSession();
+  const [score, setScore] = useState(0);
+
+  let config = {
+    headers: {
+      authorization: "Bearer " + session.accessToken,
+    },
+  };
+
+  useEffect(() => {
+    api
+      .post("/score", { user_id: session.user.id }, config)
+      .then((res) => setScore(res.data.score))
+      .catch(() =>
+        message.error("Não foi possível receber pontuação do usuário.")
+      );
+  }, []);
 
   function redirect(path) {
     history.push(path);
   }
   return (
     <>
-      <div className="Sidebar">
-        <Sidebar />
-      </div>
-      <div className="headerContainer">
+      {session.user.type != "student" ? (
+        <div className="Sidebar">
+          <Sidebar />
+        </div>
+      ) : (
+        <div className="Sidebar show">
+          <Sidebar />
+        </div>
+      )}
+      <div className="headerBase">
         <Burger />
-        <div className="HeaderElementsContainer">
-          <div className="LabelContainer">
-            <label className="LabelHeader">Minha Conta</label>
-            <a className="aHeader" onClick={() => redirect("/config")}>
-              Configurações
-            </a>
-          </div>
-          <img className="HeaderImg" src={Foto}></img>
+        {session.user.type === "student" ? (
+          <>
+            <Link to="/dashboard">
+              <img
+                style={{ marginLeft: "2vw", height: "100px" }}
+                className="headerLogo"
+                src={LogoAluno}
+              ></img>
+            </Link>
+            {/*<div className="headerScore">
+              <label>{session.user.name}</label>
+              <p>{score} XP</p>
+        </div>*/}
+          </>
+        ) : null}
+        <div className="headerAlign">
+          <a className="aHeader" onClick={() => redirect("/config")}>
+            Minhas Informações
+          </a>
+          {session.user.type === "student" ? (
+            <>
+              <button
+                className="buttonHeader"
+                onClick={() => {
+                  handleLogout();
+                  history.push("/login");
+                }}
+              >
+                SAIR
+              </button>
+            </>
+          ) : null}
         </div>
       </div>
     </>
