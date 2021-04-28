@@ -2,11 +2,27 @@
   padding: 5% 10%;
 }
 
-.adminTimelinePast {
-  width: 60%;
+.adminStatisticsWrapper {
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #25003C;
+  border-radius: 8px;
+  margin-bottom: 60px;
+}
+
+.adminTimelinesWrapper {
+  padding-top: 32px;
 }
 
 .adminTimelineFuture {
   width: 60%;
-  float: right;
+  padding-right: 120px;
+  margin: auto;
+}
+
+.adminTimelinePast {
+  width: 60%;
+  padding-left: 120px;
+  margin: auto;
 }
