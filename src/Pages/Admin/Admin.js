@@ -10,10 +10,11 @@ import "./Admin.css";
 
 export default function Admin() {
 
-  const [students, setStudents] = useState([]);
   const [approved, setApproved] = useState([]);
   const [pending, setPending] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [organization, setOrganization] = useState([]);
+  const [score, setScore] = useState([]);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
 
@@ -45,11 +46,32 @@ export default function Admin() {
           if (student.status === 'pending') pen += 1;
         });
 
-        setStudents(response.data);
         setApproved(app);
         setPending(pen);
       })
       .catch(err => { message.error("Não foi possível carregar dados dos estudantes"); })
+
+      api
+      .get(`/organization/${session.user.organization_id}`, config)
+      .then(async response => {
+        console.log(response.data)
+        await api
+          .get(`/file_get/${response.data.file_id}`, configFile)
+          .then(file => {
+            const image = URL.createObjectURL(file.data);
+            setOrganization({
+              ...response.data,
+              logo: image
+            });
+          })
+          .catch(err => {message.error("Não foi possível carregar dados dos arquivos")});
+      })
+      .catch(err => {message.error("Não foi possível carregar dados das organizações")});
+
+    api
+      .post("/score", { user_id: session.user.id }, config)
+      .then(response => setScore(response.data.score))
+      .catch(err => message.error("Não foi possível receber pontuação do usuário."));
 
     const list = []
 
