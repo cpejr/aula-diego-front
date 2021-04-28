@@ -113,6 +113,16 @@ export default function Admin() {
   return (
     <Base>
       <div className='adminRoot'>
+        <div className="admindTitleWrapper">
+          <img src={organization.logo} className="adminImg" />
+          <h1 className="adminTitle">
+            {organization.name}
+          </h1>
+          <div className="adminScore">
+            <label>{session.user.name}</label>
+            <p>{score} XP</p>
+          </div>
+        </div>
         <div className="adminStatisticsWrapper">
           <Card bordered={false} style={{ width: "20%" }}>
             <Statistic

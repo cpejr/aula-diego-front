@@ -2,6 +2,25 @@
   padding: 5% 10%;
 }
 
+.adminTitleWrapper {
+
+}
+
+.adminImg {
+  
+}
+
+.adminTitle {
+  font-weight: 600;
+  margin-left: 15px
+}
+
+.adminScore {
+  margin-left: "auto";
+  margin-right: "5%";
+  color: "black"
+}
+
 .adminStatisticsWrapper {
   padding: 30px;
   display: flex;
