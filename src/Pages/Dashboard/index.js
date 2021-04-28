@@ -14,7 +14,6 @@ export default function Dashboard(props) {
   const [score, setScore] = useState(0);
   const { session } = useSession();
   const [courses, setCourses] = useState([]);
-  const [classes, setClasses] = useState([]);
 
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -55,6 +54,30 @@ export default function Dashboard(props) {
   const settings = {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    dots: false,
+
+    responsive: [
+      {
+        breakpoint: 850,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+    ],
   };
 
   const configCourse = {
@@ -70,8 +93,8 @@ export default function Dashboard(props) {
     api
       .get(`/course/user/${session.user.id}`, configCourse)
       .then((response) => {
-        console.log(response);
         setCourses(response.data);
+        console.log(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados dos cursos");
@@ -100,7 +123,6 @@ export default function Dashboard(props) {
       .then((response) => {
         getLogo(response.data).then((response) => {
           setOrganization(response[0]);
-          console.log(response);
         });
       })
       .catch(() => {
@@ -116,7 +138,6 @@ export default function Dashboard(props) {
 
   const getLogo = async (organizations) => {
     const result = [];
-    console.log(organizations);
     for (const organization of organizations) {
       await api
         .get(`/file_get/${organization.file_id}`, configFile)
@@ -154,147 +175,28 @@ export default function Dashboard(props) {
 
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <Carousel
-            arrows
-            {...settings}
-            dots={false}
-            className="carouselMobile"
-          >
-            <div className="cursosContainer">
-              <div className="centralize">
-                {courses
-                  ? courses.map((course) => {
-                      return (
-                        <CardCurso
-                          title={course.course_name}
-                          organization={course.organization_name}
-                          description={course.course_description}
-                          path={
-                            session.user.type === "student"
-                              ? `/curso/${course.course_id}`
-                              : `/curso/gerenciar/${course.course_id}`
-                          }
-                        />
-                      );
-                    })
-                  : null}
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course. organization_ name}"
-                  description="{course.course_description}"
-                />
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course.organization_name}"
-                  description="{course.course_description}"
-                />
-              </div>
-            </div>
-            <div className="cursosContainer">
-              <div className="centralize">
-                {courses
-                  ? courses.map((course) => {
-                      return (
-                        <CardCurso
-                          title={course.course_name}
-                          organization={course.organization_name}
-                          description={course.course_description}
-                          path={
-                            session.user.type === "student"
-                              ? `/curso/${course.course_id}`
-                              : `/curso/gerenciar/${course.course_id}`
-                          }
-                        />
-                      );
-                    })
-                  : null}
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course.organization_name}"
-                  description="{course.course_description}"
-                />
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course.organization_name}"
-                  description="{course.course_description}"
-                />
-              </div>
-            </div>
-            {/*<div className="cursosContainer">
-                <div style={{ display: "flex", margin: "0% 5%" }}>
-                  <div>
+          <Carousel arrows responsive {...settings} className="carouselMobile">
+            {courses
+              ? courses.map((course) => {
+                  return (
                     <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
+                      title={course.course_name}
+                      organization={course.organization_name}
+                      description={course.course_description}
+                      path={
+                        session.user.type === "student"
+                          ? `/curso/${course.course_id}`
+                          : `/curso/gerenciar/${course.course_id}`
+                      }
                     />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="cursosContainer">
-                <div style={{ display: "flex", margin: "0% 5%" }}>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="cursosContainer">
-                <div style={{ display: "flex", margin: "0% 5%" }}>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>*/}
+                  );
+                })
+              : null}
+            <CardCurso
+              title="Novo Curso"
+              organization="ANBU"
+              description="Teste novo curso"
+            />
           </Carousel>
 
           <h3 className="DashboardSubTitle">Próximas Atividades</h3>
