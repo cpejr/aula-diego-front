@@ -2,6 +2,7 @@
   background-color: #fafafa;
   min-width: 100vw;
 }
+
 .dashboardCardContainer {
   display: flex;
   margin-right: 50px;
@@ -11,6 +12,7 @@
   justify-content: center;
   background-color: #fafafa;
 }
+
 .DashboardTitle {
   display: flex;
   flex: 1;

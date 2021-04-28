@@ -3,11 +3,15 @@
 }
 
 .adminTitleWrapper {
-
+  display: flex;
+  flex: 1;
 }
 
 .adminImg {
-  
+  display: flex;
+  width: 65px;
+  height: 65px;
+  margin-left: 5%;
 }
 
 .adminTitle {
