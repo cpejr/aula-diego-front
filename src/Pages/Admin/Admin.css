@@ -45,14 +45,15 @@
 
 .adminTimelineTitle {
   margin-top: 10px;
-  margin-bottom: 30px;
 }
 
 .adminTimelinesWrapper {
-  width: 800px;
+  width: 70%;
   margin: auto;
+  margin-top: 50px;
   padding-top: 60px;
-  padding: 0 50px;
+  padding-left: 50px;
+  padding-right: 50px;
   border: 1px dashed lightgrey;
 }
 
