@@ -274,8 +274,8 @@ export default function Dashboard(props) {
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
           <Carousel
             arrows
-            nextArrow={<ArrowRightOutlined />}
-            prevArrow={<ArrowLeftOutlined />}
+            nextArrow={<RightOutlined />}
+            prevArrow={<LeftOutlined />}
             responsive
             {...settings}
             className="carouselMobile"
