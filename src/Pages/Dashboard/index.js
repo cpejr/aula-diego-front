@@ -151,7 +151,6 @@ export default function Dashboard(props) {
             <p>{score} XP</p>
           </div>
         </div>
-
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
           <Carousel

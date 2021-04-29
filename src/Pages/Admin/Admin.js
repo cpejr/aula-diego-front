@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Timeline, Divider, Card, Statistic } from "antd";
-import { UserOutlined } from "@ant-design/icons"
+import { UserOutlined, ClockCircleOutlined, ExclamationCircleOutlined, ProfileOutlined, TeamOutlined } from "@ant-design/icons"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
@@ -14,7 +14,6 @@ export default function Admin() {
   const [pending, setPending] = useState([]);
   const [courses, setCourses] = useState([]);
   const [organization, setOrganization] = useState([]);
-  const [score, setScore] = useState([]);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
 
@@ -51,7 +50,7 @@ export default function Admin() {
       })
       .catch(err => { message.error("Não foi possível carregar dados dos estudantes"); })
 
-      api
+    api
       .get(`/organization/${session.user.organization_id}`, config)
       .then(async response => {
         console.log(response.data)
@@ -64,14 +63,9 @@ export default function Admin() {
               logo: image
             });
           })
-          .catch(err => {message.error("Não foi possível carregar dados dos arquivos")});
+          .catch(err => { message.error("Não foi possível carregar dados dos arquivos") });
       })
-      .catch(err => {message.error("Não foi possível carregar dados das organizações")});
-
-    api
-      .post("/score", { user_id: session.user.id }, config)
-      .then(response => setScore(response.data.score))
-      .catch(err => message.error("Não foi possível receber pontuação do usuário."));
+      .catch(err => { message.error("Não foi possível carregar dados das organizações") });
 
     const list = []
 
@@ -135,20 +129,19 @@ export default function Admin() {
   return (
     <Base>
       <div className='adminRoot'>
-        <div className="admindTitleWrapper">
+        <div className="adminTitleWrapper">
           <img src={organization.logo} className="adminImg" />
           <h1 className="adminTitle">
             {organization.name}
           </h1>
-          <div className="adminScore">
-            <label>{session.user.name}</label>
-            <p>{score} XP</p>
-          </div>
         </div>
-        <div className="adminStatisticsWrapper">
-          <Card bordered={false} style={{ width: "20%" }}>
+        <Divider />
+        <h3>Estatísticas</h3>
+        <div className="adminCardsWrapper">
+        <Card bordered={false} style={{ width: "20%" }}>
             <Statistic
               title="Estudantes"
+              className="adminStatistic"
               value={approved}
               prefix={<UserOutlined />}
             />
@@ -156,23 +149,30 @@ export default function Admin() {
           <Card bordered={false} style={{ width: "20%" }}>
             <Statistic
               title="Pendentes"
+              className="adminStatistic"
               value={pending}
+              prefix={<ExclamationCircleOutlined />}
             />
           </Card>
           <Card bordered={false} style={{ width: "20%" }}>
             <Statistic
               title="Cursos"
-              value={courses.length}
+              className="adminStatistic"
+              value={pending}
+              prefix={<ProfileOutlined />}
             />
           </Card>
           <Card bordered={false} style={{ width: "20%" }}>
             <Statistic
-              title="Pendentes"
-              value={pending.length}
+              title="Turmas"
+              className="adminStatistic"
+              value={pending}
+              prefix={<TeamOutlined />}
             />
           </Card>
         </div>
-        <h3>Linha do Tempo</h3>
+        <Divider />
+        <h3 className="adminTimelineTitle" >Linha do Tempo</h3>
         <div className="adminTimelinesWrapper" >
           <div className="adminTimelineFuture">
             <Timeline mode={'left'} reverse={true}>
@@ -181,7 +181,11 @@ export default function Admin() {
               ))}
             </Timeline>
           </div>
-          <Divider style={{ marginBottom: "36px", marginTop: "0px" }} />
+          <div style={{ width: "30%", margin: "auto" }}>
+            <Divider style={{ marginBottom: "60px", marginTop: "0px" }}>
+              <ClockCircleOutlined />
+            </Divider>
+          </div>
           <div className="adminTimelinePast">
             <Timeline mode={'right'} reverse={true}>
               {past && past.map(item => (
