@@ -4,6 +4,7 @@ import CardCurso from "../../Components/CardCurso/CardCurso";
 import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
 import "./index.css";
 import { useSession } from "../../Context/SessionContext";
+import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { message, Carousel, Timeline, Divider } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
@@ -16,9 +17,12 @@ import {
 export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
   const { session } = useSession();
+  const history = useHistory();
+
   const [courses, setCourses] = useState([]);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
+  const [classes, setClasses] = useState([]);
 
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -151,14 +155,24 @@ export default function Dashboard(props) {
         params: { organization_id: session.user.organization_id },
       })
       .then((response) => {
+        const turmas = [];
+        const items = [];
+
         Promise.all(
           response.data
             .map((course) => course.id)
             .map(async (id) => {
+              api
+                .get(`/class`, { ...config, params: { course_id: id } })
+                .then((response) => turmas.push(...response.data))
+                .catch((err) => {
+                  message.error("Não foi possível carregar dados das turmas");
+                });
+
               await api
                 .get(`/course/${id}/all`, config)
                 .then((response) => {
-                  list.push(...response.data);
+                  items.push(...response.data);
                   Promise.resolve("");
                 })
                 .catch((err) => {
@@ -166,10 +180,15 @@ export default function Dashboard(props) {
                 });
             })
         ).then(() => {
-          const sorted = list
+          const sorted = items
             .map((item) => {
               let color = "RoyalBlue";
-              if (item.type === "live") color = "Purple";
+              let url = "/aula";
+
+              if (item.type === "live") {
+                color = "Purple";
+                url = "/live";
+              }
 
               if (item.type === "exercise-start")
                 return {
@@ -178,6 +197,7 @@ export default function Dashboard(props) {
                   time: new Date(item.date).getTime(),
                   date: new Date(item.date).toLocaleDateString("pt-BR"),
                   color: "Pink",
+                  link: `/atividade/responder/${item.id}`,
                 };
 
               if (item.type === "exercise-end")
@@ -187,6 +207,7 @@ export default function Dashboard(props) {
                   time: new Date(item.date).getTime(),
                   date: new Date(item.date).toLocaleDateString("pt-BR"),
                   color: "PaleVioletRed",
+                  link: `/atividade/responder/${item.id}`,
                 };
 
               return {
@@ -194,6 +215,7 @@ export default function Dashboard(props) {
                 time: new Date(item.date).getTime(),
                 date: new Date(item.date).toLocaleDateString("pt-BR"),
                 color: color,
+                link: `${url}/${item.id}`,
               };
             })
             .sort((a, b) => a.time - b.time)
@@ -204,6 +226,7 @@ export default function Dashboard(props) {
 
           setPast(sorted.filter((item) => (item.time < now ? true : false)));
           setFuture(sorted.filter((item) => (item.time > now ? true : false)));
+          setClasses(turmas);
         });
 
         setCourses(response.data);
@@ -277,10 +300,15 @@ export default function Dashboard(props) {
                 {future &&
                   future.map((item) => (
                     <Timeline.Item
-                      label={`${item.date} - ${item.course_name}`}
+                      label={`${item.course_name} - ${item.date}`}
                       color={item.color}
                     >
-                      {item.name}
+                      <div
+                        className="adminLink"
+                        onClick={() => history.push(item.link)}
+                      >
+                        {item.name}
+                      </div>
                     </Timeline.Item>
                   ))}
               </Timeline>
@@ -291,14 +319,19 @@ export default function Dashboard(props) {
               </Divider>
             </div>
             <div className="adminTimelinePast">
-              <Timeline mode={"left"} reverse={true}>
+              <Timeline mode={"right"} reverse={true}>
                 {past &&
                   past.map((item) => (
                     <Timeline.Item
                       label={`${item.course_name} - ${item.date}`}
                       color={item.color}
                     >
-                      {item.name}
+                      <div
+                        className="adminLink"
+                        onClick={() => history.push(item.link)}
+                      >
+                        {item.name}
+                      </div>
                     </Timeline.Item>
                   ))}
               </Timeline>
