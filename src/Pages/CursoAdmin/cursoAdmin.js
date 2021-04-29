@@ -304,7 +304,7 @@ export default function CursoAdmin(props) {
       });
 
     api
-      .get(`/exercise`, config)
+      .get(`/exercise`, configTables)
       .then((response) => {
         const exercises = []
 
@@ -504,7 +504,7 @@ export default function CursoAdmin(props) {
                   <PlusOutlined
                     className="addButton"
                     onClick={() =>
-                      history.push(`/prova/cadastro?course=${course.id}`)
+                      history.push(`/atividade/cadastro?course=${course.id}`)
                     }
                   />
                 </Tooltip>

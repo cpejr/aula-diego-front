@@ -28,6 +28,7 @@ export default function NovaProva(props) {
   const [reset, setReset] = useState(false);
 
   const { session } = useSession();
+  const history = useHistory();
 
   const config = {
     headers: {
@@ -100,6 +101,7 @@ export default function NovaProva(props) {
           .post("exercise", exercise, config)
           .then(() => {
             message.success("Atividade criada com sucesso!");
+            history.push(`/curso/gerenciar/${course}`);
           })
           .catch(err => {
             message.error("Não foi possível criar a atividade!");

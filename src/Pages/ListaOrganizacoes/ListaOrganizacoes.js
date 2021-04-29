@@ -33,11 +33,11 @@ export default function ListaOrganizacoes() {
     api
       .get(`/organization`, config)
       .then((response) => {
+
         getLogo(response.data).then((response) => {
           setOrganizations(response);
           setFiltered(response);
           setLoading(false);
-          console.log(response);
         });
       })
       .catch(() => {
@@ -46,9 +46,12 @@ export default function ListaOrganizacoes() {
   }, []);
 
   const getLogo = async (organizations) => {
+
     const result = [];
-    console.log(organizations);
+    console.log(organizations)
+    
     for (const organization of organizations) {
+      
       await api
         .get(`/file_get/${organization.file_id}`, configFile)
         .then((response) => {
