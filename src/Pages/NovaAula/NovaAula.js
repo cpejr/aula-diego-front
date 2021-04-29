@@ -116,7 +116,7 @@ export default function NovaAula(props) {
 
         setUploading(false);
         message.success("Aula criada com sucesso!");
-        history.push(`/curso/${course}`);
+        history.push(`/curso/gerenciar/${course}`);
       })
       .catch((err) => {
         message.error("Não foi possível criar a aula!");
