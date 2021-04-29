@@ -65,12 +65,6 @@ export default function Dashboard(props) {
       .catch(() => {
         message.error("Não foi possível carregar dados das organizações");
       });
-    api
-      .post("/score", { user_id: session.user.id }, config)
-      .then((res) => setScore(res.data.score))
-      .catch(() =>
-        message.error("Não foi possível receber pontuação do usuário.")
-      );
   }, []);
 
   const getLogo = async (organizations) => {
@@ -105,7 +99,7 @@ export default function Dashboard(props) {
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
             <label>{session.user.name}</label>
-            <p>{score} XP</p>
+            <p>{session.user.score} XP</p>
           </div>
         </div>
 
