@@ -14,7 +14,7 @@ export default function CardCurso({ title, organization, description, path }) {
         <h3 className="TitleCurso">{title}</h3>
         <h5 className="subTitleCurso">{organization}</h5>
         <h6 className="subTitleCurso">{description}</h6>
-        <div style={{ textAlign: "right", marginTop: "auto" }}>
+        <div className='buttonCardCourse'>
           <button className="btnVerCurso" onClick={() => history.push(path)}>
             Ver Curso
           </button>
