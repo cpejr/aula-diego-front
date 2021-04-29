@@ -61,8 +61,6 @@ export default function Dashboard(props) {
   };
 
   const settings = {
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
     slidesToShow: 3,
     slidesToScroll: 1,
     dots: false,
@@ -274,7 +272,14 @@ export default function Dashboard(props) {
         </div>
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <Carousel arrows responsive {...settings} className="carouselMobile">
+          <Carousel
+            arrows
+            nextArrow={<ArrowRightOutlined />}
+            prevArrow={<ArrowLeftOutlined />}
+            responsive
+            {...settings}
+            className="carouselMobile"
+          >
             {courses
               ? courses.map((course) => {
                   return (

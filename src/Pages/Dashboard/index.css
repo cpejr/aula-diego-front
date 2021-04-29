@@ -62,9 +62,7 @@
 .ant-carousel .slick-prev::before {
   content: "";
 }
-.ant-carousel .slick-next {
-  right: -25px;
-}
+
 .ant-carousel .slick-next::before {
   content: "";
 }
