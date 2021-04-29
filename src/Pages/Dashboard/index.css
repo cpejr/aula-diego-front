@@ -53,6 +53,30 @@
   content: " ";
 }
 
+.ant-carousel .slick-track::before,
+.ant-carousel .slick-track::after {
+  display: table;
+  content: "";
+}
+
+.ant-carousel .slick-prev::before {
+  content: "";
+}
+.ant-carousel .slick-next {
+  right: -25px;
+}
+.ant-carousel .slick-next::before {
+  content: "";
+}
+
+.ant-carousel-rtl .ant-carousel .slick-prev::before {
+  content: "";
+}
+
+.ant-carousel-rtl .ant-carousel .slick-next::before {
+  content: "";
+}
+
 @media (max-width: 600px) {
   .TitleImg {
     width: 45px;
