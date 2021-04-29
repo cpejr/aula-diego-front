@@ -20,9 +20,9 @@ export default function Dashboard(props) {
   const history = useHistory();
 
   const [courses, setCourses] = useState([]);
+  const [myCourses, setMyCourses] = useState([]);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
-
 
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -63,6 +63,8 @@ export default function Dashboard(props) {
   const settings = {
     slidesToShow: 3,
     slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
     dots: false,
 
     responsive: [
@@ -105,17 +107,6 @@ export default function Dashboard(props) {
     },
   };
 
-  useEffect(() => {
-    api
-      .get(`/course/user/${session.user.id}`, configCourse)
-      .then((response) => {
-        setCourses(response.data);
-      })
-      .catch(() => {
-        message.error("Não foi possível carregar dados dos cursos");
-      });
-  }, []);
-
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
@@ -134,6 +125,15 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     api
+      .get(`/course/user/${session.user.id}`, configCourse)
+      .then((response) => {
+        setMyCourses(response.data);
+        console.log(response.data);
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados dos cursos");
+      });
+    api
       .get(`/organization`, config)
       .then((response) => {
         getLogo(response.data).then((response) => {
@@ -150,15 +150,14 @@ export default function Dashboard(props) {
         params: { user_id: session.user.id },
       })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
 
         const items = [];
 
         Promise.all(
           response.data
-            .map(item => item.course_id)
+            .map((item) => item.course_id)
             .map(async (id) => {
-
               await api
                 .get(`/course/${id}/all`, config)
                 .then((response) => {
@@ -170,7 +169,6 @@ export default function Dashboard(props) {
                 });
             })
         ).then(() => {
-
           const sorted = items
             .map((item) => {
               let color = "RoyalBlue";
@@ -238,7 +236,9 @@ export default function Dashboard(props) {
             logo: img,
           });
         })
-        .catch((err) => { message.error("Não foi possível carregar dados dos arquivos") });
+        .catch((err) => {
+          message.error("Não foi possível carregar dados dos arquivos");
+        });
     }
 
     return result;
@@ -261,29 +261,22 @@ export default function Dashboard(props) {
         </div>
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <Carousel
-            arrows
-            nextArrow={<RightOutlined />}
-            prevArrow={<LeftOutlined />}
-            responsive
-            {...settings}
-            className="carouselMobile"
-          >
-            {courses
-              ? courses.map((course) => {
-                return (
-                  <CardCurso
-                    title={course.name}
-                    organization={course.organization_name}
-                    description={course.description}
-                    path={
-                      session.user.type === "student"
-                        ? `/curso/${course.id}`
-                        : `/curso/gerenciar/${course.id}`
-                    }
-                  />
-                );
-              })
+          <Carousel arrows responsive {...settings} className="carouselMobile">
+            {myCourses
+              ? myCourses.map((course) => {
+                  return (
+                    <CardCurso
+                      title={course.course_name}
+                      organization={course.organization_name}
+                      description={course.course_description}
+                      path={
+                        session.user.type === "student"
+                          ? `/curso/${course.id}`
+                          : `/curso/gerenciar/${course.id}`
+                      }
+                    />
+                  );
+                })
               : null}
           </Carousel>
 
