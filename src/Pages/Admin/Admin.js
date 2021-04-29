@@ -6,6 +6,7 @@ import { UserOutlined, ClockCircleOutlined, ExclamationCircleOutlined, ProfileOu
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
+import { CallMissedSharp } from "@material-ui/icons";
 
 
 export default function Admin() {
@@ -13,6 +14,7 @@ export default function Admin() {
   const [approved, setApproved] = useState([]);
   const [pending, setPending] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [organization, setOrganization] = useState([]);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
@@ -37,6 +39,7 @@ export default function Admin() {
     api
       .get(`/user`, { ...config, params: { "user.organization_id": session.user.organization_id } })
       .then(response => {
+
         let app = 0;
         let pen = 0;
 
@@ -53,10 +56,11 @@ export default function Admin() {
     api
       .get(`/organization/${session.user.organization_id}`, config)
       .then(async response => {
-        console.log(response.data)
+
         await api
           .get(`/file_get/${response.data.file_id}`, configFile)
           .then(file => {
+
             const image = URL.createObjectURL(file.data);
             setOrganization({
               ...response.data,
@@ -67,22 +71,36 @@ export default function Admin() {
       })
       .catch(err => { message.error("Não foi possível carregar dados das organizações") });
 
-    const list = []
-
     api
       .get(`/course`, { ...config, params: { organization_id: session.user.organization_id } })
       .then(response => {
+
+        const turmas = [];
+        const items = []
+
         Promise.all(response.data.map(course => course.id).map(async id => {
+
+          api
+            .get(`/class`, { ...config, params: { course_id: id } })
+            .then(response => turmas.push(...response.data))
+            .catch(err => { message.error("Não foi possível carregar dados das turmas"); })
+
           await api
             .get(`/course/${id}/all`, config)
-            .then(response => { list.push(...response.data); Promise.resolve("") })
+            .then(response => { items.push(...response.data); Promise.resolve("") })
             .catch(err => { message.error("Não foi possível carregar dados das aulas"); })
         }))
           .then(() => {
+
             const sorted = (
-              list.map(item => {
+              items.map(item => {
                 let color = 'RoyalBlue'
-                if (item.type === 'live') color = 'Purple'
+                let url = '/aula';
+
+                if (item.type === 'live') {
+                  color = 'Purple'
+                  url = '/live'
+                }
 
                 if (item.type === "exercise-start")
                   return {
@@ -90,7 +108,8 @@ export default function Admin() {
                     name: `${item.name} - Início`,
                     time: new Date(item.date).getTime(),
                     date: new Date(item.date).toLocaleDateString("pt-BR"),
-                    color: 'Pink'
+                    color: 'Pink',
+                    link: `/atividade/responder/${item.id}`
                   }
 
                 if (item.type === "exercise-end")
@@ -99,14 +118,17 @@ export default function Admin() {
                     name: `${item.name} - Fim`,
                     time: new Date(item.date).getTime(),
                     date: new Date(item.date).toLocaleDateString("pt-BR"),
-                    color: 'PaleVioletRed'
+                    color: 'PaleVioletRed',
+                    link: `/atividade/responder/${item.id}`
                   }
 
                 return {
                   ...item,
                   time: new Date(item.date).getTime(),
                   date: new Date(item.date).toLocaleDateString("pt-BR"),
-                  color: color
+                  color: color,
+                  link: `${url}/${item.id}`
+
                 }
               })
                 .sort((a, b) => (a.time - b.time))
@@ -118,6 +140,7 @@ export default function Admin() {
 
             setPast(sorted.filter(item => item.time < now ? true : false));
             setFuture(sorted.filter(item => item.time > now ? true : false));
+            setClasses(turmas);
           })
 
         setCourses(response.data);
@@ -138,7 +161,7 @@ export default function Admin() {
         <Divider />
         <h3>Estatísticas</h3>
         <div className="adminCardsWrapper">
-        <Card bordered={false} style={{ width: "20%" }}>
+          <Card bordered={false} style={{ width: "20%" }}>
             <Statistic
               title="Estudantes"
               className="adminStatistic"
@@ -158,7 +181,7 @@ export default function Admin() {
             <Statistic
               title="Cursos"
               className="adminStatistic"
-              value={pending}
+              value={courses.length}
               prefix={<ProfileOutlined />}
             />
           </Card>
@@ -166,7 +189,7 @@ export default function Admin() {
             <Statistic
               title="Turmas"
               className="adminStatistic"
-              value={pending}
+              value={classes.length}
               prefix={<TeamOutlined />}
             />
           </Card>
@@ -177,7 +200,9 @@ export default function Admin() {
           <div className="adminTimelineFuture">
             <Timeline mode={'left'} reverse={true}>
               {future && future.map(item => (
-                <Timeline.Item label={`${item.date} - ${item.course_name}`} color={item.color}>{item.name}</Timeline.Item>
+                <Timeline.Item label={`${item.course_name} - ${item.date}`} color={item.color}>
+                  <div className='adminLink' onClick={() => history.push(item.link)}>{item.name}</div>
+                </Timeline.Item>
               ))}
             </Timeline>
           </div>
@@ -189,7 +214,9 @@ export default function Admin() {
           <div className="adminTimelinePast">
             <Timeline mode={'right'} reverse={true}>
               {past && past.map(item => (
-                <Timeline.Item label={`${item.course_name} - ${item.date}`} color={item.color}>{item.name}</Timeline.Item>
+                <Timeline.Item label={`${item.course_name} - ${item.date}`} color={item.color}>
+                  <div className='adminLink' onClick={() => history.push(item.link)}>{item.name}</div>
+                </Timeline.Item>
               ))}
             </Timeline>
           </div>

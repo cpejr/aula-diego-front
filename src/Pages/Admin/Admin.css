@@ -74,3 +74,8 @@
   display: inline-flex;
   align-items: center;
 }
+
+.adminLink:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
