@@ -82,11 +82,10 @@ export default function CursoAdmin(props) {
       dataIndex: "date",
       width: "20%",
     },
-
     {
       title: <h5>Ações</h5>,
       dataIndex: "id",
-      width: "15%",
+      width: "20%",
       render: (id) => (
         <>
           <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => history.push(`/aula/${id}`)}>
@@ -117,7 +116,7 @@ export default function CursoAdmin(props) {
     {
       title: <h5>Ações</h5>,
       dataIndex: "id",
-      width: "15%",
+      width: "20%",
       render: (id) => (
         <>
           <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => history.push(`/live/${id}`)}>
@@ -148,7 +147,7 @@ export default function CursoAdmin(props) {
     {
       title: "Ações",
       dataIndex: "id",
-      width: "15%",
+      width: "20%",
       render: (id) => (
         <>
           <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => history.push(`/turma/${id}`)}>
@@ -173,7 +172,7 @@ export default function CursoAdmin(props) {
     {
       title: <h5>Título</h5>,
       dataIndex: "name",
-      width: "20%",
+      width: "25%",
     },
     {
       title: <h5>Curso</h5>,
@@ -183,12 +182,12 @@ export default function CursoAdmin(props) {
     {
       title: <h5>Início</h5>,
       dataIndex: "start_date",
-      width: "15%",
+      width: "10%",
     },
     {
       title: <h5>Término</h5>,
       dataIndex: "end_date",
-      width: "15%",
+      width: "10%",
     },
     {
       title: <h5>Status</h5>,
@@ -211,7 +210,7 @@ export default function CursoAdmin(props) {
     {
       title: <h5>Ações</h5>,
       dataIndex: ("id"),
-      width: "15%",
+      width: "20%",
       render: (id, exercise) => (
         <>
           {exercise.status === "hidden" &&
