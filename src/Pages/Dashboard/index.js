@@ -22,7 +22,7 @@ export default function Dashboard(props) {
   const [courses, setCourses] = useState([]);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
-  const [classes, setClasses] = useState([]);
+
 
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -145,27 +145,19 @@ export default function Dashboard(props) {
         message.error("Não foi possível carregar dados das organizações");
       });
 
-    const list = [];
-
     api
-      .get(`/course`, {
+      .get(`/user_class`, {
         ...config,
-        params: { organization_id: session.user.organization_id },
+        params: { user_id: session.user.id },
       })
       .then((response) => {
-        const turmas = [];
+
         const items = [];
 
         Promise.all(
           response.data
-            .map((course) => course.id)
+            .map(item => item.course_id)
             .map(async (id) => {
-              api
-                .get(`/class`, { ...config, params: { course_id: id } })
-                .then((response) => turmas.push(...response.data))
-                .catch((err) => {
-                  message.error("Não foi possível carregar dados das turmas");
-                });
 
               await api
                 .get(`/course/${id}/all`, config)
@@ -178,6 +170,7 @@ export default function Dashboard(props) {
                 });
             })
         ).then(() => {
+
           const sorted = items
             .map((item) => {
               let color = "RoyalBlue";
@@ -224,7 +217,6 @@ export default function Dashboard(props) {
 
           setPast(sorted.filter((item) => (item.time < now ? true : false)));
           setFuture(sorted.filter((item) => (item.time > now ? true : false)));
-          setClasses(turmas);
         });
 
         setCourses(response.data);
@@ -282,19 +274,19 @@ export default function Dashboard(props) {
           >
             {courses
               ? courses.map((course) => {
-                  return (
-                    <CardCurso
-                      title={course.name}
-                      organization={course.organization_name}
-                      description={course.description}
-                      path={
-                        session.user.type === "student"
-                          ? `/curso/${course.id}`
-                          : `/curso/gerenciar/${course.id}`
-                      }
-                    />
-                  );
-                })
+                return (
+                  <CardCurso
+                    title={course.name}
+                    organization={course.organization_name}
+                    description={course.description}
+                    path={
+                      session.user.type === "student"
+                        ? `/curso/${course.id}`
+                        : `/curso/gerenciar/${course.id}`
+                    }
+                  />
+                );
+              })
               : null}
           </Carousel>
 
