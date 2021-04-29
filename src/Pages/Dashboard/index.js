@@ -5,16 +5,20 @@ import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades
 import "./index.css";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
-import { message, Carousel, Timeline } from "antd";
+import { message, Carousel, Timeline, Divider } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
-import { LeftOutlined, RightOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LeftOutlined,
+  RightOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
 
 export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
-  const [score, setScore] = useState(0);
   const { session } = useSession();
   const [courses, setCourses] = useState([]);
-  const [classes, setClasses] = useState([]);
+  const [past, setPast] = useState(false);
+  const [future, setFuture] = useState(false);
 
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -55,6 +59,39 @@ export default function Dashboard(props) {
   const settings = {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    dots: false,
+
+    responsive: [
+      {
+        breakpoint: 1300,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 780,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+    ],
   };
 
   const configCourse = {
@@ -62,7 +99,7 @@ export default function Dashboard(props) {
       authorization: "BEARER " + session.accessToken,
     },
     params: {
-      "course.organization_id": session.user.organization_id,
+      organization_id: session.user.organization_id,
     },
   };
 
@@ -70,8 +107,8 @@ export default function Dashboard(props) {
     api
       .get(`/course/user/${session.user.id}`, configCourse)
       .then((response) => {
-        console.log(response);
         setCourses(response.data);
+        console.log(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados dos cursos");
@@ -100,17 +137,84 @@ export default function Dashboard(props) {
       .then((response) => {
         getLogo(response.data).then((response) => {
           setOrganization(response[0]);
-          console.log(response);
         });
       })
       .catch(() => {
         message.error("Não foi possível carregar dados das organizações");
       });
+
+    const list = [];
+
+    api
+      .get(`/course`, {
+        ...config,
+        params: { organization_id: session.user.organization_id },
+      })
+      .then((response) => {
+        Promise.all(
+          response.data
+            .map((course) => course.id)
+            .map(async (id) => {
+              await api
+                .get(`/course/${id}/all`, config)
+                .then((response) => {
+                  list.push(...response.data);
+                  Promise.resolve("");
+                })
+                .catch((err) => {
+                  message.error("Não foi possível carregar dados das aulas");
+                });
+            })
+        ).then(() => {
+          const sorted = list
+            .map((item) => {
+              let color = "RoyalBlue";
+              if (item.type === "live") color = "Purple";
+
+              if (item.type === "exercise-start")
+                return {
+                  ...item,
+                  name: `${item.name} - Início`,
+                  time: new Date(item.date).getTime(),
+                  date: new Date(item.date).toLocaleDateString("pt-BR"),
+                  color: "Pink",
+                };
+
+              if (item.type === "exercise-end")
+                return {
+                  ...item,
+                  name: `${item.name} - Fim`,
+                  time: new Date(item.date).getTime(),
+                  date: new Date(item.date).toLocaleDateString("pt-BR"),
+                  color: "PaleVioletRed",
+                };
+
+              return {
+                ...item,
+                time: new Date(item.date).getTime(),
+                date: new Date(item.date).toLocaleDateString("pt-BR"),
+                color: color,
+              };
+            })
+            .sort((a, b) => a.time - b.time)
+            .filter((item) => (item.type === "class" ? false : true))
+            .slice(0, 20);
+
+          const now = Date.now();
+
+          setPast(sorted.filter((item) => (item.time < now ? true : false)));
+          setFuture(sorted.filter((item) => (item.time > now ? true : false)));
+        });
+
+        setCourses(response.data);
+      })
+      .catch((err) => {
+        message.error("Não foi possível carregar dados das aulas");
+      });
   }, []);
 
   const getLogo = async (organizations) => {
     const result = [];
-    console.log(organizations);
     for (const organization of organizations) {
       await api
         .get(`/file_get/${organization.file_id}`, configFile)
@@ -147,178 +251,59 @@ export default function Dashboard(props) {
         </div>
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <Carousel
-            arrows
-            {...settings}
-            dots={false}
-            className="carouselMobile"
-          >
-            <div className="cursosContainer">
-              <div className="centralize">
-                {courses
-                  ? courses.map((course) => {
-                      return (
-                        <CardCurso
-                          title={course.course_name}
-                          organization={course.organization_name}
-                          description={course.course_description}
-                          path={
-                            session.user.type === "student"
-                              ? `/curso/${course.course_id}`
-                              : `/curso/gerenciar/${course.course_id}`
-                          }
-                        />
-                      );
-                    })
-                  : null}
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course. organization_ name}"
-                  description="{course.course_description}"
-                />
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course.organization_name}"
-                  description="{course.course_description}"
-                />
-              </div>
-            </div>
-            <div className="cursosContainer">
-              <div className="centralize">
-                {courses
-                  ? courses.map((course) => {
-                      return (
-                        <CardCurso
-                          title={course.course_name}
-                          organization={course.organization_name}
-                          description={course.course_description}
-                          path={
-                            session.user.type === "student"
-                              ? `/curso/${course.course_id}`
-                              : `/curso/gerenciar/${course.course_id}`
-                          }
-                        />
-                      );
-                    })
-                  : null}
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course.organization_name}"
-                  description="{course.course_description}"
-                />
-                <CardCurso
-                  title="{course.course_name}"
-                  organization="{course.organization_name}"
-                  description="{course.course_description}"
-                />
-              </div>
-            </div>
-            {/*<div className="cursosContainer">
-                <div style={{ display: "flex", margin: "0% 5%" }}>
-                  <div>
+          <Carousel arrows responsive {...settings} className="carouselMobile">
+            {courses
+              ? courses.map((course) => {
+                  return (
                     <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
+                      title={course.name}
+                      organization={course.organization_name}
+                      description={course.description}
+                      path={
+                        session.user.type === "student"
+                          ? `/curso/${course.id}`
+                          : `/curso/gerenciar/${course.id}`
+                      }
                     />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="cursosContainer">
-                <div style={{ display: "flex", margin: "0% 5%" }}>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="cursosContainer">
-                <div style={{ display: "flex", margin: "0% 5%" }}>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                  <div>
-                    <CardCurso
-                      title="{course.course_name}"
-                      organization="{course.organization_name}"
-                      description="{course.course_description}"
-                    />
-                  </div>
-                </div>
-              </div>*/}
+                  );
+                })
+              : null}
           </Carousel>
 
           <h3 className="DashboardSubTitle">Próximas Atividades</h3>
-          <Timeline style={{ margin: "3%", fontSize: "100px" }}>
-            <Timeline.Item color="green">
-              Create a services site 2015-09-01
-            </Timeline.Item>
-            <Timeline.Item color="green">
-              Create a services site 2015-09-01
-            </Timeline.Item>
-            <Timeline.Item color="red">
-              <p>Solve initial network problems 1</p>
-              <p>Solve initial network problems 2</p>
-              <p>Solve initial network problems 3 2015-09-01</p>
-            </Timeline.Item>
-            <Timeline.Item>
-              <p>Technical testing 1</p>
-              <p>Technical testing 2</p>
-              <p>Technical testing 3 2015-09-01</p>
-            </Timeline.Item>
-            <Timeline.Item color="gray">
-              <p>Technical testing 1</p>
-              <p>Technical testing 2</p>
-              <p>Technical testing 3 2015-09-01</p>
-            </Timeline.Item>
-            <Timeline.Item color="gray">
-              <p>Technical testing 1</p>
-              <p>Technical testing 2</p>
-              <p>Technical testing 3 2015-09-01</p>
-            </Timeline.Item>
-          </Timeline>
+          <div className="adminTimelinesWrapper">
+            <div className="adminTimelineFuture">
+              <Timeline mode={"left"} reverse={true}>
+                {future &&
+                  future.map((item) => (
+                    <Timeline.Item
+                      label={`${item.date} - ${item.course_name}`}
+                      color={item.color}
+                    >
+                      {item.name}
+                    </Timeline.Item>
+                  ))}
+              </Timeline>
+            </div>
+            <div style={{ width: "30%", margin: "auto" }}>
+              <Divider style={{ marginBottom: "60px", marginTop: "0px" }}>
+                <ClockCircleOutlined />
+              </Divider>
+            </div>
+            <div className="adminTimelinePast">
+              <Timeline mode={"left"} reverse={true}>
+                {past &&
+                  past.map((item) => (
+                    <Timeline.Item
+                      label={`${item.course_name} - ${item.date}`}
+                      color={item.color}
+                    >
+                      {item.name}
+                    </Timeline.Item>
+                  ))}
+              </Timeline>
+            </div>
+          </div>
         </div>
       </Base>
     </>
