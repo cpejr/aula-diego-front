@@ -49,9 +49,10 @@
 }
 
 .adminTimelinesWrapper {
-  width: 700px;
+  width: 800px;
   margin: auto;
   padding-top: 60px;
+  padding: 0 50px;
   border: 1px dashed lightgrey;
 }
 

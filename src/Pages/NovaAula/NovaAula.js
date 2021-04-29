@@ -10,7 +10,7 @@ import "./NovaAula.css";
 const { TextArea } = Input
 
 export default function NovaAula(props) {
-  const [lesson, setLesson] = useState({videos: []});
+  const [lesson, setLesson] = useState({ videos: [] });
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const { session } = useSession();
@@ -102,17 +102,18 @@ export default function NovaAula(props) {
 
     api
       .post("/lesson_create", data, config)
-      .then((response) => {
+      .then(response => {
         fileIds.push(response.data);
 
-        for (let i = 0; i < fileIds.length; i++) {
+        response.data.map((item, index) => {
+          
           const formData = new FormData();
-          formData.append(fileIds[i], files[i]);
+          formData.append(item, files[index]);
 
-          api.post("file_upload", formData, configFiles).catch((err) => {
-            message.error("Não foi possível criar a aula!");
-          });
-        }
+          api
+            .post("file_upload", formData, configFiles)
+            .catch(err => { message.error("Não foi possível criar a aula!") });
+        })
 
         setUploading(false);
         message.success("Aula criada com sucesso!");
@@ -190,11 +191,11 @@ export default function NovaAula(props) {
                         >
                           <Input placeholder="URL do vídeo" />
                         </Form.Item>
-                        <MinusCircleOutlined style={{fontSize: "large"}} onClick={() => {remove(index); removeVideo()}} />
+                        <MinusCircleOutlined style={{ fontSize: "large" }} onClick={() => { remove(index); removeVideo() }} />
                       </div>
                     ))}
                     <Form.Item>
-                      <Button type="dashed" onClick={() => {add(); addVideo()}} icon={<PlusOutlined />}>
+                      <Button type="dashed" onClick={() => { add(); addVideo() }} icon={<PlusOutlined />}>
                         Adicionar vídeo
                       </Button>
                     </Form.Item>
