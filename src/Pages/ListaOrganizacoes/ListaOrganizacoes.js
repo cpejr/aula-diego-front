@@ -48,8 +48,7 @@ export default function ListaOrganizacoes() {
   const getLogo = async (organizations) => {
 
     const result = [];
-    console.log(organizations)
-    
+
     for (const organization of organizations) {
       
       await api
