@@ -110,7 +110,6 @@ export default function Dashboard(props) {
       .get(`/course/user/${session.user.id}`, configCourse)
       .then((response) => {
         setCourses(response.data);
-        console.log(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados dos cursos");
@@ -146,11 +145,12 @@ export default function Dashboard(props) {
       });
 
     api
-      .get(`/user_class`, {
+      .get(`/class_user`, {
         ...config,
         params: { user_id: session.user.id },
       })
       .then((response) => {
+        console.log(response.data)
 
         const items = [];
 
@@ -238,10 +238,7 @@ export default function Dashboard(props) {
             logo: img,
           });
         })
-        .catch((err) => {
-          console.log(err);
-          message.error("Não foi possível carregar dados dos arquivos");
-        });
+        .catch((err) => { message.error("Não foi possível carregar dados dos arquivos") });
     }
 
     return result;
