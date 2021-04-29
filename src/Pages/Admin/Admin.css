@@ -18,20 +18,20 @@
 
 .adminTitle {
   font-weight: 600;
-  margin-left: 10px
+  margin-left: 10px;
 }
 
 .adminScore {
   margin-left: "auto";
   margin-right: "5%";
-  color: "black"
+  color: "black";
 }
 
 .adminCardsWrapper {
   padding: 30px 0;
   display: flex;
   justify-content: space-evenly;
-  background-color: #ececec/* #25003C */;
+  background-color: #ececec /* #25003C */;
   /* border-radius: 8px; */
   margin-top: 40px;
   margin-bottom: 60px;
@@ -75,7 +75,24 @@
   align-items: center;
 }
 
-.adminLink:hover{
+.adminLink:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .adminTimelineFuture {
+    padding-right: 0px;
+    margin: auto;
+  }
+
+  .adminTimelinePast {
+    padding-left: 0px;
+    margin: auto;
+  }
+
+  .adminTimelinesWrapper {
+    width: 100vw;
+    margin: auto;
+  }
 }
