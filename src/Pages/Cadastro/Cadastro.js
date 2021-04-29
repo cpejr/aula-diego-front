@@ -71,7 +71,7 @@ export default function Cadastro(props) {
     data.birthdate = startDate;
 
     api
-      .post("/newuser", data)
+      .post("/user", data)
       .then(() => {
         history.push("/");
       })

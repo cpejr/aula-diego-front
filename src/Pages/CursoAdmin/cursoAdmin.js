@@ -228,7 +228,7 @@ export default function CursoAdmin(props) {
               <ClockCircleOutlined />
             </ActionButton>
           }
-          <ActionButton title="Visualizar" confirm="Visualizar prova?" onConfirm={() => history.push(`/prova/${id}`)}>
+          <ActionButton title="Visualizar" confirm="Visualizar prova?" onConfirm={() => history.push(`/atividade/responder/${id}`)}>
             <SelectOutlined />
           </ActionButton>
           <ActionButton title="Editar" confirm="Editar prova?" onConfirm={() => history.push(`/prova/editar/${id}`)}>
