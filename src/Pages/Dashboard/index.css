@@ -54,6 +54,10 @@
   content: " ";
 }
 
+.carouselMobile {
+  padding-left: 25px;
+}
+
 @media (max-width: 600px) {
   .TitleImg {
     width: 45px;
@@ -79,6 +83,7 @@
 
   .carouselMobile {
     width: 90vw;
+    margin: 0px;
   }
 
   .DashboardContainer {
