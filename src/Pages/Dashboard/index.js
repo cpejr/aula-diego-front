@@ -25,6 +25,8 @@ export default function Dashboard(props) {
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
 
+  let slides;
+
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -62,24 +64,14 @@ export default function Dashboard(props) {
   };
 
   const settings = {
-    slidesToShow: 3,
-    slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+
     dots: false,
 
     responsive: [
       {
-        breakpoint: 1300,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 1200,
+        breakpoint: 1170,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -88,7 +80,16 @@ export default function Dashboard(props) {
         },
       },
       {
-        breakpoint: 780,
+        breakpoint: 850,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 810,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -255,6 +256,8 @@ export default function Dashboard(props) {
     return result;
   };
 
+  slides = myCourses.length < 3 ? myCourses.length : 3;
+
   return (
     <>
       <Base>
@@ -272,7 +275,15 @@ export default function Dashboard(props) {
         </div>
         <div className="DashboardContainer">
           <h3 className="DashboardSubTitle">Meus Cursos</h3>
-          <Carousel arrows responsive {...settings} className="carouselMobile">
+          <Carousel
+            arrows
+            responsive
+            {...settings}
+            className="carouselMobile"
+            slidesToShow={slides}
+            slidesToScroll={1}
+            style={{ marginRight: "0px" }}
+          >
             {myCourses
               ? myCourses.map((course) => {
                   return (
