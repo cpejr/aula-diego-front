@@ -44,20 +44,26 @@
 .slick-arrow.slick-prev {
   font-size: 10px;
 }
-.ant-carousel .slick-prev::before {
-  content: " ";
-}
-.slick-arrow.slick-next {
-  font-size: 10px;
-}
-.ant-carousel .slick-next::before {
-  content: " ";
-}
-
 .carouselMobile {
   padding-left: 25px;
 }
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
+  color: unset;
+  font-size: unset;
+}
 
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover,
+.ant-carousel .slick-prev:focus,
+.ant-carousel .slick-next:focus {
+  color: unset;
+}
+
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
+  display: none;
+}
 @media (max-width: 600px) {
   .TitleImg {
     width: 45px;
@@ -84,9 +90,17 @@
   .carouselMobile {
     width: 90vw;
     margin: 0px;
+    padding: 0px;
   }
 
   .DashboardContainer {
     margin: 0px;
+  }
+}
+
+@media (max-width: 850px) {
+  .carouselMobile {
+    margin: 0px;
+    padding: 0px;
   }
 }

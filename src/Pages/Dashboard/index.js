@@ -70,7 +70,25 @@ export default function Dashboard(props) {
 
     responsive: [
       {
-        breakpoint: 780,
+        breakpoint: 1170,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 850,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 810,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -253,6 +271,7 @@ export default function Dashboard(props) {
             className="carouselMobile"
             slidesToShow={slides}
             slidesToScroll={1}
+            style={{ marginRight: "0px" }}
           >
             {myCourses
               ? myCourses.map((course) => {
