@@ -14,7 +14,8 @@ function SessionProvider({ children }) {
       JSON.stringify({ accessToken, name: user.name })
     );
   }
-
+  
+  
   function loadSession() {
     const parsedSession = JSON.parse(window.localStorage.getItem("session"));
     const storageToken = parsedSession && parsedSession["accessToken"];

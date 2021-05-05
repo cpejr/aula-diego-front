@@ -77,8 +77,13 @@ export default function Live(props) {
         },
         config
       )
-      .then(() => message.success("Presença registrada com sucesso"))
-      .catch(() => message.error("Não foi possível registrar presença"));
+      .then(() => {
+        message.success("Presença registrada com sucesso")
+      })
+      .catch((error) => {
+        if(error?.response?.data?.message) return message.error(error?.response?.data?.message);
+        
+        message.error("Não foi possível registrar presença")});
   }
 
   return (

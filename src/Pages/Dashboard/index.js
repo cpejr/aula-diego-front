@@ -18,7 +18,8 @@ export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
   const { session } = useSession();
   const history = useHistory();
-
+  
+  const [score, setScore] = useState(0);
   const [courses, setCourses] = useState([]);
   const [myCourses, setMyCourses] = useState([]);
   const [past, setPast] = useState(false);
@@ -125,10 +126,20 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     api
+      .get(`/user/${session.user.id}`, config)
+      .then((response) => {
+        
+        setScore(response.data.score);
+        
+      })
+      .catch(() => {
+        message.error("Não foi possível carregar dados do usuário");
+      });
+    api
       .get(`/course/user/${session.user.id}`, configCourse)
       .then((response) => {
         setMyCourses(response.data);
-        console.log(response.data);
+        
       })
       .catch(() => {
         message.error("Não foi possível carregar dados dos cursos");
@@ -150,7 +161,7 @@ export default function Dashboard(props) {
         params: { user_id: session.user.id },
       })
       .then((response) => {
-        console.log(response.data);
+       
 
         const items = [];
 
@@ -256,7 +267,7 @@ export default function Dashboard(props) {
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
             <label>{session.user.name}</label>
-            <p>{session.user.score} XP</p>
+            <p>{score*20} XP</p>
           </div>
         </div>
         <div className="DashboardContainer">
