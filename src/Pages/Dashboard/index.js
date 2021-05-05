@@ -256,7 +256,7 @@ export default function Dashboard(props) {
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
             <label>{session.user.name}</label>
-            <p>{session.user.score} XP</p>
+            <p>{session.user.score*20} XP</p>
           </div>
         </div>
         <div className="DashboardContainer">
