@@ -286,6 +286,7 @@ export default function Dashboard(props) {
           >
             {myCourses
               ? myCourses.map((course) => {
+                console.log("Course: ", course)
                   return (
                     <CardCurso
                       title={course.course_name}
@@ -293,8 +294,8 @@ export default function Dashboard(props) {
                       description={course.course_description}
                       path={
                         session.user.type === "student"
-                          ? `/curso/${course.id}`
-                          : `/curso/gerenciar/${course.id}`
+                          ? `/curso/${course.course_id}`
+                          : `/curso/gerenciar/${course.course_id}`
                       }
                     />
                   );
