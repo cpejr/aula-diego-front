@@ -1,11 +1,15 @@
-/* import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, DatePicker, Input, Button, message, Upload } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarAula.css";
-import { UploadOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
 
 const formItemLayout = {
   labelCol: {
@@ -17,6 +21,21 @@ const formItemLayout = {
 };
 
 const tailFormItemLayout = {
+  wrapperCol: {
+    offset: 4,
+  },
+};
+
+const formLayout = {
+  labelCol: {
+    span: 4,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+
+const formTailLayout = {
   wrapperCol: {
     offset: 4,
   },
@@ -56,9 +75,7 @@ export default function EditarAula(props) {
     },
     files,
   };
-  
-  
-  
+
   useEffect(() => {
     api.get(`/lesson/${id}`, config).then((response) => {
       SetLesson(response.data);
@@ -66,17 +83,21 @@ export default function EditarAula(props) {
       SetDescription(response.data.description);
       setCourseId(response.data.course_id);
       console.log(response.data.description);
-      console.log(response.data.files);
+      console.log(response.data);
       // setFilteredData(response.data);
-      
+    });
+
+    api.get(`/lesson_file`, config).then((response) => {
+      SetLesson(response.data);
+      SetName(response.data.name);
+      SetDescription(response.data.description);
+      setCourseId(response.data.course_id);
+      console.log(response.data.description);
+      console.log(response.data);
+      // setFilteredData(response.data);
     });
   }, []);
 
-  function handleChangeDate(e) {
-    setEdit({ ...edit, date: e._d });
-  }
-
-  
   function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -105,6 +126,22 @@ export default function EditarAula(props) {
         message.error("Não foi possível editar a aula!\n" + err);
       });
   }
+
+  function addVideo() {
+    lesson.videos.push("");
+    setLesson(lesson);
+  }
+
+  function removeVideo() {
+    lesson.videos.pop();
+    setLesson(lesson);
+  }
+
+  function handleChangeVideo(e, index) {
+    lesson.videos[index] = e.target.value;
+    setLesson(lesson);
+  }
+
   return (
     <Base>
       <div className="pageRoot">
@@ -149,7 +186,46 @@ export default function EditarAula(props) {
                   value={description}
                   onChange={(e) => SetDescription(e.target.value)}
                 />
-              </Form.Item>   
+              </Form.Item>
+              <Form.List name="videos">
+                {(fields, { add, remove }) => (
+                  <Form.Item {...formLayout} label="Vídeos">
+                    {fields.map((field, index) => (
+                      <div className="inputVideoWrapper">
+                        <Form.Item
+                          {...field}
+                          className="inputURL"
+                          onChange={(e) => handleChangeVideo(e, index)}
+                          rules={[
+                            { required: true, message: "Insira URL do vídeo" },
+                          ]}
+                        >
+                          <Input placeholder="URL do vídeo" />
+                        </Form.Item>
+                        <MinusCircleOutlined
+                          style={{ fontSize: "large" }}
+                          onClick={() => {
+                            remove(index);
+                            removeVideo();
+                          }}
+                        />
+                      </div>
+                    ))}
+                    <Form.Item>
+                      <Button
+                        type="dashed"
+                        onClick={() => {
+                          add();
+                          addVideo();
+                        }}
+                        icon={<PlusOutlined />}
+                      >
+                        Adicionar vídeo
+                      </Button>
+                    </Form.Item>
+                  </Form.Item>
+                )}
+              </Form.List>
               <Form.Item
                 name="files"
                 label={<label style={{ fontSize: "large" }}> Arquivos </label>}
@@ -160,7 +236,7 @@ export default function EditarAula(props) {
                   },
                 ]}
               >
-                <Upload {...fileProps} >
+                <Upload {...fileProps}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </Form.Item>
@@ -171,7 +247,7 @@ export default function EditarAula(props) {
                   style={{ fontSize: "large" }}
                   loading={loading}
                 >
-                  Editar
+                  {uploading ? "Editando" : "Editar aula"}
                 </Button>
               </Form.Item>
             </Form>
@@ -181,5 +257,3 @@ export default function EditarAula(props) {
     </Base>
   );
 }
- */
-
