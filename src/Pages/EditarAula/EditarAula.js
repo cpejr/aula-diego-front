@@ -42,10 +42,10 @@ const formTailLayout = {
 };
 
 export default function EditarAula(props) {
-  const [lesson, SetLesson] = useState([]);
+  const [lesson, setLesson] = useState([]);
   const [edit, setEdit] = useState({});
-  const [name, SetName] = useState("");
-  const [description, SetDescription] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [courseId, setCourseId] = useState("");
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -78,24 +78,24 @@ export default function EditarAula(props) {
 
   useEffect(() => {
     api.get(`/lesson/${id}`, config).then((response) => {
-      SetLesson(response.data);
-      SetName(response.data.name);
-      SetDescription(response.data.description);
+      setLesson(response.data);
+      setName(response.data.name);
+      setDescription(response.data.description);
       setCourseId(response.data.course_id);
       console.log(response.data.description);
       console.log(response.data);
       // setFilteredData(response.data);
     });
 
-    api.get(`/lesson_file`, config).then((response) => {
-      SetLesson(response.data);
-      SetName(response.data.name);
-      SetDescription(response.data.description);
-      setCourseId(response.data.course_id);
-      console.log(response.data.description);
-      console.log(response.data);
-      // setFilteredData(response.data);
-    });
+    // api.get(`/lesson_file`, config).then((response) => {
+    //   setLesson(response.data);
+    //   setName(response.data.name);
+    //   setDescription(response.data.description);
+    //   setCourseId(response.data.course_id);
+    //   console.log(response.data.description);
+    //   console.log(response.data);
+    //   // setFilteredData(response.data);
+    // });
   }, []);
 
   function handleSubmit(e) {
@@ -117,7 +117,7 @@ export default function EditarAula(props) {
     };
 
     api
-      .put(`/lesson`, data, config)
+      .put(`/lesson/${id}`, data, config)
       .then(() => {
         message.success("Aula editada com sucesso!");
         history.push(`/curso/gerenciar/${courseId}`);
@@ -169,7 +169,7 @@ export default function EditarAula(props) {
                 <Input
                   name="name"
                   value={name}
-                  onChange={(e) => SetName(e.target.value)}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
@@ -184,7 +184,7 @@ export default function EditarAula(props) {
                 <Input
                   name="description"
                   value={description}
-                  onChange={(e) => SetDescription(e.target.value)}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </Form.Item>
               <Form.List name="videos">
