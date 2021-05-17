@@ -231,7 +231,7 @@ export default function CursoAdmin(props) {
           <ActionButton title="Visualizar" confirm="Visualizar prova?" onConfirm={() => history.push(`/atividade/responder/${id}`)}>
             <SelectOutlined />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar prova?" onConfirm={() => history.push(`/prova/editar/${id}`)}>
+          <ActionButton title="Editar" confirm="Editar prova?" onConfirm={() => history.push(`/atividade/editar/${id}`)}>
             <EditOutlined />
           </ActionButton>
           <ActionButton title="Exluir" confirm="Excluir prova?" onConfirm={() => handleDelete(id)}>

@@ -34,6 +34,7 @@ import Atividade from "./Pages/Atividade/Atividade";
 import AtividadeResultado from "./Pages/AtividadeResultado/AtividadeResultado";
 import AtividadeResposta from "./Pages/AtividadeResposta/AtividadeResposta";
 import AtividadeLista from "./Pages/AtividadeLista/AtividadeLista";
+import AtividadeEditar from "./Pages/AtividadeEditar/AtividadeEditar";
 import Comentario from "./Pages/Comentario/Comentario";
 import EditarLive from "./Pages/EditarLive/EditarLive";
 import EditarOcupacao from "./Pages/EditarOcupacao/EditarOcupacao";
@@ -211,6 +212,13 @@ const routes = () => {
           studentComponent={Dashboard}
           adminComponent={NovaAtividade}
           masterComponent={NovaAtividade}
+        />
+        <PrivateRoute
+          path="/atividade/editar/:id"
+          exact
+          studentComponent={Dashboard}
+          adminComponent={AtividadeEditar}
+          masterComponent={AtividadeEditar}
         />
         <PrivateRoute
           path="/atividade/resposta/:id"
