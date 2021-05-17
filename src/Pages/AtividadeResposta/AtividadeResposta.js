@@ -50,8 +50,6 @@ export default function AtividadeResposta(props) {
 
   }, [])
 
-  console.log(answer)
-
   return (
     <Base>
       <div className="resultRoot">
