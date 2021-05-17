@@ -58,7 +58,7 @@ export const InputField = ({
   required = true,
   message = "Campo obrigatório",
   placeholder,
-  value,
+  initialValue,
   onChange = null,
   layout,
   size = { minRows: 1, maxRows: 3 },
@@ -71,7 +71,7 @@ export const InputField = ({
     message={message}
     field={field}
     layout={layout}
-    initialValue={value}
+    initialValue={initialValue}
   >
     <TextArea
       name={name}
@@ -88,12 +88,13 @@ export const ImageUpload = ({
   name,
   field,
   label,
+  initialValue = undefined,
   required = true,
   onChange = null,
   layout
 }) => {
 
-  const [preview, setPreview] = useState(false);
+  const [preview, setPreview] = useState(initialValue);
   const [file, setFile] = useState();
 
   useEffect(() => onChange(file), [file]);
@@ -135,6 +136,8 @@ export const Alternatives = ({
   name,
   field,
   label,
+  initialValue = false,
+  initialCorrect = false,
   onChange = null,
   correctChange = null,
   required = true,
@@ -144,13 +147,19 @@ export const Alternatives = ({
   optionLayout
 }) => {
 
-  const [selected, setSelected] = useState("A");
-  const [alternatives, setAlternatives] = useState({});
+  const [selected, setSelected] = useState(initialCorrect ? initialCorrect : 'A');
+  const [alternatives, setAlternatives] = useState(initialValue);
+  const [start, setStart] = useState(true);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   const handleSelect = e => { setSelected(e.target.value); correctChange(e.target.value) };
   const alternativeChange = (e, index) => setAlternatives({ ...alternatives, [index]: e.target.value });
+  
+  const startFields = add => {
+    Object.keys(initialValue).map(item => add());
+    setStart(false);
+  }
 
   useEffect(() => onChange(alternatives), [alternatives]);
 
@@ -169,7 +178,8 @@ export const Alternatives = ({
             value={selected}
             onChange={handleSelect}
             defaultValue={selected}
-          >
+          > 
+            {start && initialValue && fields.length === 0 && startFields(add)}
             {fields.map((field, index) => (
               <div className="alternativeWrapper">
                 <Radio.Button
@@ -183,6 +193,7 @@ export const Alternatives = ({
                   fieldKey={[field.fieldKey, letters[index]]}
                   name={field.name}
                   layout={optionLayout}
+                  initialValue={initialValue[letters[index]]}
                 >
                   <Input
                     className="alternative"
@@ -212,10 +223,11 @@ export const QuestionText = ({
   name,
   index,
   field,
+  initialValue = false,
   layout = questionLayout,
   tailLayout = questionTailLayout,
   onChange = null,
-  remove,
+  remove
 }) => {
 
   const [question, setQuestion] = useState({});
@@ -237,6 +249,7 @@ export const QuestionText = ({
         message="Por favor, insira enunciado da questão!"
         layout={layout}
         onChange={(value) => questionChange('heading', value)}
+        initialValue={initialValue.heading}
       />
       <ImageUpload
         name={[name, 'image']}
@@ -245,6 +258,7 @@ export const QuestionText = ({
         required={false}
         layout={layout}
         onChange={(value) => questionChange('image', value)}
+        initialValue={initialValue.preview}
       />
       <Field layout={tailLayout}>
         <Button
@@ -264,6 +278,7 @@ export const QuestionAlternatives = ({
   name,
   index,
   field,
+  initialValue = false,
   layout = questionLayout,
   tailLayout = questionTailLayout,
   optionLayout = alternativeLayout,
@@ -271,7 +286,7 @@ export const QuestionAlternatives = ({
   remove,
 }) => {
 
-  const [question, setQuestion] = useState({ correct: 'A' });
+  const [question, setQuestion] = useState(initialValue ? initialValue : {correct: 'A'});
 
   const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
 
@@ -290,6 +305,7 @@ export const QuestionAlternatives = ({
         message="Por favor, insira enunciado da questão!"
         layout={layout}
         onChange={(value) => questionChange('heading', value)}
+        initialValue={initialValue.heading}
       />
       <Alternatives
         name={[name, 'alternatives']}
@@ -301,6 +317,8 @@ export const QuestionAlternatives = ({
         optionLayout={optionLayout}
         onChange={(value) => questionChange('alternatives', value)}
         correctChange={(value) => questionChange('correct', value)}
+        initialValue={initialValue.alternatives}
+        initialCorrect={initialValue.correct}
       />
       <ImageUpload
         name={[name, 'image']}
@@ -309,6 +327,7 @@ export const QuestionAlternatives = ({
         required={false}
         layout={layout}
         onChange={(value) => questionChange('image', value)}
+        initialValue={initialValue.preview}
       />
       <Field layout={tailLayout}>
         <Button

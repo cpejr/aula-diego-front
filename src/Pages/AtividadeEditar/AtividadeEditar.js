@@ -6,6 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useSession } from "../../Context/SessionContext";
 import { Field, InputField, QuestionText, QuestionAlternatives, questionLayout } from "../../Components/DynamicForms/dynamicForms"
 import { useHistory } from "react-router-dom";
+import moment from "moment"
 import pt_BR from 'antd/es/date-picker/locale/pt_BR';
 import "./AtividadeEditar.css";
 
@@ -19,11 +20,8 @@ const exerciseTailLayout = {
 };
 
 export default function AtividadeEditar(props) {
-  const query = new URLSearchParams(props.location.search);
-  const course = query.get("course")
-
-  const [exercise, setExercise] = useState({ evaluate: false, course_id: course })
-  const [questions, setQuestions] = useState([])
+  const [exercise, setExercise] = useState(false)
+  const [questions, setQuestions] = useState(false)
   const [evaluate, setEvaluate] = useState(false);
   const [reset, setReset] = useState(false);
   const [start, setStart] = useState(true);
@@ -65,7 +63,7 @@ export default function AtividadeEditar(props) {
               await api
                 .get(`/file_get/${image}`, configFileGet)
                 .then(file => {
-                  response.data.questions[index].image = URL.createObjectURL(file.data);
+                  response.data.questions[index].preview = URL.createObjectURL(file.data);
                   Promise.resolve("");
                 });
           })
@@ -116,10 +114,12 @@ export default function AtividadeEditar(props) {
 
   const exerciseSubmit = async () => {
 
-    Promise.all(
-      Object.values(exercise.questions).map(question => question.image).map(async (image, index) => {
+    console.log(exercise)
 
-        if (image !== undefined) {
+    Promise.all(
+      Object.values(exercise.questions).map(question => question.image).map(async (image, index) => { 
+
+        if (image !== undefined && typeof image !== 'string') {
 
           const file = {
             user_id: session.user.id,
@@ -137,23 +137,23 @@ export default function AtividadeEditar(props) {
 
               await api
                 .post("file_upload", formData, configFilePost)
-                .catch(err => { message.error("Não foi possível criar a atividade!") })
+                .catch(err => { message.error("Não foi possível eidtar a atividade!") })
 
               exercise.questions[index].image = response.data.file_id;
               Promise.resolve("");
             })
-            .catch(err => { message.error("Não foi possível criar a atividade!") })
+            .catch(err => { message.error("Não foi possível eidtar a atividade!") })
         }
       }))
       .then(() => {
         api
-          .post("exercise", exercise, config)
+          .put(`exercise/${exercise.id}`, exercise, config)
           .then(() => {
             message.success("Atividade criada com sucesso!");
-            history.push(`/curso/gerenciar/${course}`);
+            history.push(`/curso/gerenciar/${exercise.course_id}`);
           })
           .catch(err => {
-            message.error("Não foi possível criar a atividade!");
+            message.error("Não foi possível eidtar a atividade!");
           })
       });
   };
@@ -162,113 +162,118 @@ export default function AtividadeEditar(props) {
     <Base>
       <div className="newExamRoot">
         <div className="formWrapper">
-          <Form
-            {...exerciseLayout}
-            name="exerciseForm"
-            onFinish={exerciseSubmit}
-            size={"large"}
-            scrollToFirstError
-          >
-            <Form.Item {...exerciseTailLayout}>
-              <h1>Nova Atividade</h1>
-            </Form.Item>
-            <InputField
-              name="name"
-              label="Título"
-              placeholder="Título da atividade"
-              message="Por favor, insira título da atividade!"
-              onChange={value => exerciseChange('name', value)}
-            />
-            <Field name="start_date" label="Início" message="Por favor, insira início da atividade!">
-              <DatePicker
-                name="start_date"
-                placeholder="Início da atividade"
-                locale={pt_BR}
-                showTime
-                format="DD-MM-YYYY HH:mm"
-                onChange={e => exerciseChange('start_date', e._d)}
+          {exercise &&
+            <Form
+              {...exerciseLayout}
+              name="exerciseForm"
+              onFinish={exerciseSubmit}
+              size={"large"}
+              scrollToFirstError
+            >
+              <Form.Item {...exerciseTailLayout}>
+                <h1>Nova Atividade</h1>
+              </Form.Item>
+              <InputField
+                name="name"
+                label="Título"
+                placeholder="Título da atividade"
+                message="Por favor, insira título da atividade!"
+                onChange={value => exerciseChange('name', value)}
+                initialValue={exercise.name}
               />
-            </Field>
-            <Field name="end_date" label="Término" message="Por favor, insira término da atividade!">
-              <DatePicker
-                name="end_date"
-                placeholder="Término da atividade"
-                locale={pt_BR}
-                showTime
-                format="DD-MM-YYYY HH:mm"
-                onChange={e => exerciseChange('end_date', e._d)}
-              />
-            </Field>
-            <Field name="evaluate" label="Avaliativa" required={false}>
-              <Switch checked={evaluate} onChange={value => evaluateChange(value)} disabled />
-            </Field>
-            <Field label="Questões" >
-              <div className="questionsWrapper">
-                <Form.List name="questions">
-                  {(fields, { add, remove }, { errors }) => (
-                    <>
-                      {start && questions.length > 0 && startFields(add)}
+              <Field name="start_date" label="Início" message="Por favor, insira início da atividade!" initialValue={moment(exercise.start_date)}>
+                <DatePicker
+                  name="start_date"
+                  placeholder="Início da atividade"
+                  locale={pt_BR}
+                  showTime
+                  format="DD-MM-YYYY HH:mm"
+                  onChange={e => exerciseChange('start_date', e._d)}
+                />
+              </Field>
+              <Field name="end_date" label="Término" message="Por favor, insira término da atividade!" initialValue={moment(exercise.end_date)}>
+                <DatePicker
+                  name="end_date"
+                  placeholder="Término da atividade"
+                  locale={pt_BR}
+                  showTime
+                  format="DD-MM-YYYY HH:mm"
+                  onChange={e => exerciseChange('end_date', e._d)}
+                />
+              </Field>
+              <Field name="evaluate" label="Avaliativa" required={false}>
+                <Switch checked={evaluate} onChange={value => evaluateChange(value)} disabled />
+              </Field>
+              <Field label="Questões" >
+                <div className="questionsWrapper">
+                  <Form.List name="questions">
+                    {(fields, { add, remove }, { errors }) => (
+                      <>
+                        {start && fields.length === 0 && questions.length > 0 && startFields(add)}
 
-                      {fields.map((field, index) => {
-                        if (reset) {
-                          fields = [];
-                          setReset(false);
-                          return;
-                        }
+                        {fields.map((field, index) => {
+                          if (reset) {
+                            fields = [];
+                            setReset(false);
+                            return;
+                          }
 
-                        if (questions[index] === "text")
-                          return <QuestionText
-                            name={index}
-                            index={index}
-                            field={field}
-                            onChange={value => questionChange(index, value)}
-                            remove={() => questionDelete(remove, field.name, index)}
-                          />
+                          if (questions[index] === "text")
+                            return <QuestionText
+                              name={index}
+                              index={index}
+                              field={field}
+                              onChange={value => questionChange(index, value)}
+                              remove={() => questionDelete(remove, field.name, index)}
+                              initialValue={exercise.questions[index]}
+                            />
 
-                        if (questions[index] === "alternatives")
-                          return <QuestionAlternatives
-                            name={index}
-                            index={index}
-                            field={field}
-                            onChange={value => questionChange(index, value)}
-                            remove={() => questionDelete(remove, field.name, index)}
-                          />
-                      })}
-                      <Form.Item>
-                        <div className="addButtonsWrapper">
-                          {!evaluate &&
+                          if (questions[index] === "alternatives")
+                            return <QuestionAlternatives
+                              name={index}
+                              index={index}
+                              field={field}
+                              onChange={value => questionChange(index, value)}
+                              remove={() => questionDelete(remove, field.name, index)}
+                              initialValue={exercise.questions[index]}
+                            />
+                        })}
+                        <Form.Item>
+                          <div className="addButtonsWrapper">
+                            {!evaluate &&
+                              <Button
+                                className="formButton"
+                                type="dashed"
+                                onClick={() => questionAdd(add, "text")}
+                                icon={<PlusOutlined />}
+                                style={{ "margin-right": "2%" }}
+                              >
+                                Adicionar questão aberta
+                          </Button>
+                            }
                             <Button
                               className="formButton"
                               type="dashed"
-                              onClick={() => questionAdd(add, "text")}
+                              onClick={() => questionAdd(add, "alternatives")}
                               icon={<PlusOutlined />}
-                              style={{ "margin-right": "2%" }}
                             >
-                              Adicionar questão aberta
-                          </Button>
-                          }
-                          <Button
-                            className="formButton"
-                            type="dashed"
-                            onClick={() => questionAdd(add, "alternatives")}
-                            icon={<PlusOutlined />}
-                          >
-                            Adicionar questão fechada
+                              Adicionar questão fechada
                         </Button>
-                        </div>
-                        <Form.ErrorList errors={errors} />
-                      </Form.Item>
-                    </>
-                  )}
-                </Form.List>
-              </div>
-            </Field>
-            <Form.Item {...exerciseTailLayout}>
-              <Button type="primary" htmlType="submit">
-                Criar
+                          </div>
+                          <Form.ErrorList errors={errors} />
+                        </Form.Item>
+                      </>
+                    )}
+                  </Form.List>
+                </div>
+              </Field>
+              <Form.Item {...exerciseTailLayout}>
+                <Button type="primary" htmlType="submit">
+                  Criar
             </Button>
-            </Form.Item>
-          </Form>
+              </Form.Item>
+            </Form>
+          }
         </div>
       </div>
     </Base>
