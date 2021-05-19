@@ -90,7 +90,7 @@ export const ImageUpload = ({
   label,
   initialValue = undefined,
   required = true,
-  onChange = null,
+  onChange = () => {},
   layout
 }) => {
 
