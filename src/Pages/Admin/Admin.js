@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Timeline, Divider, Card, Statistic } from "antd";
-import { UserOutlined, ClockCircleOutlined, ExclamationCircleOutlined, ProfileOutlined, TeamOutlined } from "@ant-design/icons"
+import {
+  UserOutlined,
+  ClockCircleOutlined,
+  ExclamationCircleOutlined,
+  ProfileOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
 import { CallMissedSharp } from "@material-ui/icons";
 
-
 export default function Admin() {
-
   const [approved, setApproved] = useState([]);
   const [pending, setPending] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -25,7 +29,7 @@ export default function Admin() {
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
-    }
+    },
   };
 
   const configFile = {
@@ -37,133 +41,146 @@ export default function Admin() {
 
   useEffect(() => {
     api
-      .get(`/user`, { ...config, params: { "user.organization_id": session.user.organization_id } })
-      .then(response => {
-
+      .get(`/user`, {
+        ...config,
+        params: { "user.organization_id": session.user.organization_id },
+      })
+      .then((response) => {
         let app = 0;
         let pen = 0;
 
-        response.data.map(student => {
-          if (student.status === 'approved') app += 1;
-          if (student.status === 'pending') pen += 1;
+        response.data.map((student) => {
+          if (student.status === "approved") app += 1;
+          if (student.status === "pending") pen += 1;
         });
 
         setApproved(app);
         setPending(pen);
       })
-      .catch(err => { message.error("Não foi possível carregar dados dos estudantes"); })
+      .catch((err) => {
+        message.error("Não foi possível carregar dados dos estudantes");
+      });
 
     api
       .get(`/organization/${session.user.organization_id}`, config)
-      .then(async response => {
-
+      .then(async (response) => {
         await api
           .get(`/file_get/${response.data.file_id}`, configFile)
-          .then(file => {
-
+          .then((file) => {
             const image = URL.createObjectURL(file.data);
             setOrganization({
               ...response.data,
-              logo: image
+              logo: image,
             });
           })
-          .catch(err => { message.error("Não foi possível carregar dados dos arquivos") });
+          .catch((err) => {
+            message.error("Não foi possível carregar dados dos arquivos");
+          });
       })
-      .catch(err => { message.error("Não foi possível carregar dados das organizações") });
+      .catch((err) => {
+        message.error("Não foi possível carregar dados das organizações");
+      });
 
     api
-      .get(`/course`, { ...config, params: { organization_id: session.user.organization_id } })
-      .then(response => {
-
+      .get(`/course`, {
+        ...config,
+        params: { organization_id: session.user.organization_id },
+      })
+      .then((response) => {
         const turmas = [];
-        const items = []
+        const items = [];
 
-        Promise.all(response.data.map(course => course.id).map(async id => {
+        Promise.all(
+          response.data
+            .map((course) => course.id)
+            .map(async (id) => {
+              api
+                .get(`/class`, { ...config, params: { course_id: id } })
+                .then((response) => turmas.push(...response.data))
+                .catch((err) => {
+                  message.error("Não foi possível carregar dados das turmas");
+                });
 
-          api
-            .get(`/class`, { ...config, params: { course_id: id } })
-            .then(response => turmas.push(...response.data))
-            .catch(err => { message.error("Não foi possível carregar dados das turmas"); })
+              await api
+                .get(`/course/${id}/all`, config)
+                .then((response) => {
+                  items.push(...response.data);
+                  Promise.resolve("");
+                })
+                .catch((err) => {
+                  message.error("Não foi possível carregar dados das aulas");
+                });
+            })
+        ).then(() => {
+          const sorted = items
+            .map((item) => {
+              let color = "RoyalBlue";
+              let url = "/aula";
 
-          await api
-            .get(`/course/${id}/all`, config)
-            .then(response => { items.push(...response.data); Promise.resolve("") })
-            .catch(err => { message.error("Não foi possível carregar dados das aulas"); })
-        }))
-          .then(() => {
+              if (item.type === "live") {
+                color = "Purple";
+                url = "/live";
+              }
 
-            const sorted = (
-              items.map(item => {
-                let color = 'RoyalBlue'
-                let url = '/aula';
-
-                if (item.type === 'live') {
-                  color = 'Purple'
-                  url = '/live'
-                }
-
-                if (item.type === "exercise-start")
-                  return {
-                    ...item,
-                    name: `${item.name} - Início`,
-                    time: new Date(item.date).getTime(),
-                    date: new Date(item.date).toLocaleDateString("pt-BR"),
-                    color: 'Pink',
-                    link: `/atividade/responder/${item.id}`
-                  }
-
-                if (item.type === "exercise-end")
-                  return {
-                    ...item,
-                    name: `${item.name} - Fim`,
-                    time: new Date(item.date).getTime(),
-                    date: new Date(item.date).toLocaleDateString("pt-BR"),
-                    color: 'PaleVioletRed',
-                    link: `/atividade/responder/${item.id}`
-                  }
-
+              if (item.type === "exercise-start")
                 return {
                   ...item,
+                  name: `${item.name} - Início`,
                   time: new Date(item.date).getTime(),
                   date: new Date(item.date).toLocaleDateString("pt-BR"),
-                  color: color,
-                  link: `${url}/${item.id}`
+                  color: "Pink",
+                  link: `/atividade/responder/${item.id}`,
+                };
 
-                }
-              })
-                .sort((a, b) => (a.time - b.time))
-                .filter(item => item.type === 'class' ? false : true)
-                .slice(0, 20)
-            )
+              if (item.type === "exercise-end")
+                return {
+                  ...item,
+                  name: `${item.name} - Fim`,
+                  time: new Date(item.date).getTime(),
+                  date: new Date(item.date).toLocaleDateString("pt-BR"),
+                  color: "PaleVioletRed",
+                  link: `/atividade/responder/${item.id}`,
+                };
 
-            const now = Date.now();
+              return {
+                ...item,
+                time: new Date(item.date).getTime(),
+                date: new Date(item.date).toLocaleDateString("pt-BR"),
+                color: color,
+                link: `${url}/${item.id}`,
+              };
+            })
+            .sort((a, b) => a.time - b.time)
+            .filter((item) => (item.type === "class" ? false : true))
+            .slice(0, 20);
 
-            setPast(sorted.filter(item => item.time < now ? true : false));
-            setFuture(sorted.filter(item => item.time > now ? true : false));
-            setClasses(turmas);
-          })
+          const now = Date.now();
+
+          setPast(sorted.filter((item) => (item.time < now ? true : false)));
+          setFuture(sorted.filter((item) => (item.time > now ? true : false)));
+          setClasses(turmas);
+        });
 
         setCourses(response.data);
       })
-      .catch(err => { message.error("Não foi possível carregar dados das aulas"); })
-
+      .catch((err) => {
+        message.error("Não foi possível carregar dados das aulas");
+      });
   }, []);
 
   return (
     <Base>
-      <div className='adminRoot'>
+      <div className="adminRoot">
         <div className="adminTitleWrapper">
           <img src={organization.logo} className="adminImg" />
-          <h1 className="adminTitle">
-            {organization.name}
-          </h1>
+          <h1 className="adminTitle">{organization.name}</h1>
         </div>
         <Divider />
         <h3>Estatísticas</h3>
         <div className="adminCardsWrapper">
           <Card bordered={false} style={{ width: "20%" }}>
             <Statistic
-              title="Estudantes"
+              title="Usuários na Organização"
               className="adminStatistic"
               value={approved}
               prefix={<UserOutlined />}
@@ -195,15 +212,24 @@ export default function Admin() {
           </Card>
         </div>
         <Divider />
-        <h3 className="adminTimelineTitle" >Linha do Tempo</h3>
-        <div className="adminTimelinesWrapper" >
+        <h3 className="adminTimelineTitle">Linha do Tempo</h3>
+        <div className="adminTimelinesWrapper">
           <div className="adminTimelineFuture">
-            <Timeline mode={'left'} reverse={true}>
-              {future && future.map(item => (
-                <Timeline.Item label={`${item.course_name} - ${item.date}`} color={item.color}>
-                  <div className='adminLink' onClick={() => history.push(item.link)}>{item.name}</div>
-                </Timeline.Item>
-              ))}
+            <Timeline mode={"left"} reverse={true}>
+              {future &&
+                future.map((item) => (
+                  <Timeline.Item
+                    label={`${item.course_name} - ${item.date}`}
+                    color={item.color}
+                  >
+                    <div
+                      className="adminLink"
+                      onClick={() => history.push(item.link)}
+                    >
+                      {item.name}
+                    </div>
+                  </Timeline.Item>
+                ))}
             </Timeline>
           </div>
           <div style={{ width: "30%", margin: "auto" }}>
@@ -212,12 +238,21 @@ export default function Admin() {
             </Divider>
           </div>
           <div className="adminTimelinePast">
-            <Timeline mode={'right'} reverse={true}>
-              {past && past.map(item => (
-                <Timeline.Item label={`${item.course_name} - ${item.date}`} color={item.color}>
-                  <div className='adminLink' onClick={() => history.push(item.link)}>{item.name}</div>
-                </Timeline.Item>
-              ))}
+            <Timeline mode={"right"} reverse={true}>
+              {past &&
+                past.map((item) => (
+                  <Timeline.Item
+                    label={`${item.course_name} - ${item.date}`}
+                    color={item.color}
+                  >
+                    <div
+                      className="adminLink"
+                      onClick={() => history.push(item.link)}
+                    >
+                      {item.name}
+                    </div>
+                  </Timeline.Item>
+                ))}
             </Timeline>
           </div>
         </div>

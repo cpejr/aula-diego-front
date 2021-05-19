@@ -37,13 +37,14 @@ export default function NovoCurso() {
   };
 
   useEffect(() => {
-
     setformData({ ...formData, organization_id: session.user.organization_id });
 
     api
       .get("/organization", config)
       .then((res) => setOrganizations(res.data))
-      .catch((err) => {message.error("Não foi possível criar a ocupação!")});
+      .catch((err) => {
+        message.error("Não foi possível criar a ocupação!");
+      });
   }, [session]);
 
   function handleChange(e) {
@@ -83,8 +84,7 @@ export default function NovoCurso() {
               <Form.Item {...formTailLayout}>
                 <h1>Novo Curso</h1>
               </Form.Item>
-              {session.user.type === "master"
-                ?
+              {session.user.type === "master" ? (
                 <Form.Item
                   name="organization_id"
                   label="Organização"
@@ -111,13 +111,8 @@ export default function NovoCurso() {
                     })}
                   </Select>
                 </Form.Item>
-                :
-                null
-              }
-              <Form.Item
-                name="name"
-                label="Nome"
-              >
+              ) : null}
+              <Form.Item name="name" label="Nome">
                 <Input
                   placeholder="Nome do Curso"
                   size="large"
@@ -125,10 +120,7 @@ export default function NovoCurso() {
                   onChange={handleChange}
                 />
               </Form.Item>
-              <Form.Item
-                name="description"
-                label="Descrição"
-              >
+              <Form.Item name="description" label="Descrição">
                 <TextArea
                   onChange={handleChange}
                   size="large"
@@ -144,7 +136,7 @@ export default function NovoCurso() {
                   onClick={handleSubmit}
                   style={{ fontSize: "large" }}
                 >
-                  Criar Turma
+                  Criar Curso
                 </Button>
               </Form.Item>
             </Form>
