@@ -31,7 +31,7 @@ export default function ListaOrganizacoes() {
         setOccupations(occupations.data);
         setFilteredData(occupations.data);
         setLoading(false);
-        console.log(occupations);
+        console.log(occupations.data);
       })
       .catch((err) => {
         console.log(err);
@@ -103,8 +103,9 @@ export default function ListaOrganizacoes() {
         if (value === "") return occupation;
         return (
           occupation.name.toLowerCase().includes(value.toLowerCase()) ||
-          occupation.registration.toString().includes(value) ||
-          occupation.organization_name.toLowerCase().includes(value.toLowerCase())
+          occupation.organization_name
+            .toLowerCase()
+            .includes(value.toLowerCase())
         );
       })
     );
