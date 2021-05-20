@@ -81,7 +81,12 @@ export default function Atividade(props) {
       .then(response => {
         console.log(response.data.id)
         message.success("Resposta enviada com sucesso!");
-        history.push(`/atividade/resultado/${response.data.id}`)
+
+        if (exercise.evaluate === true)
+          history.push(`/atividade/resultado/${response.data.id}`)
+
+        else
+          history.push(`/atividade/resposta/${response.data.id}`)
       })
       .catch(err => {console.log(err);message.error("Não foi possível criar a prova!");})
   };
