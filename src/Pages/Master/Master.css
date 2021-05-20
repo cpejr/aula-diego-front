@@ -1,0 +1,100 @@
+.adminRoot {
+  padding: 5% 10%;
+}
+
+.adminTitleWrapper {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  color: #707070;
+  padding-bottom: 10px;
+}
+
+.adminImg {
+  display: flex;
+  max-width: 65px;
+  max-height: 65px;
+}
+
+.adminTitle {
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.adminScore {
+  margin-left: "auto";
+  margin-right: "5%";
+  color: "black";
+}
+
+.adminCardsWrapper {
+  padding: 30px 0;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #ececec /* #25003C */;
+  /* border-radius: 8px; */
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.adminCard {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.adminTimelineTitle {
+  margin-top: 10px;
+}
+
+.adminTimelinesWrapper {
+  width: 70%;
+  margin: auto;
+  margin-top: 50px;
+  padding-top: 60px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border: 1px dashed lightgrey;
+}
+
+.adminTimelineFuture {
+  padding-right: 120px;
+  margin: auto;
+}
+
+.adminTimelinePast {
+  padding-left: 120px;
+  margin: auto;
+}
+
+.adminStatistic .ant-statistic-content-prefix {
+  display: inline-flex;
+  align-items: center;
+}
+
+.adminStatistic .ant-statistic-content {
+  display: inline-flex;
+  align-items: center;
+}
+
+.adminLink:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .adminTimelineFuture {
+    padding-right: 0px;
+    margin: auto;
+  }
+
+  .adminTimelinePast {
+    padding-left: 0px;
+    margin: auto;
+  }
+
+  .adminTimelinesWrapper {
+    width: 100vw;
+    margin: auto;
+  }
+}

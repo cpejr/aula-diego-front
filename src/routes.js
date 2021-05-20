@@ -42,6 +42,7 @@ import EditarCurso from "./Pages/EditarCurso/EditarCurso";
 import EditarTurma from "./Pages/EditarTurma/EditarTurma";
 import EditarAula from "./Pages/EditarAula/EditarAula";
 import EditarOrganizacao from "./Pages/EditarOrganizacao/EditarOrganizacao";
+import Master from "./Pages/Master/Master"
 
 const routes = () => {
   return (
@@ -79,7 +80,7 @@ const routes = () => {
           exact
           studentComponent={Dashboard}
           adminComponent={Admin}
-          masterComponent={Admin}
+          masterComponent={Master}
         />
         <PrivateRoute
           path="/config"

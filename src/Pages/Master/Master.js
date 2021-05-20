@@ -11,17 +11,19 @@ import {
 } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import "./Admin.css";
+import "./Master.css";
 import { CallMissedSharp } from "@material-ui/icons";
 
-export default function Admin() {
-  const [approved, setApproved] = useState([]);
-  const [pending, setPending] = useState([]);
-  const [courses, setCourses] = useState([]);
-  const [classes, setClasses] = useState([]);
-  const [organization, setOrganization] = useState([]);
+export default function Master() {
+  const [approved, setApproved] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [courses, setCourses] = useState(false);
+  const [classes, setClasses] = useState(false);
+  const [organization, setOrganization] = useState(false);
   const [past, setPast] = useState(false);
   const [future, setFuture] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   const { session } = useSession();
   const history = useHistory();
@@ -41,10 +43,7 @@ export default function Admin() {
 
   useEffect(() => {
     api
-      .get(`/user`, {
-        ...config,
-        params: { "user.organization_id": session.user.organization_id },
-      })
+      .get(`/user`, config)
       .then((response) => {
         let app = 0;
         let pen = 0;
@@ -82,10 +81,7 @@ export default function Admin() {
       });
 
     api
-      .get(`/course`, {
-        ...config,
-        params: { organization_id: session.user.organization_id },
-      })
+      .get(`/course`, config)
       .then((response) => {
         const turmas = [];
         const items = [];
@@ -152,7 +148,9 @@ export default function Admin() {
             })
             .sort((a, b) => a.time - b.time)
             .filter((item) => (item.type === "class" ? false : true))
-            .slice(-20);
+            .slice(-30)
+
+          console.log(sorted)
 
           const now = Date.now();
 
@@ -168,95 +166,104 @@ export default function Admin() {
       });
   }, []);
 
+  useEffect(() => {
+
+    if (future || past)
+      setLoading(false)
+
+  }, [future, past])
+
   return (
     <Base>
-      <div className="adminRoot">
-        <div className="adminTitleWrapper">
-          <img src={organization.logo} className="adminImg" />
-          <h1 className="adminTitle">{organization.name}</h1>
-        </div>
-        <Divider />
-        <h3>Estatísticas</h3>
-        <div className="adminCardsWrapper">
-          <Card bordered={false} style={{ width: "20%" }}>
-            <Statistic
-              title="Usuários na Organização"
-              className="adminStatistic"
-              value={approved}
-              prefix={<UserOutlined />}
-            />
-          </Card>
-          <Card bordered={false} style={{ width: "20%" }}>
-            <Statistic
-              title="Pendentes"
-              className="adminStatistic"
-              value={pending}
-              prefix={<ExclamationCircleOutlined />}
-            />
-          </Card>
-          <Card bordered={false} style={{ width: "20%" }}>
-            <Statistic
-              title="Cursos"
-              className="adminStatistic"
-              value={courses.length}
-              prefix={<ProfileOutlined />}
-            />
-          </Card>
-          <Card bordered={false} style={{ width: "20%" }}>
-            <Statistic
-              title="Turmas"
-              className="adminStatistic"
-              value={classes.length}
-              prefix={<TeamOutlined />}
-            />
-          </Card>
-        </div>
-        <Divider />
-        <h3 className="adminTimelineTitle">Linha do Tempo</h3>
-        <div className="adminTimelinesWrapper">
-          <div className="adminTimelineFuture">
-            <Timeline mode={"left"} reverse={true}>
-              {future &&
-                future.map((item) => (
-                  <Timeline.Item
-                    label={`${item.course_name} - ${item.date}`}
-                    color={item.color}
-                  >
-                    <div
-                      className="adminLink"
-                      onClick={() => history.push(item.link)}
+      {!loading &&
+        <div className="adminRoot">
+          <div className="adminTitleWrapper">
+            <img src={organization.logo} className="adminImg" />
+            <h1 className="adminTitle">{organization.name}</h1>
+          </div>
+          <Divider />
+          <h3>Estatísticas</h3>
+          <div className="adminCardsWrapper">
+            <Card bordered={false} style={{ width: "20%" }}>
+              <Statistic
+                title="Usuários na Organização"
+                className="adminStatistic"
+                value={approved}
+                prefix={<UserOutlined />}
+              />
+            </Card>
+            <Card bordered={false} style={{ width: "20%" }}>
+              <Statistic
+                title="Pendentes"
+                className="adminStatistic"
+                value={pending}
+                prefix={<ExclamationCircleOutlined />}
+              />
+            </Card>
+            <Card bordered={false} style={{ width: "20%" }}>
+              <Statistic
+                title="Cursos"
+                className="adminStatistic"
+                value={courses.length}
+                prefix={<ProfileOutlined />}
+              />
+            </Card>
+            <Card bordered={false} style={{ width: "20%" }}>
+              <Statistic
+                title="Turmas"
+                className="adminStatistic"
+                value={classes.length}
+                prefix={<TeamOutlined />}
+              />
+            </Card>
+          </div>
+          <Divider />
+          <h3 className="adminTimelineTitle">Linha do Tempo</h3>
+          <div className="adminTimelinesWrapper">
+            <div className="adminTimelineFuture">
+              <Timeline mode={"left"} reverse={true}>
+                {future &&
+                  future.map((item) => (
+                    <Timeline.Item
+                      label={`${item.course_name} - ${item.date}`}
+                      color={item.color}
                     >
-                      {item.name}
-                    </div>
-                  </Timeline.Item>
-                ))}
-            </Timeline>
-          </div>
-          <div style={{ width: "30%", margin: "auto" }}>
-            <Divider style={{ marginBottom: "60px", marginTop: "0px" }}>
-              <ClockCircleOutlined />
-            </Divider>
-          </div>
-          <div className="adminTimelinePast">
-            <Timeline mode={"right"} reverse={true}>
-              {past &&
-                past.map((item) => (
-                  <Timeline.Item
-                    label={`${item.course_name} - ${item.date}`}
-                    color={item.color}
-                  >
-                    <div
-                      className="adminLink"
-                      onClick={() => history.push(item.link)}
+                      <div
+                        className="adminLink"
+                        onClick={() => history.push(item.link)}
+                      >
+                        {item.name}
+                      </div>
+                    </Timeline.Item>
+                  ))}
+              </Timeline>
+            </div>
+            <div style={{ width: "30%", margin: "auto" }}>
+              <Divider style={{ marginBottom: "60px", marginTop: "0px" }}>
+                <ClockCircleOutlined />
+              </Divider>
+            </div>
+            <div className="adminTimelinePast">
+              <Timeline mode={"right"} reverse={true}>
+                {past &&
+                  past.map((item) => (
+                    <Timeline.Item
+                      label={`${item.course_name} - ${item.date}`}
+                      color={item.color}
                     >
-                      {item.name}
-                    </div>
-                  </Timeline.Item>
-                ))}
-            </Timeline>
+                      <div
+                        className="adminLink"
+                        onClick={() => history.push(item.link)}
+                      >
+                        {item.name}
+                      </div>
+                    </Timeline.Item>
+                  ))}
+              </Timeline>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </Base>
   );
 }
