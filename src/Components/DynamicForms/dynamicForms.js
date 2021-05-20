@@ -20,7 +20,7 @@ const alternativeLayout = {
 };
 
 const alternativeTailLayout = {
-  wrapperCol: { offset: 3, span: 24 },
+  wrapperCol: { offset: 3, span: 42 },
 };
 
 export const Field = ({
@@ -183,24 +183,24 @@ export const Alternatives = ({
             {fields.map((field, index) => (
               <div className="alternativeWrapper">
                 <Radio.Button
-                  className="alternative"
+                  className="alternative-button"
                   value={letters[index]}
                 >
                   {letters[index]}
                 </Radio.Button>
-                <Field
+                <Form.Item
                   field={field}
                   fieldKey={[field.fieldKey, letters[index]]}
                   name={field.name}
-                  layout={optionLayout}
                   initialValue={initialValue[letters[index]]}
+                  style={{width: "60%"}}
                 >
                   <Input
-                    className="alternative"
+                    className="alternative-input"
                     placeholder="Alternativa"
                     onChange={(e) => alternativeChange(e, letters[index])}
                   />
-                </Field>
+                </Form.Item>
                 <MinusCircleOutlined
                   className="alternative-delete"
                   onClick={() => remove(field.name)}

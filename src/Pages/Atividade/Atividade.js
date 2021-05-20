@@ -45,7 +45,7 @@ export default function Atividade(props) {
       .then(async response => {
         let exercise = response.data;
 
-        if (session.user.type === "student" && response.data.status !== "open") {
+        if (session.user.type === "student" && response.data.open === false) {
           message.error("Você não tem permissão para ver essa prova!");
           history.push("/dashboard");
         }
