@@ -54,14 +54,14 @@ export default function Aula(props) {
       .get(`/lesson/${id}`, config)
       .then((response) => {
         setLesson(response.data);
-        api
+        /* api
           .get(`/course/${response.data.course_id}`, config)
           .then((response) => {
             setCourse(response.data);
           })
           .catch(() => {
             message.error("Não foi possível carregar dados do curso");
-          });
+          }); */
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da aula");
@@ -96,6 +96,8 @@ export default function Aula(props) {
         message.error("Não foi possível carregar dados dos arquivos");
       });
   };
+
+  console.log(lesson)
 
   return (
     <Base>
