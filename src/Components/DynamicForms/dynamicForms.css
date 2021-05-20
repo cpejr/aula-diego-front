@@ -7,9 +7,15 @@
   margin-bottom: 16px;
 }
 
-.alternative {
+.alternative-button {
   height: 40px;
   border-radius: 0px;
+}
+
+.alternative-input {
+  height: 40px;
+  border-radius: 0px;
+  width: 100%;
 }
 
 .alternative-delete {
@@ -95,4 +101,8 @@
 
 .ant-input-lg {
   padding: 3.5px 11px;
+}
+
+.ant-radio-group {
+  width: 100%;
 }
