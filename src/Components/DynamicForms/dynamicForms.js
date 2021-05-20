@@ -347,7 +347,7 @@ export const AnswerText = ({
   index,
   heading = "",
   image = false,
-  value,
+  initialValue = false,
   size = { minRows: 3, maxRows: 10 },
   onChange = null,
   layout = questionLayout,
@@ -375,7 +375,7 @@ export const AnswerText = ({
       label="Resposta"
       placeholder="Insira a resposta da questão"
       message="Insira resposta da questão!"
-      value={value}
+      initialValue={initialValue}
       onChange={value => onChange(index, value)}
       size={size}
       disabled={disabled}
@@ -389,14 +389,14 @@ export const AnswerAlternatives = ({
   heading = "",
   image = false,
   alternatives,
-  value = null,
+  initialValue = false,
   onChange = null,
   layout = questionLayout,
   tailLayout = questionTailLayout,
   disabled = false
 }) => {
 
-  const [selected, setSelected] = useState(value);
+  const [selected, setSelected] = useState(initialValue);
   const entries = Object.entries(alternatives);
 
   const handleSelect = e => {setSelected(e.target.value); onChange(index, e.target.value);}
@@ -417,7 +417,7 @@ export const AnswerAlternatives = ({
           </div>
         </Field>
       }
-      <Field layout={layout} label={`Alternativas`} name={index} initialValue={value}>
+      <Field layout={layout} label={`Alternativas`} name={index} initialValue={initialValue}>
         <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected} disabled={disabled}>
           {entries.map((alternative, idx) => (
             <div className="alternativeAnswerWrapper" key={idx}>
