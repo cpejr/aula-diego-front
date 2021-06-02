@@ -40,7 +40,8 @@ export default function ListaOrganizacoes() {
           setLoading(false);
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         message.error("Não foi possível carregar dados das organizações");
       });
   }, []);
@@ -48,6 +49,8 @@ export default function ListaOrganizacoes() {
   const getLogo = async (organizations) => {
 
     const result = [];
+
+    console.log(organizations)
 
     for (const organization of organizations) {
       

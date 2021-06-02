@@ -33,6 +33,7 @@ export default function AtividadeResposta(props) {
     api
       .get(`/answer/${answer_id}`, config)
       .then(async response => {
+        console.log(response.data)
         Promise.all(
           Object.values(response.data.questions).map(question => question.image).map(async (image, index) => {
             if (image !== undefined)
@@ -46,7 +47,7 @@ export default function AtividadeResposta(props) {
         )
         .then(() => setAnswer(response.data));
       })
-      .catch(err => {message.error("Não foi possível carregar dados da prova!")});
+      .catch(err => {console.log(err);message.error("Não foi possível carregar dados da prova!")});
 
   }, [])
 
@@ -67,7 +68,7 @@ export default function AtividadeResposta(props) {
                     index={index}
                     heading={question.heading}
                     image={question.image}
-                    value={answer.answers[index]}
+                    initialValue={answer.answers[index]}
                     disabled
                   />
 
@@ -76,7 +77,7 @@ export default function AtividadeResposta(props) {
                     index={index}
                     heading={question.heading}
                     image={question.image}
-                    value={answer.answers[index]}
+                    initialValue={answer.answers[index]}
                     alternatives={question.alternatives}
                     disabled
                   />
