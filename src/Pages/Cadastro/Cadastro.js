@@ -7,7 +7,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { message, Select } from "antd";
+import { message } from "antd";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
@@ -49,7 +49,7 @@ export default function Cadastro(props) {
     }
 
     if (inputValues["password"] !== inputValues["passwordConfirmation"]) {
-      alert("As senhas digitadas não correspondem.");
+      message.error("As senhas digitadas não correspondem.");
       return "pass";
     }
 
@@ -63,7 +63,7 @@ export default function Cadastro(props) {
     e.preventDefault();
     if (validateForm() === "pass") return;
     if (!validateForm())
-      return message.error("Preencha todos os campos para se cadastrar");
+      message.error("Preencha todos os campos para se cadastrar");
 
     let data = inputValues;
     data.phone = data.phone.replace(/[()\s-]/g, "");
@@ -73,10 +73,11 @@ export default function Cadastro(props) {
     api
       .post("/user", data)
       .then(() => {
+        message.success("Usuário cadastrado com sucesso");
         history.push("/");
       })
       .catch((error) =>
-        alert("Não foi possível concluir o cadastro, tente novamente.")
+        message.error("Não foi possível concluir o cadastro, tente novamente.")
       );
   }
 
