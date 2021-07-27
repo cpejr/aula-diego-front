@@ -43,6 +43,7 @@ import EditarTurma from "./Pages/EditarTurma/EditarTurma";
 import EditarAula from "./Pages/EditarAula/EditarAula";
 import EditarOrganizacao from "./Pages/EditarOrganizacao/EditarOrganizacao";
 import Master from "./Pages/Master/Master"
+import TermosDeUso from "./Pages/TemosDeUso/TermosDeUso";
 
 const routes = () => {
   return (
@@ -318,6 +319,7 @@ const routes = () => {
           adminComponent={Comentario}
           masterComponent={Comentario}
         />
+        <Route component={TermosDeUso} path="/TermosDeUso" exact></Route>
         <PrivateRoute
           path="/"
           component={() => <h1> Erro 404: Página não encontrada </h1>}
