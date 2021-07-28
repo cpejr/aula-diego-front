@@ -54,11 +54,31 @@
   border: none;
 }
 
+.entrarButtonCadastroDesabilitado {
+  margin-top: 15px;
+  border-radius: 8px;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(198, 53, 84, 0.144);
+  border: 2px solid #b11734;
+  color: rgb(244, 232, 242);
+  outline: none;
+  border: none;
+}
+.entrarButtonCadastroDesabilitado :focus {
+  outline: none;
+  border: none;
+}
+
 .googleText {
   margin: auto auto auto auto;
   color: grey;
 }
-
+.boxTermosDeUso{
+  font-weight: 700;
+  color: white !important;
+  font-size: medium;
+}
 .esqueceuCadastro {
   font-size: small;
 }
@@ -127,6 +147,7 @@ input:active {
 }
 .jatemLogin {
   font-size: medium;
+  color: white;
 }
 .logincadastro {
   margin-left: 8px;
