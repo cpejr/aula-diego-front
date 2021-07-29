@@ -15,7 +15,7 @@
     "bootstrap": "^4.5.3",
     "date-fns": "^2.16.1",
     "express-fileupload": "^1.2.1",
-    "firebase": "^8.0.0",
+    "firebase": "^8.8.0",
     "form-data": "^4.0.0",
     "formik": "^2.2.5",
     "js-file-download": "^0.4.12",
