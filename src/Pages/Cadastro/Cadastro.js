@@ -8,12 +8,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { message } from "antd";
+import Checkbox from "antd/lib/checkbox/Checkbox";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
   const [organizations, setOrganizations] = useState();
   const [occupations, setOccupations] = useState();
   const [startDate, setStartDate] = useState(null);
+  const [checked,setChecked] = useState();
   const history = useHistory();
   const { session } = useSession();
 
@@ -59,6 +61,14 @@ export default function Cadastro(props) {
     return true;
   }
 
+  function TermosChecked(e){
+    if(checked){
+      setChecked(false)
+    }
+    else{
+      setChecked(true)
+    }
+  }
   function handleSubmit(e) {
     e.preventDefault();
     if (validateForm() === "pass") return;
@@ -219,9 +229,16 @@ export default function Cadastro(props) {
                 </div>
               </>
             ) : null}
+            <Checkbox className="boxTermosDeUso" onChange={TermosChecked} >Concordo com os</Checkbox>
+            <Link  to="/termosdeuso">Termos de Uso e Condições</Link>
+          { checked?(
             <button className="entrarButtonCadastro" onClick={handleSubmit}>
               Cadastrar
             </button>
+          ):           
+           <button className="entrarButtonCadastroDesabilitado" disabled onClick={handleSubmit}>
+          Cadastrar
+         </button>}
             <div className="irLogin">
               <h5 className="jatemLogin">Já possui Login?</h5>
               <Link className="logincadastro" to="/login">
