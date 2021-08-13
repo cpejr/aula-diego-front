@@ -4,7 +4,7 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-import { Input, Form, message, Select, Button } from "antd";
+import { Input, Form, message, Select, Button, InputNumber } from "antd";
 
 const { TextArea } = Input;
 
@@ -24,8 +24,7 @@ const formTailLayout = {
 };
 
 export default function NovoCurso() {
-  const [formData, setformData] = useState([]);
-  const [organization, setOrganization] = useState([]);
+  const [data, setData] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const history = useHistory();
   const { session } = useSession();
@@ -37,7 +36,7 @@ export default function NovoCurso() {
   };
 
   useEffect(() => {
-    setformData({ ...formData, organization_id: session.user.organization_id });
+    setData({ ...data, organization_id: session.user.organization_id });
 
     api
       .get("/organization", config)
@@ -45,19 +44,24 @@ export default function NovoCurso() {
       .catch((err) => {
         message.error("Não foi possível criar a ocupação!");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   function handleChange(e) {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+    setData({ ...data, [e.target.name]: e.target.value });
+  }
+
+  function handleWorkloadChange(e) {
+    setData({ ...data, workload: e });
   }
 
   function handleOrgChange(id) {
-    setformData({ ...formData, organization_id: id });
+    setData({ ...data, organization_id: id });
   }
 
   function handleSubmit() {
     api
-      .post(`/course`, formData, config)
+      .post(`/course`, data, config)
       .then(() => {
         message.success("Curso criado com sucesso!");
         history.push("/curso/lista");
@@ -127,7 +131,14 @@ export default function NovoCurso() {
                   placeholder="Descrição sobre o conteúdo do curso"
                   name="description"
                   autoSize={{ minRows: 2, maxRows: 6 }}
-                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item name="workload" label="Carga horária">
+                <InputNumber
+                  placeholder="Carga horária do curso"
+                  size="large"
+                  type="number"
+                  onChange={(e) =>handleWorkloadChange(e)}
                 />
               </Form.Item>
               <Form.Item {...formTailLayout} className="mt20">

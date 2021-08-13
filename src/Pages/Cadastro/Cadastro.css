@@ -74,8 +74,10 @@
   margin: auto auto auto auto;
   color: grey;
 }
-.boxTermosDeUso{
+.boxTermosDeUso {
   font-weight: 700;
+  color: white !important;
+  font-size: medium;
 }
 .esqueceuCadastro {
   font-size: small;
@@ -145,6 +147,7 @@ input:active {
 }
 .jatemLogin {
   font-size: medium;
+  color: white;
 }
 .logincadastro {
   margin-left: 8px;

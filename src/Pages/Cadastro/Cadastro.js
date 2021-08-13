@@ -15,14 +15,14 @@ export default function Cadastro(props) {
   const [organizations, setOrganizations] = useState();
   const [occupations, setOccupations] = useState();
   const [startDate, setStartDate] = useState(null);
-  const [checked,setChecked] = useState();
+  const [checked, setChecked] = useState();
   const history = useHistory();
   const { session } = useSession();
 
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
     api.get("/organization").then((res) => setOrganizations(res.data));
-  }, []);
+  }, [props.location.state]);
 
   useEffect(() => {
     if (!organizations) return;
@@ -31,7 +31,7 @@ export default function Cadastro(props) {
         params: { organization_id: inputValues["organization_id"] },
       })
       .then((res) => setOccupations(res.data));
-  }, [inputValues["organization_id"]]);
+  }, [inputValues, organizations]);
 
   function handleChange(e) {
     console.log({
@@ -61,12 +61,11 @@ export default function Cadastro(props) {
     return true;
   }
 
-  function TermosChecked(e){
-    if(checked){
-      setChecked(false)
-    }
-    else{
-      setChecked(true)
+  function TermosChecked(e) {
+    if (checked) {
+      setChecked(false);
+    } else {
+      setChecked(true);
     }
   }
   function handleSubmit(e) {
@@ -229,16 +228,23 @@ export default function Cadastro(props) {
                 </div>
               </>
             ) : null}
-            <Checkbox className="boxTermosDeUso" onChange={TermosChecked} >Concordo com os Termos de Uso e Condições</Checkbox>
-            <Link className="logincadastro" to="/TermosDeUso">Termos de Uso e Condições</Link>
-          { checked?(
-            <button className="entrarButtonCadastro" onClick={handleSubmit}>
-              Cadastrar
-            </button>
-          ):           
-           <button className="entrarButtonCadastroDesabilitado" disabled onClick={handleSubmit}>
-          Cadastrar
-         </button>}
+            <Checkbox className="boxTermosDeUso" onChange={TermosChecked}>
+              Concordo com os
+            </Checkbox>
+            <Link to="/termosdeuso">Termos de Uso e Condições</Link>
+            {checked ? (
+              <button className="entrarButtonCadastro" onClick={handleSubmit}>
+                Cadastrar
+              </button>
+            ) : (
+              <button
+                className="entrarButtonCadastroDesabilitado"
+                disabled
+                onClick={handleSubmit}
+              >
+                Cadastrar
+              </button>
+            )}
             <div className="irLogin">
               <h5 className="jatemLogin">Já possui Login?</h5>
               <Link className="logincadastro" to="/login">
