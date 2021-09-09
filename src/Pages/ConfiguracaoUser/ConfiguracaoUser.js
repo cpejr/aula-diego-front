@@ -14,6 +14,7 @@ export default function ConfiguracaoAluno(props) {
   const [organization, setOrganization] = useState([]);
   const [occupation, setOccupation] = useState([]);
   const [email, setEmail] = useState([]);
+  const [cpf, setCpf] = useState([]);
 
   const { session } = useSession();
   const [open, setOpen] = useState(false);
@@ -44,6 +45,13 @@ export default function ConfiguracaoAluno(props) {
       setBirthdate(birthdate);
       setPhone(phone);
       setEmail(response.data.email);
+      var v = response.data.cpf;
+      v=v.replace(/\D/g,"")                    //Remove tudo o que não é dígito
+      v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
+      v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
+                                              //de novo (para o segundo bloco de números)
+      v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hífen entre o terceiro e o quarto dígitos
+      setCpf(v);
     });
 
     api
@@ -115,9 +123,14 @@ export default function ConfiguracaoAluno(props) {
                 {getType()}
               </Card>
             </Col>
-            <Col span={24}>
+            <Col span={12}>
               <Card type="inner" title="Email" bordered={false}>
                 {email}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="CPF" bordered={false}>
+                {cpf}
               </Card>
             </Col>
           </Row>

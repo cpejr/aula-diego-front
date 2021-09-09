@@ -3,11 +3,11 @@ import InputMask from "react-input-mask";
 import "./Cadastro.css";
 import logo from "../../images/Logo2.png";
 import { Link, useHistory } from "react-router-dom";
-import DatePicker, { registerLocale } from "react-datepicker";
+// import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { message } from "antd";
+import { message, DatePicker } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 
 export default function Cadastro(props) {
@@ -18,6 +18,7 @@ export default function Cadastro(props) {
   const [checked, setChecked] = useState();
   const history = useHistory();
   const { session } = useSession();
+  const dateFormat = 'DD/MM/YYYY';
 
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
@@ -45,6 +46,7 @@ export default function Cadastro(props) {
   }
   function validateForm() {
     const inputs = document.querySelectorAll("input");
+    console.log(inputs);
 
     for (let i = 0; i < inputs.length; ++i) {
       if (!inputs[i].value || inputs[i].value == "") return false;
@@ -76,9 +78,11 @@ export default function Cadastro(props) {
 
     let data = inputValues;
     data.phone = data.phone.replace(/[()\s-]/g, "");
+    data.cpf = data.cpf.split(".").join("");
+    data.cpf = data.cpf.split("-").join("");
     delete data.passwordConfirmation;
     data.birthdate = startDate;
-
+    console.log(data);
     api
       .post("/user", data)
       .then(() => {
@@ -183,15 +187,13 @@ export default function Cadastro(props) {
             </div>
             <div className="form-group">
               <DatePicker
-                width="100%"
                 className="form-control"
-                id="exampleInputAddress"
                 name="birthdate"
                 selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                placeholderText="Data de Nascimento"
+                format={dateFormat}
+                onChange={(date) =>{ setStartDate(date); console.log(date._d);}}
+                placeholder="Data de Nascimento"
                 locale="pt-BR"
-                required
               />
             </div>
             <div className="form-group">
@@ -203,6 +205,19 @@ export default function Cadastro(props) {
                 value={inputValues["phone"]}
                 onChange={handleChange}
                 placeholder="Telefone"
+                spellCheck="false"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <InputMask
+                mask="999.999.999-99"
+                className="form-control"
+                id="CPF"
+                name="cpf"
+                value={inputValues["cpf"]}
+                onChange={handleChange}
+                placeholder="CPF"
                 spellCheck="false"
                 required
               />

@@ -133,6 +133,24 @@
   color: white;
 }
 
+.ant-picker {
+  background-color: rgb(48, 33, 54) !important;
+  border: 1.5px solid rgb(63, 55, 73) !important;
+  min-height: 50px !important;
+  border-radius: 10px !important;
+  margin-bottom: 0.3rem !important;
+  color: white !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.ant-picker input {
+   color: white !important;
+   margin: 0 !important;
+ }
+
 .CadastroImg {
   width: 400px;
   margin-bottom: 40px;
