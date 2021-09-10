@@ -70,7 +70,7 @@ const routes = () => {
           component={Cadastro} // (opcional) componente que renderiza se não estiver logado
         />
         <PrivateRoute
-          path="/forgottenpassword"
+          path="/esqueciasenha"
           studentComponent={ForgottenPassword}
           adminComponent={ForgottenPassword}
           masterComponent={ForgottenPassword}

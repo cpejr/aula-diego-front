@@ -50,7 +50,7 @@ export default function Cadastro(props) {
 
     for (let i = 0; i < inputs.length; ++i) {
       if (inputs[i].name != "terms" && inputs[i].value == "") return false;
-      else if(inputs[i].name === "terms" && !inputs[i].checked) return false;
+      else if (inputs[i].name === "terms" && !inputs[i].checked) return false;
     }
 
     if (inputValues["password"] !== inputValues["passwordConfirmation"]) {
@@ -75,11 +75,11 @@ export default function Cadastro(props) {
     e.preventDefault();
     if (validateForm() === "pass") {
       message.error("As senhas estão diferentes");
-      return
-    };
-    if (!validateForm()){
+      return;
+    }
+    if (!validateForm()) {
       message.error("Preencha todos os campos para se cadastrar");
-      return
+      return;
     }
 
     let data = inputValues;
@@ -252,7 +252,11 @@ export default function Cadastro(props) {
                 </div>
               </>
             ) : null}
-            <Checkbox className="boxTermosDeUso" name="terms" onChange={TermosChecked}>
+            <Checkbox
+              className="boxTermosDeUso"
+              name="terms"
+              onChange={TermosChecked}
+            >
               Concordo com os
             </Checkbox>
             <Link to="/termosdeuso">Termos de Uso e Condições</Link>

@@ -143,14 +143,16 @@ export default function Login() {
               <div className="esqueceuLoginDiv">
                 <a
                   className="esqueceuLogin"
-                  onClick={() => redirect("/forgottenpassword")}
+                  onClick={() => redirect("/esqueciasenha")}
                   target="blank"
                 >
                   Esqueceu a senha?
                 </a>
               </div>
               <div className="resgateLogin">
-                <h5 className="naotemLogin">Não tem conta?</h5>
+                <h5 className="naotemLogin" style={{ color: "white" }}>
+                  Não tem uma conta?
+                </h5>
                 <Link className="cadastreLogin" to="/cadastro">
                   Cadastre-se
                 </Link>
