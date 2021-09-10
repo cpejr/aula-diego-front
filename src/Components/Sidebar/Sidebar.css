@@ -30,6 +30,7 @@ ul a:hover {
   font-weight: 500;
   position: fixed;
   height: 100vh;
+  box-shadow: 0px 0px 70px 0px #7090b029;
 }
 
 .logoSidebar {

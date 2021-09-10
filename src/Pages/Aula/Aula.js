@@ -97,7 +97,7 @@ export default function Aula(props) {
       });
   };
 
-  console.log(lesson)
+  console.log(lesson);
 
   return (
     <Base>
@@ -140,13 +140,12 @@ export default function Aula(props) {
           );
         })}
         <Divider style={{ "margin-bottom": "3%" }} />
-        <FormEmail />
-      
-      <CommentsContainer
-        parent_id={id}
-        parent_name={lesson?.name}
-        parent_path={`/aula/${id}`}
-      />
+
+        <CommentsContainer
+          parent_id={id}
+          parent_name={lesson?.name}
+          parent_path={`/aula/${id}`}
+        />
       </div>
     </Base>
   );
