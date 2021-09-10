@@ -18,7 +18,7 @@ export default function Cadastro(props) {
   const [checked, setChecked] = useState();
   const history = useHistory();
   const { session } = useSession();
-  const dateFormat = 'DD/MM/YYYY';
+  const dateFormat = "DD/MM/YYYY";
 
   useEffect(() => {
     if (props.location.state) setInputValues(props.location.state);
@@ -95,9 +95,9 @@ export default function Cadastro(props) {
         message.success("Usuário cadastrado com sucesso");
         history.push("/");
       })
-      .catch((error) =>
-        message.error("Não foi possível concluir o cadastro, tente novamente.")
-      );
+      .catch((error) => {
+        message.error("Não foi possível concluir o cadastro, tente novamente.");
+      });
   }
 
   return (
@@ -197,7 +197,10 @@ export default function Cadastro(props) {
                 name="birthdate"
                 selected={startDate}
                 format={dateFormat}
-                onChange={(date) =>{ setStartDate(date); console.log(date._d);}}
+                onChange={(date) => {
+                  setStartDate(date);
+                  console.log(date._d);
+                }}
                 placeholder="Data de Nascimento"
                 locale="pt-BR"
               />
