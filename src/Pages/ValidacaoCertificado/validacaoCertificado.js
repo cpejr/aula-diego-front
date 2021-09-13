@@ -56,7 +56,10 @@ export default function ValidacaoCertificado(){
                 setHidden(!hidden);
             }
         }).catch((error)=>{
-            message.error(error.message); // Exibindo essa mensagem duas vezes
+            // message.error(error.message); 
+            message.error("Problema ao validar o certificado!");
+            setFailHidden(false);
+            setHidden(!hidden);
         });
     }
 
