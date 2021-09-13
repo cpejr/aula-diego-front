@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Input, Form, Typography, message, Layout } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useLocation } from "react-router";
@@ -7,40 +7,26 @@ import api from "../../services/api";
 import "./validacaoCertificado.css";
 import "antd/dist/antd.css";
 
-
-
 export default function ValidacaoCertificado(){
-    const { session } = useSession();
     const location = useLocation();
+    const { session } = useSession();
     const { search } = location;
+    const { Title } = Typography;
     const params = new URLSearchParams(search);
     const certificate_id = params.get("certificate");
+
     const [certificate, setCertificate] = useState(certificate_id);
     const [hidden, setHidden] = useState(false);
     const [okHidden, setOkHidden] = useState(true);
     const [failHidden, setFailHidden]  = useState(true);
-    const [course, setCourse] = useState("Uso do drone");
-    const [user, setUser] = useState("Lampinho");
+    const [course, setCourse] = useState();
+    const [user, setUser] = useState();
+
     const config = {
         headers: {
             authorization: "BEARER " + session.accessToken,
         },
     };
-
-    // useEffect(() => {
-    //     const data = {
-    //         course_id: "010a8904-bbbe-439b-85bb-bfdfa8ee2a52",
-    //         user_id: "ce652b1a-0f01-49fe-ac88-fc55776d9982",
-    //     }
-    //     api.get('/course-certificate/853a3226-9d25-4102-b8bc-93e62366ae3d', config).then((res)=>{
-    //         message.success("cadastrei um novo certificado");
-    //         console.log(res);
-    //     }).catch((error)=>{
-    //         console.log(error);
-    //     })
-    // }, [])
-
-    const { Title } = Typography;
 
     function handleChange(e){
         const value = e.target.value;
@@ -48,14 +34,15 @@ export default function ValidacaoCertificado(){
     }
 
     function handleSubmit(){
-        api.get(`/course-certificate/${certificate_id}`, config).then((res)=>{
-            console.log(res.data);
-            api.get(`user/${res.data.user_id}`).then((res)=>{
+        api
+        .get(`/course-cerificate/${certificate}`, config)
+        .then((res)=>{
+            api.get(`user/${res.data.user_id}`, config).then((res)=>{
                 setUser(res.data.name);
             }).catch((error)=>{
                 message.warn(error.message);
             });
-            api.get(`course/${res.data.course_id}`).then((res)=>{
+            api.get(`course/${res.data.course_id}`, config).then((res)=>{
                 setCourse(res.data.name);
             }).catch((error)=>{
                 message.warn(error.message);
@@ -68,19 +55,9 @@ export default function ValidacaoCertificado(){
                 setFailHidden(false);
                 setHidden(!hidden);
             }
-            console.log(res);
         }).catch((error)=>{
-            message.warn(error.message);
+            message.error(error.message); // Exibindo essa mensagem duas vezes
         });
-        var i=true;
-            if(i){
-                setOkHidden(false);
-                setHidden(!hidden);
-            }
-            else{
-                setFailHidden(false);
-                setHidden(!hidden);
-            }
     }
 
     function handleBack(){
@@ -109,7 +86,7 @@ export default function ValidacaoCertificado(){
                     </div>                
                 </div>
                 </Form.Item>
-                <Form.Item hidden={failHidden}>
+                <Form.Item hidden={okHidden}>
                 <div style={{display: "flex", flexDirection: "column"}}>
                     <Title level={2}>O certificado de {user} do curso {course} foi verificado com sucesso!</Title>
                     <div style ={{width: "auto"}}>
@@ -117,7 +94,7 @@ export default function ValidacaoCertificado(){
                     </div>                  
                 </div>
                 </Form.Item>
-                <Form.Item hidden={okHidden}>
+                <Form.Item hidden={failHidden}>
                     <Title level={2}>O certificado {certificate} não existe para ser verificado!</Title>
                     <Button onClick={handleBack}>Voltar</Button>
                 </Form.Item>
