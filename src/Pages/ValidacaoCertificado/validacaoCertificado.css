@@ -1,0 +1,11 @@
+.ant-btn {
+    background-color: #25003c;
+    color: white;
+  }
+  
+  .ant-btn:hover {
+    background-color: rgb(198, 53, 84);
+    border-color: rgb(198, 53, 84);
+    color: white;
+  }
+  
