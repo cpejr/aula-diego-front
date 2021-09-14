@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Button, Input, Form, Typography, message, Layout } from "antd";
 import { useSession } from "../../Context/SessionContext";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import "./validacaoCertificado.css";
 import "antd/dist/antd.css";
 
 export default function ValidacaoCertificado(){
+    const history = useHistory();
     const location = useLocation();
     const { session } = useSession();
     const { search } = location;
-    const { Title } = Typography;
+    const { Title, Link } = Typography;
     const params = new URLSearchParams(search);
     const certificate_id = params.get("certificate");
 
@@ -73,6 +74,10 @@ export default function ValidacaoCertificado(){
         setHidden(!hidden);
     }
 
+    function handleCheckCertificate(){
+        history.push("/");
+    }
+
     return(
         <Base>
             <Layout style={{ margin: '50px 50px', padding: "50px"}}>
@@ -91,7 +96,11 @@ export default function ValidacaoCertificado(){
                 </Form.Item>
                 <Form.Item hidden={okHidden}>
                 <div style={{display: "flex", flexDirection: "column"}}>
-                    <Title level={2}>O certificado de {user} do curso {course} foi verificado com sucesso!</Title>
+                    <Title level={2}>
+                        O certificado de {user} do curso "{course}" foi verificado com sucesso!
+                        <br/>
+                        <Button onClick={handleCheckCertificate}>Ver Certificado</Button>
+                    </Title>
                     <div style ={{width: "auto"}}>
                         <Button onClick={handleBack}>Voltar</Button>
                     </div>                  
