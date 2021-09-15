@@ -85,7 +85,7 @@ const routes = () => {
           masterComponent={Master}
         />
         <PrivateRoute
-          path="/certificado/:id"
+          path="/certificado"
           exact
           studentComponent={ValidacaoCertificado}
           adminComponent={ValidacaoCertificado}

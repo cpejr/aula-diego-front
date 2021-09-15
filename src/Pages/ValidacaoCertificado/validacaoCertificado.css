@@ -1,17 +1,6 @@
-.ant-btn {
-  background-color: #25003c;
-  color: white;
-}
-
-.ant-btn:hover {
-  background-color: rgb(198, 53, 84);
-  border-color: rgb(198, 53, 84);
-  color: white;
-}
-
-@media only screen and (max-width:600px){
+@media only screen and (max-width: 600px) {
   h1 {
-    font-size:30px !important;
+    font-size: 30px !important;
   }
   h2 {
     font-size: 20px !important;
