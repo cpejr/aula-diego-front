@@ -30,8 +30,9 @@
 }
 
 .switch {
-  padding: 2vh;
   justify-content: center;
+  margin-top: 40px;
+  margin-right: 10px;
 }
 
 .lamp {
@@ -240,6 +241,104 @@
   display: none;
 }
 
+#toggle_checkbox {
+  display: none;
+}
+
+label {
+  display: block;
+  top: 50%;
+  right: 10px;
+  left: 0px;
+  width: 67px;
+  height: 32px;
+  margin: 0 auto;
+  background-color: #77b5fe;
+  border-radius: 56px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: 0.3s ease background-color;
+  overflow: hidden;
+}
+
+#star {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 1px;
+  height: 1px;
+  background-color: #fafd0f;
+  transform: scale(1);
+  border-radius: 50%;
+  transition: 0.3s ease top, 0.3s ease left, 0.3s ease transform,
+    0.3s ease background-color;
+  z-index: 1;
+}
+
+#star-1 {
+  position: relative;
+}
+
+#star-2 {
+  position: absolute;
+  transform: rotateZ(36deg);
+}
+
+.star {
+  top: 2px;
+  left: 8px;
+  font-size: 20px;
+  line-height: 28px;
+  color: #fafd0f;
+  transition: 0.3s ease color;
+}
+
+#moon {
+  position: absolute;
+  bottom: -52px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.3s ease bottom;
+}
+
+#moon:before {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  background-color: #03a9f4;
+  border-radius: 50%;
+  transition: 0.3s ease background-color;
+}
+
+#toggle_checkbox:checked + label {
+  background-color: #000;
+}
+
+#toggle_checkbox:checked + label #star {
+  top: 9px;
+  left: 40px;
+  transform: scale(0.3);
+  background-color: yellow;
+}
+
+#toggle_checkbox:checked + label .star {
+  color: yellow;
+}
+
+#toggle_checkbox:checked + label #moon {
+  bottom: 8px;
+}
+
+#toggle_checkbox:checked + label #moon:before {
+  background-color: #000;
+}
+
 @media (max-width: 720px) {
   .body {
     flex-direction: column;
@@ -248,7 +347,7 @@
     height: 8vh;
   }
   .logo {
-    height: 3vh;
+    width: 0.3vw;
   }
   .logodark {
     height: 2vh;
@@ -264,7 +363,7 @@
   }
   .btnLogin {
     height: 4vh;
-    width: 20vw;
+    width: 15vw;
   }
   .btnCadastro {
     height: 3vh;
