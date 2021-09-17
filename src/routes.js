@@ -44,6 +44,7 @@ import EditarAula from "./Pages/EditarAula/EditarAula";
 import EditarOrganizacao from "./Pages/EditarOrganizacao/EditarOrganizacao";
 import Master from "./Pages/Master/Master";
 import TermosDeUso from "./Pages/TemosDeUso/TermosDeUso";
+import ValidacaoCertificado from "./Pages/ValidacaoCertificado/validacaoCertificado";
 
 const routes = () => {
   return (
@@ -83,6 +84,11 @@ const routes = () => {
           adminComponent={Admin}
           masterComponent={Master}
         />
+        <Route
+          component={ValidacaoCertificado}
+          path="/certificado"
+          exact
+        /> 
         <PrivateRoute
           path="/config"
           exact
