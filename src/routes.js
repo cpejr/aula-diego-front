@@ -84,13 +84,11 @@ const routes = () => {
           adminComponent={Admin}
           masterComponent={Master}
         />
-        <PrivateRoute
+        <Route
+          component={ValidacaoCertificado}
           path="/certificado"
           exact
-          studentComponent={ValidacaoCertificado}
-          adminComponent={ValidacaoCertificado}
-          masterComponent={ValidacaoCertificado}
-        />
+        /> 
         <PrivateRoute
           path="/config"
           exact

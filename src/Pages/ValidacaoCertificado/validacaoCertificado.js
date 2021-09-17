@@ -1,49 +1,25 @@
 import React, { useState } from "react";
-import { Button, Input, Form, Typography, message, Layout } from "antd";
-import { useSession } from "../../Context/SessionContext";
+import { Button, Input, Form, Typography, message } from "antd";
 import { useHistory, useLocation } from "react-router";
-import Base from "../../Components/Base/Base";
+import Logo from "../../images/Logo2.png";
 import api from "../../services/api";
 import "./validacaoCertificado.css";
 import "antd/dist/antd.css";
-import Logo from "../../images/Logo2.png";
 
 export default function ValidacaoCertificado() {
   const history = useHistory();
   const location = useLocation();
-  const { session } = useSession();
   const { search } = location;
   const { Title, Link } = Typography;
   const params = new URLSearchParams(search);
   const certificate_id = params.get("certificate");
+  const [course, setCourse] = useState("React Native: básico ao avançado");
+  const [user, setUser] = useState("Renan Castro");
 
   const [certificate, setCertificate] = useState(certificate_id);
   const [hidden, setHidden] = useState(false);
   const [okHidden, setOkHidden] = useState(true);
   const [failHidden, setFailHidden] = useState(true);
-  const [course, setCourse] = useState();
-  const [user, setUser] = useState();
-
-  const config = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-  };
-
-  const formLayout = {
-    labelCol: {
-      span: 4,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
-
-  const formTailLayout = {
-    wrapperCol: {
-      offset: 4,
-    },
-  };
 
   function handleChange(e) {
     const value = e.target.value;
@@ -52,24 +28,24 @@ export default function ValidacaoCertificado() {
 
   function handleSubmit() {
     api
-      .get(`/course-cerificate/${certificate}`, config)
+      .get(`/course-cerificate/${certificate}`)
       .then((res) => {
-        api
-          .get(`user/${res.data.user_id}`, config)
-          .then((res) => {
-            setUser(res.data.name);
-          })
-          .catch((error) => {
-            message.warn(error.message);
-          });
-        api
-          .get(`course/${res.data.course_id}`, config)
-          .then((res) => {
-            setCourse(res.data.name);
-          })
-          .catch((error) => {
-            message.warn(error.message);
-          });
+          // api
+          //   .get(`user/${res.data.user_id}`)
+          //   .then((res) => {
+          //     setUser(res.data.name);
+          //   })
+          //   .catch((error) => {
+          //     message.warn(error.message);
+          //   });
+          // api
+          //   .get(`course/${res.data.course_id}`)
+          //   .then((res) => {
+          //     setCourse(res.data.name);
+          //   })
+          //   .catch((error) => {
+          //     message.warn(error.message);
+          //   });
         if (res.data) {
           setOkHidden(false);
           setHidden(!hidden);
@@ -79,7 +55,6 @@ export default function ValidacaoCertificado() {
         }
       })
       .catch((error) => {
-        // message.error(error.message);
         message.error("Problema ao validar o certificado!");
         setFailHidden(false);
         setHidden(!hidden);
@@ -111,6 +86,7 @@ export default function ValidacaoCertificado() {
               className="logodark"
               style={{ margin: "7px" }}
               src={Logo}
+              alt="Logo da Recstudio"
             ></img>
           </Link>
         </div>
@@ -156,17 +132,19 @@ export default function ValidacaoCertificado() {
           </Form.Item>
           <Form.Item hidden={okHidden}>
             <Title level={2}>
-              O certificado de {user} do curso "{course}" foi verificado com
+              O certificado de {user} do curso {course} foi verificado com
               sucesso!
               <br />
-              <Button onClick={handleCheckCertificate} type="primary">
-                Ver Certificado
-              </Button>
             </Title>
-            <div style={{ width: "auto" }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+            <Button onClick={handleCheckCertificate} type="primary">
+                Ver Certificado
+            </Button>
+            <div style={{ marginLeft: "15px", width: "auto" }}>
               <Button onClick={handleBack} type="default">
                 Voltar
               </Button>
+            </div>
             </div>
           </Form.Item>
           <Form.Item hidden={failHidden}>
