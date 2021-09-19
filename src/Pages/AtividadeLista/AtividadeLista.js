@@ -50,7 +50,8 @@ export default function AtividadeLista(props) {
         setLoading(false);
       })
       .catch(err => { console.log(err); message.error("Não foi possível carregar dados das respostas!") });
-  }, [config]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
     {

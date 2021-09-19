@@ -56,7 +56,8 @@ export default function ListaAlunoLIve(props) {
       .catch(() => {
         message.error("Não foi possível carregar a presença das lives!");
       });
-  }, [config]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   const columns = [
     {

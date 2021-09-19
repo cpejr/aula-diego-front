@@ -70,7 +70,8 @@ export default function Atividade(props) {
       })
       .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
-  }, [config, configFile, exercise_id, history, session])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session])
 
   const handleChange = (index, value) => setSubmit({ ...submit, answers: {...submit.answers, [index]: value }})
 

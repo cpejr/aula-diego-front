@@ -103,9 +103,9 @@ export default function EditarTurma(props) {
         .catch((err) => {
           message.error("Não foi possível editar a turma!\n" + err);
         });
-        
-    }, [config, configStudents, configUserClass, id]);
-  const studentsTable = [
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+const studentsTable = [
     {
       title: "Nome",
       dataIndex: "name",

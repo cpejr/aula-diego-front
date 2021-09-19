@@ -83,7 +83,8 @@ export default function AtividadeEditar(props) {
       })
       .catch(err => { message.error("Não foi possível carregar dados da prova!") });
 
-  }, [config, configFileGet, exercise_id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function startFields(add) {
     questions.map(item => add());

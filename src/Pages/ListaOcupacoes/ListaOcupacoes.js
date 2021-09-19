@@ -36,7 +36,8 @@ export default function ListaOrganizacoes() {
       .catch((err) => {
         console.log(err);
       });
-  }, [config]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   let columns = [
     {

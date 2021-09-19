@@ -62,7 +62,8 @@ export default function ListaAlunos() {
   useEffect(() => {
     getData(0);
     setFiltered(students);
-  }, [getData, students]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   // useEffect(() => {
   //   setLoading(false)

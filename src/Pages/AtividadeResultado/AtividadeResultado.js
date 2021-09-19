@@ -42,7 +42,8 @@ export default function AtividadeResultado(props) {
       })
       .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
-  }, [answer_id, config])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Base>

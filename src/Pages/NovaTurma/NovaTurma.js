@@ -49,7 +49,8 @@ export default function NovaAula(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [configStudents]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   const formLayout = {
     labelCol: {

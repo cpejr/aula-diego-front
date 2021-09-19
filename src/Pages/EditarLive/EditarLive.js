@@ -49,7 +49,8 @@ export default function EditarLive(props) {
       setLink(response.data.link);
       setCourseId(response.data.course_id);
     });
-  }, [config, id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();

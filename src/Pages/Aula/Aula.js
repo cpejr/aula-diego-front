@@ -79,7 +79,8 @@ export default function Aula(props) {
       .catch(() => {
         message.error("Não foi possível carregar dados da aula");
       });
-  }, [config, configLesson, id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const downloadFile = (id, name, extension) => {
     api

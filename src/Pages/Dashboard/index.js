@@ -249,7 +249,7 @@ export default function Dashboard(props) {
       .catch((err) => {
         message.error("Não foi possível carregar dados das aulas");
       });
-  }, [config, configCourse, getLogo, session.user.id]);
+  }, []);
 
   slides = myCourses.length < 3 ? myCourses.length : 3;
 

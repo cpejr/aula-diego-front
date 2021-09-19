@@ -62,7 +62,8 @@ export default function Live(props) {
         }
       })
       .catch((err) => {});
-  }, [config, history, id, session.user.id, session.user.type]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   function handleClick() {
     if (!confirmation_code)

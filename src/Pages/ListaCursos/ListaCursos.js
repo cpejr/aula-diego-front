@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
@@ -41,7 +42,7 @@ export default function ListaOrganizacoes() {
         message.error("Não foi possível carregar dados dos cursos");
       })
       .finally(() => setLoading(false));
-  }, [config, session]);
+  }, [session]);
 
   const columns = [
     {

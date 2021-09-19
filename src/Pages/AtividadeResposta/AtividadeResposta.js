@@ -46,8 +46,8 @@ export default function AtividadeResposta(props) {
         .then(() => setAnswer(response.data));
       })
       .catch(err => {console.log(err);message.error("Não foi possível carregar dados da prova!")});
-
-  }, [answer_id, config, configFile])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Base>

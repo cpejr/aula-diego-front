@@ -48,7 +48,7 @@ export default function CursoAdmin(props) {
       setFiltered(tabs[activeTab]);
       setLoading(false);
     }
-  }, [activeTab, classes, done, exercises, lessons, lives]);
+  }, [done]);
 
   const config = {
     headers: {
@@ -357,7 +357,7 @@ export default function CursoAdmin(props) {
       .catch(() => {
         message.error("Não foi possível carregar curso");
       });
-  }, [config, course_id, getData, history, session.user.organization_id, session.user.type]);
+  }, []);
 
   function handleSearch(value) {
     setSearch(value);

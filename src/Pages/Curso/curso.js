@@ -57,7 +57,7 @@ export default function Curso(props) {
       
       setSorted(combined);
     }
-  }, [done, lessons, lives])
+  }, [done])
 
   useEffect(() => {
     api
@@ -98,7 +98,7 @@ export default function Curso(props) {
       })
       .catch((err) => {
       });
-  }, [config, configQuery, id, requestDone]);
+  }, []);
 
   return (
     <Base>

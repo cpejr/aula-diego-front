@@ -91,7 +91,8 @@ export default function EditarAula(props) {
     //   console.log(response.data);
     //   // setFilteredData(response.data);
     // });
-  }, [config, id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();

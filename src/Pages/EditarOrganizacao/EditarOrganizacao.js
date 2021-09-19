@@ -71,7 +71,9 @@ export default function EditarOrganizacao(props) {
         SetName(response.data.name);
         SetDescription(response.data.description);
       });
-  }, [config, configFileGet, id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
 
   async function handleSubmit(e) {
     e.preventDefault();

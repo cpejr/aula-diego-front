@@ -50,7 +50,8 @@ export default function EditarCurso(props) {
       // setFilteredData(response.data);
       
     });
-  }, [config, id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
