@@ -105,6 +105,7 @@ export default function NovaAula(props) {
       .then(response => {
         fileIds.push(response.data);
 
+        // eslint-disable-next-line array-callback-return
         response.data.map((item, index) => {
           const formData = new FormData();
           formData.append(item, files[index]);

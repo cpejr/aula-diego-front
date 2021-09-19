@@ -48,6 +48,7 @@ export default function Admin() {
         let app = 0;
         let pen = 0;
 
+        // eslint-disable-next-line array-callback-return
         response.data.map((student) => {
           if (student.status === "approved") app += 1;
           if (student.status === "pending") pen += 1;

@@ -36,6 +36,7 @@ export default function NovaAula(props) {
 
   useEffect(() => {
     if (session.user.type !== "master") {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       config = {
         ...config,
         params: {

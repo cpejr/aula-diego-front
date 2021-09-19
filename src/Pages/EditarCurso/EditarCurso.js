@@ -22,6 +22,7 @@ const tailFormItemLayout = {
 };
 
 export default function EditarCurso(props) {
+  // eslint-disable-next-line no-unused-vars
   const [course, SetCourse] = useState([]);
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");

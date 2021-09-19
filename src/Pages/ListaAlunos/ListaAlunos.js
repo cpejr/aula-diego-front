@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect,useCallback  } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
@@ -33,6 +34,7 @@ export default function ListaAlunos() {
     },
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getData = useCallback((tab) => {
     if (session.user.type !== "master")
       config.params = { "user.organization_id": session.user.organization_id };

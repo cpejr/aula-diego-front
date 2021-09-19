@@ -30,6 +30,7 @@ export default function Infolive() {
 
   useEffect(() => {
     if (session.user.type !== "master")
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       config = {
         ...config,
         params: {

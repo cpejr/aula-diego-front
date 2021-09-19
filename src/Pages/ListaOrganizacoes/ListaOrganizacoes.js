@@ -44,6 +44,7 @@ export default function ListaOrganizacoes() {
         console.log(err)
         message.error("Não foi possível carregar dados das organizações");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getLogo = async (organizations) => {

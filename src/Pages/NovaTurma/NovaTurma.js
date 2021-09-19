@@ -37,6 +37,7 @@ export default function NovaAula(props) {
       .then((users) => {
         let students = [];
 
+        // eslint-disable-next-line array-callback-return
         users.data.map((user) => {
           students.push({ ...user, key: user.id });
         });

@@ -5,11 +5,12 @@ const data = "Hermon";
 
 const ConfirmacaoLive = (props) => {
   const [input, setInput] = useState("");
-  const [codigo, setCodigo] = useState(data);
+  const [codigo] = useState(data);
   const handleChange = (event) => {
     setInput(event.target.value);
   };
   function handleSubmit(input, codigo) {
+    // eslint-disable-next-line eqeqeq
     if (input != codigo) {
       alert("Código inválido! Tente Novamente");
     } else {

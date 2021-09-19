@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import "./Cadastro.css";

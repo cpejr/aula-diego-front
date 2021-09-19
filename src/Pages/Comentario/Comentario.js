@@ -21,6 +21,7 @@ export default function Comentario(props) {
   };
   useEffect(() => {
     getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getData() {

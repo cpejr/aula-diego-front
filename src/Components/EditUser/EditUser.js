@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";

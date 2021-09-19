@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { message } from "antd";
 import { Link } from "react-router-dom";

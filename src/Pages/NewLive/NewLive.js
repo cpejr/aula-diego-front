@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";

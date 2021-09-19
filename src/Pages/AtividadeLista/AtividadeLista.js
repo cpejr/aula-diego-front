@@ -34,6 +34,7 @@ export default function AtividadeLista(props) {
       .then((response) => {
         const answers = []
 
+        // eslint-disable-next-line array-callback-return
         response.data.map(answer => {
           answers.push({
             ...answer,

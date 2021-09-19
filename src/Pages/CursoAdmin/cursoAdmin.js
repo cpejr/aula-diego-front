@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
@@ -22,7 +24,7 @@ export default function CursoAdmin(props) {
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
-  const [selected, setSelected] = useState([]);
+  const [selected] = useState([]);
 
   const history = useHistory();
   const course_id = props.match.params.id;
@@ -34,6 +36,7 @@ export default function CursoAdmin(props) {
   const requestDone = (data) => {
     requests += 1;
 
+    // eslint-disable-next-line eqeqeq
     if (requests == 4) setDone(true);
   };
 

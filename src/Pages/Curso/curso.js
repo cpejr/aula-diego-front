@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
