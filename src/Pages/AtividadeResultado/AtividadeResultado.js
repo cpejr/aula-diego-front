@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Button, Progress, message } from 'antd';
-import { AnswerText, AnswerAlternatives } from "../../Components/DynamicForms/dynamicForms"
+import { Button, Progress, message } from 'antd';
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./AtividadeResultado.css";
-
-const answerLayout = {
-  labelCol: { span: 3 },
-  wrapperCol: { span: 16 },
-};
-
-const answerTailLayout = {
-  wrapperCol: { offset: 3, span: 16 },
-};
 
 export default function AtividadeResultado(props) {
 
@@ -52,7 +42,7 @@ export default function AtividadeResultado(props) {
       })
       .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
-  }, [])
+  }, [answer_id, config])
 
   return (
     <Base>

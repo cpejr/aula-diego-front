@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Table, Input, Popconfirm, message, Tooltip } from "antd";
+import { Table, Input, message, Tooltip } from "antd";
 import Base from "../../Components/Base/Base";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
@@ -36,7 +36,7 @@ export default function ListaOrganizacoes() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [config]);
 
   let columns = [
     {
@@ -130,11 +130,7 @@ export default function ListaOrganizacoes() {
         console.log(error);
       });
   }
-
-  function handleEdit() {
-    alert("EDIT ainda não faz nada. tururu");
-  }
-
+  
   return (
     <Base>
       <h1 className="page-title">Ocupações</h1>

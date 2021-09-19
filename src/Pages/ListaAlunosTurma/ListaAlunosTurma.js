@@ -29,7 +29,7 @@ export default function ListaOrganizacoes(props) {
         setLoading(false);
       })
       .catch(err => { console.log(err) });
-  }, []);
+  }, [cl4ss, config]);
 
   const columns = [
     {

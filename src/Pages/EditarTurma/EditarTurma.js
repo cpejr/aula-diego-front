@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, message, Table } from "antd";
+import { Form, Input, Button, message, Table } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarTurma.css";
@@ -23,7 +23,6 @@ const tailFormItemLayout = {
 
 export default function EditarTurma(props) {
   const [classes, SetClasses] = useState([]);
-  const [edit, setEdit] = useState({});
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");
   const [courseId, setCourseId] = useState("");
@@ -104,7 +103,7 @@ export default function EditarTurma(props) {
           message.error("Não foi possível editar a turma!\n" + err);
         });
         
-    }, []);
+    }, [config, configStudents, configUserClass, id]);
   const studentsTable = [
     {
       title: "Nome",
@@ -127,10 +126,6 @@ export default function EditarTurma(props) {
     },
     
   };
-  
-  function handleChangeDate(e) {
-    setEdit({ ...edit, date: e._d });
-  }
   
   function handleSearch(value) {
     setSearch(value);

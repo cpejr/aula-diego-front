@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
 import logo from "../../images/Logo2.png";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 

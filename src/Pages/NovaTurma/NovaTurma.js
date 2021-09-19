@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Input, Button, message, Table } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaTurma.css";
@@ -49,7 +48,7 @@ export default function NovaAula(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [configStudents]);
 
   const formLayout = {
     labelCol: {

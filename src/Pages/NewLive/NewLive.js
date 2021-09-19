@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, Message, message } from "antd";
+import { Form, DatePicker, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NewLive.css";

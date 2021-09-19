@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Divider, Card } from "antd";
+import { Divider, Card } from "antd";
 import { VideoCameraOutlined, ReadOutlined } from '@ant-design/icons'
 import "./curso.css";
 
@@ -54,7 +54,7 @@ export default function Curso(props) {
       
       setSorted(combined);
     }
-  }, [done])
+  }, [done, lessons, lives])
 
   useEffect(() => {
     api
@@ -95,7 +95,7 @@ export default function Curso(props) {
       })
       .catch((err) => {
       });
-  }, []);
+  }, [config, configQuery, id, requestDone]);
 
   return (
     <Base>
@@ -133,12 +133,12 @@ export default function Curso(props) {
   );
 }
 
-function CourseCard({ title, description, path }) {
-  const history = useHistory();
-  return (
-    <div className="course-card" onClick={() => history.push(path)}>
-      <h3 className="course-card-title capitalize">{title}</h3>
-      <p className="course-card-description">{description}</p>
-    </div>
-  );
-}
+// function CourseCard({ title, description, path }) {
+//   const history = useHistory();
+//   return (
+//     <div className="course-card" onClick={() => history.push(path)}>
+//       <h3 className="course-card-title capitalize">{title}</h3>
+//       <p className="course-card-description">{description}</p>
+//     </div>
+//   );
+// }

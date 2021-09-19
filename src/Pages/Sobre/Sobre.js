@@ -2,8 +2,6 @@ import React from "react";
 import Logo from "../../images/logo.png";
 import LogoDark from "../../images/Logo2.png";
 import { Link } from "react-router-dom";
-import { BulbOutlined } from "@ant-design/icons";
-import { Switch } from "antd";
 import Rocket from "../../images/rocket.svg";
 import Lesson from "../../images/lesson.svg";
 import Data from "../../images/data.svg";

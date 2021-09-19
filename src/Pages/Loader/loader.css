@@ -37,11 +37,11 @@ body {
   animation-delay: 0.9s;
 }
 
-@keyframes jump {
+/* @keyframes jump {
   20%: {
     transform: translateY(0px);
   }
   50% {
     transform: translateY(-20px);
   }
-}
+} */

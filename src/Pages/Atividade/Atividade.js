@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Button, DatePicker, message } from 'antd';
+import { Form, Button, message } from 'antd';
 import { AnswerText, AnswerAlternatives } from "../../Components/DynamicForms/dynamicForms"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -70,7 +70,7 @@ export default function Atividade(props) {
       })
       .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
 
-  }, [session])
+  }, [config, configFile, exercise_id, history, session])
 
   const handleChange = (index, value) => setSubmit({ ...submit, answers: {...submit.answers, [index]: value }})
 

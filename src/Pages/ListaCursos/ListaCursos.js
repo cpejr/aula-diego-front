@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Table, Tag, Input, Tooltip, message } from "antd";
+import { Table, Input, Tooltip, message } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-  EyeOutlined,
 } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
@@ -42,7 +41,7 @@ export default function ListaOrganizacoes() {
         message.error("Não foi possível carregar dados dos cursos");
       })
       .finally(() => setLoading(false));
-  }, [session]);
+  }, [config, session]);
 
   const columns = [
     {

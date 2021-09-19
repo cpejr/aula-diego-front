@@ -11,7 +11,6 @@ export default function ListaAlunoLIve(props) {
   const [presentStudents, setPresentStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [turma, setTurma] = useState("");
-  const [setLiveName, liveName] = useState("");
   const { id } = props.match.params;
 
   function getClass(id) {
@@ -57,7 +56,7 @@ export default function ListaAlunoLIve(props) {
       .catch(() => {
         message.error("Não foi possível carregar a presença das lives!");
       });
-  }, []);
+  }, [config]);
 
   const columns = [
     {

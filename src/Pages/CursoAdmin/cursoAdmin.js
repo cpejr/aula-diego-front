@@ -45,7 +45,7 @@ export default function CursoAdmin(props) {
       setFiltered(tabs[activeTab]);
       setLoading(false);
     }
-  }, [done]);
+  }, [activeTab, classes, done, exercises, lessons, lives]);
 
   const config = {
     headers: {
@@ -354,7 +354,7 @@ export default function CursoAdmin(props) {
       .catch(() => {
         message.error("Não foi possível carregar curso");
       });
-  }, []);
+  }, [config, course_id, getData, history, session.user.organization_id, session.user.type]);
 
   function handleSearch(value) {
     setSearch(value);
@@ -383,7 +383,6 @@ export default function CursoAdmin(props) {
   function handleDelete(id) {
 
     const requests = ["lesson", "live", "exercise", "class"];
-    const method = [setLessons, setLives, setClasses];
     setLoading(true);
 
     api
@@ -431,10 +430,10 @@ export default function CursoAdmin(props) {
     console.log(now)
   } */
 
-  function handleEdit(id) {
-    const requests = ["aula", "live", "prova", "turma"];
-    history.push(`/${requests[activeTab]}/editar/${id}`);
-  }
+  // function handleEdit(id) {
+  //   const requests = ["aula", "live", "prova", "turma"];
+  //   history.push(`/${requests[activeTab]}/editar/${id}`);
+  // }
 
   return (
     <Base>

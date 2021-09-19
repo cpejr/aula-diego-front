@@ -12,7 +12,6 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Master.css";
-import { CallMissedSharp } from "@material-ui/icons";
 
 export default function Master() {
   const [approved, setApproved] = useState(false);
@@ -164,7 +163,7 @@ export default function Master() {
       .catch((err) => {
         message.error("Não foi possível carregar dados das aulas");
       });
-  }, []);
+  }, [config, configFile, session.user.organization_id]);
 
   useEffect(() => {
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { ImageUpload } from "../../Components/DynamicForms/dynamicForms";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -24,7 +24,6 @@ const tailFormItemLayout = {
 
 export default function EditarOrganizacao(props) {
   const [organization, SetOrganization] = useState(false);
-  const [edit, setEdit] = useState({});
   const [description, SetDescription] = useState("");
   const [preview, setPreview] = useState(false)
   const [image, setImage] = useState(false);
@@ -72,7 +71,7 @@ export default function EditarOrganizacao(props) {
         SetName(response.data.name);
         SetDescription(response.data.description);
       });
-  }, []);
+  }, [config, configFileGet, id]);
 
   async function handleSubmit(e) {
     e.preventDefault();
