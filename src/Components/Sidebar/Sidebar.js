@@ -3,19 +3,11 @@ import "./Sidebar.css";
 import Logo from "../../images/reclas.svg";
 import { useSession } from "../../Context/SessionContext";
 import { Link, useHistory } from "react-router-dom";
-import api from "../../services/api";
-import { message } from "antd";
 
 export default function Sidebar() {
   const history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
-
-  let config = {
-    headers: {
-      authorization: "Bearer " + session.accessToken,
-    },
-  };
 
   const studentList = [
     {
@@ -80,6 +72,7 @@ export default function Sidebar() {
           break;
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="sidebarContainer">

@@ -10,6 +10,7 @@ const VideoFrame = (props) => {
     
     <div className="video-Wrapper">
       <iframe
+        title = "Vídeo"
         src={"https://www.youtube.com/embed/" + url}
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

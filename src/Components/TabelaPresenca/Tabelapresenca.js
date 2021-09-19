@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./TabelaPresenca.css";
 import LinhaTabelaPresenca from "./LinhaTabelaPresenca.js";
 
@@ -33,9 +33,6 @@ const TabelaPresenca = ({ search }) => {
       present: true,
     },
   ];
-
-  const [users, setUsers] = useState(elementos);
-
 
   const Lista = elementos.map((item) => {
     return (

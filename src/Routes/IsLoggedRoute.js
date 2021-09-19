@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Redirect, Route, useHistory } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { useSession } from "../Context/SessionContext";
 
 export default function IsLoggedRoute({
@@ -12,7 +13,6 @@ export default function IsLoggedRoute({
     <Route {...rest} component={component} path={path} />
   );
   const { session, loadSession } = useSession();
-  const history = useHistory();
 
   useEffect(() => {
     loadSession();

@@ -1,5 +1,4 @@
 import React from "react";
-import InputMask from "react-input-mask";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,7 +7,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, Field, Form } from "formik";
-import { InputAdornment } from "@material-ui/core";
 import "./EditProfile.css";
 
 const FormDialog = (props) => {
@@ -204,7 +202,6 @@ const FormDialog = (props) => {
             onChange={props.onChange}
             required
             pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
-            required
           />
           <TextField
             type="text"

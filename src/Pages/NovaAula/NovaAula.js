@@ -106,13 +106,12 @@ export default function NovaAula(props) {
         fileIds.push(response.data);
 
         response.data.map((item, index) => {
-          
           const formData = new FormData();
           formData.append(item, files[index]);
 
           api
             .post("file_upload", formData, configFiles)
-            .catch(err => { message.error("Não foi possível criar a aula!") });
+            .catch(err => { message.error("Não foi possível criar a aula!") });          
         })
 
         setUploading(false);

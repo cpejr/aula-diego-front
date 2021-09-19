@@ -7,7 +7,7 @@ export default function CardCurso({ title, organization, description, path }) {
   return (
     <div className="containerCursos">
       <div className="CardCursoTop">
-        <h4 className="descriptionCurso"></h4>
+        <h4 className="descriptionCurso">{description}</h4>
       </div>
       <div className="CardCursoBottom">
         <h3 className="TitleCurso">{title}</h3>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import './FormEmail.css';
@@ -33,10 +33,6 @@ export default function FormEmail() {
         }
 
         return true;
-    }
-
-    function handleChange(e) {
-        setFormValues({ ...formValues, [e.target.name]: e.target.value });
     }
     
     function handleSubmit() {

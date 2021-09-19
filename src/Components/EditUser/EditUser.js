@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "../../Context/SessionContext";
-import { UTCToLocal } from "../../utils/convertDate";
 import api from "../../services/api";
 import { message, Card, Col, Row, Input, Select, Button } from "antd";
 import ActionButton from "../../Components/ActionButton/actionButton";
@@ -48,6 +47,7 @@ export default function EditUser() {
         setOrganizations(data.data);
       })
       .catch(() => message.error("Não foi possível carregar organizações"));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSelectChange(value, field) {

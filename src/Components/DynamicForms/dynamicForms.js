@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Upload, Radio, Tag, Image } from 'antd';
-import { Html5Filled, MinusCircleOutlined, PlusOutlined, RadiusUprightOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import "./dynamicForms.css";
 
 const { TextArea } = Input
@@ -17,10 +18,6 @@ const questionTailLayout = {
 const alternativeLayout = {
   labelCol: { span: 3 },
   wrapperCol: { span: 24 },
-};
-
-const alternativeTailLayout = {
-  wrapperCol: { offset: 3, span: 42 },
 };
 
 export const Field = ({
@@ -234,7 +231,7 @@ export const QuestionText = ({
 
   const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
 
-  useEffect(() => onChange(question), [question])
+  useEffect(() => onChange(question),  [question])
 
   return (
     <div className="questionWrapper">
