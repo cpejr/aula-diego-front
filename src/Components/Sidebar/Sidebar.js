@@ -79,7 +79,7 @@ export default function Sidebar() {
       <div className="logoContainer">
         <div className="imgContainer">
           <Link to="/dashboard">
-            <img src={Logo}></img>
+            <img src={Logo} alt="Logo"/>
           </Link>
         </div>
       </div>

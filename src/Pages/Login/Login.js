@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { message } from "antd";
@@ -90,6 +91,7 @@ export default function Login() {
         <img
           className="LoginImg"
           src={logo}
+          alt="Logo"
           onClick={() => {
             history.push("/");
           }}

@@ -80,7 +80,7 @@ export default function ListaOrganizacoes() {
       width: "10%",
       render: (logo) => (
         <div className="logo">
-          <img src={logo} />
+          <img src={logo} alt="Logo"/>
         </div>
       ),
     },

@@ -257,7 +257,7 @@ export default function Dashboard(props) {
     <>
       <Base>
         <div className="DashboardTitle">
-          <img src={organization.logo} className="TitleImg" />
+          <img src={organization.logo} className="TitleImg" alt="Logo da organização"/>
           <h1 style={{ fontWeight: 600, marginLeft: "15px" }}>
             {organization.name}
           </h1>

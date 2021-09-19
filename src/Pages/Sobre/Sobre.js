@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React from "react";
 import Logo from "../../images/logo.png";
 import LogoDark from "../../images/Logo2.png";
@@ -64,10 +65,10 @@ export default function Sobre() {
         <div className="headerHome">
           <div className="imgLogo">
             <Link to="/dashboard">
-              <img className="about-logo" src={Logo}></img>
+              <img className="about-logo" src={Logo} alt="Logo da RecStudio"></img>
             </Link>
             <Link to="/dashboard">
-              <img className="logodark block" src={LogoDark}></img>
+              <img className="logodark block" src={LogoDark} alt="Logo da RecStudio"></img>
             </Link>
           </div>
           <div className="btns">
@@ -109,11 +110,11 @@ export default function Sobre() {
               nec, auctor et mi.
             </h3>
           </div>
-          <img src={Rocket} className="image" />
+          <img src={Rocket} className="image" alt="Ilustração de um foguete" />
         </div>
 
         <div className="section">
-          <img src={Lesson} className="image" />
+          <img src={Lesson} className="image" alt="Ilustração de um pessoa dando aula"/>
           <div className="textSobre">
             <h1 className="TextBlack">Praesent pellentesque urna lectus!</h1>
             <h3 className="textoPadraoBlack">
@@ -135,8 +136,9 @@ export default function Sobre() {
             src={SAMU}
             className="parcerias"
             style={{ paddingRight: "5vw" }}
+            alt="Imagem do parceiro"
           />
-          <img src={UPA} className="parcerias" />
+          <img src={UPA} className="parcerias" alt="Imagem do parceiro"/>
         </div>
 
         <div className="section plus">
@@ -151,7 +153,7 @@ export default function Sobre() {
               nec, auctor et mi.
             </h3>
           </div>
-          <img src={Data} className="image" />
+          <img src={Data} className="image" alt="Ilustração de pessoas conversando"/>
         </div>
       </div>
 

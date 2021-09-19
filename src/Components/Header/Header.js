@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable eqeqeq */
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
@@ -44,6 +45,7 @@ const Header = () => {
                 style={{ marginLeft: "2vw", height: "100px" }}
                 className="headerLogo"
                 src={LogoAluno}
+                alt="Imagem"
               ></img>
             </Link>
             {/*<div className="headerScore">
