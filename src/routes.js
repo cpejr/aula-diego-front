@@ -61,7 +61,7 @@ const routes = () => {
           path="/login"
           loggedPath="/dashboard"
         />
-        <PrivateRoute
+        <IsLoggedRoute
           path="/cadastro"
           exact
           studentComponent={() => <Redirect to="/dashboard" />}

@@ -178,7 +178,7 @@ export default function Master() {
       {!loading &&
         <div className="adminRoot">
           <div className="adminTitleWrapper">
-            <img src={organization.logo} className="adminImg" />
+            <img src={organization.logo} className="adminImg" alt="Imagem" />
             <h1 className="adminTitle">{organization.name}</h1>
           </div>
           <Divider />
