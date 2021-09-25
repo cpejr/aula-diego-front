@@ -159,3 +159,25 @@
   padding: 2px;
   margin-bottom: 3px;
 }
+
+.signature_file_input {
+  visibility: hidden;
+}
+
+.signature_file_label {
+  cursor: pointer;
+
+  color: white;
+  background-color: #2091fa;
+
+  padding: 10px 20px;
+}
+
+.preview {
+  height: 100px;
+  width: 100px;
+}
+
+.hidden {
+  display: none;
+}

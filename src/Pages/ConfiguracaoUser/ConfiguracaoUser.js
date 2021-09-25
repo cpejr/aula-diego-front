@@ -5,6 +5,7 @@ import "./ConfiguracaoUser.css";
 import EditUser from "../../Components/EditUser/EditUser";
 import Base from "../../Components/Base/Base";
 import { message, Card, Col, Row, Button } from "antd";
+import { AiOutlineUpload } from "react-icons/ai";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState([]);
@@ -15,6 +16,7 @@ export default function ConfiguracaoAluno(props) {
   const [occupation, setOccupation] = useState([]);
   const [email, setEmail] = useState([]);
   const [cpf, setCpf] = useState([]);
+  const [file, setFile] = useState(null);
 
   const { session } = useSession();
   const [open, setOpen] = useState(false);
@@ -45,12 +47,13 @@ export default function ConfiguracaoAluno(props) {
       setBirthdate(birthdate);
       setPhone(phone);
       setEmail(response.data.email);
+      setFile(response.data.signature_url);
       var v = response.data.cpf;
-      v=v.replace(/\D/g,"")                    //Remove tudo o que não é dígito
-      v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
-      v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
-                                              //de novo (para o segundo bloco de números)
-      v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hífen entre o terceiro e o quarto dígitos
+      v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
+      v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+      v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+      //de novo (para o segundo bloco de números)
+      v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
       setCpf(v);
     });
 
@@ -131,6 +134,19 @@ export default function ConfiguracaoAluno(props) {
             <Col span={12}>
               <Card type="inner" title="CPF" bordered={false}>
                 {cpf}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card type="inner" title="Assinatura" bordered={false}>
+                {file ? (
+                  <img
+                    className="preview"
+                    src={file}
+                    alt="arquivo enviado pelo usuário"
+                  />
+                ) : (
+                  <p>Não há assinatura registrada</p>
+                )}
               </Card>
             </Col>
           </Row>

@@ -14,7 +14,8 @@ export default function EditUser() {
   const [organizations, setOrganizations] = useState([]);
   const [occupations, setOccupations] = useState([]);
   const [email, setEmail] = useState("");
-  const [cpf, setCpf]= useState("");
+  const [cpf, setCpf] = useState("");
+  const [file, setFile] = useState(null);
 
   const { session } = useSession();
   const history = useHistory();
@@ -33,12 +34,13 @@ export default function EditUser() {
       setBirthdate(response.data.birthdate);
       setPhone(response.data.phone);
       setEmail(response.data.email);
+      setFile(response.data.signature_url);
       var v = response.data.cpf;
-      v=v.replace(/\D/g,"")                    //Remove tudo o que não é dígito
-      v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
-      v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
-                                              //de novo (para o segundo bloco de números)
-      v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hífen entre o terceiro e o quarto dígitos
+      v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
+      v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+      v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+      //de novo (para o segundo bloco de números)
+      v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
       setCpf(v);
     });
 
@@ -76,6 +78,24 @@ export default function EditUser() {
         .catch((error) =>
           message.error("Não foi possível carregar ocupações\n" + error)
         );
+  }
+
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  async function handleFileChange(e) {
+    e.preventDefault();
+
+    const f = e.target.files[0];
+    const base64 = await getBase64(f);
+
+    setFile(base64);
   }
 
   function handleSubmit() {
@@ -213,6 +233,29 @@ export default function EditUser() {
           <Col span={12}>
             <Card type="inner" title="CPF" bordered={false}>
               {cpf}
+            </Card>
+          </Col>
+          <Col span={12}>
+            <Card type="inner" title="Assinatura" bordered={false}>
+              <label for="signature_file" className="signature_file_label">
+                Selecione a assinatura
+              </label>
+              <input
+                type="file"
+                accept="image/png"
+                max={1}
+                onChange={handleFileChange}
+                id="signature_file"
+                className="signature_file_input"
+              />
+
+              {file && (
+                <img
+                  className="preview"
+                  src={file}
+                  alt="arquivo enviado pelo usuário"
+                />
+              )}
             </Card>
           </Col>
         </Row>
