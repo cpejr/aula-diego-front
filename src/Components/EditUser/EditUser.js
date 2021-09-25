@@ -112,6 +112,7 @@ export default function EditUser() {
     addToData("organization_id", formData["organization_id"]);
     addToData("occupation_id", formData["occupation_id"]);
     addToData("email", email);
+    addToData("signature", file);
 
     console.log(data["phone"]);
 
@@ -122,7 +123,7 @@ export default function EditUser() {
     };
 
     api
-      .put(`/user/${session.user.id}`, data, config)
+      .put("/user", data, config)
       .then(() => {
         message.success("Usuário alterado com sucesso");
         history.push(`/config`);
