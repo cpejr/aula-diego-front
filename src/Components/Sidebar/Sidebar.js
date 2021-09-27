@@ -86,7 +86,7 @@ export default function Sidebar() {
 
       <div className="sidebarPerfil">
         <br></br>
-        <label>{session.user.name}</label>
+        <h6>{session.user.name}</h6>
         <br></br>
       </div>
       {session.user.type === "student" ? (
