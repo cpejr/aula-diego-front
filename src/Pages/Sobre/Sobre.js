@@ -65,10 +65,18 @@ export default function Sobre() {
         <div className="headerHome">
           <div className="imgLogo">
             <Link to="/dashboard">
-              <img className="about-logo" src={Logo} alt="Logo da RecStudio"></img>
+              <img
+                className="about-logo"
+                src={Logo}
+                alt="Logo da RecStudio"
+              ></img>
             </Link>
             <Link to="/dashboard">
-              <img className="logodark block" src={LogoDark} alt="Logo da RecStudio"></img>
+              <img
+                className="logodark block"
+                src={LogoDark}
+                alt="Logo da RecStudio"
+              ></img>
             </Link>
           </div>
           <div className="btns">
@@ -82,7 +90,11 @@ export default function Sobre() {
             </Link>
             <div className="switch">
               <input type="checkbox" id="toggle_checkbox" />
-              <label for="toggle_checkbox" id="theme-switcher">
+              <label
+                className="botaoS"
+                for="toggle_checkbox"
+                id="theme-switcher"
+              >
                 <div id="star">
                   <div class="star" id="star-1">
                     ★
@@ -114,7 +126,11 @@ export default function Sobre() {
         </div>
 
         <div className="section">
-          <img src={Lesson} className="image" alt="Ilustração de um pessoa dando aula"/>
+          <img
+            src={Lesson}
+            className="image"
+            alt="Ilustração de um pessoa dando aula"
+          />
           <div className="textSobre">
             <h1 className="TextBlack">Praesent pellentesque urna lectus!</h1>
             <h3 className="textoPadraoBlack">
@@ -138,7 +154,7 @@ export default function Sobre() {
             style={{ paddingRight: "5vw" }}
             alt="Imagem do parceiro"
           />
-          <img src={UPA} className="parcerias" alt="Imagem do parceiro"/>
+          <img src={UPA} className="parcerias" alt="Imagem do parceiro" />
         </div>
 
         <div className="section plus">
@@ -153,7 +169,11 @@ export default function Sobre() {
               nec, auctor et mi.
             </h3>
           </div>
-          <img src={Data} className="image" alt="Ilustração de pessoas conversando"/>
+          <img
+            src={Data}
+            className="image"
+            alt="Ilustração de pessoas conversando"
+          />
         </div>
       </div>
 
