@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import CardCurso from "../../Components/CardCurso/CardCurso";
-import TabelaAtividades from "../../Components/TabelaAtividades/TabelaAtividades";
 import "./index.css";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { message, Carousel, Timeline, Divider } from "antd";
-import Avatar from "antd/lib/avatar/avatar";
 import {
   LeftOutlined,
   RightOutlined,
@@ -264,7 +262,7 @@ export default function Dashboard(props) {
           <div
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
-            <label>{session.user.name}</label>
+            <h6>{session.user.name}</h6>
             <p>{score * 20} XP</p>
           </div>
         </div>
@@ -281,7 +279,7 @@ export default function Dashboard(props) {
           >
             {myCourses
               ? myCourses.map((course) => {
-                console.log("Course: ", course)
+                  console.log("Course: ", course);
                   return (
                     <CardCurso
                       title={course.course_name}

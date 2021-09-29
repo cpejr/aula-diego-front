@@ -3,8 +3,6 @@ import "./Sidebar.css";
 import Logo from "../../images/reclas.svg";
 import { useSession } from "../../Context/SessionContext";
 import { Link, useHistory } from "react-router-dom";
-import api from "../../services/api";
-import { message } from "antd";
 
 export default function Sidebar() {
   const history = useHistory();
@@ -93,7 +91,7 @@ export default function Sidebar() {
 
       <div className="sidebarPerfil">
         <br></br>
-        <label>{session.user.name}</label>
+        <h6>{session.user.name}</h6>
         <br></br>
       </div>
       {session.user.type === "student" ? (
