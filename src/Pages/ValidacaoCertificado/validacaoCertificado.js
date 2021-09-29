@@ -13,8 +13,8 @@ export default function ValidacaoCertificado() {
   const { Title, Link } = Typography;
   const params = new URLSearchParams(search);
   const certificate_id = params.get("certificate");
-  const [course, setCourse] = useState("React Native: básico ao avançado");
-  const [user, setUser] = useState("Renan Castro");
+  const [course] = useState("React Native: básico ao avançado");
+  const [user] = useState("Renan Castro");
 
   const [certificate, setCertificate] = useState(certificate_id);
   const [hidden, setHidden] = useState(false);

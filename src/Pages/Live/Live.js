@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
@@ -7,7 +7,7 @@ import VideoFrame from "../../Components/VideoFrame/VideoFrame";
 import { useSession } from "../../Context/SessionContext";
 import "./Live.css";
 import { message } from "antd";
-import { Modal, Input } from "antd";
+import { Input } from "antd";
 
 export default function Live(props) {
   const history = useHistory();
@@ -62,7 +62,8 @@ export default function Live(props) {
         }
       })
       .catch((err) => {});
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   function handleClick() {
     if (!confirmation_code)

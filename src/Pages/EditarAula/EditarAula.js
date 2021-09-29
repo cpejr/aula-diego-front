@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, message, Upload } from "antd";
+import { Form, Input, Button, message, Upload } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarAula.css";
@@ -35,15 +35,10 @@ const formLayout = {
   },
 };
 
-const formTailLayout = {
-  wrapperCol: {
-    offset: 4,
-  },
-};
+
 
 export default function EditarAula(props) {
   const [lesson, setLesson] = useState([]);
-  const [edit, setEdit] = useState({});
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [courseId, setCourseId] = useState("");
@@ -96,6 +91,7 @@ export default function EditarAula(props) {
     //   console.log(response.data);
     //   // setFilteredData(response.data);
     // });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(e) {

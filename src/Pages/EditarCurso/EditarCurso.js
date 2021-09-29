@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarCurso.css";
@@ -22,8 +22,8 @@ const tailFormItemLayout = {
 };
 
 export default function EditarCurso(props) {
+  // eslint-disable-next-line no-unused-vars
   const [course, SetCourse] = useState([]);
-  const [edit, setEdit] = useState({});
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");
   
@@ -50,11 +50,8 @@ export default function EditarCurso(props) {
       // setFilteredData(response.data);
       
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function handleChangeDate(e) {
-    setEdit({ ...edit, date: e._d });
-  }
 
   function handleSubmit(e) {
     e.preventDefault();

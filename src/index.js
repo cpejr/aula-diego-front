@@ -1,5 +1,4 @@
 import React from 'react';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';

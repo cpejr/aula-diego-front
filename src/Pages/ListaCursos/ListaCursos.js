@@ -1,12 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Table, Tag, Input, Tooltip, message } from "antd";
+import { Table, Input, Tooltip, message } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-  EyeOutlined,
 } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";

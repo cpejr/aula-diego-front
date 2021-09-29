@@ -1,10 +1,11 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Switch, Button, DatePicker, message, Input } from 'antd';
+import { Form, Switch, Button, DatePicker, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useSession } from "../../Context/SessionContext";
-import { Field, InputField, QuestionText, QuestionAlternatives, questionLayout } from "../../Components/DynamicForms/dynamicForms"
+import { Field, InputField, QuestionText, QuestionAlternatives } from "../../Components/DynamicForms/dynamicForms"
 import { useHistory } from "react-router-dom";
 import moment from "moment"
 import pt_BR from 'antd/es/date-picker/locale/pt_BR';
@@ -82,6 +83,7 @@ export default function AtividadeEditar(props) {
       })
       .catch(err => { message.error("Não foi possível carregar dados da prova!") });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function startFields(add) {

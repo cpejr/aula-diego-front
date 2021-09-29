@@ -14,6 +14,7 @@ export default function ListaOrganizacoes() {
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const [editIsVisible, setEditIsVisible] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [id, setId] = useState("");
   const [editInfo, setEditInfo] = useState({});
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ export default function ListaOrganizacoes() {
       .catch((err) => {
         console.log(err);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = [

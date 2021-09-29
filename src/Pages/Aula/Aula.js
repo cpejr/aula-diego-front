@@ -2,23 +2,18 @@ import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import {
   SnippetsOutlined,
-  InboxOutlined,
   DownloadOutlined,
-  IdcardFilled,
 } from "@ant-design/icons";
-import { Upload, message, Divider, Button } from "antd";
+import { message, Divider, Button } from "antd";
 import VideoFrame from "../../Components/VideoFrame/VideoFrame";
-import FormEmail from "../../Components/FormEmail/FormEmail";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
 import fileDownload from "js-file-download";
 import "./Aula.css";
 import CommentsContainer from "../../Components/CommentsContainer";
 
-const { Dragger } = Upload;
 
 export default function Aula(props) {
-  const [course, setCourse] = useState();
   const [lesson, setLesson] = useState();
 
   const [videos, setVideos] = useState([]);
@@ -84,6 +79,7 @@ export default function Aula(props) {
       .catch(() => {
         message.error("Não foi possível carregar dados da aula");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const downloadFile = (id, name, extension) => {

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable eqeqeq */
+import React, { useState, useEffect,useCallback  } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Input, message, Tabs, Statistic } from "antd";
 import {
   CrownOutlined,
-  EditOutlined,
   DeleteOutlined,
   CheckSquareTwoTone,
   CloseSquareTwoTone,
@@ -26,7 +26,6 @@ export default function ListaAlunos() {
   const { session } = useSession();
   const { TabPane } = Tabs;
 
-  const organizationId = session.user.organization_id;
   const type = session.user.type;
 
   const config = {
@@ -35,7 +34,8 @@ export default function ListaAlunos() {
     },
   };
 
-  const getData = (tab) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getData = useCallback((tab) => {
     if (session.user.type !== "master")
       config.params = { "user.organization_id": session.user.organization_id };
     setLoading(true);
@@ -57,12 +57,13 @@ export default function ListaAlunos() {
         );
       })
       .finally(() => setLoading(false));
-  };
+  });
 
   useEffect(() => {
     getData(0);
     setFiltered(students);
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   // useEffect(() => {
   //   setLoading(false)

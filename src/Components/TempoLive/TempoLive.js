@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from "../Sidebar/Sidebar";
-import Header from "../Header/Header";
 import './TempoLive.css'
 
 

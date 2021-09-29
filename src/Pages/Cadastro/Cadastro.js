@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import "./Cadastro.css";
@@ -103,7 +104,7 @@ export default function Cadastro(props) {
   return (
     <div className="pageCadastro">
       <div className="CadastroContent">
-        <img className="CadastroImg" src={logo}></img>
+        <img className="CadastroImg" src={logo} alt="Logo da RecStudio"></img>
         <div className="blocoCadastro">
           <form>
             <h1 className="entrarCadastro">Cadastre-se</h1>

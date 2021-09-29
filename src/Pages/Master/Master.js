@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
@@ -12,7 +13,6 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Master.css";
-import { CallMissedSharp } from "@material-ui/icons";
 
 export default function Master() {
   const [approved, setApproved] = useState(false);
@@ -164,7 +164,8 @@ export default function Master() {
       .catch((err) => {
         message.error("Não foi possível carregar dados das aulas");
       });
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   useEffect(() => {
 
@@ -178,7 +179,7 @@ export default function Master() {
       {!loading &&
         <div className="adminRoot">
           <div className="adminTitleWrapper">
-            <img src={organization.logo} className="adminImg" />
+            <img src={organization.logo} className="adminImg" alt="Imagem" />
             <h1 className="adminTitle">{organization.name}</h1>
           </div>
           <Divider />

@@ -12,7 +12,6 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
-import { CallMissedSharp } from "@material-ui/icons";
 
 export default function Admin() {
   const [approved, setApproved] = useState([]);
@@ -49,6 +48,7 @@ export default function Admin() {
         let app = 0;
         let pen = 0;
 
+        // eslint-disable-next-line array-callback-return
         response.data.map((student) => {
           if (student.status === "approved") app += 1;
           if (student.status === "pending") pen += 1;
@@ -166,13 +166,14 @@ export default function Admin() {
       .catch((err) => {
         message.error("Não foi possível carregar dados das aulas");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Base>
       <div className="adminRoot">
         <div className="adminTitleWrapper">
-          <img src={organization.logo} className="adminImg" />
+          <img src={organization.logo} className="adminImg"  alt="Logo da RecStudio"/>
           <h1 className="adminTitle">{organization.name}</h1>
         </div>
         <Divider />

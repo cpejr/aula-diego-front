@@ -12,7 +12,6 @@ export default function NovaAula(props) {
   const history = useHistory();
   const { session } = useSession();
   const [organizations, setOrganizations] = useState([]);
-  const [organization, setOrganization] = useState(session.user.organization_id);
 
   const formLayout = {
     labelCol: {
@@ -37,6 +36,7 @@ export default function NovaAula(props) {
 
   useEffect(() => {
     if (session.user.type !== "master") {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       config = {
         ...config,
         params: {

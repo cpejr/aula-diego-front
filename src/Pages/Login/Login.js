@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { message } from "antd";
 import { Link } from "react-router-dom";
@@ -5,7 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "react-google-login";
 import "./Login.css";
 import logo from "../../images/Logo2.png";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 
@@ -89,6 +91,7 @@ export default function Login() {
         <img
           className="LoginImg"
           src={logo}
+          alt="Logo"
           onClick={() => {
             history.push("/");
           }}

@@ -29,7 +29,8 @@ export default function ListaOrganizacoes(props) {
         setLoading(false);
       })
       .catch(err => { console.log(err) });
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   const columns = [
     {

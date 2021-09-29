@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable eqeqeq */
+import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Burger from "../Burger/Burger";
 import "./Header.css";
 import LogoAluno from "../../images/reclass-aluno.svg";
-import { Link, Switch, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
-import api from "../../services/api";
-import { message } from "antd";
 
 const Header = () => {
   let history = useHistory();
   const { session } = useSession();
   const { handleLogout } = useSession();
-  const [score, setScore] = useState(0);
-
-  let config = {
-    headers: {
-      authorization: "Bearer " + session.accessToken,
-    },
-  };
 
   // useEffect(() => {
   //   api
@@ -52,6 +45,7 @@ const Header = () => {
                 style={{ marginLeft: "2vw", height: "100px" }}
                 className="headerLogo"
                 src={LogoAluno}
+                alt="Imagem"
               ></img>
             </Link>
             {/*<div className="headerScore">

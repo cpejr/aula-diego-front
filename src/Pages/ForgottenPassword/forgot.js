@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import "./forgot.css";
 import api from '../../services/api';
@@ -30,7 +31,7 @@ function ForgottenPassword() {
     return (
         <div className = "pageEsqueci">
             <div className = "esquecicontent">
-                <img className="esqueciImg" src={logo}></img>
+                <img className="esqueciImg" src={logo} alt="Logo da RecStudio"></img>
                 <div className = "blocoesqueci">
                     <form >
                         <h1 className="esquecititulo">Esqueceu sua senha?</h1>

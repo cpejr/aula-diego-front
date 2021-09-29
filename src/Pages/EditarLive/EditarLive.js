@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarLive.css";
@@ -23,7 +23,6 @@ const tailFormItemLayout = {
 
 export default function EditarLive(props) {
   const [live, setLive] = useState([]);
-  const [edit, setEdit] = useState({});
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -50,11 +49,8 @@ export default function EditarLive(props) {
       setLink(response.data.link);
       setCourseId(response.data.course_id);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function handleChangeDate(e) {
-    setEdit({ ...edit, date: e._d });
-  }
 
   function handleSubmit(e) {
     e.preventDefault();

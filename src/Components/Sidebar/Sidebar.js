@@ -9,12 +9,6 @@ export default function Sidebar() {
   const { session } = useSession();
   const { handleLogout } = useSession();
 
-  let config = {
-    headers: {
-      authorization: "Bearer " + session.accessToken,
-    },
-  };
-
   const studentList = [
     {
       title: "Dashboard",
@@ -78,13 +72,14 @@ export default function Sidebar() {
           break;
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="sidebarContainer">
       <div className="logoContainer">
         <div className="imgContainer">
           <Link to="/dashboard">
-            <img src={Logo}></img>
+            <img src={Logo} alt="Logo"/>
           </Link>
         </div>
       </div>

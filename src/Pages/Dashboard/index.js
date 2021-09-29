@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import CardCurso from "../../Components/CardCurso/CardCurso";
@@ -18,6 +19,7 @@ export default function Dashboard(props) {
   const history = useHistory();
 
   const [score, setScore] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [courses, setCourses] = useState([]);
   const [myCourses, setMyCourses] = useState([]);
   const [past, setPast] = useState(false);
@@ -123,6 +125,26 @@ export default function Dashboard(props) {
     responseType: "blob",
   };
 
+  const getLogo = async (organizations) => {
+    const result = [];
+    for (const organization of organizations) {
+      await api
+        .get(`/file_get/${organization.file_id}`, configFile)
+        .then((response) => {
+          const img = URL.createObjectURL(response.data);
+          result.push({
+            ...organization,
+            logo: img,
+          });
+        })
+        .catch((err) => {
+          message.error("Não foi possível carregar dados dos arquivos");
+        });
+    }
+
+    return result;
+  };
+  
   useEffect(() => {
     api
       .get(`/user/${session.user.id}`, config)
@@ -229,40 +251,20 @@ export default function Dashboard(props) {
       });
   }, []);
 
-  const getLogo = async (organizations) => {
-    const result = [];
-    for (const organization of organizations) {
-      await api
-        .get(`/file_get/${organization.file_id}`, configFile)
-        .then((response) => {
-          const img = URL.createObjectURL(response.data);
-          result.push({
-            ...organization,
-            logo: img,
-          });
-        })
-        .catch((err) => {
-          message.error("Não foi possível carregar dados dos arquivos");
-        });
-    }
-
-    return result;
-  };
-
   slides = myCourses.length < 3 ? myCourses.length : 3;
 
   return (
     <>
       <Base>
         <div className="DashboardTitle">
-          <img src={organization.logo} className="TitleImg" />
+          <img src={organization.logo} className="TitleImg" alt="Logo da empresa"/>
           <h1 style={{ fontWeight: 600, marginLeft: "15px" }}>
             {organization.name}
           </h1>
           <div
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
-            <h6>{session.user.name}</h6>
+            <label>{session.user.name}</label>
             <p>{score * 20} XP</p>
           </div>
         </div>
@@ -279,7 +281,7 @@ export default function Dashboard(props) {
           >
             {myCourses
               ? myCourses.map((course) => {
-                  console.log("Course: ", course);
+                console.log("Course: ", course)
                   return (
                     <CardCurso
                       title={course.course_name}

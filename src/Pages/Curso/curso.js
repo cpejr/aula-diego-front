@@ -1,9 +1,12 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Divider, Card } from "antd";
+import { Divider, Card } from "antd";
 import { VideoCameraOutlined, ReadOutlined } from '@ant-design/icons'
 import "./curso.css";
 
@@ -133,12 +136,12 @@ export default function Curso(props) {
   );
 }
 
-function CourseCard({ title, description, path }) {
-  const history = useHistory();
-  return (
-    <div className="course-card" onClick={() => history.push(path)}>
-      <h3 className="course-card-title capitalize">{title}</h3>
-      <p className="course-card-description">{description}</p>
-    </div>
-  );
-}
+// function CourseCard({ title, description, path }) {
+//   const history = useHistory();
+//   return (
+//     <div className="course-card" onClick={() => history.push(path)}>
+//       <h3 className="course-card-title capitalize">{title}</h3>
+//       <p className="course-card-description">{description}</p>
+//     </div>
+//   );
+// }

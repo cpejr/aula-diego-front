@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
-import { Table, Tag, Input, Tooltip, message } from "antd";
+import { Table, Tag, Input, message } from "antd";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [lives, setLives] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [spec, setSpec] = useState({});
   const { session } = useSession();
   const history = useHistory();
 
@@ -31,6 +30,7 @@ export default function Infolive() {
 
   useEffect(() => {
     if (session.user.type !== "master")
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       config = {
         ...config,
         params: {

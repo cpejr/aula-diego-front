@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Button, DatePicker, message } from 'antd';
+import { Form, message } from 'antd';
 import { AnswerText, AnswerAlternatives } from "../../Components/DynamicForms/dynamicForms"
 import { useSession } from "../../Context/SessionContext";
-import { useHistory } from "react-router-dom";
 import "./AtividadeResposta.css";
 
 export default function AtividadeResposta(props) {
@@ -12,7 +11,6 @@ export default function AtividadeResposta(props) {
   const [answer, setAnswer] = useState(false);
 
   const { session } = useSession();
-  const history = useHistory();
 
   const answer_id = props.match.params.id;
 
@@ -48,7 +46,7 @@ export default function AtividadeResposta(props) {
         .then(() => setAnswer(response.data));
       })
       .catch(err => {console.log(err);message.error("Não foi possível carregar dados da prova!")});
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

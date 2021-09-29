@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, DatePicker, Input, Button, message, Table } from "antd";
+import { Form, Input, Button, message, Table } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarTurma.css";
@@ -23,7 +23,6 @@ const tailFormItemLayout = {
 
 export default function EditarTurma(props) {
   const [classes, SetClasses] = useState([]);
-  const [edit, setEdit] = useState({});
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");
   const [courseId, setCourseId] = useState("");
@@ -63,6 +62,7 @@ export default function EditarTurma(props) {
         .then((users) => {
           let students = [];
 
+          // eslint-disable-next-line array-callback-return
           users.data.map((user) => {
             students.push({ ...user, key: user.id });
           });
@@ -103,9 +103,9 @@ export default function EditarTurma(props) {
         .catch((err) => {
           message.error("Não foi possível editar a turma!\n" + err);
         });
-        
-    }, []);
-  const studentsTable = [
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+const studentsTable = [
     {
       title: "Nome",
       dataIndex: "name",
@@ -127,10 +127,6 @@ export default function EditarTurma(props) {
     },
     
   };
-  
-  function handleChangeDate(e) {
-    setEdit({ ...edit, date: e._d });
-  }
   
   function handleSearch(value) {
     setSearch(value);

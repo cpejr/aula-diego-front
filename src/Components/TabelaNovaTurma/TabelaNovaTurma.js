@@ -26,7 +26,7 @@ const TabelaNovaTurma = ({ search }) => {
     },
   ];
 
-  const [users, setUsers] = useState(elementos);
+  const [users] = useState(elementos);
 
   const filtered = users.filter((user) => {
     return (

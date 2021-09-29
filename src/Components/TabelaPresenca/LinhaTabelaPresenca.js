@@ -1,12 +1,8 @@
-import React,{useState} from "react";
+import React from "react";
 import "./TabelaPresenca.css";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 export default function LinhaTabelaPresenca(props) {
-    const [select,setSelect] = useState(false)
-
-
   return (
     <div className="LinhaTabelaPresenca">
       <div className="IconeLiveInfo">

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Table, Tag, Input, Tooltip, message } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { Table, Input, message } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton"
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
@@ -34,6 +34,7 @@ export default function AtividadeLista(props) {
       .then((response) => {
         const answers = []
 
+        // eslint-disable-next-line array-callback-return
         response.data.map(answer => {
           answers.push({
             ...answer,
@@ -49,6 +50,7 @@ export default function AtividadeLista(props) {
         setLoading(false);
       })
       .catch(err => { console.log(err); message.error("Não foi possível carregar dados das respostas!") });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = [
