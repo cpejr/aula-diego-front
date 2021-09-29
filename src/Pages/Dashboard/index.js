@@ -144,7 +144,7 @@ export default function Dashboard(props) {
 
     return result;
   };
-  
+
   useEffect(() => {
     api
       .get(`/user/${session.user.id}`, config)
@@ -257,14 +257,18 @@ export default function Dashboard(props) {
     <>
       <Base>
         <div className="DashboardTitle">
-          <img src={organization.logo} className="TitleImg" alt="Logo da empresa"/>
+          <img
+            src={organization.logo}
+            className="TitleImg"
+            alt="Logo da empresa"
+          />
           <h1 style={{ fontWeight: 600, marginLeft: "15px" }}>
             {organization.name}
           </h1>
           <div
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
-            <label>{session.user.name}</label>
+            <h6>{session.user.name}</h6>
             <p>{score * 20} XP</p>
           </div>
         </div>
@@ -281,7 +285,7 @@ export default function Dashboard(props) {
           >
             {myCourses
               ? myCourses.map((course) => {
-                console.log("Course: ", course)
+                  console.log("Course: ", course);
                   return (
                     <CardCurso
                       title={course.course_name}
