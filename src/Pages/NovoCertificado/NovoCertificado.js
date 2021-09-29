@@ -136,11 +136,11 @@ export default function NovaAula(props) {
 
     api
       .post("/certificate", data, config)
-      .then((response) => {
+      .then(() => {
         message.success("Certificado gerado com sucesso!");
         history.push(`/certificados`);
       })
-      .catch((err) => {
+      .catch(() => {
         message.error("Não foi possível criar o certificado!");
       });
   }
