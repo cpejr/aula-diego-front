@@ -264,7 +264,7 @@ export default function Dashboard(props) {
           <div
             style={{ marginLeft: "auto", marginRight: "5%", color: "black" }}
           >
-            <h6>{session.user.name}</h6>
+            <label>{session.user.name}</label>
             <p>{score * 20} XP</p>
           </div>
         </div>
@@ -281,7 +281,7 @@ export default function Dashboard(props) {
           >
             {myCourses
               ? myCourses.map((course) => {
-                  console.log("Course: ", course);
+                console.log("Course: ", course)
                   return (
                     <CardCurso
                       title={course.course_name}
