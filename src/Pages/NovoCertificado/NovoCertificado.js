@@ -46,7 +46,7 @@ export default function NovaAula(props) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        message.error(err);
       });
   }, []);
 
@@ -88,7 +88,7 @@ export default function NovaAula(props) {
         .then((response) => {
           if (
             session.user.type === "master" ||
-            response.organization_id === session.user.organization_id
+            response.data[0].organization_id === session.user.organization_id
           )
             setCourses(response.data);
           else return;
@@ -125,11 +125,11 @@ export default function NovaAula(props) {
     e.preventDefault();
 
     const data = {
-      user_id: selectedStudent,
-      course_id: course.course_id,
+      user_id: selectedStudent[0],
+      course_id: course,
     };
 
-    if (data.selectedStudent === null) {
+    if (data.user_id === null) {
       message.error("Não se pode gerar certificado sem um aluno!");
       return;
     }
@@ -203,7 +203,7 @@ export default function NovaAula(props) {
                   {courses.map((course) => {
                     return (
                       <Select.Option
-                        key={course.course_id}
+                        //key={course.course_id}
                         value={course.course_id}
                       >
                         {course.course_name}
