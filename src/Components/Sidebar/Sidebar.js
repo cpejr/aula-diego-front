@@ -28,6 +28,10 @@ export default function Sidebar() {
       title: "Cursos",
       path: "/curso/lista",
     },
+    {
+      title: "Gerar Certificado",
+      path: "/certificado/cadastro",
+    },
   ];
 
   const masterLinks = [
@@ -51,6 +55,10 @@ export default function Sidebar() {
       title: "Ocupações",
       path: "/ocupacao",
     },
+    {
+      title: "Gerar Certificado",
+      path: "/certificado/cadastro",
+    },
   ];
   const [linksList, setLinksList] = useState(studentList);
 
@@ -72,14 +80,14 @@ export default function Sidebar() {
           break;
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="sidebarContainer">
       <div className="logoContainer">
         <div className="imgContainer">
           <Link to="/dashboard">
-            <img src={Logo} alt="Logo"/>
+            <img src={Logo} alt="Logo" />
           </Link>
         </div>
       </div>
