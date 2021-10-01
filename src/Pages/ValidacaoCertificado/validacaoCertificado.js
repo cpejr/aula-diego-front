@@ -13,10 +13,9 @@ export default function ValidacaoCertificado() {
   const { Title, Link } = Typography;
   const params = new URLSearchParams(search);
   const certificate_id = params.get("certificate");
-  const [course] = useState("React Native: básico ao avançado");
-  const [user] = useState("Renan Castro");
 
   const [certificate, setCertificate] = useState(certificate_id);
+  const [certificateData, setCertificateData] = useState([]);
   const [hidden, setHidden] = useState(false);
   const [okHidden, setOkHidden] = useState(true);
   const [failHidden, setFailHidden] = useState(true);
@@ -30,23 +29,9 @@ export default function ValidacaoCertificado() {
     api
       .get(`/course-cerificate/${certificate}`)
       .then((res) => {
-          // api
-          //   .get(`user/${res.data.user_id}`)
-          //   .then((res) => {
-          //     setUser(res.data.name);
-          //   })
-          //   .catch((error) => {
-          //     message.warn(error.message);
-          //   });
-          // api
-          //   .get(`course/${res.data.course_id}`)
-          //   .then((res) => {
-          //     setCourse(res.data.name);
-          //   })
-          //   .catch((error) => {
-          //     message.warn(error.message);
-          //   });
+        console.log(res.data);
         if (res.data) {
+          setCertificateData(res.data);
           setOkHidden(false);
           setHidden(!hidden);
         } else {
@@ -132,19 +117,22 @@ export default function ValidacaoCertificado() {
           </Form.Item>
           <Form.Item hidden={okHidden}>
             <Title level={2}>
-              O certificado de {user} do curso {course} foi verificado com
-              sucesso!
+              O certificado de {certificateData.user_name} do curso{" "}
+              {certificateData.course_name} foi verificado com sucesso!
               <br />
             </Title>
+            <iframe
+              src={certificateData.url}
+              type="application/pdf"
+              style={{ height: "700px", width: "100%" }}
+            />
+
             <div style={{ display: "flex", flexDirection: "row" }}>
-            <Button onClick={handleCheckCertificate} type="primary">
-                Ver Certificado
-            </Button>
-            <div style={{ marginLeft: "15px", width: "auto" }}>
-              <Button onClick={handleBack} type="default">
-                Voltar
-              </Button>
-            </div>
+              <div style={{ width: "auto" }}>
+                <Button onClick={handleBack} type="default">
+                  Voltar
+                </Button>
+              </div>
             </div>
           </Form.Item>
           <Form.Item hidden={failHidden}>
