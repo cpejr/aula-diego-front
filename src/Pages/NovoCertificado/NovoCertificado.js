@@ -136,11 +136,20 @@ export default function NovaAula(props) {
 
     api
       .post("/certificate", data, config)
-      .then(() => {
+      .then((response) => {
         message.success("Certificado gerado com sucesso!");
-        history.push(`/certificados`);
+        window.location = response.data.url;
       })
-      .catch(() => {
+      .catch((error) => {
+        if (
+          error?.response?.data?.message ===
+          "Certificado já existente na base de dados"
+        ) {
+          message.warning("Certificado já existente na base de dados");
+          window.location = error?.response?.data?.url;
+          return;
+        }
+
         message.error("Não foi possível criar o certificado!");
       });
   }
