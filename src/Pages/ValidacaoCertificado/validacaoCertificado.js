@@ -27,7 +27,7 @@ export default function ValidacaoCertificado() {
 
   function handleSubmit() {
     api
-      .get(`/course-cerificate/${certificate}`)
+      .get(`/cerificate/${certificate}`)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
