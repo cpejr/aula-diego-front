@@ -130,7 +130,8 @@ export default function Curso(props) {
     api
       .get(`/certificate/user/${session.user.id}`, configCertificate)
       .then((response) => {
-        setCertificate(response.data);
+        if (response.data.course_id === id) setCertificate(response.data);
+        else setCertificate(null);
         requestDone();
       })
       .catch((err) => {});
