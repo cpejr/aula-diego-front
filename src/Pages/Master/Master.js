@@ -34,13 +34,6 @@ export default function Master() {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
-  };
-
   useEffect(() => {
     api
       .get(`/user`, config)
@@ -61,20 +54,9 @@ export default function Master() {
       });
 
     api
-      .get(`/organization/${session.user.organization_id}`, config)
+      .get("/me/organization", config)
       .then(async (response) => {
-        await api
-          .get(`/file_get/${response.data.file_id}`, configFile)
-          .then((file) => {
-            const image = URL.createObjectURL(file.data);
-            setOrganization({
-              ...response.data,
-              logo: image,
-            });
-          })
-          .catch((err) => {
-            message.error("Não foi possível carregar dados dos arquivos");
-          });
+        setOrganization(response.data);
       })
       .catch((err) => {
         message.error("Não foi possível carregar dados das organizações");
@@ -148,9 +130,7 @@ export default function Master() {
             })
             .sort((a, b) => a.time - b.time)
             .filter((item) => (item.type === "class" ? false : true))
-            .slice(-30)
-
-          console.log(sorted)
+            .slice(-30);
 
           const now = Date.now();
 
@@ -164,19 +144,16 @@ export default function Master() {
       .catch((err) => {
         message.error("Não foi possível carregar dados das aulas");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-
-    if (future || past)
-      setLoading(false)
-
-  }, [future, past])
+    if (future || past) setLoading(false);
+  }, [future, past]);
 
   return (
     <Base>
-      {!loading &&
+      {!loading && (
         <div className="adminRoot">
           <div className="adminTitleWrapper">
             <img src={organization.logo} className="adminImg" alt="Imagem" />
@@ -264,7 +241,7 @@ export default function Master() {
             </div>
           </div>
         </div>
-      }
+      )}
     </Base>
   );
 }

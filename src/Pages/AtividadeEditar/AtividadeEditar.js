@@ -2,13 +2,18 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Switch, Button, DatePicker, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Form, Switch, Button, DatePicker, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
-import { Field, InputField, QuestionText, QuestionAlternatives } from "../../Components/DynamicForms/dynamicForms"
+import {
+  Field,
+  InputField,
+  QuestionText,
+  QuestionAlternatives,
+} from "../../Components/DynamicForms/dynamicForms";
 import { useHistory } from "react-router-dom";
-import moment from "moment"
-import pt_BR from 'antd/es/date-picker/locale/pt_BR';
+import moment from "moment";
+import pt_BR from "antd/es/date-picker/locale/pt_BR";
 import "./AtividadeEditar.css";
 
 const exerciseLayout = {
@@ -21,8 +26,8 @@ const exerciseTailLayout = {
 };
 
 export default function AtividadeEditar(props) {
-  const [exercise, setExercise] = useState(false)
-  const [questions, setQuestions] = useState(false)
+  const [exercise, setExercise] = useState(false);
+  const [questions, setQuestions] = useState(false);
   const [evaluate, setEvaluate] = useState(false);
   const [reset, setReset] = useState(false);
   const [start, setStart] = useState(true);
@@ -42,7 +47,6 @@ export default function AtividadeEditar(props) {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-    responseType: "blob",
   };
 
   const configFilePost = {
@@ -57,44 +61,50 @@ export default function AtividadeEditar(props) {
   useEffect(() => {
     api
       .get(`/exercise/${exercise_id}`, config)
-      .then(async response => {
+      .then(async (response) => {
         Promise.all(
-          Object.values(response.data.questions).map(question => question.image).map(async (image, index) => {
-            if (image !== undefined)
-              await api
-                .get(`/file_get/${image}`, configFileGet)
-                .then(file => {
-                  response.data.questions[index].preview = URL.createObjectURL(file.data);
-                  Promise.resolve("");
-                });
-          })
-        )
-          .then(() => {
-            const types = [];
+          Object.values(response.data.questions)
+            .map((question) => question.image)
+            .map(async (image, index) => {
+              if (image !== undefined)
+                await api
+                  .get(`/file_get/${image}`, configFileGet)
+                  .then((file_res) => {
+                    console.log(file_res.data.url);
+                    response.data.questions[index].preview = file_res.data.url;
+                    Promise.resolve("");
+                  });
+            })
+        ).then(() => {
+          const types = [];
 
-            Object.values(response.data.questions).map(question => {
-              types.push((question.alternatives === undefined ? 'text' : 'alternatives'))
-            });
-
-            setQuestions(types);
-            setEvaluate(response.data.evaluate);
-            setExercise(response.data);
+          Object.values(response.data.questions).map((question) => {
+            types.push(
+              question.alternatives === undefined ? "text" : "alternatives"
+            );
           });
-      })
-      .catch(err => { message.error("Não foi possível carregar dados da prova!") });
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+          setQuestions(types);
+          setEvaluate(response.data.evaluate);
+          setExercise(response.data);
+        });
+      })
+      .catch((err) => {
+        message.error("Não foi possível carregar dados da prova!");
+      });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function startFields(add) {
-    questions.map(item => add());
+    questions.map((item) => add());
     setStart(false);
   }
 
   function questionAdd(add, type) {
     add();
-    setQuestions([...questions, type])
-  };
+    setQuestions([...questions, type]);
+  }
 
   function questionDelete(remove, fieldName, index) {
     delete exercise.questions[index];
@@ -105,66 +115,65 @@ export default function AtividadeEditar(props) {
     setQuestions(questions);
   }
 
-  const exerciseChange = (name, value) => setExercise({ ...exercise, [name]: value });
-  const questionChange = (name, value) => setExercise({ ...exercise, questions: { ...exercise.questions, [name]: value } })
+  const exerciseChange = (name, value) =>
+    setExercise({ ...exercise, [name]: value });
+  const questionChange = (name, value) =>
+    setExercise({
+      ...exercise,
+      questions: { ...exercise.questions, [name]: value },
+    });
 
   const evaluateChange = (value) => {
     setEvaluate(value);
-    setExercise({ ...exercise, evaluate: value, questions: {} })
+    setExercise({ ...exercise, evaluate: value, questions: {} });
     setQuestions([]);
-  }
+  };
 
   const exerciseSubmit = async () => {
-
-    console.log(exercise)
-
     Promise.all(
-      Object.values(exercise.questions).map(question => question.image).map(async (image, index) => { 
+      Object.values(exercise.questions)
+        .map((question) => question.image)
+        .map(async (image, index) => {
+          if (image !== undefined && typeof image !== "string") {
+            const file = {
+              user_id: session.user.id,
+              file_name: `${exercise.name} ${index}`,
+              file_type: image.type,
+              file_original: image.name,
+            };
 
-        if (image !== undefined && typeof image !== 'string') {
+            const formData = new FormData();
+            formData.append(file.user_id, image);
 
-          const file = {
-            user_id: session.user.id,
-            file_name: `${exercise.name} ${index}`,
-            file_type: image.type,
-            file_original: image.name
+            await api
+              .post("file_upload", formData, configFilePost)
+              .then(({ data: { file_ids } }) => {
+                const file_id = file_ids[0];
+                exercise.questions[index].image = file_id;
+              })
+              .catch((err) => {
+                message.error("Não foi possível criar a atividade!");
+              });
           }
-
-          await api
-            .post("file", file, config)
-            .then(async response => {
-
-              const formData = new FormData();
-              formData.append(response.data.file_id, image);
-
-              await api
-                .post("file_upload", formData, configFilePost)
-                .catch(err => { message.error("Não foi possível eidtar a atividade!") })
-
-              exercise.questions[index].image = response.data.file_id;
-              Promise.resolve("");
-            })
-            .catch(err => { message.error("Não foi possível eidtar a atividade!") })
-        }
-      }))
-      .then(() => {
-        api
-          .put(`exercise/${exercise.id}`, exercise, config)
-          .then(() => {
-            message.success("Atividade criada com sucesso!");
-            history.push(`/curso/gerenciar/${exercise.course_id}`);
-          })
-          .catch(err => {
-            message.error("Não foi possível eidtar a atividade!");
-          })
-      });
+        })
+    ).then(() => {
+      api
+        .put(`exercise/${exercise.id}`, exercise, config)
+        .then(() => {
+          message.success("Atividade editada com sucesso!");
+          history.push(`/curso/gerenciar/${exercise.course_id}`);
+        })
+        .catch((err) => {
+          message.error("Não foi possível eidtar a atividade!");
+        });
+    });
   };
 
   return (
     <Base>
       <div className="newExamRoot">
         <div className="formWrapper">
-          {exercise &&
+          {exercise && (
             <Form
               {...exerciseLayout}
               name="exerciseForm"
@@ -180,38 +189,55 @@ export default function AtividadeEditar(props) {
                 label="Título"
                 placeholder="Título da atividade"
                 message="Por favor, insira título da atividade!"
-                onChange={value => exerciseChange('name', value)}
+                onChange={(value) => exerciseChange("name", value)}
                 initialValue={exercise.name}
               />
-              <Field name="start_date" label="Início" message="Por favor, insira início da atividade!" initialValue={moment(exercise.start_date)}>
+              <Field
+                name="start_date"
+                label="Início"
+                message="Por favor, insira início da atividade!"
+                initialValue={moment(exercise.start_date)}
+              >
                 <DatePicker
                   name="start_date"
                   placeholder="Início da atividade"
                   locale={pt_BR}
                   showTime
                   format="DD-MM-YYYY HH:mm"
-                  onChange={e => exerciseChange('start_date', e._d)}
+                  onChange={(e) => exerciseChange("start_date", e._d)}
                 />
               </Field>
-              <Field name="end_date" label="Término" message="Por favor, insira término da atividade!" initialValue={moment(exercise.end_date)}>
+              <Field
+                name="end_date"
+                label="Término"
+                message="Por favor, insira término da atividade!"
+                initialValue={moment(exercise.end_date)}
+              >
                 <DatePicker
                   name="end_date"
                   placeholder="Término da atividade"
                   locale={pt_BR}
                   showTime
                   format="DD-MM-YYYY HH:mm"
-                  onChange={e => exerciseChange('end_date', e._d)}
+                  onChange={(e) => exerciseChange("end_date", e._d)}
                 />
               </Field>
               <Field name="evaluate" label="Avaliativa" required={false}>
-                <Switch checked={evaluate} onChange={value => evaluateChange(value)} disabled />
+                <Switch
+                  checked={evaluate}
+                  onChange={(value) => evaluateChange(value)}
+                  disabled
+                />
               </Field>
-              <Field label="Questões" >
+              <Field label="Questões">
                 <div className="questionsWrapper">
                   <Form.List name="questions">
                     {(fields, { add, remove }, { errors }) => (
                       <>
-                        {start && fields.length === 0 && questions.length > 0 && startFields(add)}
+                        {start &&
+                          fields.length === 0 &&
+                          questions.length > 0 &&
+                          startFields(add)}
 
                         {fields.map((field, index) => {
                           if (reset) {
@@ -221,28 +247,40 @@ export default function AtividadeEditar(props) {
                           }
 
                           if (questions[index] === "text")
-                            return <QuestionText
-                              name={index}
-                              index={index}
-                              field={field}
-                              onChange={value => questionChange(index, value)}
-                              remove={() => questionDelete(remove, field.name, index)}
-                              initialValue={exercise.questions[index]}
-                            />
+                            return (
+                              <QuestionText
+                                name={index}
+                                index={index}
+                                field={field}
+                                onChange={(value) =>
+                                  questionChange(index, value)
+                                }
+                                remove={() =>
+                                  questionDelete(remove, field.name, index)
+                                }
+                                initialValue={exercise.questions[index]}
+                              />
+                            );
 
                           if (questions[index] === "alternatives")
-                            return <QuestionAlternatives
-                              name={index}
-                              index={index}
-                              field={field}
-                              onChange={value => questionChange(index, value)}
-                              remove={() => questionDelete(remove, field.name, index)}
-                              initialValue={exercise.questions[index]}
-                            />
+                            return (
+                              <QuestionAlternatives
+                                name={index}
+                                index={index}
+                                field={field}
+                                onChange={(value) =>
+                                  questionChange(index, value)
+                                }
+                                remove={() =>
+                                  questionDelete(remove, field.name, index)
+                                }
+                                initialValue={exercise.questions[index]}
+                              />
+                            );
                         })}
                         <Form.Item>
                           <div className="addButtonsWrapper">
-                            {!evaluate &&
+                            {!evaluate && (
                               <Button
                                 className="formButton"
                                 type="dashed"
@@ -251,8 +289,8 @@ export default function AtividadeEditar(props) {
                                 style={{ "margin-right": "2%" }}
                               >
                                 Adicionar questão aberta
-                          </Button>
-                            }
+                              </Button>
+                            )}
                             <Button
                               className="formButton"
                               type="dashed"
@@ -260,7 +298,7 @@ export default function AtividadeEditar(props) {
                               icon={<PlusOutlined />}
                             >
                               Adicionar questão fechada
-                        </Button>
+                            </Button>
                           </div>
                           <Form.ErrorList errors={errors} />
                         </Form.Item>
@@ -271,11 +309,11 @@ export default function AtividadeEditar(props) {
               </Field>
               <Form.Item {...exerciseTailLayout}>
                 <Button type="primary" htmlType="submit">
-                  Criar
-            </Button>
+                  Editar
+                </Button>
               </Form.Item>
             </Form>
-          }
+          )}
         </div>
       </div>
     </Base>

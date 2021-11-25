@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
-import {
-  SnippetsOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
+import { SnippetsOutlined, DownloadOutlined } from "@ant-design/icons";
 import { message, Divider, Button } from "antd";
 import VideoFrame from "../../Components/VideoFrame/VideoFrame";
 import { useSession } from "../../Context/SessionContext";
@@ -11,7 +8,7 @@ import api from "../../services/api";
 import fileDownload from "js-file-download";
 import "./Aula.css";
 import CommentsContainer from "../../Components/CommentsContainer";
-
+import { Link } from "react-router-dom";
 
 export default function Aula(props) {
   const [lesson, setLesson] = useState();
@@ -49,14 +46,6 @@ export default function Aula(props) {
       .get(`/lesson/${id}`, config)
       .then((response) => {
         setLesson(response.data);
-        /* api
-          .get(`/course/${response.data.course_id}`, config)
-          .then((response) => {
-            setCourse(response.data);
-          })
-          .catch(() => {
-            message.error("Não foi possível carregar dados do curso");
-          }); */
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da aula");
@@ -75,25 +64,23 @@ export default function Aula(props) {
       .get("/lesson_file", configLesson)
       .then((response) => {
         setFiles(response.data);
+        console.log(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados da aula");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const downloadFile = (id, name, extension) => {
     api
       .get(`/file_get/${id}`, configFile)
       .then((response) => {
-        fileDownload(response.data, `${name}.${extension}`);
+        fileDownload(response.data.url, `${name}.${extension}`);
       })
       .catch((err) => {
         message.error("Não foi possível carregar dados dos arquivos");
       });
   };
-
-  console.log(lesson);
 
   return (
     <Base>
@@ -123,16 +110,17 @@ export default function Aula(props) {
         )}
         {files.map((file) => {
           return (
-            <Button
-              size="large"
-              type="dashed"
-              style={{ "margin-bottom": "1%" }}
-              onClick={() => downloadFile(file.id, file.name, file.type)}
-              block
-            >
-              <DownloadOutlined />
-              {file.name}
-            </Button>
+            <a href={file.path}>
+              <Button
+                size="large"
+                type="dashed"
+                style={{ "margin-bottom": "1%" }}
+                block
+              >
+                <DownloadOutlined />
+                {file.name}
+              </Button>
+            </a>
           );
         })}
         <Divider style={{ "margin-bottom": "3%" }} />

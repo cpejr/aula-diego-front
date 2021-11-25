@@ -22,56 +22,21 @@ export default function ListaOrganizacoes() {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
-  };
-
   useEffect(() => {
     api
       .get(`/organization`, config)
       .then((response) => {
-
-        getLogo(response.data).then((response) => {
-          setOrganizations(response);
-          setFiltered(response);
-          setLoading(false);
-        });
+        console.log(response.data);
+        setOrganizations(response.data);
+        setFiltered(response.data);
+        setLoading(false);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         message.error("Não foi possível carregar dados das organizações");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const getLogo = async (organizations) => {
-
-    const result = [];
-
-    console.log(organizations)
-
-    for (const organization of organizations) {
-      
-      await api
-        .get(`/file_get/${organization.file_id}`, configFile)
-        .then((response) => {
-          const img = URL.createObjectURL(response.data);
-          result.push({
-            ...organization,
-            logo: img,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          message.error("Não foi possível carregar dados dos arquivos");
-        });
-    }
-
-    return result;
-  };
 
   const columns = [
     {
@@ -80,7 +45,7 @@ export default function ListaOrganizacoes() {
       width: "10%",
       render: (logo) => (
         <div className="logo">
-          <img src={logo} alt="Logo"/>
+          <img src={logo} alt="logo" />
         </div>
       ),
     },
@@ -121,10 +86,10 @@ export default function ListaOrganizacoes() {
       dataIndex: "id",
       render: (id) => (
         <>
-          <ActionButton 
-          title="Editar" 
-          confirm="Editar organização?"
-          onConfirm={() => history.push(`organizacao/editar/${id}`)}
+          <ActionButton
+            title="Editar"
+            confirm="Editar organização?"
+            onConfirm={() => history.push(`organizacao/editar/${id}`)}
           >
             <EditOutlined />
           </ActionButton>
@@ -162,11 +127,9 @@ export default function ListaOrganizacoes() {
         api
           .get("/organization", config)
           .then((response) => {
-            getLogo(response.data).then((response) => {
-              setOrganizations(response);
-              setFiltered(response);
-              setLoading(false);
-            });
+            setOrganizations(response);
+            setFiltered(response);
+            setLoading(false);
           })
           .then(setLoading(false));
       })

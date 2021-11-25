@@ -37,7 +37,7 @@ export default function NovaAula(props) {
     showUploadList: false,
     beforeUpload: (file) => {
       setFile(file);
-      setLogoPreview(URL.createObjectURL(file))
+      setLogoPreview(URL.createObjectURL(file));
       return false;
     },
   };
@@ -65,37 +65,39 @@ export default function NovaAula(props) {
     e.preventDefault();
     setLoading(true);
 
-    console.log(file)
+    console.log(file);
 
-    const data = {
+    const organizationData = {
       ...organization,
       user_id: session.user.id,
       file_name: organization.name,
       file_type: file.type,
-      file_original: file.name
-    }
+      file_original: file.name,
+    };
+
+    const formData = new FormData();
+    formData.append(organization.name, file);
 
     api
-      .post("/organization", data, config)
+      .post("file_upload", formData, configFiles)
       .then((response) => {
-        const formData = new FormData();
-        formData.append(response.data.file_id, file);
+        const { file_ids } = response.data;
+        organizationData.file_id = file_ids[0];
 
         api
-          .post("file_upload", formData, configFiles)
-          .then(() => {
-            setLoading(false);
-            message.success("Organização criada com sucesso!");
-            history.push(`/organizacao`);
-
+          .post("/organization", organizationData, config)
+          .then((response) => {
+            history.push("/organizacao");
           })
-          .catch(err => {
+          .catch((err) => {
             message.error("Não foi possível criar a organização!");
-          })
+            setLoading(false);
+          });
+
+        setLoading(false);
       })
       .catch((err) => {
         message.error("Não foi possível criar a organização!");
-        setLoading(false);
       });
   }
 
@@ -132,10 +134,7 @@ export default function NovaAula(props) {
                   onChange={handleChange}
                 />
               </Form.Item>
-              <Form.Item
-                name="description"
-                label="Descrição"
-              >
+              <Form.Item name="description" label="Descrição">
                 <Input
                   placeholder="Descreva a organização"
                   name="description"
@@ -153,15 +152,18 @@ export default function NovaAula(props) {
                 ]}
               >
                 <Upload {...fileProps}>
-                  {logoPreview
-                    ?
-                    <img src={logoPreview} alt="avatar" style={{ width: '100%' }} />
-                    :
+                  {logoPreview ? (
+                    <img
+                      src={logoPreview}
+                      alt="avatar"
+                      style={{ width: "100%" }}
+                    />
+                  ) : (
                     <div>
                       {loading ? <LoadingOutlined /> : <PlusOutlined />}
                       <div style={{ marginTop: 8 }}>Upload</div>
                     </div>
-                  }
+                  )}
                 </Upload>
               </Form.Item>
               <Form.Item {...formTailLayout}>

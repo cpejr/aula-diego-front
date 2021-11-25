@@ -2,12 +2,17 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Switch, Button, DatePicker, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Form, Switch, Button, DatePicker, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
-import { Field, InputField, QuestionText, QuestionAlternatives } from "../../Components/DynamicForms/dynamicForms"
+import {
+  Field,
+  InputField,
+  QuestionText,
+  QuestionAlternatives,
+} from "../../Components/DynamicForms/dynamicForms";
 import { useHistory } from "react-router-dom";
-import pt_BR from 'antd/es/date-picker/locale/pt_BR';
+import pt_BR from "antd/es/date-picker/locale/pt_BR";
 import "./NovaAtividade.css";
 
 const exerciseLayout = {
@@ -21,10 +26,13 @@ const exerciseTailLayout = {
 
 export default function NovaProva(props) {
   const query = new URLSearchParams(props.location.search);
-  const course = query.get("course")
+  const course = query.get("course");
 
-  const [exercise, setExercise] = useState({ evaluate: false, course_id: course })
-  const [questions, setQuestions] = useState([])
+  const [exercise, setExercise] = useState({
+    evaluate: false,
+    course_id: course,
+  });
+  const [questions, setQuestions] = useState([]);
   const [evaluate, setEvaluate] = useState(false);
   const [reset, setReset] = useState(false);
 
@@ -46,7 +54,10 @@ export default function NovaProva(props) {
     },
   };
 
-  function questionAdd(add, type) { add(); setQuestions([...questions, type]) };
+  function questionAdd(add, type) {
+    add();
+    setQuestions([...questions, type]);
+  }
 
   function questionDelete(remove, fieldName, index) {
     delete exercise.questions[index];
@@ -57,57 +68,58 @@ export default function NovaProva(props) {
     setQuestions(questions);
   }
 
-  const exerciseChange = (name, value) => setExercise({ ...exercise, [name]: value });
-  const questionChange = (name, value) => setExercise({ ...exercise, questions: { ...exercise.questions, [name]: value } })
+  const exerciseChange = (name, value) =>
+    setExercise({ ...exercise, [name]: value });
+  const questionChange = (name, value) =>
+    setExercise({
+      ...exercise,
+      questions: { ...exercise.questions, [name]: value },
+    });
 
   const evaluateChange = (value) => {
     setEvaluate(value);
-    setExercise({ ...exercise, evaluate: value, questions: {} })
+    setExercise({ ...exercise, evaluate: value, questions: {} });
     setQuestions([]);
-  }
+  };
 
   const exerciseSubmit = async () => {
-
     Promise.all(
-      Object.values(exercise.questions).map(question => question.image).map(async (image, index) => {
+      Object.values(exercise.questions)
+        .map((question) => question.image)
+        .map(async (image, index) => {
+          if (image !== undefined) {
+            const file = {
+              user_id: session.user.id,
+              file_name: `${exercise.name} ${index}`,
+              file_type: image.type,
+              file_original: image.name,
+            };
 
-        if (image !== undefined) {
+            const formData = new FormData();
+            formData.append(file.user_id, image);
 
-          const file = {
-            user_id: session.user.id,
-            file_name: `${exercise.name} ${index}`,
-            file_type: image.type,
-            file_original: image.name
+            await api
+              .post("file_upload", formData, configFiles)
+              .then(({ data: { file_ids } }) => {
+                const file_id = file_ids[0];
+                exercise.questions[index].image = file_id;
+              })
+              .catch((err) => {
+                message.error("Não foi possível criar a atividade!");
+              });
           }
-
-          await api
-            .post("file", file, config)
-            .then(async response => {
-
-              const formData = new FormData();
-              formData.append(response.data.file_id, image);
-
-              await api
-                .post("file_upload", formData, configFiles)
-                .catch(err => { message.error("Não foi possível criar a atividade!") })
-
-              exercise.questions[index].image = response.data.file_id;
-              Promise.resolve("");
-            })
-            .catch(err => { message.error("Não foi possível criar a atividade!") })
-        }
-      }))
-      .then(() => {
-        api
-          .post("exercise", exercise, config)
-          .then(() => {
-            message.success("Atividade criada com sucesso!");
-            history.push(`/curso/gerenciar/${course}`);
-          })
-          .catch(err => {
-            message.error("Não foi possível criar a atividade!");
-          })
-      });
+        })
+    ).then(() => {
+      api
+        .post("exercise", exercise, config)
+        .then(() => {
+          message.success("Atividade criada com sucesso!");
+          history.push(`/curso/gerenciar/${course}`);
+        })
+        .catch((err) => {
+          message.error("Não foi possível criar a atividade!");
+        });
+    });
   };
 
   return (
@@ -129,32 +141,40 @@ export default function NovaProva(props) {
               label="Título"
               placeholder="Título da atividade"
               message="Por favor, insira título da atividade!"
-              onChange={value => exerciseChange('name', value)}
+              onChange={(value) => exerciseChange("name", value)}
             />
-            <Field name="start_date" label="Início" message="Por favor, insira início da atividade!">
+            <Field
+              name="start_date"
+              label="Início"
+              message="Por favor, insira início da atividade!"
+            >
               <DatePicker
                 name="start_date"
                 placeholder="Início da atividade"
                 locale={pt_BR}
                 showTime
                 format="DD-MM-YYYY HH:mm"
-                onChange={e => exerciseChange('start_date', e._d)}
+                onChange={(e) => exerciseChange("start_date", e._d)}
               />
             </Field>
-            <Field name="end_date" label="Término" message="Por favor, insira término da atividade!">
+            <Field
+              name="end_date"
+              label="Término"
+              message="Por favor, insira término da atividade!"
+            >
               <DatePicker
                 name="end_date"
                 placeholder="Término da atividade"
                 locale={pt_BR}
                 showTime
                 format="DD-MM-YYYY HH:mm"
-                onChange={e => exerciseChange('end_date', e._d)}
+                onChange={(e) => exerciseChange("end_date", e._d)}
               />
             </Field>
             <Field name="evaluate" label="Avaliativa" required={false}>
-              <Switch onChange={value => evaluateChange(value)} />
+              <Switch onChange={(value) => evaluateChange(value)} />
             </Field>
-            <Field label="Questões" >
+            <Field label="Questões">
               <div className="questionsWrapper">
                 <Form.List name="questions">
                   {(fields, { add, remove }, { errors }) => (
@@ -167,26 +187,34 @@ export default function NovaProva(props) {
                         }
 
                         if (questions[index] === "text")
-                          return <QuestionText
-                            name={index}
-                            index={index}
-                            field={field}
-                            onChange={value => questionChange(index, value)}
-                            remove={() => questionDelete(remove, field.name, index)}
-                          />
+                          return (
+                            <QuestionText
+                              name={index}
+                              index={index}
+                              field={field}
+                              onChange={(value) => questionChange(index, value)}
+                              remove={() =>
+                                questionDelete(remove, field.name, index)
+                              }
+                            />
+                          );
 
                         if (questions[index] === "alternatives")
-                          return <QuestionAlternatives
-                            name={index}
-                            index={index}
-                            field={field}
-                            onChange={value => questionChange(index, value)}
-                            remove={() => questionDelete(remove, field.name, index)}
-                          />
+                          return (
+                            <QuestionAlternatives
+                              name={index}
+                              index={index}
+                              field={field}
+                              onChange={(value) => questionChange(index, value)}
+                              remove={() =>
+                                questionDelete(remove, field.name, index)
+                              }
+                            />
+                          );
                       })}
                       <Form.Item>
                         <div className="addButtonsWrapper">
-                          {!evaluate &&
+                          {!evaluate && (
                             <Button
                               className="formButton"
                               type="dashed"
@@ -195,8 +223,8 @@ export default function NovaProva(props) {
                               style={{ "margin-right": "2%" }}
                             >
                               Adicionar questão aberta
-                          </Button>
-                          }
+                            </Button>
+                          )}
                           <Button
                             className="formButton"
                             type="dashed"
@@ -204,7 +232,7 @@ export default function NovaProva(props) {
                             icon={<PlusOutlined />}
                           >
                             Adicionar questão fechada
-                        </Button>
+                          </Button>
                         </div>
                         <Form.ErrorList errors={errors} />
                       </Form.Item>
@@ -216,7 +244,7 @@ export default function NovaProva(props) {
             <Form.Item {...exerciseTailLayout}>
               <Button type="primary" htmlType="submit">
                 Criar
-            </Button>
+              </Button>
             </Form.Item>
           </Form>
         </div>

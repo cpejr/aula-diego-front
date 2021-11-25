@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Button, Progress, message } from 'antd';
+import { Button, Progress, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./AtividadeResultado.css";
 
 export default function AtividadeResultado(props) {
-
   const [answer, setAnswer] = useState(false);
-  const [color, setColor] = useState('white');
-  const [status, setStatus] = useState('normal');
+  const [color, setColor] = useState("white");
+  const [status, setStatus] = useState("normal");
 
   const { session } = useSession();
   const history = useHistory();
@@ -26,24 +25,25 @@ export default function AtividadeResultado(props) {
   useEffect(() => {
     api
       .get(`/answer/${answer_id}`, config)
-      .then(async response => {
-        const colors = ['red', 'coral', 'yellow', 'lightgreen', 'lawngreen']
+      .then(async (response) => {
+        const colors = ["red", "coral", "yellow", "lightgreen", "lawngreen"];
 
-        if (response.data.grade === 100)
-          setStatus('success')
+        if (response.data.grade === 100) setStatus("success");
 
         if (response.data.grade === 0) {
-          response.data.grade = 100
-          setStatus('exception')
+          response.data.grade = 100;
+          setStatus("exception");
         }
 
         setColor(colors[Math.floor(response.data.grade / 20)]);
-        setAnswer(response.data)
+        setAnswer(response.data);
       })
-      .catch((err) => { message.error("Não foi possível carregar dados da prova!") });
+      .catch((err) => {
+        message.error("Não foi possível carregar dados da prova!");
+      });
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Base>
@@ -58,10 +58,20 @@ export default function AtividadeResultado(props) {
             status={status}
           />
           <div className="resultButtonWrapper">
-            <Button type="default" className="resultButton" onClick={() => history.push(`/atividade/responder/${answer.exercise_id}`)}>
+            <Button
+              type="default"
+              className="resultButton"
+              onClick={() =>
+                history.push(`/atividade/responder/${answer.exercise_id}`)
+              }
+            >
               Tentar novamente
             </Button>
-            <Button type="default" className="resultButton" onClick={() => history.push(`/curso/${answer.course_id}`)}>
+            <Button
+              type="default"
+              className="resultButton"
+              onClick={() => history.push(`/curso/${answer.course_id}`)}
+            >
               Retornar ao curso
             </Button>
           </div>
