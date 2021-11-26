@@ -179,13 +179,6 @@ export default function CursoAdmin(props) {
       render: (id) => (
         <>
           <ActionButton
-            title="Visitar"
-            confirm="Visitar turma?"
-            onConfirm={() => history.push(`/turma/${id}`)}
-          >
-            <SelectOutlined className="actionButton" />
-          </ActionButton>
-          <ActionButton
             title="Editar"
             confirm="Editar turma?"
             onConfirm={() => history.push(`/turma/editar/${id}`)}
