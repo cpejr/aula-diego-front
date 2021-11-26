@@ -64,7 +64,6 @@ export default function Curso(props) {
     },
     params: {
       course_id: id,
-      user_id: session.user.id,
     },
   };
 
@@ -78,9 +77,9 @@ export default function Curso(props) {
 
   useEffect(() => {
     if (done === true) {
-      const sLesson = lessons.sort((a, b) => a.date - b.date);
-      const sLive = lives.sort((a, b) => a.date - b.date);
-      const combined = sLesson.concat(sLive).sort((a, b) => a.date - b.date);
+      const sLesson = lessons?.sort((a, b) => a.date - b.date);
+      const sLive = lives?.sort((a, b) => a.date - b.date);
+      const combined = sLesson?.concat(sLive).sort((a, b) => a.date - b.date);
 
       setSorted(combined);
     }
@@ -128,10 +127,11 @@ export default function Curso(props) {
       .catch((err) => {});
 
     api
-      .get(`/certificate/user/${session.user.id}`, configCertificate)
+      .get(`/user/me/certificate/`, configCertificate)
       .then((response) => {
-        if (response.data.course_id === id) setCertificate(response.data);
-        else setCertificate(null);
+        console.log(response.data);
+        setCertificate(response.data.url);
+
         requestDone();
       })
       .catch((err) => {});
@@ -144,13 +144,14 @@ export default function Curso(props) {
         {certificate ? (
           <>
             {" "}
-            <Divider orientation="left">Meus Certificados</Divider>
+            <Divider orientation="left">Meu Certificado</Divider>
             <Card
               hoverable
               className="card"
               size="small"
-              onClick={() => window.open(certificate.url)}
+              onClick={() => window.open(certificate)}
             >
+              Certificado {course?.name}
               <Meta
                 title={certificate.course_name}
                 avatar={<FileDoneOutlined />}

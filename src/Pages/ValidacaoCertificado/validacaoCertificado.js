@@ -136,9 +136,8 @@ export default function ValidacaoCertificado() {
             </div>
           </Form.Item>
           <Form.Item hidden={failHidden}>
-            <Title level={2}>
-              O certificado {certificate} não existe para ser verificado!
-            </Title>
+            <Title level={2}>O certificado {certificate} não é válido!</Title>
+
             <Button onClick={handleBack}>Voltar</Button>
           </Form.Item>
         </Form>
