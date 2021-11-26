@@ -34,19 +34,15 @@ export default function Atividade(props) {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-  };
-
   useEffect(() => {
     api
       .get(`/exercise/${exercise_id}`, config)
       .then(async (response) => {
         let exercise = response.data;
+        const exerciseDueDate = new Date(exercise.end_date);
+        const exerciseIsClosed = !exercise.open || exerciseDueDate < new Date();
 
-        if (session.user.type === "student" && response.data.open === false) {
+        if (session.user.type === "student" && exerciseIsClosed) {
           message.error("Você não tem permissão para ver essa prova!");
           history.push("/dashboard");
         }
@@ -56,7 +52,7 @@ export default function Atividade(props) {
         for (const key of keys) {
           if (exercise.questions[key].image !== undefined)
             await api
-              .get(`/file_get/${exercise.questions[key].image}`, configFile)
+              .get(`/file_get/${exercise.questions[key].image}`, config)
               .then((response) => {
                 exercise.questions[key].image = response.data.url;
               });
@@ -91,8 +87,10 @@ export default function Atividade(props) {
         else history.push(`/atividade/resposta/${response.data.id}`);
       })
       .catch((err) => {
-        console.log(err);
-        message.error("Não foi possível criar a prova!");
+        console.log(err.response);
+        message.error(
+          err.response.data.message || "Não foi possível enviar resposta!"
+        );
       });
   };
 
