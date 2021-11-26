@@ -5,10 +5,8 @@ import { message, Divider, Button } from "antd";
 import VideoFrame from "../../Components/VideoFrame/VideoFrame";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
-import fileDownload from "js-file-download";
 import "./Aula.css";
 import CommentsContainer from "../../Components/CommentsContainer";
-import { Link } from "react-router-dom";
 
 export default function Aula(props) {
   const [lesson, setLesson] = useState();
@@ -32,13 +30,6 @@ export default function Aula(props) {
     params: {
       lesson_id: id,
     },
-  };
-
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
   };
 
   useEffect(() => {
@@ -71,16 +62,6 @@ export default function Aula(props) {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const downloadFile = (id, name, extension) => {
-    api
-      .get(`/file_get/${id}`, configFile)
-      .then((response) => {
-        fileDownload(response.data.url, `${name}.${extension}`);
-      })
-      .catch((err) => {
-        message.error("Não foi possível carregar dados dos arquivos");
-      });
-  };
 
   return (
     <Base>

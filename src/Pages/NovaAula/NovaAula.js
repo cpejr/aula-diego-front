@@ -104,7 +104,7 @@ export default function NovaAula(props) {
 
     const formData = new FormData();
     files.map((item, index) => {
-      formData.append(index, files[index]);
+      return formData.append(index, files[index]);
     });
 
     api
