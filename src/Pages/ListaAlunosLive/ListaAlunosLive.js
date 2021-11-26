@@ -10,32 +10,7 @@ export default function ListaAlunoLIve(props) {
   const { session } = useSession();
   const [presentStudents, setPresentStudents] = useState([]);
   const [search, setSearch] = useState("");
-  const [turma, setTurma] = useState("");
   const { id } = props.match.params;
-
-  function getClass(id) {
-    const config = {
-      headers: {
-        authorization: "BEARER " + session.accessToken,
-      },
-      params: {
-        user_id: id,
-      },
-    };
-
-    api
-      .get(`/class_user`, config)
-      .then((response) => {
-        setTurma(response.data[0].class_name);
-        console.log(response.data.class_name);
-      })
-      .catch((error) => {
-        console.log(error);
-        message.error("Não foi possível carregar os dados das turmas!");
-      });
-
-    return turma;
-  }
 
   const config = {
     headers: {
@@ -56,8 +31,8 @@ export default function ListaAlunoLIve(props) {
       .catch(() => {
         message.error("Não foi possível carregar a presença das lives!");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
     {
@@ -84,15 +59,6 @@ export default function ListaAlunoLIve(props) {
       render: (course_name) => (
         <p className="clickable" onClick={() => setSearch(course_name)}>
           {course_name}
-        </p>
-      ),
-    },
-    {
-      title: "Turma",
-      dataIndex: "user_id",
-      render: (user_id) => (
-        <p className="clickable" onClick={() => setSearch(user_id)}>
-          {getClass(user_id)}
         </p>
       ),
     },
