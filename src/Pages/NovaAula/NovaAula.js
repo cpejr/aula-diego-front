@@ -112,7 +112,7 @@ export default function NovaAula(props) {
       .then(async ({ data: { file_ids } }) => {
         api.post("/lesson", { ...data, file_ids }, config).then(() => {
           setUploading(false);
-          // history.push(`/curso/gerenciar/${course}`);
+          history.push(`/curso/gerenciar/${course}`);
         });
       })
       .catch((err) => {
