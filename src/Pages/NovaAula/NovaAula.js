@@ -112,7 +112,7 @@ export default function NovaAula(props) {
       .then(async ({ data: { file_ids } }) => {
         api.post("/lesson", { ...data, file_ids }, config).then(() => {
           setUploading(false);
-          history.push(`/curso/gerenciar/${course}`);
+          // history.push(`/curso/gerenciar/${course}`);
         });
       })
       .catch((err) => {
@@ -161,6 +161,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item name="text" label="Texto">
                 <TextArea
+                  name="text"
                   placeholder="Conteúdo da aula"
                   onChange={handleChange}
                   autoSize={{ minRows: 3 }}
