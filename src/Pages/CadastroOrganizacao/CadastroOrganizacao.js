@@ -65,8 +65,6 @@ export default function NovaAula(props) {
     e.preventDefault();
     setLoading(true);
 
-    console.log(file)
-
     const data = {
       ...organization,
       user_id: session.user.id,
