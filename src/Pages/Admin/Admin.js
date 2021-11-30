@@ -31,13 +31,6 @@ export default function Admin() {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
-  };
-
   useEffect(() => {
     api
       .get(`/user`, {

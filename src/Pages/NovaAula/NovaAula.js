@@ -104,7 +104,7 @@ export default function NovaAula(props) {
 
     const formData = new FormData();
     files.map((item, index) => {
-      formData.append(index, files[index]);
+      return formData.append(index, files[index]);
     });
 
     api
@@ -161,6 +161,7 @@ export default function NovaAula(props) {
               </Form.Item>
               <Form.Item name="text" label="Texto">
                 <TextArea
+                  name="text"
                   placeholder="Conteúdo da aula"
                   onChange={handleChange}
                   autoSize={{ minRows: 3 }}

@@ -3,7 +3,6 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Input, Button, message, Table, Select } from "antd";
 import { useSession } from "../../Context/SessionContext";
-import { useHistory } from "react-router-dom";
 
 export default function NovaAula(props) {
   const [students, setStudents] = useState([]);
@@ -14,8 +13,6 @@ export default function NovaAula(props) {
   const [selectedStudent, setSelectedStudent] = useState("");
   const [loading, setLoading] = useState(true);
   const { session } = useSession();
-  const history = useHistory();
-
   const config = {
     headers: {
       authorization: "BEARER " + session.accessToken,
@@ -48,6 +45,7 @@ export default function NovaAula(props) {
       .catch((err) => {
         message.error(err);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formLayout = {
@@ -94,7 +92,7 @@ export default function NovaAula(props) {
           else return;
         })
         .catch(() => {
-          if (selectedStudent != [])
+          if (selectedStudent !== [])
             message.error("Não foi possível carregar dados dos cursos");
         })
         .finally(() => setLoading(false));
