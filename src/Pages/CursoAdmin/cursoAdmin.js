@@ -5,8 +5,17 @@ import { useHistory } from "react-router-dom";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { message, Tabs, Table, Input, Tag, Tooltip } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined, SelectOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
-import ActionButton from "../../Components/ActionButton/actionButton"
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  SelectOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  ClockCircleOutlined,
+  OrderedListOutlined,
+} from "@ant-design/icons";
+import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
 
@@ -91,10 +100,18 @@ export default function CursoAdmin(props) {
       width: "20%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar aula?" onConfirm={() => history.push(`/aula/${id}`)}>
+          <ActionButton
+            title="Visitar"
+            confirm="Visitar aula?"
+            onConfirm={() => history.push(`/aula/${id}`)}
+          >
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar aula?" onConfirm = {() => history.push(`/aula/editar/${id}`)}>
+          <ActionButton
+            title="Editar"
+            confirm="Editar aula?"
+            onConfirm={() => history.push(`/aula/editar/${id}`)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton
@@ -122,10 +139,18 @@ export default function CursoAdmin(props) {
       width: "20%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar live?" onConfirm={() => history.push(`/live/${id}`)}>
+          <ActionButton
+            title="Visitar"
+            confirm="Visitar live?"
+            onConfirm={() => history.push(`/live/${id}`)}
+          >
             <SelectOutlined className="actionButton" />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar live?" onConfirm = {() => history.push(`/live/editar/${id}`)}>
+          <ActionButton
+            title="Editar"
+            confirm="Editar live?"
+            onConfirm={() => history.push(`/live/editar/${id}`)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton
@@ -153,10 +178,11 @@ export default function CursoAdmin(props) {
       width: "20%",
       render: (id) => (
         <>
-          <ActionButton title="Visitar" confirm="Visitar turma?" onConfirm={() => history.push(`/turma/${id}`)}>
-            <SelectOutlined className="actionButton" />
-          </ActionButton>
-          <ActionButton title="Editar" confirm="Editar turma?" onConfirm = {() => history.push(`/turma/editar/${id}`)}>
+          <ActionButton
+            title="Editar"
+            confirm="Editar turma?"
+            onConfirm={() => history.push(`/turma/editar/${id}`)}
+          >
             <EditOutlined className="actionButton" />
           </ActionButton>
           <ActionButton
@@ -198,47 +224,71 @@ export default function CursoAdmin(props) {
       width: "15%",
       render: (status) => (
         <>
-          {status === "open" &&
-            <Tag color="green">Aberta</Tag>
-          }
-          {status === "hidden" &&
-            <Tag color="default">Oculta</Tag>
-          }
-          {status === "closed" &&
-            <Tag color="red">Finalizada</Tag>
-          }
+          {status === "open" && <Tag color="green">Aberta</Tag>}
+          {status === "hidden" && <Tag color="default">Oculta</Tag>}
+          {status === "closed" && <Tag color="red">Finalizada</Tag>}
         </>
-      )
+      ),
     },
     {
       title: <h5>Ações</h5>,
-      dataIndex: ("id"),
+      dataIndex: "id",
       width: "20%",
       render: (id, exercise) => (
         <>
-          {exercise.status === "hidden" &&
-            <ActionButton title="Publicar" confirm="Publicar prova?" onConfirm={() => handlePublish(id)}>
+          {exercise.status === "hidden" && (
+            <ActionButton
+              title="Publicar"
+              confirm="Publicar prova?"
+              onConfirm={() => handlePublish(id)}
+            >
               <CheckCircleOutlined />
             </ActionButton>
-          }
-          {exercise.status === "open" &&
-            <ActionButton title="Fechar" confirm="Fechar prova?" onConfirm={() => handleClose(id)}>
+          )}
+          {exercise.status === "open" && (
+            <ActionButton
+              title="Fechar"
+              confirm="Fechar prova?"
+              onConfirm={() => handleClose(id)}
+            >
               <CloseCircleOutlined />
             </ActionButton>
-          }
-          {exercise.status === "closed" &&
-            <ActionButton title="Extender" confirm="Extender tempo de prova?" /* onConfirm={() => handlePublish(id)} */>
+          )}
+          {exercise.status === "closed" && (
+            <ActionButton
+              title="Extender"
+              confirm="Extender tempo de prova?" /* onConfirm={() => handlePublish(id)} */
+            >
               <ClockCircleOutlined />
             </ActionButton>
-          }
-          <ActionButton title="Visualizar" confirm="Visualizar prova?" onConfirm={() => history.push(`/atividade/responder/${id}`)}>
+          )}
+          <ActionButton
+            title="Visualizar"
+            confirm="Visualizar prova?"
+            onConfirm={() => history.push(`/atividade/responder/${id}`)}
+          >
             <SelectOutlined />
           </ActionButton>
-          <ActionButton title="Editar" confirm="Editar prova?" onConfirm={() => history.push(`/atividade/editar/${id}`)}>
+          <ActionButton
+            title="Editar"
+            confirm="Editar prova?"
+            onConfirm={() => history.push(`/atividade/editar/${id}`)}
+          >
             <EditOutlined />
           </ActionButton>
-          <ActionButton title="Exluir" confirm="Excluir prova?" onConfirm={() => handleDelete(id)}>
+          <ActionButton
+            title="Exluir"
+            confirm="Excluir prova?"
+            onConfirm={() => handleDelete(id)}
+          >
             <DeleteOutlined />
+          </ActionButton>
+          <ActionButton
+            title="Respostas"
+            confirm="Ver respostas?"
+            onConfirm={() => history.push(`/atividade/lista/${id}`)}
+          >
+            <OrderedListOutlined />
           </ActionButton>
         </>
       ),
@@ -292,11 +342,13 @@ export default function CursoAdmin(props) {
       .get(`/class`, configTables)
       .then((response) => {
         const classes = [];
-        response.data.map((cl4ss) => 
-        classes.push({ 
-          ...cl4ss,
-          date: new Date(cl4ss.created_at).toLocaleDateString("pt-BR"),
-          key: cl4ss.id }));
+        response.data.map((cl4ss) =>
+          classes.push({
+            ...cl4ss,
+            date: new Date(cl4ss.created_at).toLocaleDateString("pt-BR"),
+            key: cl4ss.id,
+          })
+        );
 
         setClasses(classes);
         requestDone(classes);
@@ -308,23 +360,24 @@ export default function CursoAdmin(props) {
     api
       .get(`/exercise`, configTables)
       .then((response) => {
-        const exercises = []
+        const exercises = [];
 
-        response.data.map(exercise => {
+        response.data.map((exercise) => {
           const now = Date.now();
           const end = new Date(exercise.end_date);
 
           let status = exercise.open ? "open" : "hidden";
 
-          if (Date.parse(end) < now)
-            status = "closed";
+          if (Date.parse(end) < now) status = "closed";
 
           exercises.push({
             ...exercise,
-            start_date: new Date(exercise.start_date).toLocaleDateString("pt-BR"),
+            start_date: new Date(exercise.start_date).toLocaleDateString(
+              "pt-BR"
+            ),
             end_date: new Date(exercise.end_date).toLocaleDateString("pt-BR"),
-            status: status
-          })
+            status: status,
+          });
         });
 
         setExercises(exercises);
@@ -339,17 +392,18 @@ export default function CursoAdmin(props) {
     api
       .get(`/course/${course_id}`, config)
       .then((response) => {
-        if (session.user.type === "student" || response.data.organization_id !== session.user.organization_id) {
-          if(session.user.type === "master"){
+        if (
+          session.user.type === "student" ||
+          response.data.organization_id !== session.user.organization_id
+        ) {
+          if (session.user.type === "master") {
             setCourse(response.data);
             getData();
-          }
-          else{
+          } else {
             message.error("Você não tem permissão para ver esse curso");
-            history.push("/")
+            history.push("/");
           }
-        }
-        else {
+        } else {
           setCourse(response.data);
           getData();
         }
@@ -384,7 +438,6 @@ export default function CursoAdmin(props) {
   }
 
   function handleDelete(id) {
-
     const requests = ["lesson", "live", "exercise", "class"];
     setLoading(true);
 
@@ -400,11 +453,10 @@ export default function CursoAdmin(props) {
   }
 
   function handlePublish(id) {
-
     setLoading(true);
 
     api
-      .put(`/exercise/${id}`, {open: true}, config)
+      .put(`/exercise/${id}`, { open: true }, config)
       .then(() => {
         message.success("Prova publicada com sucesso");
         getData();
@@ -413,16 +465,15 @@ export default function CursoAdmin(props) {
   }
 
   function handleClose(id) {
+    console.log(new Date(Date.now()).toISOString());
 
-    console.log(new Date(Date.now()).toISOString())
-
-    /* api
+    api
       .put(`/exercise/close/${id}`, {}, config)
       .then(() => {
         message.success("Prova fechada com sucesso");
         getData();
       })
-      .catch((err) => message.error("Não foi possível fechar a prova")); */
+      .catch((err) => message.error("Não foi possível fechar a prova"));
   }
 
   /* function getNow() {

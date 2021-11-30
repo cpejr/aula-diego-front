@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Upload, Input, Button, message } from "antd";
-import { UploadOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaAula.css";
 
-const { TextArea } = Input
+const { TextArea } = Input;
 
 export default function NovaAula(props) {
   const [lesson, setLesson] = useState({ videos: [] });
@@ -72,15 +76,13 @@ export default function NovaAula(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const fileNames = files.map(file => file.name);
-
-    const fileIds = [];
+    const fileNames = files.map((file) => file.name);
 
     const data = {
       ...lesson,
       course_id: course,
       user_id: session.user.id,
-      file_names: fileNames
+      file_names: fileNames,
     };
 
     setUploading(true);
@@ -100,29 +102,21 @@ export default function NovaAula(props) {
       },
     };
 
+    const formData = new FormData();
+    files.map((item, index) => {
+      return formData.append(index, files[index]);
+    });
+
     api
-      .post("/lesson_create", data, config)
-      .then(response => {
-        fileIds.push(response.data);
-
-        // eslint-disable-next-line array-callback-return
-        response.data.map((item, index) => {
-          const formData = new FormData();
-          formData.append(item, files[index]);
-
-          api
-            .post("file_upload", formData, configFiles)
-            .catch(err => { message.error("Não foi possível criar a aula!") });          
-        })
-
-        setUploading(false);
-        message.success("Aula criada com sucesso!");
-        history.push(`/curso/gerenciar/${course}`);
+      .post("file_upload", formData, configFiles)
+      .then(async ({ data: { file_ids } }) => {
+        api.post("/lesson", { ...data, file_ids }, config).then(() => {
+          setUploading(false);
+          history.push(`/curso/gerenciar/${course}`);
+        });
       })
       .catch((err) => {
         message.error("Não foi possível criar a aula!");
-        console.log(course.id);
-        setUploading(false);
       });
   }
 
@@ -158,44 +152,54 @@ export default function NovaAula(props) {
                   onChange={handleChange}
                 />
               </Form.Item>
-              <Form.Item
-                name="description"
-                label="Descrição"
-              >
+              <Form.Item name="description" label="Descrição">
                 <Input
                   placeholder="Temas que serão abordados"
                   name="description"
                   onChange={handleChange}
                 />
               </Form.Item>
-              <Form.Item
-                name="text"
-                label="Texto"
-              >
+              <Form.Item name="text" label="Texto">
                 <TextArea
+                  name="text"
                   placeholder="Conteúdo da aula"
                   onChange={handleChange}
                   autoSize={{ minRows: 3 }}
                 />
               </Form.Item>
-              <Form.List name="videos" >
+              <Form.List name="videos">
                 {(fields, { add, remove }) => (
-                  <Form.Item {...formLayout} label="Vídeos" >
+                  <Form.Item {...formLayout} label="Vídeos">
                     {fields.map((field, index) => (
                       <div className="inputVideoWrapper">
                         <Form.Item
                           {...field}
                           className="inputURL"
                           onChange={(e) => handleChangeVideo(e, index)}
-                          rules={[{ required: true, message: 'Insira URL do vídeo' }]}
+                          rules={[
+                            { required: true, message: "Insira URL do vídeo" },
+                          ]}
                         >
                           <Input placeholder="URL do vídeo" />
                         </Form.Item>
-                        <MinusCircleOutlined style={{ fontSize: "large" }} onClick={() => { remove(index); removeVideo() }} />
+                        <MinusCircleOutlined
+                          style={{ fontSize: "large" }}
+                          onClick={() => {
+                            remove(index);
+                            removeVideo();
+                          }}
+                        />
                       </div>
                     ))}
                     <Form.Item>
-                      <Button type="dashed" onClick={() => { add(); addVideo() }} icon={<PlusOutlined />}>
+                      <Button
+                        type="dashed"
+                        onClick={() => {
+                          add();
+                          addVideo();
+                        }}
+                        icon={<PlusOutlined />}
+                      >
                         Adicionar vídeo
                       </Button>
                     </Form.Item>

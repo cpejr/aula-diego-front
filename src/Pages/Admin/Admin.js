@@ -31,13 +31,6 @@ export default function Admin() {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
-  };
-
   useEffect(() => {
     api
       .get(`/user`, {
@@ -64,18 +57,7 @@ export default function Admin() {
     api
       .get(`/organization/${session.user.organization_id}`, config)
       .then(async (response) => {
-        await api
-          .get(`/file_get/${response.data.file_id}`, configFile)
-          .then((file) => {
-            const image = URL.createObjectURL(file.data);
-            setOrganization({
-              ...response.data,
-              logo: image,
-            });
-          })
-          .catch((err) => {
-            message.error("Não foi possível carregar dados dos arquivos");
-          });
+        setOrganization(response.data);
       })
       .catch((err) => {
         message.error("Não foi possível carregar dados das organizações");
@@ -166,14 +148,18 @@ export default function Admin() {
       .catch((err) => {
         message.error("Não foi possível carregar dados das aulas");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Base>
       <div className="adminRoot">
         <div className="adminTitleWrapper">
-          <img src={organization.logo} className="adminImg"  alt="Logo da RecStudio"/>
+          <img
+            src={organization.logo}
+            className="adminImg"
+            alt="Logo da RecStudio"
+          />
           <h1 className="adminTitle">{organization.name}</h1>
         </div>
         <Divider />

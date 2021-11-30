@@ -118,33 +118,6 @@ export default function Dashboard(props) {
     },
   };
 
-  const configFile = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
-  };
-
-  const getLogo = async (organizations) => {
-    const result = [];
-    for (const organization of organizations) {
-      await api
-        .get(`/file_get/${organization.file_id}`, configFile)
-        .then((response) => {
-          const img = URL.createObjectURL(response.data);
-          result.push({
-            ...organization,
-            logo: img,
-          });
-        })
-        .catch((err) => {
-          message.error("Não foi possível carregar dados dos arquivos");
-        });
-    }
-
-    return result;
-  };
-
   useEffect(() => {
     api
       .get(`/user/${session.user.id}`, config)
@@ -165,9 +138,7 @@ export default function Dashboard(props) {
     api
       .get(`/organization`, config)
       .then((response) => {
-        getLogo(response.data).then((response) => {
-          setOrganization(response[0]);
-        });
+        setOrganization(response.data);
       })
       .catch(() => {
         message.error("Não foi possível carregar dados das organizações");

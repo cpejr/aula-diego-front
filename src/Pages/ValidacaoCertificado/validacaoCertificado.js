@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Button, Input, Form, Typography, message } from "antd";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import Logo from "../../images/Logo2.png";
 import api from "../../services/api";
 import "./validacaoCertificado.css";
 import "antd/dist/antd.css";
 
 export default function ValidacaoCertificado() {
-  const history = useHistory();
   const location = useLocation();
   const { search } = location;
   const { Title, Link } = Typography;
@@ -53,10 +52,6 @@ export default function ValidacaoCertificado() {
       setOkHidden(!okHidden);
     }
     setHidden(!hidden);
-  }
-
-  function handleCheckCertificate() {
-    history.push("/");
   }
 
   return (
@@ -122,6 +117,7 @@ export default function ValidacaoCertificado() {
               <br />
             </Title>
             <iframe
+              title={`${certificateData.course_name} - ${certificateData.user_name}`}
               src={certificateData.url}
               type="application/pdf"
               style={{ height: "700px", width: "100%" }}
@@ -136,9 +132,8 @@ export default function ValidacaoCertificado() {
             </div>
           </Form.Item>
           <Form.Item hidden={failHidden}>
-            <Title level={2}>
-              O certificado {certificate} não existe para ser verificado!
-            </Title>
+            <Title level={2}>O certificado {certificate} não é válido!</Title>
+
             <Button onClick={handleBack}>Voltar</Button>
           </Form.Item>
         </Form>

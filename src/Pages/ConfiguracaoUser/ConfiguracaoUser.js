@@ -6,7 +6,6 @@ import "./ConfiguracaoUser.css";
 import EditUser from "../../Components/EditUser/EditUser";
 import Base from "../../Components/Base/Base";
 import { message, Card, Col, Row, Button } from "antd";
-import { AiOutlineUpload } from "react-icons/ai";
 
 export default function ConfiguracaoAluno(props) {
   const [dataAluno, setDataAluno] = useState([]);
@@ -75,7 +74,7 @@ export default function ConfiguracaoAluno(props) {
       .catch(() => {
         message.error("Não foi possível carregar dados da ocupação");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleEditOpen = () => {
