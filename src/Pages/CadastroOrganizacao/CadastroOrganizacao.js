@@ -34,6 +34,7 @@ export default function NovaAula(props) {
     name: "file",
     listType: "picture-card",
     className: "avatar-uploader",
+    accept: "image/*",
     showUploadList: false,
     beforeUpload: (file) => {
       setFile(file);

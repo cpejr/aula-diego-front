@@ -2,11 +2,15 @@ import React from "react";
 import Routes from "./routes";
 import { SessionProvider } from "./Context/SessionContext";
 
+import "./App.css";
+
 function App() {
   return (
-    <SessionProvider>
-      <Routes />
-    </SessionProvider>
+    <div className="App">
+      <SessionProvider>
+        <Routes />
+      </SessionProvider>
+    </div>
   );
 }
 

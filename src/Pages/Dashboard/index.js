@@ -113,9 +113,6 @@ export default function Dashboard(props) {
     headers: {
       authorization: "BEARER " + session.accessToken,
     },
-    params: {
-      id: session.user.organization_id,
-    },
   };
 
   useEffect(() => {
@@ -136,7 +133,7 @@ export default function Dashboard(props) {
         message.error("Não foi possível carregar dados dos cursos");
       });
     api
-      .get(`/organization`, config)
+      .get(`/organization/${session.user.organization_id}`, config)
       .then((response) => {
         setOrganization(response.data);
       })

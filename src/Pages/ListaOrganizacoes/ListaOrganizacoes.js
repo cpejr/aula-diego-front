@@ -6,6 +6,8 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
+
+import building from "../../images/building.png";
 import "./ListaOrganizacoes.css";
 
 export default function ListaOrganizacoes() {
@@ -45,7 +47,7 @@ export default function ListaOrganizacoes() {
       width: "10%",
       render: (logo) => (
         <div className="logo">
-          <img src={logo} alt="logo" />
+          <img src={logo || building} alt="logo" />
         </div>
       ),
     },
