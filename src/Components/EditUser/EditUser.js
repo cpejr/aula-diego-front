@@ -6,6 +6,8 @@ import { message, Card, Col, Row, Input, Select, Button } from "antd";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useHistory } from "react-router-dom";
 
+import handleError from "../../utils/handleError";
+
 export default function EditUser() {
   const [dataAluno, setDataAluno] = useState([]);
   const [name, setName] = useState("");
@@ -49,7 +51,9 @@ export default function EditUser() {
       .then((data) => {
         setOrganizations(data.data);
       })
-      .catch(() => message.error("Não foi possível carregar organizações"));
+      .catch((error) =>
+        handleError(error, "Não foi possível carregar organizações")
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

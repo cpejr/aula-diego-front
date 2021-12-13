@@ -8,6 +8,7 @@ import {
 } from "../../Components/DynamicForms/dynamicForms";
 import { useSession } from "../../Context/SessionContext";
 import "./AtividadeResposta.css";
+import handleError from "../../utils/handleError";
 
 export default function AtividadeResposta(props) {
   const [answer, setAnswer] = useState(false);
@@ -41,7 +42,7 @@ export default function AtividadeResposta(props) {
       })
       .catch((err) => {
         console.log(err);
-        message.error("Não foi possível carregar dados da prova!");
+        handleError(err, "Não foi possível carregar a dados da prova");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

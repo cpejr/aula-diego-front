@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import "./EditarOrganizacao.css";
 
 import building from "../../images/building.png";
+import handleError from "../../utils/handleError";
 
 const formItemLayout = {
   labelCol: {
@@ -100,8 +101,8 @@ export default function EditarOrganizacao(props) {
         message.success("Organização editada com sucesso!");
         history.push("/organizacao");
       })
-      .catch(() => {
-        message.error("Erro ao editar organização");
+      .catch((err) => {
+        handleError(err, "Erro ao editar organização");
       });
   }
 
