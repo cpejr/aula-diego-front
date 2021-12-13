@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Upload, Input, Button, message } from "antd";
+import { Form, Upload, Input, Button } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./CadastroOrganizacao.css";
 
 import building from "../../images/building.png";
+import handleError from "../../utils/handleError";
 
 export default function NovaAula(props) {
   const [organization, setOrganization] = useState({});
@@ -91,14 +92,14 @@ export default function NovaAula(props) {
             history.push("/organizacao");
           })
           .catch((err) => {
-            message.error("Não foi possível criar a organização!");
+            handleError(err, "Não foi possível criar a organização!");
             setLoading(false);
           });
 
         setLoading(false);
       })
       .catch((err) => {
-        message.error("Não foi possível criar a organização!");
+        handleError(err, "Não foi possível criar a organização!");
       });
   }
 

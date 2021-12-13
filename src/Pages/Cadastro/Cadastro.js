@@ -10,6 +10,7 @@ import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { message, DatePicker } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
+import handleError from "../../utils/handleError";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
@@ -97,7 +98,10 @@ export default function Cadastro(props) {
         history.push("/");
       })
       .catch((error) => {
-        message.error("Não foi possível concluir o cadastro, tente novamente.");
+        handleError(
+          error,
+          "Não foi possível concluir o cadastro, tente novamente."
+        );
       });
   }
 

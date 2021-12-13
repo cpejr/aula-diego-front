@@ -18,6 +18,7 @@ import {
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import "./cursoAdmin.css";
+import handleError from "../../utils/handleError";
 
 export default function CursoAdmin(props) {
   const [course, setCourse] = useState();
@@ -315,8 +316,8 @@ export default function CursoAdmin(props) {
         setLessons(lessons);
         requestDone(lessons);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das aulas");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das aulas");
       });
 
     api
@@ -334,8 +335,8 @@ export default function CursoAdmin(props) {
         setLives(lives);
         requestDone(lives);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das lives");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das lives");
       });
 
     api
@@ -353,8 +354,8 @@ export default function CursoAdmin(props) {
         setClasses(classes);
         requestDone(classes);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das aulas");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das aulas");
       });
 
     api
@@ -384,7 +385,7 @@ export default function CursoAdmin(props) {
         requestDone(exercises);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados das provas");
+        handleError(err, "Não foi possível carregar dados das provas");
       });
   }
 
@@ -408,8 +409,8 @@ export default function CursoAdmin(props) {
           getData();
         }
       })
-      .catch(() => {
-        message.error("Não foi possível carregar curso");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar curso");
       });
   }, []);
 
@@ -448,7 +449,7 @@ export default function CursoAdmin(props) {
         getData();
       })
       .catch((error) => {
-        message.error("Não foi possível exluir");
+        handleError(error, "Não foi possível exluir");
       });
   }
 
@@ -461,7 +462,7 @@ export default function CursoAdmin(props) {
         message.success("Prova publicada com sucesso");
         getData();
       })
-      .catch((err) => message.error("Não foi possível publicar a prova"));
+      .catch((err) => handleError(err, "Não foi possível publicar a prova"));
   }
 
   function handleClose(id) {
@@ -473,21 +474,8 @@ export default function CursoAdmin(props) {
         message.success("Prova fechada com sucesso");
         getData();
       })
-      .catch((err) => message.error("Não foi possível fechar a prova"));
+      .catch((err) => handleError(err, "Não foi possível fechar a prova"));
   }
-
-  /* function getNow() {
-    let now = new Date(Date.now()).toISOString();
-    console.log(now)
-    now = now.slice(0, -5)
-    now = now.replace('T', ' ')
-    console.log(now)
-  } */
-
-  // function handleEdit(id) {
-  //   const requests = ["aula", "live", "prova", "turma"];
-  //   history.push(`/${requests[activeTab]}/editar/${id}`);
-  // }
 
   return (
     <Base>

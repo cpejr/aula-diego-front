@@ -14,6 +14,7 @@ import {
 import { useHistory } from "react-router-dom";
 import pt_BR from "antd/es/date-picker/locale/pt_BR";
 import "./NovaAtividade.css";
+import handleError from "../../utils/handleError";
 
 const exerciseLayout = {
   labelCol: { span: 4 },
@@ -105,7 +106,7 @@ export default function NovaProva(props) {
                 exercise.questions[index].image = file_id;
               })
               .catch((err) => {
-                message.error("Não foi possível criar a atividade!");
+                handleError(err, "Não foi possível criar a atividade!");
               });
           }
         })
@@ -117,7 +118,7 @@ export default function NovaProva(props) {
           history.push(`/curso/gerenciar/${course}`);
         })
         .catch((err) => {
-          message.error("Não foi possível criar a atividade!");
+          handleError(err, "Não foi possível criar a atividade!");
         });
     });
   };

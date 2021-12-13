@@ -84,8 +84,8 @@ export default function EditarOrganizacao(props) {
           message.success("Organização editada com sucesso!");
           history.push("/organizacao");
         })
-        .catch(() => {
-          message.error("Erro ao editar organização");
+        .catch((err) => {
+          handleError(err, "Erro ao editar organização");
         });
     }
 

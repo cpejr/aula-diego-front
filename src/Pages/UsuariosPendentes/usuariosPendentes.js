@@ -5,6 +5,7 @@ import { CheckCircle, Close } from "@material-ui/icons";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import "./usuariosPendents.css";
+import handleError from "../../utils/handleError";
 
 export default function UsuariosPendentes() {
   const { session } = useSession();
@@ -28,14 +29,13 @@ export default function UsuariosPendentes() {
       })
       .then((response) => setPendingUsers(response.data))
       .catch((error) => {
-        message.error("Não foi possível buscar usuários pendentes.");
-        console.log(error);
+        handleError(error, "Não foi possível buscar usuários pendentes.");
       });
   }
 
   useEffect(() => {
     getData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function modifyStatus(id, status) {
@@ -46,8 +46,7 @@ export default function UsuariosPendentes() {
         getData();
       })
       .catch((err) => {
-        message.error("Não foi possível modificar status do usuário");
-        console.log(err);
+        handleError(err, "Não foi possível modificar status do usuário");
       });
   }
 

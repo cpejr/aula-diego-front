@@ -6,7 +6,7 @@ import "./index.css";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
-import { message, Carousel, Timeline, Divider } from "antd";
+import { Carousel, Timeline, Divider } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons";
 
 import building from "../../images/building.png";
+import handleError from "../../utils/handleError";
 
 export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
@@ -123,24 +124,24 @@ export default function Dashboard(props) {
       .then((response) => {
         setScore(response.data.score);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados do usuário");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados do usuário");
       });
     api
       .get(`/course/user/${session.user.id}`, configCourse)
       .then((response) => {
         setMyCourses(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados dos cursos");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados dos cursos");
       });
     api
       .get(`/organization/${session.user.organization_id}`, config)
       .then((response) => {
         setOrganization(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das organizações");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das organizações");
       });
 
     api
@@ -162,7 +163,7 @@ export default function Dashboard(props) {
                   Promise.resolve("");
                 })
                 .catch((err) => {
-                  message.error("Não foi possível carregar dados das aulas");
+                  handleError(err, "Não foi possível carregar dados das aulas");
                 });
             })
         ).then(() => {
@@ -217,7 +218,7 @@ export default function Dashboard(props) {
         setCourses(response.data);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados das aulas");
+        handleError(err, "Não foi possível carregar dados das aulas");
       });
   }, []);
 

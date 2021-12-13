@@ -9,6 +9,7 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Atividade.css";
+import handleError from "../../utils/handleError";
 
 const examLayout = {
   labelCol: { span: 3 },
@@ -66,7 +67,7 @@ export default function Atividade(props) {
         });
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados da prova!");
+        handleError(err, "Não foi possível carregar dados da prova!");
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,9 +89,7 @@ export default function Atividade(props) {
       })
       .catch((err) => {
         console.log(err.response);
-        message.error(
-          err.response.data.message || "Não foi possível enviar resposta!"
-        );
+        handleError(err, "Não foi possível enviar resposta!");
       });
   };
 

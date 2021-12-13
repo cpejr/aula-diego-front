@@ -8,6 +8,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { useHistory } from "react-router-dom";
 import { useSession } from "../../Context/SessionContext";
 import "./ListaTurmas.css";
+import handleError from "../../utils/handleError";
 
 export default function ListaOrganizacoes() {
   const [classes, setClasses] = useState([]);
@@ -38,7 +39,7 @@ export default function ListaOrganizacoes() {
       .catch((err) => {
         console.log(err);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = [
@@ -82,7 +83,7 @@ export default function ListaOrganizacoes() {
         <>
           <Popconfirm
             title="Deseja editar esta turma?"
-            onConfirm = {() => history.push(`/turma/editar/${id}`)}
+            onConfirm={() => history.push(`/turma/editar/${id}`)}
           >
             <EditIcon className="clickable" />
           </Popconfirm>
@@ -127,7 +128,7 @@ export default function ListaOrganizacoes() {
           .then(setLoading(false));
       })
       .catch((error) => {
-        message.error("Não foi possível exluir");
+        handleError(error, "Não foi possível exluir");
         console.log(error);
       });
   }
@@ -151,7 +152,7 @@ export default function ListaOrganizacoes() {
             console.log(err);
           });
       })
-      .catch(() => message.error("não foi possível alterar turma"));
+      .catch((err) => handleError(err, "não foi possível alterar turma"));
   }
 
   function handleModalChange(e) {

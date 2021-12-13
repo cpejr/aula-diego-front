@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Timeline, Divider, Card, Statistic } from "antd";
+import { Timeline, Divider, Card, Statistic } from "antd";
 import {
   UserOutlined,
   ClockCircleOutlined,
@@ -13,6 +13,7 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Master.css";
+import handleError from "../../utils/handleError";
 
 export default function Master() {
   const [approved, setApproved] = useState(false);
@@ -50,7 +51,7 @@ export default function Master() {
         setPending(pen);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados dos estudantes");
+        handleError(err, "Não foi possível carregar dados dos estudantes");
       });
 
     api
@@ -59,7 +60,7 @@ export default function Master() {
         setOrganization(response.data);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados das organizações");
+        handleError(err, "Não foi possível carregar dados das organizações");
       });
 
     api
@@ -76,7 +77,10 @@ export default function Master() {
                 .get(`/class`, { ...config, params: { course_id: id } })
                 .then((response) => turmas.push(...response.data))
                 .catch((err) => {
-                  message.error("Não foi possível carregar dados das turmas");
+                  handleError(
+                    err,
+                    "Não foi possível carregar dados das turmas"
+                  );
                 });
 
               await api
@@ -86,7 +90,7 @@ export default function Master() {
                   Promise.resolve("");
                 })
                 .catch((err) => {
-                  message.error("Não foi possível carregar dados das aulas");
+                  handleError(err, "Não foi possível carregar dados das aulas");
                 });
             })
         ).then(() => {
@@ -142,7 +146,7 @@ export default function Master() {
         setCourses(response.data);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados das aulas");
+        handleError(err, "Não foi possível carregar dados das aulas");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

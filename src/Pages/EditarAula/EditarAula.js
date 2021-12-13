@@ -11,6 +11,8 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 
+import handleError from "../../utils/handleError";
+
 const formItemLayout = {
   labelCol: {
     span: 4,
@@ -135,7 +137,7 @@ export default function EditarAula(props) {
             });
         })
         .catch((err) => {
-          message.error("Não foi possível editar a aula!\n" + err);
+          handleError(err, "Não foi possível editar a aula!");
         });
 
       return;

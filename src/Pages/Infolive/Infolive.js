@@ -5,7 +5,8 @@ import api from "../../services/api";
 import "./Infolive.css";
 import Base from "../../Components/Base/Base";
 import InfoIcon from "@material-ui/icons/Info";
-import { Table, Tag, Input, message } from "antd";
+import { Table, Tag, Input } from "antd";
+import handleError from "../../utils/handleError";
 
 export default function Infolive() {
   const [search, setSearch] = useState("");
@@ -44,8 +45,8 @@ export default function Infolive() {
         setFilteredData(lives.data);
         setLoading(false);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das lives");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das lives");
       });
   }, []);
 

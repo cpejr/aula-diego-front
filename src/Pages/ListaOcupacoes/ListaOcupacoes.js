@@ -7,6 +7,7 @@ import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./ListaOcupacoes.css";
+import handleError from "../../utils/handleError";
 
 export default function ListaOrganizacoes() {
   const [occupations, setOccupations] = useState([]);
@@ -36,8 +37,8 @@ export default function ListaOrganizacoes() {
       .catch((err) => {
         console.log(err);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let columns = [
     {
@@ -127,11 +128,11 @@ export default function ListaOrganizacoes() {
           .then(setLoading(false));
       })
       .catch((error) => {
-        message.error("Não foi possível exluir");
+        handleError(error, "Não foi possível exluir");
         console.log(error);
       });
   }
-  
+
   return (
     <Base>
       <h1 className="page-title">Ocupações</h1>

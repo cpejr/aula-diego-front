@@ -3,15 +3,12 @@ import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Input, Tooltip, message } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./ListaCursos.css";
+import handleError from "../../utils/handleError";
 
 export default function ListaOrganizacoes() {
   const [course, setCourse] = useState([]);
@@ -38,8 +35,8 @@ export default function ListaOrganizacoes() {
         setCourse(response.data);
         setFiltered(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados dos cursos");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados dos cursos");
       })
       .finally(() => setLoading(false));
   }, [session]);
@@ -118,11 +115,11 @@ export default function ListaOrganizacoes() {
             setLoading(false);
           })
           .catch((err) => {
-            message.error("Não foi possível excluir");
+            handleError(err, "Não foi possível excluir");
           });
       })
       .catch((err) => {
-        message.error("Não foi possível excluir");
+        handleError(err, "Não foi possível excluir");
       })
       .finally(() => setLoading(false));
   }

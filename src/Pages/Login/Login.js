@@ -10,6 +10,7 @@ import logo from "../../images/Logo2.png";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
+import handleError from "../../utils/handleError";
 
 export default function Login() {
   const history = useHistory();
@@ -76,8 +77,7 @@ export default function Login() {
         redirect("/dashboard");
       })
       .catch((error) => {
-        if (error.response && error.response.data)
-          message.error(error.response.data.message);
+        handleError(error);
       });
   }
 

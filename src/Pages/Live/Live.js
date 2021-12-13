@@ -8,6 +8,7 @@ import { useSession } from "../../Context/SessionContext";
 import "./Live.css";
 import { message } from "antd";
 import { Input } from "antd";
+import handleError from "../../utils/handleError";
 
 export default function Live(props) {
   const history = useHistory();
@@ -62,8 +63,8 @@ export default function Live(props) {
         }
       })
       .catch((err) => {});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleClick() {
     if (!confirmation_code)
@@ -79,12 +80,11 @@ export default function Live(props) {
         config
       )
       .then(() => {
-        message.success("Presença registrada com sucesso")
+        message.success("Presença registrada com sucesso");
       })
-      .catch((error) => {
-        if(error?.response?.data?.message) return message.error(error?.response?.data?.message);
-        
-        message.error("Não foi possível registrar presença")});
+      .catch((err) => {
+        handleError(err, "Não foi possível registrar a presença");
+      });
   }
 
   return (

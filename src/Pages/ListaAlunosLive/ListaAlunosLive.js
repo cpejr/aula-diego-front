@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
-import { Table, Input, message, Statistic } from "antd";
+import { Table, Input, Statistic } from "antd";
 import { BsPeople } from "react-icons/bs";
 import "./ListaAlunosLive.css";
+import handleError from "../../utils/handleError";
 
 export default function ListaAlunoLIve(props) {
   const { session } = useSession();
@@ -28,8 +29,8 @@ export default function ListaAlunoLIve(props) {
       .then((response) => {
         setPresentStudents(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar a presença das lives!");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar a presença das lives!");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

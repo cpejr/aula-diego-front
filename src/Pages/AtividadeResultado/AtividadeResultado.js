@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Button, Progress, message } from "antd";
+import { Button, Progress } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./AtividadeResultado.css";
+import handleError from "../../utils/handleError";
 
 export default function AtividadeResultado(props) {
   const [answer, setAnswer] = useState(false);
@@ -39,7 +40,7 @@ export default function AtividadeResultado(props) {
         setAnswer(response.data);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados da prova!");
+        handleError(err, "Não foi possível carregar dados da prova!");
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

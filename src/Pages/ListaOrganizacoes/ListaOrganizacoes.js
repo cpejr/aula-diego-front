@@ -6,7 +6,7 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
-
+import handleError from "../../utils/handleError";
 import building from "../../images/building.png";
 import "./ListaOrganizacoes.css";
 
@@ -32,8 +32,8 @@ export default function ListaOrganizacoes() {
         setFiltered(response.data);
         setLoading(false);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados das organizações");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das organizações");
       });
   }
 
@@ -131,7 +131,7 @@ export default function ListaOrganizacoes() {
         getOrganizations();
       })
       .catch((error) => {
-        message.error("Não foi possível excluir");
+        handleError(error, "Não foi possível excluir");
         console.log(error);
       });
   }

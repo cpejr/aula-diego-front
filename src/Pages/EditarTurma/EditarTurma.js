@@ -170,7 +170,7 @@ export default function EditarTurma(props) {
         history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
-        message.error("Não foi possível editar a turma!\n" + err);
+        handleError(err, "Não foi possível editar a turma!");
       });
     setLoading(false);
   }

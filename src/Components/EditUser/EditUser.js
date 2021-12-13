@@ -81,7 +81,7 @@ export default function EditUser() {
           setOccupations(data.data);
         })
         .catch((error) =>
-          message.error("Não foi possível carregar ocupações\n" + error)
+          handleError(error, "Não foi possível carregar ocupações")
         );
   }
 
@@ -135,7 +135,7 @@ export default function EditUser() {
         history.push(`/config`);
       })
       .catch((error) =>
-        message.error("Não foi possível editar o usuário\n" + error)
+        handleError(error, "Não foi possível editar o usuário")
       );
   }
 
