@@ -122,6 +122,7 @@ export default function EditarTurma(props) {
   const rowSelection = {
     selectedRowKeys,
     onChange: (selected) => {
+      console.log(selected);
       setSelectedRowKeys(selected);
     },
   };
@@ -155,6 +156,7 @@ export default function EditarTurma(props) {
         authorization: "BEARER " + session.accessToken,
       },
     };
+
     if (selectedRowKeys.length === 0) {
       message.error("A turma não pode ser vazia!\n");
       setLoading(false);
@@ -163,8 +165,7 @@ export default function EditarTurma(props) {
 
     api
       .put(`/class`, data, config)
-      .then((response) => {
-        setSelectedRowKeys(response.data);
+      .then(() => {
         message.success("Turma editada com sucesso!");
         history.push(`/curso/gerenciar/${courseId}`);
       })
