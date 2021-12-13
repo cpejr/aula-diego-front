@@ -13,6 +13,8 @@ import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
 
+import building from "../../images/building.png";
+
 export default function Admin() {
   const [approved, setApproved] = useState([]);
   const [pending, setPending] = useState([]);
@@ -156,7 +158,7 @@ export default function Admin() {
       <div className="adminRoot">
         <div className="adminTitleWrapper">
           <img
-            src={organization.logo}
+            src={organization.logo || building}
             className="adminImg"
             alt="Logo da RecStudio"
           />
