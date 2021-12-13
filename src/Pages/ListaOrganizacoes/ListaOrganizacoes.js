@@ -24,19 +24,21 @@ export default function ListaOrganizacoes() {
     },
   };
 
-  useEffect(() => {
+  function getOrganizations() {
     api
-      .get(`/organization`, config)
+      .get("/organization", config)
       .then((response) => {
-        console.log(response.data);
         setOrganizations(response.data);
         setFiltered(response.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         message.error("Não foi possível carregar dados das organizações");
       });
+  }
+
+  useEffect(() => {
+    getOrganizations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -124,16 +126,9 @@ export default function ListaOrganizacoes() {
     setLoading(true);
     api
       .delete(`/organization/${organization_id}`, config)
-      .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api
-          .get("/organization", config)
-          .then((response) => {
-            setOrganizations(response);
-            setFiltered(response);
-            setLoading(false);
-          })
-          .then(setLoading(false));
+        message.success("Deletado com sucesso");
+        getOrganizations();
       })
       .catch((error) => {
         message.error("Não foi possível excluir");

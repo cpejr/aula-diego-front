@@ -7,10 +7,12 @@ import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./CadastroOrganizacao.css";
 
+import building from "../../images/building.png";
+
 export default function NovaAula(props) {
   const [organization, setOrganization] = useState({});
-  const [file, setFile] = useState([]);
-  const [logoPreview, setLogoPreview] = useState(false);
+  const [file, setFile] = useState(building);
+  const [logoPreview, setLogoPreview] = useState(building);
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const history = useHistory();
@@ -65,8 +67,6 @@ export default function NovaAula(props) {
   function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-
-    console.log(file);
 
     const organizationData = {
       ...organization,

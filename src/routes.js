@@ -329,7 +329,7 @@ const routes = () => {
           masterComponent={Comentario}
         />
         <Route component={TermosDeUso} path="/termosdeuso" exact></Route>
-        <PrivateRoute
+        <Route
           path="/"
           component={() => <h1> Erro 404: Página não encontrada </h1>}
         />{" "}

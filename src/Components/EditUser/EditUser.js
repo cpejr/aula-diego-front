@@ -50,7 +50,7 @@ export default function EditUser() {
         setOrganizations(data.data);
       })
       .catch(() => message.error("Não foi possível carregar organizações"));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSelectChange(value, field) {
@@ -114,6 +114,7 @@ export default function EditUser() {
     addToData("occupation_id", formData["occupation_id"]);
     addToData("email", email);
     addToData("signature", file);
+    addToData("id", session.user.id);
 
     console.log(data["phone"]);
 

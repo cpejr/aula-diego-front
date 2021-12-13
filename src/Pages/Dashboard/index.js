@@ -13,6 +13,8 @@ import {
   ClockCircleOutlined,
 } from "@ant-design/icons";
 
+import building from "../../images/building.png";
+
 export default function Dashboard(props) {
   const [organization, setOrganization] = useState([]);
   const { session } = useSession();
@@ -226,7 +228,7 @@ export default function Dashboard(props) {
       <Base>
         <div className="DashboardTitle">
           <img
-            src={organization.logo}
+            src={organization.logo || building}
             className="TitleImg"
             alt="Logo da empresa"
           />

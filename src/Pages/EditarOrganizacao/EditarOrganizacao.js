@@ -44,7 +44,8 @@ export default function EditarOrganizacao(props) {
 
   useEffect(() => {
     api.get(`/organization/${id}`, config).then(async (response) => {
-      if (response.data.file_id !== undefined)
+      setImage(building);
+      if (response.data.file_id)
         await api
           .get(`/file_get/${response.data.file_id}`, config)
           .then((res) => {
@@ -155,6 +156,7 @@ export default function EditarOrganizacao(props) {
                 <ImageUpload
                   name="logo"
                   label="Logo"
+                  accept="image/*"
                   initialValue={preview || building}
                   onChange={(file) => setImage(file)}
                 />

@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect,useCallback  } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Input, message, Tabs, Statistic } from "antd";
@@ -62,12 +62,8 @@ export default function ListaAlunos() {
   useEffect(() => {
     getData(0);
     setFiltered(students);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-
-  // useEffect(() => {
-  //   setLoading(false)
-  // }, [filtered])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
     {
