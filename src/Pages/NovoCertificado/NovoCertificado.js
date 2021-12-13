@@ -3,6 +3,7 @@ import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Form, Input, Button, message, Table, Select } from "antd";
 import { useSession } from "../../Context/SessionContext";
+import handleError from "../../utils/handleError";
 
 export default function NovaAula(props) {
   const [students, setStudents] = useState([]);
@@ -148,7 +149,7 @@ export default function NovaAula(props) {
           return;
         }
 
-        message.error("Não foi possível criar o certificado!");
+        handleError(error, "Não foi possível gerar certificado");
       });
   }
 

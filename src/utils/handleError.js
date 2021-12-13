@@ -13,6 +13,7 @@ const defaultErrors = {
   502: "Erro de comunicação",
   503: "Serviço indisponível",
   504: "Tempo limite excedido",
+  513: "Escolha uma imagem de menor resolução",
 };
 
 export default function handleError(error, messageContent) {
