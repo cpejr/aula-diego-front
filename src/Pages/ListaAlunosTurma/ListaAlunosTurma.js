@@ -7,6 +7,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import { useSession } from "../../Context/SessionContext";
 import "./ListaAlunosTurma.css";
 
+import handleError from "../../utils/handleError";
+
 export default function ListaOrganizacoes(props) {
   const [students, setStudents] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -30,7 +32,7 @@ export default function ListaOrganizacoes(props) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

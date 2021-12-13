@@ -4,6 +4,7 @@ import api from "../../services/api";
 import { Form, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
+import handleError from "../../utils/handleError";
 import "./EditarCurso.css";
 
 const formItemLayout = {

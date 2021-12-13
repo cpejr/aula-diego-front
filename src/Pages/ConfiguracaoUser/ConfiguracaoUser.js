@@ -64,7 +64,7 @@ export default function ConfiguracaoAluno(props) {
         setOrganization(response.data);
       })
       .catch((err) => {
-        handleError(err, "Não foi possível carregar dados da organização"")
+        handleError(err, "Não foi possível carregar dados da organização");
       });
 
     api
