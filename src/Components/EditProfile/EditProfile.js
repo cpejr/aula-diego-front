@@ -20,10 +20,6 @@ const FormDialog = (props) => {
     setOpen(false);
   };
 
-  function onSubmit(values, actions) {
-    console.log("SUBMIT", values);
-  }
-
   function onBlurCep(ev, setFieldValue) {
     const { value } = ev.target;
 
@@ -102,7 +98,6 @@ const FormDialog = (props) => {
           />
 
           <Formik
-            onSubmit={onSubmit}
             validateOnMount
             initialValues={{
               cep: "",

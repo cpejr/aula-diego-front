@@ -48,7 +48,7 @@ export default function NovaAula(props) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -129,7 +129,6 @@ export default function NovaAula(props) {
         history.push(`/curso/gerenciar/${data.course_id}`);
       })
       .catch((err) => {
-        console.log(err);
         handleError(err, "Não foi possível criar a turma!");
       });
   }

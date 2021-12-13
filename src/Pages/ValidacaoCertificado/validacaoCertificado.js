@@ -29,7 +29,6 @@ export default function ValidacaoCertificado() {
     api
       .get(`/cerificate/${certificate}`)
       .then((res) => {
-        console.log(res.data);
         if (res.data) {
           setCertificateData(res.data);
           setOkHidden(false);

@@ -236,7 +236,6 @@ export default function ListaAlunos() {
   }
 
   function handleDelete(id) {
-    console.log(config);
     api
       .put(`/user/${id}`, {}, config)
       .then(() => {

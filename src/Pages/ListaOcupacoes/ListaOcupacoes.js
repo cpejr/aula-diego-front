@@ -32,10 +32,9 @@ export default function ListaOrganizacoes() {
         setOccupations(occupations.data);
         setFilteredData(occupations.data);
         setLoading(false);
-        console.log(occupations.data);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -129,7 +128,6 @@ export default function ListaOrganizacoes() {
       })
       .catch((error) => {
         handleError(error, "Não foi possível exluir");
-        console.log(error);
       });
   }
 

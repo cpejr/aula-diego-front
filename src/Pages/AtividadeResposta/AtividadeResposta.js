@@ -34,14 +34,12 @@ export default function AtividadeResposta(props) {
               if (image !== undefined)
                 await api.get(`/file_get/${image}`, config).then((file_res) => {
                   response.data.questions[index].image = file_res.data.url;
-                  console.log(response.data.questions[index].image);
                   Promise.resolve("");
                 });
             })
         ).then(() => setAnswer(response.data));
       })
       .catch((err) => {
-        console.log(err);
         handleError(err, "Não foi possível carregar a dados da prova");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +54,6 @@ export default function AtividadeResposta(props) {
             <Form name="answerForm" size={"large"}>
               {answer &&
                 Object.values(answer.questions).map((question, index) => {
-                  console.log(question);
                   if (question.alternatives === undefined)
                     return (
                       <AnswerText

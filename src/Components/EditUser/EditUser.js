@@ -59,12 +59,10 @@ export default function EditUser() {
 
   function handleSelectChange(value, field) {
     if (field === "organization_id") loadOccups(value);
-    console.log(`${field}: ${value}`);
     setFormData({ ...formData, [field]: value });
   }
 
   function loadOccups(value) {
-    console.log(value);
     const configOccupation = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -77,7 +75,6 @@ export default function EditUser() {
       api
         .get("/occupation", configOccupation)
         .then((data) => {
-          console.log(data);
           setOccupations(data.data);
         })
         .catch((error) =>
@@ -119,8 +116,6 @@ export default function EditUser() {
     addToData("email", email);
     addToData("signature", file);
     addToData("id", session.user.id);
-
-    console.log(data["phone"]);
 
     const config = {
       headers: {

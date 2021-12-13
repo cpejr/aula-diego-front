@@ -80,7 +80,6 @@ export default function Atividade(props) {
     api
       .post("answer", submit, config)
       .then((response) => {
-        console.log(response.data.id);
         message.success("Resposta enviada com sucesso!");
 
         if (exercise.evaluate === true)
@@ -88,7 +87,6 @@ export default function Atividade(props) {
         else history.push(`/atividade/resposta/${response.data.id}`);
       })
       .catch((err) => {
-        console.log(err.response);
         handleError(err, "Não foi possível enviar resposta!");
       });
   };

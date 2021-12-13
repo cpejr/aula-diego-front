@@ -256,7 +256,6 @@ export default function Dashboard(props) {
           >
             {myCourses
               ? myCourses.map((course) => {
-                  console.log("Course: ", course);
                   return (
                     <CardCurso
                       title={course.course_name}

@@ -95,7 +95,6 @@ export default function EditarOrganizacao(props) {
     await api
       .post("/file_upload", formData, config)
       .then(async ({ data: { file_ids } }) => {
-        console.log(file_ids);
         const file_id = file_ids[0];
         await api.put(`/organization/${id}`, { ...data, file_id }, config);
         message.success("Organização editada com sucesso!");

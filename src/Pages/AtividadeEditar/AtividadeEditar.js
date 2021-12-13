@@ -71,7 +71,6 @@ export default function AtividadeEditar(props) {
                 await api
                   .get(`/file_get/${image}`, configFileGet)
                   .then((file_res) => {
-                    console.log(file_res.data.url);
                     response.data.questions[index].preview = file_res.data.url;
                     Promise.resolve("");
                   });

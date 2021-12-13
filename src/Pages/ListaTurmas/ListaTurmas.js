@@ -37,7 +37,7 @@ export default function ListaOrganizacoes() {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -129,7 +129,6 @@ export default function ListaOrganizacoes() {
       })
       .catch((error) => {
         handleError(error, "Não foi possível exluir");
-        console.log(error);
       });
   }
 
@@ -149,7 +148,7 @@ export default function ListaOrganizacoes() {
             setLoading(false);
           })
           .catch((err) => {
-            console.log(err);
+            handleError(err);
           });
       })
       .catch((err) => handleError(err, "não foi possível alterar turma"));

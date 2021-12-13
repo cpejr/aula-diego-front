@@ -40,8 +40,6 @@ export default function Live(props) {
   };
 
   useEffect(() => {
-    console.log(session.user.id);
-
     api
       .get(`/live/${id}`, config)
       .then((response) => {
@@ -55,8 +53,7 @@ export default function Live(props) {
                 "user_class.user_id": session.user.id,
               },
             })
-            .then((response) => console.log(response.data))
-            .catch((error) => {
+            .catch(() => {
               history.push("/");
               message.error("Você não tem permissão para assistir a essa live");
             });

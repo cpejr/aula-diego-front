@@ -43,8 +43,6 @@ export default function AtividadeLista(props) {
           });
         });
 
-        console.log(response.data);
-
         setAnswers(answers);
         setFiltered(answers);
         setLoading(false);

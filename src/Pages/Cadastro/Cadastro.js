@@ -37,10 +37,6 @@ export default function Cadastro(props) {
   }, [inputValues, organizations]);
 
   function handleChange(e) {
-    console.log({
-      ...inputValues,
-      [e.target.name]: e.target.value,
-    });
     setInputValues({
       ...inputValues,
       [e.target.name]: e.target.value,
@@ -48,7 +44,6 @@ export default function Cadastro(props) {
   }
   function validateForm() {
     const inputs = document.querySelectorAll("input");
-    console.log(inputs);
 
     for (let i = 0; i < inputs.length; ++i) {
       if (inputs[i].name != "terms" && inputs[i].value == "") return false;
@@ -90,7 +85,7 @@ export default function Cadastro(props) {
     data.cpf = data.cpf.split("-").join("");
     delete data.passwordConfirmation;
     data.birthdate = startDate;
-    console.log(data);
+
     api
       .post("/user", data)
       .then(() => {
@@ -204,7 +199,6 @@ export default function Cadastro(props) {
                 format={dateFormat}
                 onChange={(date) => {
                   setStartDate(date);
-                  console.log(date._d);
                 }}
                 placeholder="Data de Nascimento"
                 locale="pt-BR"

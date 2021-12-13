@@ -132,7 +132,6 @@ export default function ListaOrganizacoes() {
       })
       .catch((error) => {
         handleError(error, "Não foi possível excluir");
-        console.log(error);
       });
   }
 

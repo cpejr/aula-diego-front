@@ -25,7 +25,6 @@ export default function Login() {
     api
       .post("/login", { email, google, tokenId })
       .then((response) => {
-        console.log(response);
         handleLogin({
           accessToken: response.data.accessToken,
           user: response.data.user,

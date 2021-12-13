@@ -129,7 +129,6 @@ export default function Curso(props) {
     api
       .get(`/user/me/certificate/`, configCertificate)
       .then((response) => {
-        console.log(response.data);
         setCertificate(response.data.url);
 
         requestDone();

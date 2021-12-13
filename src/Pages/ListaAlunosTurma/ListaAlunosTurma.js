@@ -128,7 +128,7 @@ export default function ListaOrganizacoes(props) {
             setLoading(false);
           })
           .catch((err) => {
-            console.log(err);
+            handleError(err);
           });
       })
       .catch((error) => {

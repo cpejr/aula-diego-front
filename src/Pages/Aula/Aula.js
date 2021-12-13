@@ -56,7 +56,6 @@ export default function Aula(props) {
       .get("/lesson_file", configLesson)
       .then((response) => {
         setFiles(response.data);
-        console.log(response.data);
       })
       .catch((err) => {
         handleError(err, "Não foi possível carregar dados da aula");

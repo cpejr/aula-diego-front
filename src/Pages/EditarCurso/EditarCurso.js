@@ -44,8 +44,6 @@ export default function EditarCurso(props) {
       SetCourse(response.data);
       SetName(response.data.name);
       SetDescription(response.data.description);
-      console.log(response.data.description);
-      console.log(response.data.name);
       // setFilteredData(response.data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

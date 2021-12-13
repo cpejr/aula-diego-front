@@ -122,7 +122,6 @@ export default function EditarTurma(props) {
   const rowSelection = {
     selectedRowKeys,
     onChange: (selected) => {
-      console.log(selected);
       setSelectedRowKeys(selected);
     },
   };

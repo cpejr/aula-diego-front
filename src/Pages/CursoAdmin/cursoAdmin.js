@@ -466,8 +466,6 @@ export default function CursoAdmin(props) {
   }
 
   function handleClose(id) {
-    console.log(new Date(Date.now()).toISOString());
-
     api
       .put(`/exercise/close/${id}`, {}, config)
       .then(() => {

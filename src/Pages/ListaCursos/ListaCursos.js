@@ -27,8 +27,6 @@ export default function ListaOrganizacoes() {
     if (session.user.type === "admin")
       config.params = { organization_id: session.user.organization_id };
 
-    console.log(config);
-
     api
       .get(`/course`, config)
       .then((response) => {

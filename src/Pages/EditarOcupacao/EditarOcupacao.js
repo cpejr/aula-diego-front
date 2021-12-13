@@ -43,9 +43,6 @@ export default function EditarOcupacao(props) {
       SetOccupation(response.data);
       SetName(response.data.name);
       SetDescription(response.data.description);
-      console.log(response.data.description);
-      console.log(response.data.name);
-      // setFilteredData(response.data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -59,7 +56,6 @@ export default function EditarOcupacao(props) {
       name: name,
       description: description,
     };
-    console.log(occupation);
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
