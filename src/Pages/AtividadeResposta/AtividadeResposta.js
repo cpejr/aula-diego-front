@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, message } from "antd";
+import { Form } from "antd";
 import {
   AnswerText,
   AnswerAlternatives,

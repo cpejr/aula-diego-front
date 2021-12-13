@@ -5,7 +5,7 @@ import api from "../../services/api";
 import "./ConfiguracaoUser.css";
 import EditUser from "../../Components/EditUser/EditUser";
 import Base from "../../Components/Base/Base";
-import { message, Card, Col, Row, Button } from "antd";
+import { Card, Col, Row, Button } from "antd";
 import handleError from "../../utils/handleError";
 
 export default function ConfiguracaoAluno(props) {

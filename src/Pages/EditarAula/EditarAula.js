@@ -90,6 +90,7 @@ export default function EditarAula(props) {
         })
       );
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(e) {

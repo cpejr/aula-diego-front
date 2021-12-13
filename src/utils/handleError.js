@@ -15,12 +15,12 @@ const defaultErrors = {
   504: "Tempo limite excedido",
 };
 
-export default function handleError(error, message) {
+export default function handleError(error, messageContent) {
   const { response } = error;
   if (response && response.status > 299) {
     const { status } = response;
     const messageError =
-      response.data.message || message || defaultErrors[status];
+      response.data.message || messageContent || defaultErrors[status];
     message.error(messageError);
   }
 }
