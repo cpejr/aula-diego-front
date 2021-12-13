@@ -35,8 +35,6 @@ const formLayout = {
   },
 };
 
-
-
 export default function EditarAula(props) {
   const [lesson, setLesson] = useState([]);
   const [name, setName] = useState("");
@@ -44,6 +42,7 @@ export default function EditarAula(props) {
   const [courseId, setCourseId] = useState("");
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [defaultFileList, setDefaultFileList] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
@@ -55,6 +54,7 @@ export default function EditarAula(props) {
       authorization: "BEARER " + session.accessToken,
     },
   };
+
   const fileProps = {
     name: "file",
     multiple: "true",
@@ -68,6 +68,7 @@ export default function EditarAula(props) {
       setFiles([...files, file]);
       return false;
     },
+    defaultFileList: [...defaultFileList],
     files,
   };
 
@@ -77,21 +78,18 @@ export default function EditarAula(props) {
       setName(response.data.name);
       setDescription(response.data.description);
       setCourseId(response.data.course_id);
-      console.log(response.data.description);
-      console.log(response.data);
-      // setFilteredData(response.data);
+      setFiles(response.data.files);
+      setDefaultFileList(
+        response.data.files.map((file) => {
+          return {
+            uid: file.id,
+            name: file.name,
+            status: "done",
+            url: file.path,
+          };
+        })
+      );
     });
-
-    // api.get(`/lesson_file`, config).then((response) => {
-    //   setLesson(response.data);
-    //   setName(response.data.name);
-    //   setDescription(response.data.description);
-    //   setCourseId(response.data.course_id);
-    //   console.log(response.data.description);
-    //   console.log(response.data);
-    //   // setFilteredData(response.data);
-    // });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(e) {
@@ -104,23 +102,49 @@ export default function EditarAula(props) {
       description: description,
       course_id: lesson.course_id,
     };
+
     setUploading(true);
-    console.log(lesson);
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
       },
     };
 
-    api
-      .put(`/lesson/${id}`, data, config)
-      .then(() => {
-        message.success("Aula editada com sucesso!");
-        history.push(`/curso/gerenciar/${courseId}`);
-      })
-      .catch((err) => {
-        message.error("Não foi possível editar a aula!\n" + err);
+    if (files) {
+      const formData = new FormData();
+      files.forEach((item, index) => {
+        if (!defaultFileList.includes(item)) {
+          return formData.append(index, files[index]);
+        }
       });
+
+      api
+        .post("/file_upload", formData, config)
+        .then((response) => {
+          api
+            .put(
+              `/lesson/${id}`,
+              { ...data, file_ids: response.data.file_ids },
+              config
+            )
+            .then(() => {
+              message.success("Aula atualizada com sucesso!");
+              history.push(`/curso/gerenciar/${courseId}`);
+              setUploading(false);
+            });
+        })
+        .catch((err) => {
+          message.error("Não foi possível editar a aula!\n" + err);
+        });
+
+      return;
+    }
+
+    api.put(`/lesson/${id}`, data, config).then(() => {
+      message.success("Aula atualizada com sucesso!");
+      history.push(`/curso/gerenciar/${courseId}`);
+      setUploading(false);
+    });
   }
 
   function addVideo() {
@@ -232,9 +256,11 @@ export default function EditarAula(props) {
                   },
                 ]}
               >
-                <Upload {...fileProps}>
-                  <Button icon={<UploadOutlined />}>Upload</Button>
-                </Upload>
+                {defaultFileList.length > 0 && (
+                  <Upload {...fileProps} defaultFileList={defaultFileList}>
+                    <Button icon={<UploadOutlined />}>Upload</Button>
+                  </Upload>
+                )}
               </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button
