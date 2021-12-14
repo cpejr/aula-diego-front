@@ -4,6 +4,7 @@ import api from "../../services/api";
 import { Form, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
+import handleError from "../../utils/handleError";
 import "./EditarCurso.css";
 
 const formItemLayout = {
@@ -26,8 +27,6 @@ export default function EditarCurso(props) {
   const [course, SetCourse] = useState([]);
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");
-  
-
 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
@@ -45,12 +44,9 @@ export default function EditarCurso(props) {
       SetCourse(response.data);
       SetName(response.data.name);
       SetDescription(response.data.description);
-      console.log(response.data.description);
-      console.log(response.data.name);
       // setFilteredData(response.data);
-      
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(e) {
@@ -75,7 +71,7 @@ export default function EditarCurso(props) {
         history.push(`/curso/lista`);
       })
       .catch((err) => {
-        message.error("Não foi possível editar o curso!\n" + err);
+        handleError(err, "Não foi possível editar o curso!");
       });
   }
   return (
@@ -122,7 +118,7 @@ export default function EditarCurso(props) {
                   value={description}
                   onChange={(e) => SetDescription(e.target.value)}
                 />
-              </Form.Item>   
+              </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button
                   type="primary"

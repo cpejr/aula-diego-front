@@ -6,6 +6,8 @@ import { message, Card, Col, Row, Input, Select, Button } from "antd";
 import ActionButton from "../../Components/ActionButton/actionButton";
 import { useHistory } from "react-router-dom";
 
+import handleError from "../../utils/handleError";
+
 export default function EditUser() {
   const [dataAluno, setDataAluno] = useState([]);
   const [name, setName] = useState("");
@@ -49,18 +51,18 @@ export default function EditUser() {
       .then((data) => {
         setOrganizations(data.data);
       })
-      .catch(() => message.error("Não foi possível carregar organizações"));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      .catch((error) =>
+        handleError(error, "Não foi possível carregar organizações")
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSelectChange(value, field) {
     if (field === "organization_id") loadOccups(value);
-    console.log(`${field}: ${value}`);
     setFormData({ ...formData, [field]: value });
   }
 
   function loadOccups(value) {
-    console.log(value);
     const configOccupation = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -73,11 +75,10 @@ export default function EditUser() {
       api
         .get("/occupation", configOccupation)
         .then((data) => {
-          console.log(data);
           setOccupations(data.data);
         })
         .catch((error) =>
-          message.error("Não foi possível carregar ocupações\n" + error)
+          handleError(error, "Não foi possível carregar ocupações")
         );
   }
 
@@ -114,8 +115,7 @@ export default function EditUser() {
     addToData("occupation_id", formData["occupation_id"]);
     addToData("email", email);
     addToData("signature", file);
-
-    console.log(data["phone"]);
+    addToData("id", session.user.id);
 
     const config = {
       headers: {
@@ -130,7 +130,7 @@ export default function EditUser() {
         history.push(`/config`);
       })
       .catch((error) =>
-        message.error("Não foi possível editar o usuário\n" + error)
+        handleError(error, "Não foi possível editar o usuário")
       );
   }
 

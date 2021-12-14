@@ -5,6 +5,7 @@ import { Form, Input, Button, message, Select } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./CadastroOcupacao.css";
+import handleError from "../../utils/handleError";
 
 export default function NovaAula(props) {
   const [occupation, setOccupation] = useState({});
@@ -67,7 +68,7 @@ export default function NovaAula(props) {
         history.push("/ocupacao");
       })
       .catch((err) => {
-        message.error("Não foi possível criar a ocupação!");
+        handleError(err, "Não foi possível criar a ocupação!");
         setUploading(false);
       });
   }
@@ -134,10 +135,7 @@ export default function NovaAula(props) {
                   onChange={handleChange}
                 />
               </Form.Item>
-              <Form.Item
-                name="description"
-                label="Descrição"
-              >
+              <Form.Item name="description" label="Descrição">
                 <Input
                   placeholder="Descreva a função da ocupação"
                   name="description"

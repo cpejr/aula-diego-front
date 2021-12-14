@@ -7,6 +7,9 @@ import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarOrganizacao.css";
 
+import building from "../../images/building.png";
+import handleError from "../../utils/handleError";
+
 const formItemLayout = {
   labelCol: {
     span: 4,
@@ -25,7 +28,7 @@ const tailFormItemLayout = {
 export default function EditarOrganizacao(props) {
   const [organization, SetOrganization] = useState(false);
   const [description, SetDescription] = useState("");
-  const [preview, setPreview] = useState(false)
+  const [preview, setPreview] = useState(false);
   const [image, setImage] = useState(false);
   const [name, SetName] = useState("");
 
@@ -40,40 +43,24 @@ export default function EditarOrganizacao(props) {
     },
   };
 
-  const configFileGet = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-    },
-    responseType: "blob",
-  };
-
-  const configFilePost = {
-    headers: {
-      authorization: "BEARER " + session.accessToken,
-      "Content-Type": "multipart/form-data",
-      processData: false,
-      contentType: false,
-    },
-  };
-
   useEffect(() => {
-    api.get(`/organization/${id}`, config)
-      .then(async (response) => {
+    api.get(`/organization/${id}`, config).then(async (response) => {
+      setImage(building);
+      if (response.data.file_id)
+        await api
+          .get(`/file_get/${response.data.file_id}`, config)
+          .then((res) => {
+            setImage(response.data.file_id);
+            setPreview(res.data.url || res.data.base64);
+          })
+          .catch(() => setPreview(building));
 
-        if (response.data.file_id !== undefined)
-          await api
-            .get(`/file_get/${response.data.file_id}`, configFileGet)
-            .then(file => {
-              setPreview(URL.createObjectURL(file.data));
-            });
-
-        SetOrganization(response.data);
-        SetName(response.data.name);
-        SetDescription(response.data.description);
-      });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-
+      SetOrganization(response.data);
+      SetName(response.data.name);
+      SetDescription(response.data.description);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -85,122 +72,109 @@ export default function EditarOrganizacao(props) {
       description: description,
     };
 
-    if (image) {
-
-      const file = {
-        user_id: session.user.id,
-        file_name: name,
-        file_type: image.type,
-        file_original: image.name
-      }
-
-      await api
-        .post("file", file, config)
-        .then(async response => {
-
-          const formData = new FormData();
-          formData.append(response.data.file_id, image);
-
-          await api
-            .post("file_upload", formData, configFilePost)
-            .catch(err => { message.error("Não foi possível editar a organizacao!") })
-
-          data = { ...data, file_id: response.data.file_id }
-        })
-        .then(() => {
-          api
-            .put(`/organization`, data, config)
-            .then(() => {
-              message.success("Organização editada com sucesso!");
-              history.push(`/organizacao`);
-            })
-            .catch((err) => {
-              message.error("Não foi possível editar a organização!");
-            });
-        })
-        .catch(err => { message.error("Não foi possível eidtar a atividade!") })
+    if (!image) {
+      return message.error("Selecione uma imagem para a organização");
     }
 
-    else {
+    if (image === preview) {
+      // se a imagem não for alterada
       api
-        .put(`/organization`, data, config)
+        .put(`/organization/${id}`, data, config)
         .then(() => {
           message.success("Organização editada com sucesso!");
-          history.push(`/organizacao`);
+          history.push("/organizacao");
         })
         .catch((err) => {
-          message.error("Não foi possível editar a organização!");
+          handleError(err, "Erro ao editar organização");
         });
     }
+
+    const formData = new FormData();
+    formData.append(image.name, image);
+
+    await api
+      .post("/file_upload", formData, config)
+      .then(async ({ data: { file_ids } }) => {
+        const file_id = file_ids[0];
+        await api.put(`/organization/${id}`, { ...data, file_id }, config);
+        message.success("Organização editada com sucesso!");
+        history.push("/organizacao");
+      })
+      .catch((err) => {
+        handleError(err, "Erro ao editar organização");
+      });
   }
 
-    return (
-      <Base>
-        <div className="pageRoot">
-          <div className="pageBody">
-            <div className="formWrapper">
-              {organization &&
-                <Form
-                  {...formItemLayout}
-                  name="newClass"
-                  className="ClassForm"
-                  onFinish={handleSubmit}
-                  size={"large"}
+  return (
+    <Base>
+      <div className="pageRoot">
+        <div className="pageBody">
+          <div className="formWrapper">
+            {organization && (
+              <Form
+                {...formItemLayout}
+                name="newClass"
+                className="ClassForm"
+                onFinish={handleSubmit}
+                size={"large"}
+              >
+                <Form.Item {...tailFormItemLayout}>
+                  <h1>Editar Organização</h1>
+                </Form.Item>
+                <Form.Item
+                  label={<label style={{ fontSize: "large" }}> Nome </label>}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor insira o nome da organização!",
+                    },
+                  ]}
                 >
-                  <Form.Item {...tailFormItemLayout}>
-                    <h1>Editar Organização</h1>
-                  </Form.Item>
-                  <Form.Item
-                    label={<label style={{ fontSize: "large" }}> Nome </label>}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Por favor insira o nome da organização!",
-                      },
-                    ]}
-                  >
-                    <Input
-                      name="name"
-                      value={name}
-                      onChange={(e) => SetName(e.target.value)}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    label={<label style={{ fontSize: "large" }}> Descrição </label>}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Por favor insira a descrição da organização!",
-                      },
-                    ]}
-                  >
-                    <Input
-                      name="description"
-                      value={description}
-                      onChange={(e) => SetDescription(e.target.value)}
-                    />
-                  </Form.Item>
-                  <ImageUpload
-                    name="logo"
-                    label="Logo"
-                    initialValue={preview}
-                    onChange={file => setImage(file)}
+                  <Input
+                    name="name"
+                    value={name}
+                    onChange={(e) => SetName(e.target.value)}
                   />
-                  <Form.Item {...tailFormItemLayout}>
-                    <Button
-                      type="primary"
-                      onClick={handleSubmit}
-                      style={{ fontSize: "large" }}
-                      loading={loading}
-                    >
-                      Editar
-              </Button>
-                  </Form.Item>
-                </Form>
-              }
-            </div>
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <label style={{ fontSize: "large" }}> Descrição </label>
+                  }
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor insira a descrição da organização!",
+                    },
+                  ]}
+                >
+                  <Input
+                    name="description"
+                    value={description}
+                    onChange={(e) => SetDescription(e.target.value)}
+                  />
+                </Form.Item>
+                <ImageUpload
+                  name="logo"
+                  label="Logo"
+                  accept="image/*"
+                  initialValue={preview || building}
+                  onChange={(file) => setImage(file)}
+                />
+                <Form.Item {...tailFormItemLayout}>
+                  <Button
+                    type="primary"
+                    onClick={handleSubmit}
+                    style={{ fontSize: "large" }}
+                    loading={loading}
+                  >
+                    Editar
+                  </Button>
+                </Form.Item>
+              </Form>
+            )}
           </div>
         </div>
-      </Base>
-    );
-  }
+      </div>
+    </Base>
+  );
+}

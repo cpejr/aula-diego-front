@@ -5,6 +5,7 @@ import { Form, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarLive.css";
+import handleError from "../../utils/handleError";
 
 const formItemLayout = {
   labelCol: {
@@ -49,7 +50,7 @@ export default function EditarLive(props) {
       setLink(response.data.link);
       setCourseId(response.data.course_id);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(e) {
@@ -78,24 +79,9 @@ export default function EditarLive(props) {
         history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
-        message.error("Não foi possível editar a live!\n" + err);
+        handleError(err, "Não foi possível editar a live!\n");
       });
   }
-
-  /* function dateFormate(date) {
-    const data = new Date(date).toLocaleDateString([], {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return data;
-    const data = new Date(date);
-    data.toString().split("GMT")[0] + " UTC";
-    return new Date(data).toISOString().split(".")[0];
-  } 
-  */
 
   return (
     <Base>

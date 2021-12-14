@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Table, Input, message } from "antd";
+import { Table, Input } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
-import ActionButton from "../../Components/ActionButton/actionButton"
+import ActionButton from "../../Components/ActionButton/actionButton";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./AtividadeLista.css";
-
+import handleError from "../../utils/handleError";
 
 export default function AtividadeLista(props) {
   const [answers, setAnswers] = useState([]);
@@ -32,25 +32,25 @@ export default function AtividadeLista(props) {
     api
       .get(`/answer`, config)
       .then((response) => {
-        const answers = []
+        const answers = [];
 
         // eslint-disable-next-line array-callback-return
-        response.data.map(answer => {
+        response.data.map((answer) => {
           answers.push({
             ...answer,
             date: new Date(answer.created_at).toLocaleDateString("pt-BR"),
-            grade: answer.grade !== null ? answer.grade : 'Não avaliativa'
-          })
+            grade: answer.grade !== null ? answer.grade : "Não avaliativa",
+          });
         });
 
-        console.log(response.data)
-
         setAnswers(answers);
-        setFiltered(answers)
+        setFiltered(answers);
         setLoading(false);
       })
-      .catch(err => { console.log(err); message.error("Não foi possível carregar dados das respostas!") });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados das respostas!");
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = [
@@ -71,10 +71,14 @@ export default function AtividadeLista(props) {
     },
     {
       title: <h5>Ações</h5>,
-      dataIndex: ("id"),
+      dataIndex: "id",
       width: "20%",
       render: (id) => (
-        <ActionButton title="Visualizar" confirm="Visualizar resposta?" onConfirm={() => history.push(`/atividade/resposta/${id}`)}>
+        <ActionButton
+          title="Visualizar"
+          confirm="Visualizar resposta?"
+          onConfirm={() => history.push(`/atividade/resposta/${id}`)}
+        >
           <EyeOutlined />
         </ActionButton>
       ),
@@ -82,14 +86,16 @@ export default function AtividadeLista(props) {
   ];
 
   function handleSearch(value) {
-    setFiltered(answers.filter(data => {
-      if (value === "") return data;
-      return (
-        data.name.toLowerCase().includes(value.toLowerCase()) ||
-        data.description.toLowerCase().includes(value.toLowerCase()) ||
-        data.organization_name.toLowerCase().includes(value.toLowerCase())
-      )
-    }));
+    setFiltered(
+      answers.filter((data) => {
+        if (value === "") return data;
+        return (
+          data.name.toLowerCase().includes(value.toLowerCase()) ||
+          data.description.toLowerCase().includes(value.toLowerCase()) ||
+          data.organization_name.toLowerCase().includes(value.toLowerCase())
+        );
+      })
+    );
   }
 
   return (
@@ -104,14 +110,9 @@ export default function AtividadeLista(props) {
               onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
-          <Table
-            columns={columns}
-            dataSource={filtered}
-            loading={loading}
-          />
+          <Table columns={columns} dataSource={filtered} loading={loading} />
         </div>
       </div>
-
     </Base>
   );
 }

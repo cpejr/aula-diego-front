@@ -10,6 +10,7 @@ import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { message, DatePicker } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
+import handleError from "../../utils/handleError";
 
 export default function Cadastro(props) {
   const [inputValues, setInputValues] = useState({});
@@ -36,10 +37,6 @@ export default function Cadastro(props) {
   }, [inputValues, organizations]);
 
   function handleChange(e) {
-    console.log({
-      ...inputValues,
-      [e.target.name]: e.target.value,
-    });
     setInputValues({
       ...inputValues,
       [e.target.name]: e.target.value,
@@ -47,7 +44,6 @@ export default function Cadastro(props) {
   }
   function validateForm() {
     const inputs = document.querySelectorAll("input");
-    console.log(inputs);
 
     for (let i = 0; i < inputs.length; ++i) {
       if (inputs[i].name != "terms" && inputs[i].value == "") return false;
@@ -89,7 +85,7 @@ export default function Cadastro(props) {
     data.cpf = data.cpf.split("-").join("");
     delete data.passwordConfirmation;
     data.birthdate = startDate;
-    console.log(data);
+
     api
       .post("/user", data)
       .then(() => {
@@ -97,7 +93,10 @@ export default function Cadastro(props) {
         history.push("/");
       })
       .catch((error) => {
-        message.error("Não foi possível concluir o cadastro, tente novamente.");
+        handleError(
+          error,
+          "Não foi possível concluir o cadastro, tente novamente."
+        );
       });
   }
 
@@ -200,7 +199,6 @@ export default function Cadastro(props) {
                 format={dateFormat}
                 onChange={(date) => {
                   setStartDate(date);
-                  console.log(date._d);
                 }}
                 placeholder="Data de Nascimento"
                 locale="pt-BR"

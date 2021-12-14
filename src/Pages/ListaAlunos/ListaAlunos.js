@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect,useCallback  } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
 import { Table, Input, message, Tabs, Statistic } from "antd";
@@ -14,6 +14,7 @@ import ActionButton from "../../Components/ActionButton/actionButton";
 
 import "./ListaAlunos.css";
 import { BsPeople } from "react-icons/bs";
+import handleError from "../../utils/handleError";
 
 export default function ListaAlunos() {
   const [students, setStudents] = useState([]);
@@ -62,12 +63,8 @@ export default function ListaAlunos() {
   useEffect(() => {
     getData(0);
     setFiltered(students);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-
-  // useEffect(() => {
-  //   setLoading(false)
-  // }, [filtered])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
     {
@@ -206,7 +203,9 @@ export default function ListaAlunos() {
         getData(0);
         message.success(`O usuário agora é admin`);
       })
-      .catch((err) => message.error("não foi possível tornar usuário admin"));
+      .catch((err) =>
+        handleError(err, "não foi possível tornar usuário admin")
+      );
   }
 
   function handleDemote(id) {
@@ -217,7 +216,7 @@ export default function ListaAlunos() {
         getData(0);
       })
       .catch((err) =>
-        message.error("não foi possível tornar usuário estudante")
+        handleError(err, "não foi possível tornar usuário estudante")
       );
   }
 
@@ -232,12 +231,11 @@ export default function ListaAlunos() {
         getData(1);
       })
       .catch((err) => {
-        message.error("Não foi possível alterar o status do usuário!");
+        handleError(err, "Não foi possível alterar o status do usuário!");
       });
   }
 
   function handleDelete(id) {
-    console.log(config);
     api
       .put(`/user/${id}`, {}, config)
       .then(() => {
@@ -245,7 +243,8 @@ export default function ListaAlunos() {
         getData(0);
       })
       .catch((err) =>
-        message.error(
+        handleError(
+          err,
           "Não foi possível deletar usuário. Tente novamente mais tarde"
         )
       );

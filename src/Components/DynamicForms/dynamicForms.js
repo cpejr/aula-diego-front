@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Upload, Radio, Tag, Image } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Upload, Radio, Tag, Image } from "antd";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import "./dynamicForms.css";
 
-const { TextArea } = Input
+const { TextArea } = Input;
 
 const questionLayout = {
   labelCol: { span: 5 },
@@ -30,7 +30,6 @@ export const Field = ({
   children,
   layout,
 }) => (
-
   <Form.Item
     {...layout}
     {...field}
@@ -46,7 +45,7 @@ export const Field = ({
   >
     {children}
   </Form.Item>
-)
+);
 
 export const InputField = ({
   name,
@@ -74,12 +73,12 @@ export const InputField = ({
       name={name}
       className="formInput"
       placeholder={placeholder}
-      onChange={e => onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
       autoSize={size}
       disabled={disabled}
     />
   </Field>
-)
+);
 
 export const ImageUpload = ({
   name,
@@ -87,10 +86,10 @@ export const ImageUpload = ({
   label,
   initialValue = undefined,
   required = true,
+  accept,
   onChange = () => {},
-  layout
+  layout,
 }) => {
-
   const [preview, setPreview] = useState(initialValue);
   const [file, setFile] = useState();
 
@@ -105,29 +104,33 @@ export const ImageUpload = ({
       layout={layout}
     >
       <Upload
+        accept={accept}
         name="file"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        beforeUpload={file => {
+        beforeUpload={(file) => {
           setFile(file);
-          setPreview(URL.createObjectURL(file))
+          setPreview(URL.createObjectURL(file));
           return false;
         }}
       >
-        {preview
-          ?
-          <img src={preview} alt="avatar" style={{ maxWidth: '100%', maxHeight: '100%' }} />
-          :
+        {preview ? (
+          <img
+            src={preview}
+            alt="avatar"
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+          />
+        ) : (
           <div>
             <PlusOutlined />
             <div style={{ marginTop: 8 }}>Upload</div>
           </div>
-        }
+        )}
       </Upload>
     </Field>
-  )
-}
+  );
+};
 
 export const Alternatives = ({
   name,
@@ -141,22 +144,27 @@ export const Alternatives = ({
   message,
   layout,
   tailLayout,
-  optionLayout
+  optionLayout,
 }) => {
-
-  const [selected, setSelected] = useState(initialCorrect ? initialCorrect : 'A');
+  const [selected, setSelected] = useState(
+    initialCorrect ? initialCorrect : "A"
+  );
   const [alternatives, setAlternatives] = useState(initialValue);
   const [start, setStart] = useState(true);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  const handleSelect = e => { setSelected(e.target.value); correctChange(e.target.value) };
-  const alternativeChange = (e, index) => setAlternatives({ ...alternatives, [index]: e.target.value });
-  
-  const startFields = add => {
-    Object.keys(initialValue).map(item => add());
+  const handleSelect = (e) => {
+    setSelected(e.target.value);
+    correctChange(e.target.value);
+  };
+  const alternativeChange = (e, index) =>
+    setAlternatives({ ...alternatives, [index]: e.target.value });
+
+  const startFields = (add) => {
+    Object.keys(initialValue).map((item) => add());
     setStart(false);
-  }
+  };
 
   useEffect(() => onChange(alternatives), [alternatives]);
 
@@ -175,7 +183,7 @@ export const Alternatives = ({
             value={selected}
             onChange={handleSelect}
             defaultValue={selected}
-          > 
+          >
             {start && initialValue && fields.length === 0 && startFields(add)}
             {fields.map((field, index) => (
               <div className="alternativeWrapper">
@@ -190,7 +198,7 @@ export const Alternatives = ({
                   fieldKey={[field.fieldKey, letters[index]]}
                   name={field.name}
                   initialValue={initialValue[letters[index]]}
-                  style={{width: "60%"}}
+                  style={{ width: "60%" }}
                 >
                   <Input
                     className="alternative-input"
@@ -204,8 +212,12 @@ export const Alternatives = ({
                 />
               </div>
             ))}
-            <Field layout={layout} >
-              <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+            <Field layout={layout}>
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                icon={<PlusOutlined />}
+              >
                 Adicionar alternativa
               </Button>
             </Field>
@@ -213,8 +225,8 @@ export const Alternatives = ({
         )}
       </Form.List>
     </Field>
-  )
-}
+  );
+};
 
 export const QuestionText = ({
   name,
@@ -224,14 +236,14 @@ export const QuestionText = ({
   layout = questionLayout,
   tailLayout = questionTailLayout,
   onChange = null,
-  remove
+  remove,
 }) => {
-
   const [question, setQuestion] = useState({});
 
-  const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
+  const questionChange = (section, value) =>
+    setQuestion({ ...question, [section]: value });
 
-  useEffect(() => onChange(question),  [question])
+  useEffect(() => onChange(question), [question]);
 
   return (
     <div className="questionWrapper">
@@ -239,22 +251,22 @@ export const QuestionText = ({
         <h5>{`Questão ${index + 1}:`}</h5>
       </Field>
       <InputField
-        name={[name, 'heading']}
+        name={[name, "heading"]}
         field={field}
         label="Enunciado"
         placeholder="Enunciado da questão"
         message="Por favor, insira enunciado da questão!"
         layout={layout}
-        onChange={(value) => questionChange('heading', value)}
+        onChange={(value) => questionChange("heading", value)}
         initialValue={initialValue.heading}
       />
       <ImageUpload
-        name={[name, 'image']}
+        name={[name, "image"]}
         field={field}
         label="Imagem"
         required={false}
         layout={layout}
-        onChange={(value) => questionChange('image', value)}
+        onChange={(value) => questionChange("image", value)}
         initialValue={initialValue.preview}
       />
       <Field layout={tailLayout}>
@@ -265,11 +277,11 @@ export const QuestionText = ({
           icon={<MinusCircleOutlined />}
         >
           Remover questão
-      </Button>
+        </Button>
       </Field>
     </div>
-  )
-}
+  );
+};
 
 export const QuestionAlternatives = ({
   name,
@@ -279,15 +291,17 @@ export const QuestionAlternatives = ({
   layout = questionLayout,
   tailLayout = questionTailLayout,
   optionLayout = alternativeLayout,
-  onChange = () => { },
+  onChange = () => {},
   remove,
 }) => {
+  const [question, setQuestion] = useState(
+    initialValue ? initialValue : { correct: "A" }
+  );
 
-  const [question, setQuestion] = useState(initialValue ? initialValue : {correct: 'A'});
+  const questionChange = (section, value) =>
+    setQuestion({ ...question, [section]: value });
 
-  const questionChange = (section, value) => setQuestion({ ...question, [section]: value })
-
-  useEffect(() => onChange(question), [question])
+  useEffect(() => onChange(question), [question]);
 
   return (
     <div className="questionWrapper">
@@ -295,35 +309,35 @@ export const QuestionAlternatives = ({
         <h5>{`Questão ${index + 1}:`}</h5>
       </Field>
       <InputField
-        name={[name, 'heading']}
+        name={[name, "heading"]}
         field={field}
         label="Enunciado"
         placeholder="Enunciado da questão"
         message="Por favor, insira enunciado da questão!"
         layout={layout}
-        onChange={(value) => questionChange('heading', value)}
+        onChange={(value) => questionChange("heading", value)}
         initialValue={initialValue.heading}
       />
       <Alternatives
-        name={[name, 'alternatives']}
+        name={[name, "alternatives"]}
         field={field}
         label="Alternativas"
         message="Por favor, insira alteranativa!"
         layout={layout}
         tailLayout={tailLayout}
         optionLayout={optionLayout}
-        onChange={(value) => questionChange('alternatives', value)}
-        correctChange={(value) => questionChange('correct', value)}
+        onChange={(value) => questionChange("alternatives", value)}
+        correctChange={(value) => questionChange("correct", value)}
         initialValue={initialValue.alternatives}
         initialCorrect={initialValue.correct}
       />
       <ImageUpload
-        name={[name, 'image']}
+        name={[name, "image"]}
         field={field}
         label="Imagem"
         required={false}
         layout={layout}
-        onChange={(value) => questionChange('image', value)}
+        onChange={(value) => questionChange("image", value)}
         initialValue={initialValue.preview}
       />
       <Field layout={tailLayout}>
@@ -334,11 +348,11 @@ export const QuestionAlternatives = ({
           icon={<MinusCircleOutlined />}
         >
           Remover questão
-      </Button>
+        </Button>
       </Field>
     </div>
-  )
-}
+  );
+};
 
 export const AnswerText = ({
   index,
@@ -349,23 +363,20 @@ export const AnswerText = ({
   onChange = null,
   layout = questionLayout,
   tailLayout = questionTailLayout,
-  disabled = false
+  disabled = false,
 }) => (
-
   <div className="questionWrapper">
-    <h5 className="answerTitle">
-      {`Questão ${index + 1}:`}
-    </h5>
+    <h5 className="answerTitle">{`Questão ${index + 1}:`}</h5>
     <Field layout={tailLayout}>
       <span className="answerHeading">{heading}</span>
     </Field>
-    {image &&
+    {image && (
       <Field layout={tailLayout}>
         <div className="answerImage">
           <Image src={image} />
         </div>
       </Field>
-    }
+    )}
     <InputField
       name={index}
       field={layout}
@@ -373,13 +384,12 @@ export const AnswerText = ({
       placeholder="Insira a resposta da questão"
       message="Insira resposta da questão!"
       initialValue={initialValue}
-      onChange={value => onChange(index, value)}
+      onChange={(value) => onChange(index, value)}
       size={size}
       disabled={disabled}
     />
   </div>
-
-)
+);
 
 export const AnswerAlternatives = ({
   index,
@@ -390,32 +400,41 @@ export const AnswerAlternatives = ({
   onChange = null,
   layout = questionLayout,
   tailLayout = questionTailLayout,
-  disabled = false
+  disabled = false,
 }) => {
-
   const [selected, setSelected] = useState(initialValue);
   const entries = Object.entries(alternatives);
 
-  const handleSelect = e => {setSelected(e.target.value); onChange(index, e.target.value);}
+  const handleSelect = (e) => {
+    setSelected(e.target.value);
+    onChange(index, e.target.value);
+  };
 
   return (
-
     <div className="questionWrapper">
-      <h5 className="answerTitle">
-        {`Questão ${index + 1}:`}
-      </h5>
+      <h5 className="answerTitle">{`Questão ${index + 1}:`}</h5>
       <Field layout={tailLayout}>
         <span className="answerHeading">{heading}</span>
       </Field>
-      {image &&
+      {image && (
         <Field layout={tailLayout}>
           <div className="answerImage">
             <Image src={image} />
           </div>
         </Field>
-      }
-      <Field layout={layout} label={`Alternativas`} name={index} initialValue={initialValue}>
-        <Radio.Group onChange={handleSelect} style={{ "width": "100%" }} value={selected} disabled={disabled}>
+      )}
+      <Field
+        layout={layout}
+        label={`Alternativas`}
+        name={index}
+        initialValue={initialValue}
+      >
+        <Radio.Group
+          onChange={handleSelect}
+          style={{ width: "100%" }}
+          value={selected}
+          disabled={disabled}
+        >
           {entries.map((alternative, idx) => (
             <div className="alternativeAnswerWrapper" key={idx}>
               <Radio.Button
@@ -425,14 +444,11 @@ export const AnswerAlternatives = ({
               >
                 {alternative[0]}
               </Radio.Button>
-              <Tag className="alternativeText">
-                {alternative[1]}
-              </Tag>
+              <Tag className="alternativeText">{alternative[1]}</Tag>
             </div>
           ))}
         </Radio.Group>
       </Field>
     </div>
-
-  )
-}
+  );
+};

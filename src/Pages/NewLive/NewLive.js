@@ -6,6 +6,7 @@ import { Form, DatePicker, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NewLive.css";
+import handleError from "../../utils/handleError";
 
 const generateCode = () => {
   let code = "";
@@ -74,7 +75,7 @@ export default function NewLive(props) {
       })
       .catch((err) => {
         setLoading(false);
-        message.error("Não foi possiível criar a live!");
+        handleError(err, "Não foi possiível criar a live!");
       });
   }
 

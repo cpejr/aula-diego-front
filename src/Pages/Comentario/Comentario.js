@@ -4,7 +4,7 @@ import Base from "../../Components/Base/Base";
 import Comment from "../../Components/Comment/Comment";
 import CommentsContainer from "../../Components/CommentsContainer";
 import api from "../../services/api";
-import { message } from "antd";
+import handleError from "../../utils/handleError";
 
 export default function Comentario(props) {
   const { id } = props.match.params;
@@ -21,7 +21,7 @@ export default function Comentario(props) {
   };
   useEffect(() => {
     getData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getData() {
@@ -36,7 +36,7 @@ export default function Comentario(props) {
         setComment(res.data[0]);
       })
 
-      .catch((err) => message.error("Não foi possível obter comentário"));
+      .catch((err) => handleError(err, "Não foi possível obter comentário"));
   }
 
   return (

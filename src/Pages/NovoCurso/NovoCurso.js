@@ -5,6 +5,7 @@ import api from "../../services/api";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import { Input, Form, message, Select, Button, InputNumber } from "antd";
+import handleError from "../../utils/handleError";
 
 const { TextArea } = Input;
 
@@ -42,9 +43,9 @@ export default function NovoCurso() {
       .get("/organization", config)
       .then((res) => setOrganizations(res.data))
       .catch((err) => {
-        message.error("Não foi possível criar a ocupação!");
+        handleError(err, "Não foi possível criar a ocupação!");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   function handleChange(e) {
@@ -67,7 +68,7 @@ export default function NovoCurso() {
         history.push("/curso/lista");
       })
       .catch((err) => {
-        message.error(`Não foi possível cadastrar o curso.`);
+        handleError(err, "Não foi possível cadastrar o curso.");
       });
   }
 
@@ -138,7 +139,7 @@ export default function NovoCurso() {
                   placeholder="Carga horária do curso"
                   size="large"
                   type="number"
-                  onChange={(e) =>handleWorkloadChange(e)}
+                  onChange={(e) => handleWorkloadChange(e)}
                 />
               </Form.Item>
               <Form.Item {...formTailLayout} className="mt20">

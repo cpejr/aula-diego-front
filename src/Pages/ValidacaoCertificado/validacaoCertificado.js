@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Button, Input, Form, Typography, message } from "antd";
+import { Button, Input, Form, Typography } from "antd";
 import { useLocation } from "react-router";
 import Logo from "../../images/Logo2.png";
 import api from "../../services/api";
 import "./validacaoCertificado.css";
 import "antd/dist/antd.css";
+import handleError from "../../utils/handleError";
 
 export default function ValidacaoCertificado() {
   const location = useLocation();
@@ -28,7 +29,6 @@ export default function ValidacaoCertificado() {
     api
       .get(`/cerificate/${certificate}`)
       .then((res) => {
-        console.log(res.data);
         if (res.data) {
           setCertificateData(res.data);
           setOkHidden(false);
@@ -39,7 +39,7 @@ export default function ValidacaoCertificado() {
         }
       })
       .catch((error) => {
-        message.error("Problema ao validar o certificado!");
+        handleError(error, "Problema ao validar o certificado!");
         setFailHidden(false);
         setHidden(!hidden);
       });

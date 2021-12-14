@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import moment from "moment";
 import pt_BR from "antd/es/date-picker/locale/pt_BR";
 import "./AtividadeEditar.css";
+import handleError from "../../utils/handleError";
 
 const exerciseLayout = {
   labelCol: { span: 4 },
@@ -70,7 +71,6 @@ export default function AtividadeEditar(props) {
                 await api
                   .get(`/file_get/${image}`, configFileGet)
                   .then((file_res) => {
-                    console.log(file_res.data.url);
                     response.data.questions[index].preview = file_res.data.url;
                     Promise.resolve("");
                   });
@@ -90,7 +90,7 @@ export default function AtividadeEditar(props) {
         });
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados da prova!");
+        handleError(err, "Não foi possível carregar dados da prova!");
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,7 +152,7 @@ export default function AtividadeEditar(props) {
                 exercise.questions[index].image = file_id;
               })
               .catch((err) => {
-                message.error("Não foi possível criar a atividade!");
+                handleError(err, "Não foi possível criar a atividade!");
               });
           }
         })
@@ -164,7 +164,7 @@ export default function AtividadeEditar(props) {
           history.push(`/curso/gerenciar/${exercise.course_id}`);
         })
         .catch((err) => {
-          message.error("Não foi possível eidtar a atividade!");
+          handleError(err, "Não foi possível eidtar a atividade!");
         });
     });
   };

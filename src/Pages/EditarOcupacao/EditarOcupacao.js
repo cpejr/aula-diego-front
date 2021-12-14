@@ -5,6 +5,7 @@ import { Form, Input, Button, message } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarOcupacao.css";
+import handleError from "../../utils/handleError";
 
 const formItemLayout = {
   labelCol: {
@@ -25,8 +26,6 @@ export default function EditarOcupacao(props) {
   const [occupation, SetOccupation] = useState([]);
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");
-  
-
 
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
@@ -44,12 +43,8 @@ export default function EditarOcupacao(props) {
       SetOccupation(response.data);
       SetName(response.data.name);
       SetDescription(response.data.description);
-      console.log(response.data.description);
-      console.log(response.data.name);
-      // setFilteredData(response.data);
-      
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(e) {
@@ -61,7 +56,6 @@ export default function EditarOcupacao(props) {
       name: name,
       description: description,
     };
-    console.log(occupation);
     const config = {
       headers: {
         authorization: "BEARER " + session.accessToken,
@@ -75,7 +69,7 @@ export default function EditarOcupacao(props) {
         history.push(`/ocupacao`);
       })
       .catch((err) => {
-        message.error("Não foi possível editar a ocupação!\n" + err);
+        handleError(err, "Não foi possível editar a ocupação!");
       });
   }
   return (
@@ -122,7 +116,7 @@ export default function EditarOcupacao(props) {
                   value={description}
                   onChange={(e) => SetDescription(e.target.value)}
                 />
-              </Form.Item>   
+              </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button
                   type="primary"

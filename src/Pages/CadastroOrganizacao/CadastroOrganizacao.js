@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Upload, Input, Button, message } from "antd";
+import { Form, Upload, Input, Button } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./CadastroOrganizacao.css";
 
+import building from "../../images/building.png";
+import handleError from "../../utils/handleError";
+
 export default function NovaAula(props) {
   const [organization, setOrganization] = useState({});
-  const [file, setFile] = useState([]);
-  const [logoPreview, setLogoPreview] = useState(false);
+  const [file, setFile] = useState(building);
+  const [logoPreview, setLogoPreview] = useState(building);
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const history = useHistory();
@@ -34,6 +37,7 @@ export default function NovaAula(props) {
     name: "file",
     listType: "picture-card",
     className: "avatar-uploader",
+    accept: "image/*",
     showUploadList: false,
     beforeUpload: (file) => {
       setFile(file);
@@ -65,7 +69,7 @@ export default function NovaAula(props) {
     e.preventDefault();
     setLoading(true);
 
-    const data = {
+    const organizationData = {
       ...organization,
       user_id: session.user.id,
       file_name: organization.name,
@@ -88,14 +92,14 @@ export default function NovaAula(props) {
             history.push("/organizacao");
           })
           .catch((err) => {
-            message.error("Não foi possível criar a organização!");
+            handleError(err, "Não foi possível criar a organização!");
             setLoading(false);
           });
 
         setLoading(false);
       })
       .catch((err) => {
-        message.error("Não foi possível criar a organização!");
+        handleError(err, "Não foi possível criar a organização!");
       });
   }
 

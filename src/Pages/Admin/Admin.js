@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { message, Timeline, Divider, Card, Statistic } from "antd";
+import { Timeline, Divider, Card, Statistic } from "antd";
 import {
   UserOutlined,
   ClockCircleOutlined,
@@ -12,6 +12,9 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./Admin.css";
+
+import building from "../../images/building.png";
+import handleError from "../../utils/handleError";
 
 export default function Admin() {
   const [approved, setApproved] = useState([]);
@@ -51,7 +54,7 @@ export default function Admin() {
         setPending(pen);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados dos estudantes");
+        handleError(err, "Não foi possível carregar dados dos estudantes");
       });
 
     api
@@ -60,7 +63,7 @@ export default function Admin() {
         setOrganization(response.data);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados das organizações");
+        handleError(err, "Não foi possível carregar dados das organizações");
       });
 
     api
@@ -80,7 +83,10 @@ export default function Admin() {
                 .get(`/class`, { ...config, params: { course_id: id } })
                 .then((response) => turmas.push(...response.data))
                 .catch((err) => {
-                  message.error("Não foi possível carregar dados das turmas");
+                  handleError(
+                    err,
+                    "Não foi possível carregar dados das turmas"
+                  );
                 });
 
               await api
@@ -90,7 +96,7 @@ export default function Admin() {
                   Promise.resolve("");
                 })
                 .catch((err) => {
-                  message.error("Não foi possível carregar dados das aulas");
+                  handleError(err, "Não foi possível carregar dados das aulas");
                 });
             })
         ).then(() => {
@@ -146,7 +152,7 @@ export default function Admin() {
         setCourses(response.data);
       })
       .catch((err) => {
-        message.error("Não foi possível carregar dados das aulas");
+        handleError(err, "Não foi possível carregar dados das aulas");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -156,7 +162,7 @@ export default function Admin() {
       <div className="adminRoot">
         <div className="adminTitleWrapper">
           <img
-            src={organization.logo}
+            src={organization.logo || building}
             className="adminImg"
             alt="Logo da RecStudio"
           />

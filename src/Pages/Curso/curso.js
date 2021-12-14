@@ -129,7 +129,6 @@ export default function Curso(props) {
     api
       .get(`/user/me/certificate/`, configCertificate)
       .then((response) => {
-        console.log(response.data);
         setCertificate(response.data.url);
 
         requestDone();
@@ -164,7 +163,7 @@ export default function Curso(props) {
         {months.map((month, idx) => {
           if (sorted !== undefined) {
             const found = true
-              ? sorted.find((m) => m.date.getMonth() === idx) !== undefined
+              ? sorted.find((m) => m?.date?.getMonth() === idx) !== undefined
               : false;
 
             if (found) {
@@ -172,7 +171,7 @@ export default function Curso(props) {
                 <>
                   <Divider orientation="left">{month}</Divider>
                   {sorted.map((element) => {
-                    if (element.date.getMonth() === idx) {
+                    if (element?.date?.getMonth() === idx) {
                       const icon =
                         element.confirmation_code !== undefined ? (
                           <VideoCameraOutlined />

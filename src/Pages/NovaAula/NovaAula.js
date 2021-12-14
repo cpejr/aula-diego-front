@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, Upload, Input, Button, message } from "antd";
+import { Form, Upload, Input, Button } from "antd";
 import {
   UploadOutlined,
   PlusOutlined,
@@ -10,6 +10,7 @@ import {
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaAula.css";
+import handleError from "../../utils/handleError";
 
 const { TextArea } = Input;
 
@@ -116,7 +117,7 @@ export default function NovaAula(props) {
         });
       })
       .catch((err) => {
-        message.error("Não foi possível criar a aula!");
+        handleError(err, "Não foi possível criar a aula!");
       });
   }
 

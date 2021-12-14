@@ -13,15 +13,6 @@ const Header = () => {
   const { session } = useSession();
   const { handleLogout } = useSession();
 
-  // useEffect(() => {
-  //   api
-  //     .post("/score", { user_id: session.user.id }, config)
-  //     .then((res) => setScore(res.data.score))
-  //     .catch(() =>
-  //       message.error("Não foi possível receber pontuação do usuário.")
-  //     );
-  // }, []);
-
   function redirect(path) {
     history.push(path);
   }

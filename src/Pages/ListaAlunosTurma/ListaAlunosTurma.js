@@ -4,33 +4,38 @@ import { Table, Input, Popconfirm, message } from "antd";
 import Base from "../../Components/Base/Base";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import { useSession } from "../../Context/SessionContext"
+import { useSession } from "../../Context/SessionContext";
 import "./ListaAlunosTurma.css";
+
+import handleError from "../../utils/handleError";
 
 export default function ListaOrganizacoes(props) {
   const [students, setStudents] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const { session } = useSession();
-  const cl4ss = new URLSearchParams(props.location.search)
+  const cl4ss = new URLSearchParams(props.location.search);
 
   const config = {
     headers: {
-      authorization: "BEARER " + session.accessToken
-    }
+      authorization: "BEARER " + session.accessToken,
+    },
   };
 
   useEffect(() => {
-    api.get(`/class/users/${cl4ss.get("id")}`, config)
+    api
+      .get(`/class/users/${cl4ss.get("id")}`, config)
       .then((students) => {
         setStudents(students.data);
         setFilteredData(students.data);
         setLoading(false);
       })
-      .catch(err => { console.log(err) });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+      .catch((err) => {
+        handleError(err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
     {
@@ -42,7 +47,7 @@ export default function ListaOrganizacoes(props) {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Registration</h5>,
@@ -53,7 +58,7 @@ export default function ListaOrganizacoes(props) {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Organização</h5>,
@@ -64,7 +69,7 @@ export default function ListaOrganizacoes(props) {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Ocupação</h5>,
@@ -75,11 +80,11 @@ export default function ListaOrganizacoes(props) {
             {name}
           </p>
         );
-      }
+      },
     },
     {
       title: <h5>Ações</h5>,
-      dataIndex: ("id"),
+      dataIndex: "id",
       render: (id) => (
         <>
           <EditIcon className="clickable" onClick={handleEdit} />{" "}
@@ -87,7 +92,7 @@ export default function ListaOrganizacoes(props) {
             title="Tem certeza que deseja excluir este item?"
             onConfirm={() => handleDelete(id)}
           >
-            <DeleteIcon className="clickable"/>
+            <DeleteIcon className="clickable" />
           </Popconfirm>
         </>
       ),
@@ -106,28 +111,29 @@ export default function ListaOrganizacoes(props) {
         );
       })
     );
-  }
+  };
 
   function handleDelete(user_id) {
     setLoading(true);
 
     api
       .delete(`/class/user/${cl4ss.get("id")}/${user_id}`, config)
-      .then(() => message.success("Deletado com sucesso"))
       .then(() => {
-        api.get(`/class/users/${cl4ss.get("id")}`, config)
-        .then((students) => {
-          setStudents(students.data);
-          setFilteredData(students.data);
-          setLoading(false);
-        })
-        .catch(err => { console.log(err) });
+        message.success("Deletado com sucesso");
+        api
+          .get(`/class/users/${cl4ss.get("id")}`, config)
+          .then((students) => {
+            setStudents(students.data);
+            setFilteredData(students.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            handleError(err);
+          });
       })
       .catch((error) => {
-        message.error("Não foi possível exluir");
-        console.log(error);
-        }
-      );
+        handleError(error, "Não foi possível exluir");
+      });
   }
 
   function handleEdit() {
@@ -144,11 +150,7 @@ export default function ListaOrganizacoes(props) {
           onChange={(e) => handleChange(e.target.value)}
           value={search}
         />
-        <Table
-          columns={columns}
-          dataSource={filteredData}
-          loading={loading}
-        />
+        <Table columns={columns} dataSource={filteredData} loading={loading} />
       </div>
     </Base>
   );

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Input, Form, Button, message } from "antd";
+import { Input, Form, Button } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import Comment from "../../Components/Comment/Comment";
 import api from "../../services/api";
 import "./styles.css";
+import handleError from "../../utils/handleError";
 
 export default function CommentsContainer({
   parent_id,
@@ -24,7 +25,7 @@ export default function CommentsContainer({
 
   useEffect(() => {
     getData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getData() {
@@ -36,7 +37,9 @@ export default function CommentsContainer({
         },
       })
       .then((res) => setQuestions(res.data))
-      .catch((err) => message.error("Não foi possível obter os comentários"));
+      .catch((err) =>
+        handleError(err, "Não foi possível obter os comentários")
+      );
   }
 
   function handleSubmit(e) {

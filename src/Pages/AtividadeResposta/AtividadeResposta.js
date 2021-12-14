@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import api from "../../services/api";
-import { Form, message } from "antd";
+import { Form } from "antd";
 import {
   AnswerText,
   AnswerAlternatives,
 } from "../../Components/DynamicForms/dynamicForms";
 import { useSession } from "../../Context/SessionContext";
 import "./AtividadeResposta.css";
+import handleError from "../../utils/handleError";
 
 export default function AtividadeResposta(props) {
   const [answer, setAnswer] = useState(false);
@@ -33,15 +34,13 @@ export default function AtividadeResposta(props) {
               if (image !== undefined)
                 await api.get(`/file_get/${image}`, config).then((file_res) => {
                   response.data.questions[index].image = file_res.data.url;
-                  console.log(response.data.questions[index].image);
                   Promise.resolve("");
                 });
             })
         ).then(() => setAnswer(response.data));
       })
       .catch((err) => {
-        console.log(err);
-        message.error("Não foi possível carregar dados da prova!");
+        handleError(err, "Não foi possível carregar a dados da prova");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,7 +54,6 @@ export default function AtividadeResposta(props) {
             <Form name="answerForm" size={"large"}>
               {answer &&
                 Object.values(answer.questions).map((question, index) => {
-                  console.log(question);
                   if (question.alternatives === undefined)
                     return (
                       <AnswerText

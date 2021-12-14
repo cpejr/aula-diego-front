@@ -5,6 +5,7 @@ import { Form, Input, Button, message, Table } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./EditarTurma.css";
+import handleError from "../../utils/handleError";
 
 const formItemLayout = {
   labelCol: {
@@ -30,7 +31,7 @@ export default function EditarTurma(props) {
   const [search, setSearch] = useState("");
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
- 
+
   const [loading, setLoading] = useState(false);
   const { session } = useSession();
   const id = props.match.params.id;
@@ -41,7 +42,7 @@ export default function EditarTurma(props) {
       authorization: "BEARER " + session.accessToken,
     },
   };
-  
+
   const configStudents = {
     ...config,
     params: {
@@ -58,54 +59,52 @@ export default function EditarTurma(props) {
     },
   };
   useEffect(() => {
-    api.get("/user", configStudents)
-        .then((users) => {
-          let students = [];
+    api
+      .get("/user", configStudents)
+      .then((users) => {
+        let students = [];
 
-          // eslint-disable-next-line array-callback-return
-          users.data.map((user) => {
-            students.push({ ...user, key: user.id });
-          });
+        // eslint-disable-next-line array-callback-return
+        users.data.map((user) => {
+          students.push({ ...user, key: user.id });
+        });
 
-          setStudents(students);
-          setFilteredStudents(students);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        
-        api
-        .get(`/class/${id}`, config).then((response) => {
-          SetClasses(response.data);
-          SetName(response.data.name);
-          SetDescription(response.data.description);
-          setCourseId(response.data.course_id);
-          // setFilteredData(response.data);
-          
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        
-       
-        
-        api
-        .get("/class_user", configUserClass)
-        .then((response) => {
-          const students = [];
-          for (let student of response.data){
-            students.push(student.user_id);
-          }
-        
-          setSelectedRowKeys(students);
-        })
-        .catch((err) => {
-          message.error("Não foi possível editar a turma!\n" + err);
-        });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-const studentsTable = [
+        setStudents(students);
+        setFilteredStudents(students);
+        setLoading(false);
+      })
+      .catch((err) => {
+        handleError(err, "Não foi possível buscar dados dos usuários");
+      });
+
+    api
+      .get(`/class/${id}`, config)
+      .then((response) => {
+        SetClasses(response.data);
+        SetName(response.data.name);
+        SetDescription(response.data.description);
+        setCourseId(response.data.course_id);
+      })
+      .catch((err) => {
+        handleError(err, "Não foi possível buscar dados da turma");
+      });
+
+    api
+      .get("/class_user", configUserClass)
+      .then((response) => {
+        const students = [];
+        for (let student of response.data) {
+          students.push(student.user_id);
+        }
+
+        setSelectedRowKeys(students);
+      })
+      .catch((err) => {
+        handleError(err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const studentsTable = [
     {
       title: "Nome",
       dataIndex: "name",
@@ -125,9 +124,8 @@ const studentsTable = [
     onChange: (selected) => {
       setSelectedRowKeys(selected);
     },
-    
   };
-  
+
   function handleSearch(value) {
     setSearch(value);
     setFilteredStudents(
@@ -157,28 +155,25 @@ const studentsTable = [
         authorization: "BEARER " + session.accessToken,
       },
     };
-    if(selectedRowKeys.length === 0){
-      message.error("A turma não pode ser vazia!\n" );  
+
+    if (selectedRowKeys.length === 0) {
+      message.error("A turma não pode ser vazia!\n");
       setLoading(false);
       return;
     }
-    
-    
 
     api
       .put(`/class`, data, config)
-      .then((response) => {
-        
-        setSelectedRowKeys(response.data);
+      .then(() => {
         message.success("Turma editada com sucesso!");
         history.push(`/curso/gerenciar/${courseId}`);
       })
       .catch((err) => {
-        message.error("Não foi possível editar a turma!\n" + err);
+        handleError(err, "Não foi possível editar a turma!");
       });
-      setLoading(false);
+    setLoading(false);
   }
-  
+
   return (
     <Base>
       <div className="pageRoot">
@@ -223,7 +218,7 @@ const studentsTable = [
                   value={description}
                   onChange={(e) => SetDescription(e.target.value)}
                 />
-              </Form.Item>   
+              </Form.Item>
               <Form.Item
                 label={<label style={{ fontSize: "large" }}> Alunos </label>}
                 rules={[
@@ -245,7 +240,7 @@ const studentsTable = [
                   dataSource={filteredStudents}
                   loading={loading}
                 />
-              </Form.Item>   
+              </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button
                   type="primary"

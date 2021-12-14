@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../Components/Base/Base";
 import { SnippetsOutlined, DownloadOutlined } from "@ant-design/icons";
-import { message, Divider, Button } from "antd";
+import { Divider, Button } from "antd";
 import VideoFrame from "../../Components/VideoFrame/VideoFrame";
 import { useSession } from "../../Context/SessionContext";
 import api from "../../services/api";
 import "./Aula.css";
 import CommentsContainer from "../../Components/CommentsContainer";
+import handleError from "../../utils/handleError";
 
 export default function Aula(props) {
   const [lesson, setLesson] = useState();
@@ -38,8 +39,8 @@ export default function Aula(props) {
       .then((response) => {
         setLesson(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da aula");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados da aula");
       });
 
     api
@@ -47,18 +48,17 @@ export default function Aula(props) {
       .then((response) => {
         setVideos(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da aula");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados da aula");
       });
 
     api
       .get("/lesson_file", configLesson)
       .then((response) => {
         setFiles(response.data);
-        console.log(response.data);
       })
-      .catch(() => {
-        message.error("Não foi possível carregar dados da aula");
+      .catch((err) => {
+        handleError(err, "Não foi possível carregar dados da aula");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -5,6 +5,7 @@ import { Form, Input, Button, message, Table } from "antd";
 import { useSession } from "../../Context/SessionContext";
 import { useHistory } from "react-router-dom";
 import "./NovaTurma.css";
+import handleError from "../../utils/handleError";
 
 export default function NovaAula(props) {
   const [cl4ss, setClass] = useState({});
@@ -47,10 +48,10 @@ export default function NovaAula(props) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const formLayout = {
     labelCol: {
@@ -115,22 +116,20 @@ export default function NovaAula(props) {
       course_id: course.get("course"),
       organization_id: session.user.organization_id,
     };
-    
-    if(data.students.length === 0){
+
+    if (data.students.length === 0) {
       message.error("Não se pode criar uma turma vazia!");
       return;
-    };
-    
+    }
+
     api
       .post("/class_create", data, config)
       .then((response) => {
-        
         message.success("Turma criada com sucesso!");
         history.push(`/curso/gerenciar/${data.course_id}`);
       })
       .catch((err) => {
-        console.log(err);
-        message.error("Não foi possível criar a turma!");
+        handleError(err, "Não foi possível criar a turma!");
       });
   }
 
