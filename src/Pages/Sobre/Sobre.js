@@ -192,7 +192,7 @@ export default function Sobre() {
 
       <a
         class="whatsapp-link"
-        href="https://web.whatsapp.com/send?phone=5599111112222"
+        href="https://web.whatsapp.com/send?phone=5531985020201"
         target="_blank"
       >
         <i class="fa fa-whatsapp"></i>
