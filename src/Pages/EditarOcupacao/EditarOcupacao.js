@@ -23,7 +23,6 @@ const tailFormItemLayout = {
 };
 
 export default function EditarOcupacao(props) {
-  const [occupation, SetOccupation] = useState([]);
   const [name, SetName] = useState("");
   const [description, SetDescription] = useState("");
 
@@ -40,7 +39,6 @@ export default function EditarOcupacao(props) {
 
   useEffect(() => {
     api.get(`/occupation/${id}`, config).then((response) => {
-      SetOccupation(response.data);
       SetName(response.data.name);
       SetDescription(response.data.description);
     });
