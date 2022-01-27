@@ -1,0 +1,11 @@
+html,
+body {
+  height: 100% !important;
+  font-family: "Exo", sans-serif !important;
+  margin-bottom: 0;
+  background-color: white;
+}
+
+.ant-carousel .slick-prev::before {
+  content: ">";
+}
