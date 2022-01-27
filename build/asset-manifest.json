@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/static/css/main.347451e6.chunk.css",
+    "main.js": "/static/js/main.832e1311.chunk.js",
+    "main.js.map": "/static/js/main.832e1311.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.3a1be024.js",
+    "runtime-main.js.map": "/static/js/runtime-main.3a1be024.js.map",
+    "static/css/2.dd2ca793.chunk.css": "/static/css/2.dd2ca793.chunk.css",
+    "static/js/2.99822208.chunk.js": "/static/js/2.99822208.chunk.js",
+    "static/js/2.99822208.chunk.js.map": "/static/js/2.99822208.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.bc4cab8330aca4f34408522be4eaa989.js": "/precache-manifest.bc4cab8330aca4f34408522be4eaa989.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.dd2ca793.chunk.css.map": "/static/css/2.dd2ca793.chunk.css.map",
+    "static/css/main.347451e6.chunk.css.map": "/static/css/main.347451e6.chunk.css.map",
+    "static/js/2.99822208.chunk.js.LICENSE.txt": "/static/js/2.99822208.chunk.js.LICENSE.txt",
+    "static/media/Logo2.png": "/static/media/Logo2.442d03e1.png",
+    "static/media/data.svg": "/static/media/data.7f39078d.svg",
+    "static/media/lesson.svg": "/static/media/lesson.ee03af0e.svg",
+    "static/media/logo-samu-home.png": "/static/media/logo-samu-home.1905e79f.png",
+    "static/media/logo-upa-home.svg": "/static/media/logo-upa-home.3a3c84cc.svg",
+    "static/media/logo.png": "/static/media/logo.1c8f5cca.png",
+    "static/media/reclas.svg": "/static/media/reclas.f9177a62.svg",
+    "static/media/reclass-aluno.svg": "/static/media/reclass-aluno.5b8240ae.svg",
+    "static/media/rocket.svg": "/static/media/rocket.ec535959.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3a1be024.js",
+    "static/css/2.dd2ca793.chunk.css",
+    "static/js/2.99822208.chunk.js",
+    "static/css/main.347451e6.chunk.css",
+    "static/js/main.832e1311.chunk.js"
+  ]
+}
